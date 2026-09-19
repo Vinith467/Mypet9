@@ -136,7 +136,7 @@ export const CaretakerOnboardingScreen = () => {
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Location Address</label>
                   <Input
-                    icon={MapPin}
+                    leftIcon={<MapPin size={18} />}
                     placeholder="Full home address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
@@ -146,7 +146,7 @@ export const CaretakerOnboardingScreen = () => {
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Years of Experience</label>
                   <Input
-                    icon={User}
+                    leftIcon={<User size={18} />}
                     type="number"
                     placeholder="E.g. 2"
                     value={experience}
@@ -306,7 +306,7 @@ export const CaretakerOnboardingScreen = () => {
               <div className="space-y-1 mb-8">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">UPI ID</label>
                 <Input
-                  icon={CreditCard}
+                  leftIcon={<CreditCard size={18} />}
                   placeholder="e.g. 9876543210@paytm"
                   value={upiId}
                   onChange={(e) => setUpiId(e.target.value)}
@@ -315,9 +315,8 @@ export const CaretakerOnboardingScreen = () => {
 
               <Button 
                 onClick={handleFinish} 
-                loading={loading}
                 className="mt-4 bg-[#174F38] hover:bg-[#113a29] shadow-lg shadow-[#174F38]/30"
-                disabled={!upiId}
+                disabled={loading || !upiId}
               >
                 Complete Profile
               </Button>
