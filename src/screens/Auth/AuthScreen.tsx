@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PawPrint, Mail, Lock, User, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
@@ -20,7 +20,8 @@ type AuthMode = 'login' | 'signup';
 
 const AuthScreen = () => {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<AuthMode>('login');
+  const location = useLocation();
+  const [mode, setMode] = useState<AuthMode>(location.state?.mode || 'login');
   const [authRole, setAuthRole] = useState<'user' | 'caretaker'>('user');
   const [caretakerMode, setCaretakerMode] = useState<'apply' | 'auth'>('apply');
   const [showPassword, setShowPassword] = useState(false);
@@ -154,7 +155,7 @@ const AuthScreen = () => {
         Desktop: 50% width, centered content in a floating premium card.
       */}
       <div 
-        className="flex flex-col w-full lg:w-[45%] min-h-screen lg:min-h-0 lg:h-full lg:px-12 xl:px-16 items-center py-8 lg:py-6 relative z-10 lg:bg-white lg:overflow-y-auto"
+        className="flex flex-col w-full lg:w-[45%] min-h-screen lg:min-h-0 lg:h-full lg:px-12 xl:px-16 items-center pb-8 relative z-10 lg:bg-white lg:overflow-y-auto"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         
@@ -165,13 +166,14 @@ const AuthScreen = () => {
           className="w-full max-w-[380px] px-6 lg:px-0 flex flex-col items-center bg-transparent my-auto"
         >
           
-          {/* Header */}
+          {/* Sticky Header Wrapper */}
+          <div className="sticky top-0 z-30 w-full flex flex-col items-center pt-8 pb-4 bg-black/40 backdrop-blur-md lg:bg-white lg:backdrop-blur-none rounded-b-3xl lg:rounded-none -mx-4 px-4 lg:mx-0 lg:px-0">
           <div className="flex flex-col items-center mb-6">
-            <div className="bg-white/20 backdrop-blur-md lg:bg-[#174F38]/10 p-2.5 rounded-xl mb-3 shadow-sm lg:shadow-none">
-              <PawPrint size={28} className="text-white lg:text-[#174F38] drop-shadow-md lg:drop-shadow-none" strokeWidth={2.5} />
+            <div className="bg-white/20 backdrop-blur-md lg:bg-[#FBBF24]/10 p-2.5 rounded-xl mb-3 shadow-sm lg:shadow-none">
+              <PawPrint size={28} className="text-white lg:text-[#FBBF24]" strokeWidth={2.5} />
             </div>
             <h1 className="text-[28px] font-extrabold text-white lg:text-[#1B2B48] mb-0.5 tracking-tight drop-shadow-lg lg:drop-shadow-none">
-              Mypet<span className="lg:text-[#174F38]">9</span>
+              Mypet<span className="lg:text-[#FBBF24]">9</span>
             </h1>
             <p className="text-white/90 lg:text-gray-500 font-medium text-[13px] drop-shadow-md lg:drop-shadow-none">
               Safe Homes. Happy Pets.
@@ -181,21 +183,23 @@ const AuthScreen = () => {
           {/* Toggle Tabs */}
           <div className="flex max-w-[280px] mx-auto w-full bg-black/20 lg:bg-gray-100 rounded-full p-1 backdrop-blur-md lg:backdrop-blur-none mb-5 relative">
             <div 
-              className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#174F38] rounded-full transition-all duration-300 ease-out shadow-sm`}
+              className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#FBBF24] rounded-full transition-all duration-300 ease-out shadow-sm`}
               style={{ left: isLogin ? '4px' : 'calc(50%)' }}
             />
             <button 
-              className={`flex-1 py-2 text-[13px] font-extrabold tracking-wide z-10 transition-colors duration-300 rounded-full ${isLogin ? 'text-white' : 'text-white/80 lg:text-gray-500 hover:text-white lg:hover:text-[#1B2B48] drop-shadow-sm lg:drop-shadow-none'}`}
+              className={`flex-1 py-2 text-[13px] font-extrabold tracking-wide z-10 transition-colors duration-300 rounded-full ${isLogin ? 'text-[#1B2B48]' : 'text-white/80 lg:text-gray-500 hover:text-white lg:hover:text-[#1B2B48] drop-shadow-sm lg:drop-shadow-none'}`}
               onClick={() => setMode('login')}
             >
               Log In
             </button>
             <button 
-              className={`flex-1 py-2 text-[13px] font-extrabold tracking-wide z-10 transition-colors duration-300 rounded-full ${!isLogin ? 'text-white' : 'text-white/80 lg:text-gray-500 hover:text-white lg:hover:text-[#1B2B48] drop-shadow-sm lg:drop-shadow-none'}`}
+              className={`flex-1 py-2 text-[13px] font-extrabold tracking-wide z-10 transition-colors duration-300 rounded-full ${!isLogin ? 'text-[#1B2B48]' : 'text-white/80 lg:text-gray-500 hover:text-white lg:hover:text-[#1B2B48] drop-shadow-sm lg:drop-shadow-none'}`}
               onClick={() => setMode('signup')}
             >
               Sign Up
             </button>
+          </div>
+
           </div>
 
           {/* Error Message */}
@@ -283,7 +287,7 @@ const AuthScreen = () => {
               )}
             </AnimatePresence>
 
-            <Button fullWidth className="mt-3 h-[48px] text-[14px] shadow-lg shadow-[#174F38]/20 hover:shadow-[#174F38]/30 hover:-translate-y-0.5 transition-all duration-300" onClick={handleSubmit} disabled={loading}>
+            <Button fullWidth className="mt-3 h-[48px] text-[14px] bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] font-bold shadow-lg shadow-[#FBBF24]/20 border-none hover:shadow-[#FBBF24]/30 hover:-translate-y-0.5 transition-all duration-300" onClick={handleSubmit} disabled={loading}>
               {loading ? 'Please wait...' : (isLogin ? 'Log In' : 'Sign Up')}
             </Button>
           </div>
@@ -308,11 +312,11 @@ const AuthScreen = () => {
           {/* Footer Text */}
           <div className="mt-4 flex flex-col items-center justify-center space-y-2">
             <div className="flex items-center space-x-1.5 text-[12px] font-bold">
-              <span className="text-white/90 lg:text-petoo-textMuted drop-shadow-sm lg:drop-shadow-none">
+              <span className="text-white/90 lg:text-gray-500 drop-shadow-sm lg:drop-shadow-none">
                 {isLogin ? "Don't have an account?" : "Already have an account?"}
               </span>
               <button 
-                className="text-white lg:text-petoo-primary hover:underline focus:outline-none drop-shadow-sm lg:drop-shadow-none"
+                className="text-[#FBBF24] lg:text-[#FBBF24] hover:underline focus:outline-none drop-shadow-sm lg:drop-shadow-none"
                 onClick={toggleMode}
               >
                 {isLogin ? 'Sign Up' : 'Log In'}
@@ -322,11 +326,11 @@ const AuthScreen = () => {
             {/* New Apply link for caretakers */}
             {authRole === 'caretaker' && (
               <div className="flex items-center space-x-1.5 text-[12px] font-bold">
-                <span className="text-white/90 lg:text-petoo-textMuted drop-shadow-sm lg:drop-shadow-none">
+                <span className="text-white/90 lg:text-gray-500 drop-shadow-sm lg:drop-shadow-none">
                   Want to become a Caretaker?
                 </span>
                 <button 
-                  className="text-white lg:text-petoo-primary hover:underline focus:outline-none drop-shadow-sm lg:drop-shadow-none"
+                  className="text-[#FBBF24] lg:text-[#FBBF24] hover:underline focus:outline-none drop-shadow-sm lg:drop-shadow-none"
                   onClick={() => setCaretakerMode('apply')}
                 >
                   Apply Here
@@ -342,7 +346,7 @@ const AuthScreen = () => {
                 setAuthRole(authRole === 'user' ? 'caretaker' : 'user');
                 if (authRole === 'user') setCaretakerMode('apply');
               }}
-              className="group px-6 py-3.5 w-full max-w-[300px] bg-[#174F38] active:bg-[#113a29] text-white font-extrabold text-[14px] tracking-wide rounded-2xl transition-all duration-300 ease-out flex items-center justify-center space-x-2 shadow-[0_8px_25px_rgba(23,79,56,0.5)] border border-[#174F38]/50"
+              className="group px-6 py-3.5 w-full max-w-[300px] bg-[#FBBF24] active:bg-[#F59E0B] text-[#1B2B48] font-extrabold text-[14px] tracking-wide rounded-2xl transition-all duration-300 ease-out flex items-center justify-center space-x-2 shadow-[0_8px_25px_rgba(251,191,36,0.3)] border border-[#FBBF24]"
             >
               <span>{authRole === 'user' ? 'Become a Caretaker' : 'Login as Pet Parent'}</span>
               <ArrowRight size={18} className="transition-transform duration-300 group-active:translate-x-1" />
@@ -361,7 +365,7 @@ const AuthScreen = () => {
               setAuthRole(authRole === 'user' ? 'caretaker' : 'user');
               if (authRole === 'user') setCaretakerMode('apply');
             }}
-            className="group px-6 py-3 bg-[#174F38] hover:bg-[#113a29] text-white font-extrabold text-[13px] tracking-wide rounded-full transition-all duration-300 ease-out flex items-center space-x-2 shadow-[0_8px_20px_rgba(23,79,56,0.4)] hover:shadow-[0_8px_25px_rgba(23,79,56,0.6)] hover:-translate-y-0.5 border border-[#174F38]/50"
+            className="group px-6 py-3 bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] font-extrabold text-[13px] tracking-wide rounded-full transition-all duration-300 ease-out flex items-center space-x-2 shadow-[0_8px_20px_rgba(251,191,36,0.3)] hover:shadow-[0_8px_25px_rgba(251,191,36,0.5)] hover:-translate-y-0.5 border border-[#FBBF24]"
           >
             <span>{authRole === 'user' ? 'Become a Caretaker' : 'Login as Pet Parent'}</span>
             <ArrowRight size={18} className={authRole === 'caretaker' ? 'rotate-180 transition-transform duration-300 group-hover:-translate-x-1' : 'transition-transform duration-300 group-hover:translate-x-1'} />
@@ -391,9 +395,9 @@ const AuthScreen = () => {
           >
             <h2 className="text-4xl font-extrabold mb-4 leading-tight drop-shadow-lg">
               {authRole === 'user' ? (
-                <>Your pet's <span className="text-petoo-primary brightness-125">second home</span>.</>
+                <>Your pet's <span className="text-[#FBBF24]">second home</span>.</>
               ) : (
-                <>Turn your love for pets into <span className="text-petoo-primary brightness-125">earnings</span>.</>
+                <>Turn your love for pets into <span className="text-[#FBBF24]">earnings</span>.</>
               )}
             </h2>
             <p className="text-white/80 font-medium text-lg leading-relaxed">
@@ -406,9 +410,9 @@ const AuthScreen = () => {
           {/* Small glass card */}
           <div className="hidden xl:flex items-center space-x-4 bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl shadow-2xl">
             <div className="flex -space-x-3">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="User" className="w-10 h-10 rounded-full border-2 border-[#174F38]" />
-              <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="User" className="w-10 h-10 rounded-full border-2 border-[#174F38]" />
-              <div className="w-10 h-10 rounded-full border-2 border-[#174F38] bg-petoo-primary flex items-center justify-center text-white text-xs font-bold">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="User" className="w-10 h-10 rounded-full border-2 border-[#FBBF24]" />
+              <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="User" className="w-10 h-10 rounded-full border-2 border-[#FBBF24]" />
+              <div className="w-10 h-10 rounded-full border-2 border-[#FBBF24] bg-[#FBBF24] flex items-center justify-center text-[#1B2B48] text-xs font-bold">
                 +2k
               </div>
             </div>

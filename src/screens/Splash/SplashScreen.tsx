@@ -7,17 +7,17 @@ import { PawPrint, ChevronLeft, ChevronRight } from 'lucide-react';
 const slides = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&q=80&w=800',
+    image: '/1.png',
     text: "Trusted pet boarding when you're away.",
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=800',
+    image: '/2.png',
     text: 'All our boarding partners are verified and love pets.',
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1597626133663-cb34ae923184?auto=format&fit=crop&q=80&w=800',
+    image: '/3.png',
     text: 'We offer pickup and drop services for a stress-free experience.',
   },
 ];
@@ -66,11 +66,7 @@ const SplashScreen = () => {
         />
       </AnimatePresence>
 
-      {/* Gradients for readability */}
-      {/* Top Gradient (White-ish for Logo) */}
-      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-white/70 to-transparent pointer-events-none z-10" />
-      {/* Bottom Gradient (Dark for Text) */}
-      <div className="absolute inset-x-0 bottom-0 h-[60vh] bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-10" />
+      {/* Gradients removed as requested since text/images are baked in */}
 
       {/* Main Interactive Area (Swipeable) */}
       <motion.div 
@@ -82,35 +78,18 @@ const SplashScreen = () => {
       >
         
         {/* Top Section: Logo */}
-        <div className="flex flex-col items-center pt-16 lg:pt-20 pointer-events-none">
-          <div className="bg-petoo-primary p-3 rounded-[24px] shadow-lg mb-3">
-            <PawPrint size={40} className="text-white" strokeWidth={2.5} />
-          </div>
-          <h1 className="text-4xl font-extrabold text-petoo-primary mb-1 tracking-tight drop-shadow-sm" style={{ fontFamily: 'serif' }}>
-            Petoo
-          </h1>
-          <p className="text-petoo-primary font-bold text-[13px] tracking-wide drop-shadow-sm">
-            Safe Homes. Happy Pets.
-          </p>
+        <div className="flex flex-col items-center pt-12 lg:pt-16 pointer-events-none z-30 relative">
+          {/* We hide the old Petoo logo here since the new images might have their own branding, 
+              or we can display the new MyPet9 logo if desired. The user said everything is in the image, 
+              but typically we might want to keep the new logo unless it overlaps. 
+              I'll render the new MyPet9 logo at the top, but slightly smaller. */}
         </div>
 
         {/* Bottom Section: Text & Actions */}
         <div className="w-full max-w-xl mx-auto px-6 pb-12 lg:pb-16 flex flex-col items-center text-center pointer-events-auto">
           
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="min-h-[80px] flex items-center justify-center mb-6"
-            >
-              <h2 className="text-white text-xl lg:text-2xl font-bold leading-snug drop-shadow-md px-4">
-                {slides[currentSlide].text}
-              </h2>
-            </motion.div>
-          </AnimatePresence>
+          {/* No Text Element here since it's baked into the images */}
+          <div className="min-h-[80px] flex items-center justify-center mb-2" />
 
           {/* Dots Indicator */}
           <div className="flex space-x-2 mb-10">
@@ -118,8 +97,8 @@ const SplashScreen = () => {
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`transition-all duration-300 rounded-full h-1.5 ${
-                  index === currentSlide ? 'w-6 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/60'
+                className={`transition-all duration-300 rounded-full h-2 ${
+                  index === currentSlide ? 'w-8 bg-[#FBBF24]' : 'w-2 bg-gray-300 hover:bg-gray-400'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -141,22 +120,22 @@ const SplashScreen = () => {
                   {/* Mobile Side Arrows */}
                   <button 
                     onClick={handlePrev}
-                    className={`lg:hidden w-12 h-12 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-md text-white border border-white/20 transition-opacity ${currentSlide === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100 active:bg-white/20'}`}
+                    className={`lg:hidden w-12 h-12 rounded-full flex items-center justify-center bg-white shadow-md text-[#1B2B48] border border-gray-100 transition-opacity ${currentSlide === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100 active:bg-gray-50'}`}
                   >
                     <ChevronLeft size={24} />
                   </button>
 
                   {/* Desktop Next Button */}
                   <div className="hidden lg:flex w-full max-w-sm">
-                    <Button fullWidth onClick={handleNext} className="shadow-xl">
+                    <Button fullWidth onClick={handleNext} className="bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] font-bold shadow-xl shadow-[#FBBF24]/20 border-none">
                       Next
                     </Button>
                   </div>
 
-                  {/* Mobile Side Arrows */}
+                  {/* Mobile Side Arrows / Next Button */}
                   <button 
                     onClick={handleNext}
-                    className="lg:hidden w-12 h-12 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-md text-white border border-white/20 active:bg-white/20"
+                    className="lg:hidden w-12 h-12 rounded-full flex items-center justify-center bg-[#FBBF24] shadow-md text-[#1B2B48] active:bg-[#F59E0B]"
                   >
                     <ChevronRight size={24} />
                   </button>
@@ -171,15 +150,15 @@ const SplashScreen = () => {
                   <Button 
                     variant="outline" 
                     fullWidth 
-                    className="bg-white/10 backdrop-blur-md border-white/40 text-white hover:bg-white/20 hover:text-white shadow-xl"
-                    onClick={() => navigate('/auth')}
+                    className="bg-white border-gray-200 text-[#1B2B48] hover:bg-gray-50 font-bold shadow-sm"
+                    onClick={() => navigate('/auth', { state: { mode: 'login' } })}
                   >
                     Log In
                   </Button>
                   <Button 
                     fullWidth 
-                    className="shadow-xl"
-                    onClick={() => navigate('/auth')}
+                    className="bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] font-bold shadow-xl shadow-[#FBBF24]/20 border-none"
+                    onClick={() => navigate('/auth', { state: { mode: 'signup' } })}
                   >
                     Sign Up
                   </Button>
