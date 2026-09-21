@@ -112,7 +112,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                 </button>
 
                 {/* Center Icon & Text */}
-                <div className="flex flex-col items-center justify-center w-full mb-6">
+                <div className="flex flex-col items-center justify-center w-full mb-2">
                   <div className="relative mb-5">
                     {/* Left sparkles */}
                     <svg className="absolute -left-6 top-1/2 -translate-y-1/2 w-5 h-12" viewBox="0 0 24 64" fill="none">
@@ -131,71 +131,92 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                     </div>
                   </div>
 
-                  <h2 className="text-[24px] font-extrabold text-[#7B1C1D] mb-1.5 text-center leading-none">Booking Confirmed!</h2>
-                  <p className="text-[#3A5D74] text-[14px] font-medium text-center leading-tight">
-                    {req.petName}'s booking has been confirmed.<br/>Get ready to host!
+                  <h2 className="text-[26px] font-extrabold text-[#7B1C1D] mb-1.5 text-center leading-none tracking-tight">Booking Confirmed!</h2>
+                  <p className="text-[#381313] text-[15px] font-medium text-center leading-tight">
+                    {req.petName}’s booking has been confirmed.<br/>Get ready to host!
                   </p>
                 </div>
 
                 {/* Pet Info & Stay Details Compact Card */}
-                <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 mb-6 shadow-sm flex flex-col">
+                <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 mb-6 shadow-sm flex flex-col mt-6">
                   {/* Pet Info Header */}
                   <div className="flex items-center mb-4">
-                    <img src={req.image} alt={req.petName} className="w-[52px] h-[52px] rounded-xl object-cover mr-3" />
+                    <img src={req.image} alt={req.petName} className="w-[70px] h-[70px] rounded-xl object-cover mr-4" />
                     <div className="flex flex-col">
-                      <h3 className="font-extrabold text-[#7B1C1D] text-[17px] leading-none mb-1">{req.petName}</h3>
-                      <p className="text-[#381313] text-[12px] font-medium mb-1.5">{req.breed} • {req.size.split(' ')[0]}</p>
-                      <div className="flex flex-wrap gap-1">
-                        <div className="bg-[#FFF0F0] text-[#7B1C1D] px-1.5 py-0.5 rounded text-[10px] font-bold">Vaccinated</div>
-                        <div className="bg-[#FFF0F0] text-[#7B1C1D] px-1.5 py-0.5 rounded text-[10px] font-bold">Friendly</div>
+                      <h3 className="font-extrabold text-[#7B1C1D] text-[20px] leading-none mb-1.5">{req.petName}</h3>
+                      <p className="text-[#381313] text-[13px] font-medium mb-2">{req.breed} • {req.size.split(' ')[0]}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        <div className="bg-[#FFF0F0] text-[#7B1C1D] px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center space-x-1">
+                          <PawPrint size={12} />
+                          <span>Vaccinated</span>
+                        </div>
+                        <div className="bg-[#FFF0F0] text-[#7B1C1D] px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center space-x-1">
+                          <ShieldCheck size={12} />
+                          <span>Friendly</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="w-full h-px bg-[#F0F0F0] mb-3"></div>
+                  <div className="w-full h-px bg-[#F0F0F0] mb-4"></div>
 
-                  {/* 2-Column Details */}
-                  <div className="grid grid-cols-2 gap-y-3 gap-x-4">
-                    <div className="flex flex-col">
-                      <span className="text-[#3A5D74] text-[10px] font-bold uppercase tracking-wider mb-0.5">Check-in</span>
-                      <span className="text-[#381313] text-[13px] font-bold">{req.startDate}</span>
+                  {/* Single-Column Details */}
+                  <div className="flex flex-col space-y-3.5 px-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3 text-[#7B1C1D]">
+                        <Calendar size={18} strokeWidth={2} />
+                        <span className="text-[#381313] font-medium text-[14px]">Check-in</span>
+                      </div>
+                      <span className="text-[#381313] font-medium text-[14px]">{req.startDate}</span>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-[#3A5D74] text-[10px] font-bold uppercase tracking-wider mb-0.5">Check-out</span>
-                      <span className="text-[#381313] text-[13px] font-bold">{req.endDate}</span>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3 text-[#7B1C1D]">
+                        <Calendar size={18} strokeWidth={2} />
+                        <span className="text-[#381313] font-medium text-[14px]">Check-out</span>
+                      </div>
+                      <span className="text-[#381313] font-medium text-[14px]">{req.endDate}</span>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-[#3A5D74] text-[10px] font-bold uppercase tracking-wider mb-0.5">Nights</span>
-                      <span className="text-[#381313] text-[13px] font-bold">{req.nights} nights</span>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3 text-[#7B1C1D]">
+                        <Moon size={18} strokeWidth={2} />
+                        <span className="text-[#381313] font-medium text-[14px]">Nights</span>
+                      </div>
+                      <span className="text-[#381313] font-medium text-[14px]">{req.nights}</span>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-[#3A5D74] text-[10px] font-bold uppercase tracking-wider mb-0.5">Total Amount</span>
-                      <span className="text-[#7B1C1D] text-[15px] font-black">₹{formatCurrency(quoteTotal)}</span>
+
+                    <div className="flex items-center justify-between pt-1">
+                      <div className="flex items-center space-x-3 text-[#7B1C1D]">
+                        <Coins size={18} strokeWidth={2} />
+                        <span className="text-[#381313] font-medium text-[14px]">Total Amount</span>
+                      </div>
+                      <span className="text-[#7B1C1D] font-extrabold text-[17px]">₹{formatCurrency(quoteTotal)}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Actions */}
-                <div className="flex items-center space-x-3 w-full">
-                  <button 
-                    onClick={onClose}
-                    className="flex-1 py-3 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] font-extrabold text-[13px] hover:bg-[#F6EBE5] transition-colors flex items-center justify-center space-x-1.5"
-                  >
-                    <MessageSquare size={16} strokeWidth={2.5} />
-                    <span>Message</span>
-                  </button>
+                {/* Actions Stacked Vertically */}
+                <div className="flex flex-col w-full space-y-3">
                   <button 
                     onClick={() => {
                       onClose();
                       navigate('/caretaker/bookings');
                     }}
-                    className="flex-1 py-3 rounded-xl bg-[#7B1C1D] text-white font-extrabold text-[13px] hover:bg-[#5C1C1D] transition-colors flex items-center justify-center shadow-md"
+                    className="w-full py-3.5 rounded-xl bg-[#7B1C1D] text-white font-extrabold text-[15px] hover:bg-[#5C1C1D] transition-colors flex items-center justify-center relative shadow-sm"
                   >
                     View Booking
+                    <ChevronRight size={18} className="absolute right-4 text-white" />
+                  </button>
+                  <button 
+                    onClick={onClose}
+                    className="w-full py-3.5 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <MessageSquare size={18} strokeWidth={2.5} />
+                    <span>Message Customer</span>
                   </button>
                 </div>
               </div>
-            </div>
             ) : modalStep !== 'success' && req.status !== 'accepted' ? (
               <>
                 {/* Header */}
