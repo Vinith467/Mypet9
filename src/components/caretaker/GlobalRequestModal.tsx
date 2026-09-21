@@ -83,7 +83,8 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className={`relative w-full overflow-y-auto overflow-x-hidden bg-white rounded-3xl z-[101] shadow-2xl p-4 sm:p-5 max-h-[95vh] ${
               modalStep === 'quote' ? 'max-w-[420px] lg:max-w-[580px]' : 
-              req.status === 'accepted' ? 'max-w-[400px]' :
+              req.status === 'accepted' ? 'max-w-[480px] lg:max-w-[700px]' :
+              req.status === 'declined' ? 'max-w-[480px] lg:max-w-[760px]' :
               'max-w-[480px] lg:max-w-[640px]'
             }`}
           >
@@ -102,42 +103,47 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             )}
             
             {req.status === 'accepted' ? (
-              <div className="flex flex-col items-center w-full max-w-[360px] mx-auto pt-6 pb-2">
+              <div className="flex flex-col lg:flex-row items-center lg:items-stretch w-full gap-6 lg:gap-8 mx-auto pt-6 lg:pt-4 pb-2 relative">
                 <button 
                   onClick={onClose}
-                  className="absolute top-4 right-4 lg:top-5 lg:right-5 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors z-10"
+                  className="absolute top-0 right-0 lg:top-1 lg:right-1 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors z-10"
                 >
                   <X size={24} />
                 </button>
 
-                {/* Big Check Icon */}
-                <div className="relative mb-6 mt-2">
-                  <div className="relative">
-                    {/* Left sparkles */}
-                    <svg className="absolute -left-8 top-1/2 -translate-y-1/2 w-6 h-16" viewBox="0 0 24 64" fill="none">
-                      <path d="M18 10L6 16" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M24 32L10 32" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M18 54L6 48" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
-                    </svg>
-                    {/* Right sparkles */}
-                    <svg className="absolute -right-8 top-1/2 -translate-y-1/2 w-6 h-16" viewBox="0 0 24 64" fill="none">
-                      <path d="M6 10L18 16" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M0 32L14 32" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M6 54L18 48" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
-                    </svg>
-                    <div className="w-[100px] h-[100px] bg-[#7B1C1D] rounded-full flex items-center justify-center relative z-10 shadow-lg">
-                      <Check className="text-white w-14 h-14" strokeWidth={4} />
+                {/* Left side: Icon + Text */}
+                <div className="flex-1 flex flex-col items-center justify-center lg:pr-4">
+                  {/* Big Check Icon */}
+                  <div className="relative mb-6 mt-2 lg:mt-6">
+                    <div className="relative">
+                      {/* Left sparkles */}
+                      <svg className="absolute -left-8 top-1/2 -translate-y-1/2 w-6 h-16" viewBox="0 0 24 64" fill="none">
+                        <path d="M18 10L6 16" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                        <path d="M24 32L10 32" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                        <path d="M18 54L6 48" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                      </svg>
+                      {/* Right sparkles */}
+                      <svg className="absolute -right-8 top-1/2 -translate-y-1/2 w-6 h-16" viewBox="0 0 24 64" fill="none">
+                        <path d="M6 10L18 16" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                        <path d="M0 32L14 32" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                        <path d="M6 54L18 48" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                      </svg>
+                      <div className="w-[100px] h-[100px] bg-[#7B1C1D] rounded-full flex items-center justify-center relative z-10 shadow-lg">
+                        <Check className="text-white w-14 h-14" strokeWidth={4} />
+                      </div>
                     </div>
                   </div>
+
+                  <h2 className="text-[28px] font-extrabold text-[#7B1C1D] mb-1.5 text-center leading-none">Booking Confirmed!</h2>
+                  <p className="text-[#3A5D74] text-[15px] font-medium text-center max-w-[280px] leading-tight mb-0 lg:mb-4">
+                    {req.petName}'s booking has been confirmed.<br/>Get ready to host!
+                  </p>
                 </div>
 
-                <h2 className="text-[28px] font-extrabold text-[#7B1C1D] mb-1.5 text-center leading-none">Booking Confirmed!</h2>
-                <p className="text-[#3A5D74] text-[15px] font-medium text-center mb-6 max-w-[280px] leading-tight">
-                  {req.petName}'s booking has been confirmed.<br/>Get ready to host!
-                </p>
-
-                {/* Info Card */}
-                <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 mb-5 shadow-[0_4px_15px_-4px_rgba(0,0,0,0.03)] flex flex-col">
+                {/* Right side: Info Card + Actions */}
+                <div className="flex-1 flex flex-col pt-6 lg:pt-0 border-t lg:border-t-0 lg:border-l border-[#F0F0F0] lg:pl-8">
+                  {/* Info Card */}
+                  <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 mb-5 shadow-[0_4px_15px_-4px_rgba(0,0,0,0.03)] flex flex-col">
                   {/* Pet Info */}
                   <div className="flex items-start mb-4">
                     <img src={req.image} alt={req.petName} className="w-[72px] h-[72px] rounded-xl object-cover mr-4" />
@@ -196,7 +202,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-col w-full space-y-3">
+                <div className="flex flex-col w-full space-y-3 mt-auto">
                   <button 
                     onClick={() => {
                       onClose();
@@ -218,6 +224,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                   </button>
                 </div>
               </div>
+            </div>
             ) : modalStep !== 'success' && req.status !== 'accepted' ? (
               <>
                 {/* Header */}
@@ -303,11 +310,14 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             ) : null}
 
             {modalStep === 'details' ? (
-              <>
-                {/* Details List */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-x-8 mb-5 px-1">
-                  
-                  <div className="flex items-start space-x-3">
+              <div className={req.status === 'declined' ? "flex flex-col lg:flex-row gap-6 lg:gap-8" : "flex flex-col"}>
+                
+                {/* Left Column (or full width if not declined) */}
+                <div className={`flex flex-col ${req.status === 'declined' ? "flex-1" : "w-full"}`}>
+                  {/* Details List */}
+                  <div className={`grid grid-cols-1 ${req.status === 'declined' ? "" : "lg:grid-cols-2"} gap-4 lg:gap-x-8 mb-5 px-1`}>
+                    
+                    <div className="flex items-start space-x-3">
                     <div className="mt-0.5">
                       <Calendar size={18} className="text-[#5C1C1D]" />
                     </div>
@@ -365,8 +375,8 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
 
                 </div>
 
-                {req.status === 'declined' && modalStep === 'details' && (
-                  <div className="flex flex-col relative z-10">
+                {req.status === 'declined' && (
+                  <div className="flex flex-col relative z-10 mt-auto">
                     <div className="flex items-center space-x-2 mt-2 mb-2 px-1">
                       <Tag size={18} className="text-[#7B1C1D] mt-0.5" />
                       <div className="flex flex-col">
@@ -375,7 +385,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                       </div>
                     </div>
                     
-                    <div className="bg-[#F8F9FA] rounded-xl py-3 flex divide-x divide-[#E5E7EB] mb-4">
+                    <div className="bg-[#F8F9FA] rounded-xl py-3 flex divide-x divide-[#E5E7EB]">
                       <div className="flex-1 flex flex-col items-center justify-center">
                         <span className="text-[#381313] font-extrabold text-[18px]">₹1,200</span>
                         <span className="text-[#7B1C1D] text-[12px] font-medium">per night</span>
@@ -385,7 +395,14 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                         <span className="text-[#7B1C1D] text-[12px] font-medium">Total (2 nights)</span>
                       </div>
                     </div>
+                  </div>
+                )}
+              </div>
 
+              {/* Right Column (for Declined) */}
+              {req.status === 'declined' && (
+                <div className="flex-1 flex flex-col relative z-10 border-t lg:border-t-0 lg:border-l border-[#F0F0F0] lg:pl-8 pt-6 lg:pt-0">
+                  <div className="flex flex-col h-full">
                     <div className="bg-[#FFF0F0] rounded-xl p-3 flex items-start space-x-3 mb-3">
                       <div className="bg-[#DC2626] rounded-full p-1 mt-0.5 shrink-0">
                         <X size={16} className="text-white" strokeWidth={3} />
@@ -408,13 +425,9 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                         </span>
                       </div>
                     </div>
-                  </div>
-                )}
 
-                {/* Actions */}
-                <div className="flex items-center space-x-3 pt-1 relative z-10">
-                  {req.status === 'declined' ? (
-                    <>
+                    {/* Actions */}
+                    <div className="flex items-center space-x-3 pt-1 mt-auto">
                       <button 
                         onClick={onClose}
                         className="flex-1 py-3.5 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] bg-white font-extrabold text-[14px] hover:bg-[#F6EBE5] transition-colors"
@@ -427,25 +440,28 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                       >
                         View Similar Requests
                       </button>
-                    </>
-                  ) : (
-                    <>
-                      <button 
-                        onClick={onClose}
-                        className="flex-1 py-3 rounded-xl border border-[#FF4D4D] text-[#FF4D4D] font-extrabold text-[14px] hover:bg-[#FFEAEA] transition-colors"
-                      >
-                        Decline
-                      </button>
-                      <button 
-                        onClick={() => setModalStep('quote')}
-                        className="flex-1 py-3 rounded-xl bg-[#5C1C1D] text-white font-extrabold text-[14px] hover:bg-[#4A1617] transition-colors shadow-md"
-                      >
-                        Accept & Quote
-                      </button>
-                    </>
-                  )}
+                    </div>
+                  </div>
                 </div>
-              </>
+              )}
+
+              {req.status !== 'declined' && (
+                <div className="flex items-center space-x-3 pt-1 w-full">
+                  <button 
+                    onClick={onClose}
+                    className="flex-1 py-3 rounded-xl border border-[#FF4D4D] text-[#FF4D4D] font-extrabold text-[14px] hover:bg-[#FFEAEA] transition-colors"
+                  >
+                    Decline
+                  </button>
+                  <button 
+                    onClick={() => setModalStep('quote')}
+                    className="flex-1 py-3 rounded-xl bg-[#5C1C1D] text-white font-extrabold text-[14px] hover:bg-[#4A1617] transition-colors shadow-md"
+                  >
+                    Accept & Quote
+                  </button>
+                </div>
+              )}
+            </div>
             ) : modalStep === 'quote' ? (
               <>
                 {/* Quote Form Container */}
