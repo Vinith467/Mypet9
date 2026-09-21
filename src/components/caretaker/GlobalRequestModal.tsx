@@ -328,99 +328,106 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                 </div>
               </>
             ) : (
-              <div className="flex flex-col items-center pt-1 pb-1 w-full max-w-[400px] mx-auto">
+              <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-8 pt-1 pb-1 w-full max-w-[400px] lg:max-w-none mx-auto">
+                {/* Absolute Buttons */}
                 <button 
                   onClick={() => setModalStep('quote')}
-                  className="absolute top-4 left-4 lg:top-6 lg:left-6 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors"
+                  className="absolute top-4 left-4 lg:top-6 lg:left-6 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors z-10"
                 >
                   <ChevronLeft size={24} />
                 </button>
                 <button 
                   onClick={onClose}
-                  className="absolute top-4 right-4 lg:top-6 lg:right-6 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors"
+                  className="absolute top-4 right-4 lg:top-6 lg:right-6 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors z-10"
                 >
                   <X size={24} />
                 </button>
 
-                <div className="relative mb-4 mt-2">
-                  <div className="relative">
-                    {/* Left sparkles */}
-                    <svg className="absolute -left-6 top-1/2 -translate-y-1/2 w-4 h-12" viewBox="0 0 16 48" fill="none">
-                      <path d="M12 8L4 12" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
-                      <path d="M16 24L6 24" stroke="#FCA5A5" strokeWidth="2.5" strokeLinecap="round" />
-                      <path d="M12 40L4 36" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
-                    </svg>
-                    {/* Right sparkles */}
-                    <svg className="absolute -right-6 top-1/2 -translate-y-1/2 w-4 h-12" viewBox="0 0 16 48" fill="none">
-                      <path d="M4 8L12 12" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
-                      <path d="M0 24L10 24" stroke="#FCA5A5" strokeWidth="2.5" strokeLinecap="round" />
-                      <path d="M4 40L12 36" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
-                    </svg>
-                    <div className="w-[84px] h-[84px] bg-[#E8F8F0] rounded-full flex items-center justify-center relative z-10">
-                      <Send className="text-[#22C55E] w-10 h-10 -ml-1 mt-1 transform -rotate-45" fill="currentColor" />
+                {/* Left Column (Icon + Text) */}
+                <div className="flex flex-col items-center justify-center lg:mt-4">
+                  <div className="relative mb-4 mt-2">
+                    <div className="relative">
+                      {/* Left sparkles */}
+                      <svg className="absolute -left-6 top-1/2 -translate-y-1/2 w-4 h-12" viewBox="0 0 16 48" fill="none">
+                        <path d="M12 8L4 12" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
+                        <path d="M16 24L6 24" stroke="#FCA5A5" strokeWidth="2.5" strokeLinecap="round" />
+                        <path d="M12 40L4 36" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
+                      </svg>
+                      {/* Right sparkles */}
+                      <svg className="absolute -right-6 top-1/2 -translate-y-1/2 w-4 h-12" viewBox="0 0 16 48" fill="none">
+                        <path d="M4 8L12 12" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
+                        <path d="M0 24L10 24" stroke="#FCA5A5" strokeWidth="2.5" strokeLinecap="round" />
+                        <path d="M4 40L12 36" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
+                      </svg>
+                      <div className="w-[84px] h-[84px] bg-[#E8F8F0] rounded-full flex items-center justify-center relative z-10">
+                        <Send className="text-[#22C55E] w-10 h-10 -ml-1 mt-1 transform -rotate-45" fill="currentColor" />
+                      </div>
                     </div>
                   </div>
+
+                  <h2 className="text-[24px] font-extrabold text-[#381313] mb-1 text-center">Quotation Sent!</h2>
+                  <p className="text-[#2B4B65] text-[14px] font-medium text-center mb-6 lg:mb-0 max-w-[280px]">
+                    Your quote has been sent to the pet parent for {req.petName}'s stay.
+                  </p>
                 </div>
 
-                <h2 className="text-[24px] font-extrabold text-[#381313] mb-1 text-center">Quotation Sent!</h2>
-                <p className="text-[#2B4B65] text-[14px] font-medium text-center mb-6 max-w-[280px]">
-                  Your quote has been sent to the pet parent for {req.petName}'s stay.
-                </p>
+                {/* Right Column (Cards + Buttons) */}
+                <div className="flex flex-col w-full">
+                  {/* Quote Summary */}
+                  <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 mb-4 shadow-[0_4px_15px_-4px_rgba(0,0,0,0.03)]">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <FileText className="text-[#381313] w-5 h-5" />
+                      <span className="text-[#381313] font-extrabold text-[15px]">Quote Details</span>
+                    </div>
+                    
+                    <div className="flex items-end mb-3 ml-7">
+                      <span className="text-[#1B2B48] font-extrabold text-[18px] leading-none mr-2">₹ {quotePrice}</span>
+                      <span className="text-[#64748B] font-medium text-[13px] mb-0.5">per night</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between ml-7 mb-4">
+                      <span className="text-[#64748B] font-medium text-[14px]">{req.nights} nights</span>
+                      <span className="text-[#1B2B48] font-extrabold text-[16px]">₹ {formatCurrency(quoteTotal)}</span>
+                    </div>
+                    
+                    <div className="w-full h-px bg-[#F0F0F0] mb-4"></div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <Info className="text-[#381313] w-5 h-5 shrink-0 mt-0.5" />
+                      <p className="text-[#2B4B65] text-[13px] font-medium leading-snug">
+                        Customer will be notified.<br/>
+                        This request will remain active for 30 minutes.
+                      </p>
+                    </div>
+                  </div>
 
-                {/* Quote Summary */}
-                <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 mb-4 shadow-[0_4px_15px_-4px_rgba(0,0,0,0.03)]">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <FileText className="text-[#381313] w-5 h-5" />
-                    <span className="text-[#381313] font-extrabold text-[15px]">Quote Details</span>
+                  {/* Timer Box */}
+                  <div className="w-full bg-[#FEF2F2] border border-[#FECACA] rounded-xl py-3 flex items-center justify-center space-x-2 mb-5">
+                    <Clock className="text-[#DC2626] w-5 h-5" strokeWidth={2.5} />
+                    <span className="text-[#DC2626] font-medium text-[14px]">
+                      <strong className="font-extrabold">28:12</strong> remaining
+                    </span>
                   </div>
-                  
-                  <div className="flex items-end mb-3 ml-7">
-                    <span className="text-[#1B2B48] font-extrabold text-[18px] leading-none mr-2">₹ {quotePrice}</span>
-                    <span className="text-[#64748B] font-medium text-[13px] mb-0.5">per night</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between ml-7 mb-4">
-                    <span className="text-[#64748B] font-medium text-[14px]">{req.nights} nights</span>
-                    <span className="text-[#1B2B48] font-extrabold text-[16px]">₹ {formatCurrency(quoteTotal)}</span>
-                  </div>
-                  
-                  <div className="w-full h-px bg-[#F0F0F0] mb-4"></div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <Info className="text-[#381313] w-5 h-5 shrink-0 mt-0.5" />
-                    <p className="text-[#2B4B65] text-[13px] font-medium leading-snug">
-                      Customer will be notified.<br/>
-                      This request will remain active for 30 minutes.
-                    </p>
-                  </div>
+
+                  <button 
+                    onClick={() => {
+                      onClose();
+                      navigate('/caretaker/requests?tab=quotation_sent');
+                    }}
+                    className="w-full py-3.5 mb-3 rounded-xl bg-[#612117] text-white font-extrabold text-[15px] hover:bg-[#4A1617] transition-colors"
+                  >
+                    View in Requests
+                  </button>
+                  <button 
+                    onClick={() => {
+                      onClose();
+                      navigate('/home');
+                    }}
+                    className="w-full py-3.5 rounded-xl border border-[#612117] text-[#612117] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors"
+                  >
+                    Go to Home
+                  </button>
                 </div>
-
-                {/* Timer Box */}
-                <div className="w-full bg-[#FEF2F2] border border-[#FECACA] rounded-xl py-3 flex items-center justify-center space-x-2 mb-5">
-                  <Clock className="text-[#DC2626] w-5 h-5" strokeWidth={2.5} />
-                  <span className="text-[#DC2626] font-medium text-[14px]">
-                    <strong className="font-extrabold">28:12</strong> remaining
-                  </span>
-                </div>
-
-                <button 
-                  onClick={() => {
-                    onClose();
-                    navigate('/caretaker/requests?tab=quotation_sent');
-                  }}
-                  className="w-full py-3.5 mb-3 rounded-xl bg-[#612117] text-white font-extrabold text-[15px] hover:bg-[#4A1617] transition-colors"
-                >
-                  View in Requests
-                </button>
-                <button 
-                  onClick={() => {
-                    onClose();
-                    navigate('/home');
-                  }}
-                  className="w-full py-3.5 rounded-xl border border-[#612117] text-[#612117] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors"
-                >
-                  Go to Home
-                </button>
               </div>
             )}
 
