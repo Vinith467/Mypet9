@@ -75,7 +75,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className={`relative w-full overflow-y-auto overflow-x-hidden bg-white rounded-3xl z-[101] shadow-2xl p-4 sm:p-5 max-h-[95vh] ${modalStep === 'quote' ? 'max-w-[420px]' : 'max-w-[480px] lg:max-w-[740px]'}`}
+            className={`relative w-full overflow-y-auto overflow-x-hidden bg-white rounded-3xl z-[101] shadow-2xl p-4 sm:p-5 max-h-[95vh] ${modalStep === 'quote' ? 'max-w-[420px] lg:max-w-[740px]' : 'max-w-[480px] lg:max-w-[740px]'}`}
           >
             {modalStep !== 'success' && (
               <>
@@ -222,9 +222,9 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                 {/* Quote Form Container */}
                 <div className="flex flex-col w-full">
                   
-                  <div className="flex flex-col space-y-2 mb-4">
+                  <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0 space-y-2 mb-4">
                     {/* Stay Details */}
-                    <div className="flex items-start bg-white border border-[#F0F0F0] rounded-[14px] p-2.5 shadow-sm">
+                    <div className="flex items-start bg-white border border-[#F0F0F0] rounded-[14px] p-2.5 shadow-sm h-full">
                       <div className="mt-0.5 shrink-0 mr-3">
                         <Calendar size={20} className="text-[#381313]" strokeWidth={1.5} />
                       </div>
@@ -236,7 +236,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                     </div>
 
                     {/* Your Availability */}
-                    <div className="flex items-start bg-white border border-[#F0F0F0] rounded-[14px] p-2.5 shadow-sm">
+                    <div className="flex items-start bg-white border border-[#F0F0F0] rounded-[14px] p-2.5 shadow-sm h-full">
                       <div className="mt-0.5 shrink-0 mr-3">
                         <Home size={20} className="text-[#381313]" strokeWidth={1.5} />
                       </div>
@@ -266,10 +266,9 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                     </div>
 
                     {/* Your Price */}
-                    <div className="flex items-start bg-white border border-[#F0F0F0] rounded-[14px] p-2.5 shadow-sm">
-                      <div className="mt-0.5 shrink-0 mr-3 relative">
+                    <div className="flex items-start bg-white border border-[#F0F0F0] rounded-[14px] p-2.5 shadow-sm h-full">
+                      <div className="mt-0.5 shrink-0 mr-3">
                         <IndianRupee size={20} className="text-[#381313]" strokeWidth={1.5} />
-                        <svg className="absolute -top-1 -right-1 text-[#381313]" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21.5 2v6h-6M2.13 15.57a9 9 0 1 0 3.84-10.36L2 8"/></svg>
                       </div>
                       <div className="flex flex-col w-full">
                         <span className="text-[#1A1A1A] font-extrabold text-[14px] mb-2">Your Price</span>
@@ -297,7 +296,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                     </div>
 
                     {/* Message to Customer */}
-                    <div className="flex items-start bg-white border border-[#F0F0F0] rounded-[14px] p-2.5 shadow-sm">
+                    <div className="flex items-start bg-white border border-[#F0F0F0] rounded-[14px] p-2.5 shadow-sm h-full">
                       <div className="mt-0.5 shrink-0 mr-3">
                         <MessageSquare size={20} className="text-[#381313]" strokeWidth={1.5} />
                       </div>

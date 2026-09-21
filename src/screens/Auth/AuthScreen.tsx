@@ -138,15 +138,11 @@ const AuthScreen = () => {
           email,
           phone: `+91${phone}`,
           createdAt: new Date().toISOString(),
-          type: authRole === 'user' ? 'pet_parent' : 'caretaker'
+          type: 'pet_parent'
         });
 
-        // 4. Navigate based on role
-        if (authRole === 'caretaker') {
-          navigate('/caretaker/onboarding');
-        } else {
-          navigate('/home');
-        }
+        // 4. Navigate to home for pet parents
+        navigate('/home');
       }
     } catch (err: any) {
       console.error('Auth error:', err);
