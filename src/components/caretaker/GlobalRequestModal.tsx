@@ -300,7 +300,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                   </div>
                 </div>
               </>
-            )}
+            ) : null}
 
             {modalStep === 'details' ? (
               <>
