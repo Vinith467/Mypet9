@@ -328,6 +328,12 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             ) : (
               <div className="flex flex-col items-center pt-1 pb-1 w-full max-w-[400px] mx-auto">
                 <button 
+                  onClick={() => setModalStep('quote')}
+                  className="absolute top-4 left-4 lg:top-6 lg:left-6 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button 
                   onClick={onClose}
                   className="absolute top-4 right-4 lg:top-6 lg:right-6 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors"
                 >
