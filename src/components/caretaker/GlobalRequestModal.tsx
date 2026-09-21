@@ -16,7 +16,9 @@ import {
   ChevronDown,
   Home,
   MessageSquare,
-  IndianRupee
+  IndianRupee,
+  XCircle,
+  Tag
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,7 +32,7 @@ const mockRequest = {
   endDate: '23 Sep 2026',
   nights: 3,
   service: 'Home Stay',
-  status: 'new',
+  status: 'declined',
   location: 'Koramangala, Bangalore',
   notes: 'Very friendly, loves outdoor play. Fully vaccinated. Prefers home-cooked food.',
   image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=200',
@@ -77,10 +79,23 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className={`relative w-full overflow-y-auto overflow-x-hidden bg-white rounded-3xl z-[101] shadow-2xl p-4 sm:p-5 max-h-[95vh] ${modalStep === 'quote' ? 'max-w-[420px] lg:max-w-[580px]' : 'max-w-[480px] lg:max-w-[640px]'}`}
           >
+            {req.status === 'declined' && modalStep === 'details' && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 overflow-hidden">
+                <div 
+                  className="border-[5px] border-[#991B1B] text-[#991B1B] font-black text-[42px] tracking-widest px-6 py-2 rounded-lg transform -rotate-12 opacity-[0.85] select-none"
+                  style={{
+                    boxShadow: '0 0 0 2px white inset, 0 0 0 4px #991B1B inset',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}
+                >
+                  DECLINED
+                </div>
+              </div>
+            )}
             {modalStep !== 'success' && (
               <>
                 {/* Header */}
-                <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start justify-between mb-3 relative z-10">
                   <div className="flex items-center">
                     {modalStep === 'quote' && (
                       <button 
@@ -91,23 +106,46 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                       </button>
                     )}
                     <div className="pr-4">
-                      <h2 className="text-[20px] lg:text-[24px] font-extrabold text-[#381313] leading-tight mb-0.5">
-                        {modalStep === 'quote' ? 'Send Quotation' : 'New Home Stay Request'}
-                      </h2>
-                      <p className="text-[#3A5D74] text-[13px] font-medium">
-                        {modalStep === 'quote' ? 'Set your availability and pricing.' : 'A pet parent has requested a home stay.'}
-                      </p>
+                      {req.status === 'declined' ? (
+                        <>
+                          <h2 className="text-[20px] lg:text-[24px] font-extrabold text-[#7B1C1D] leading-tight mb-0.5">
+                            Request Details
+                          </h2>
+                          <p className="text-[#3A5D74] text-[12px] font-medium leading-tight mt-1">
+                            Request ID: #HSR0247<br/>
+                            Received on 8 Sep 2026, 10:16 AM
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <h2 className="text-[20px] lg:text-[24px] font-extrabold text-[#381313] leading-tight mb-0.5">
+                            {modalStep === 'quote' ? 'Send Quotation' : 'New Home Stay Request'}
+                          </h2>
+                          <p className="text-[#3A5D74] text-[13px] font-medium">
+                            {modalStep === 'quote' ? 'Set your availability and pricing.' : 'A pet parent has requested a home stay.'}
+                          </p>
+                        </>
+                      )}
                     </div>
                   </div>
-                  <button 
-                    onClick={onClose}
-                    className="text-[#5C1C1D] hover:bg-[#F6EBE5] p-1.5 -mr-2 -mt-1 rounded-full transition-colors shrink-0"
-                  >
-                    <X size={24} />
-                  </button>
+                  
+                  <div className="flex items-start space-x-2">
+                    {req.status === 'declined' && modalStep === 'details' && (
+                      <div className="inline-flex items-center bg-[#FFEAEA] text-[#DC2626] px-3 py-1.5 rounded-xl text-[13px] font-bold mt-1 shadow-sm">
+                        <XCircle size={16} className="mr-1.5" strokeWidth={2.5} />
+                        Declined
+                      </div>
+                    )}
+                    <button 
+                      onClick={onClose}
+                      className="text-[#5C1C1D] hover:bg-[#F6EBE5] p-1.5 -mr-2 -mt-1 rounded-full transition-colors shrink-0"
+                    >
+                      <X size={24} />
+                    </button>
+                  </div>
                 </div>
 
-                {modalStep === 'details' && (
+                {modalStep === 'details' && req.status !== 'declined' && (
                   <div className="flex justify-end mb-3">
                     <div className="inline-flex items-center bg-[#FFEAEA] text-[#FF4D4D] px-2.5 py-1 rounded-lg text-xs font-bold">
                       <Clock size={14} className="mr-1.5" />
@@ -201,20 +239,85 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
 
                 </div>
 
+                {req.status === 'declined' && modalStep === 'details' && (
+                  <div className="flex flex-col relative z-10">
+                    <div className="flex items-center space-x-2 mt-2 mb-2 px-1">
+                      <Tag size={18} className="text-[#7B1C1D] mt-0.5" />
+                      <div className="flex flex-col">
+                        <span className="text-[#7B1C1D] font-extrabold text-[14px]">Your Quotation</span>
+                        <span className="text-[#3A5D74] text-[12px] font-medium">You sent this quote on 8 Sep 2026, 11:08 AM</span>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-[#F8F9FA] rounded-xl py-3 flex divide-x divide-[#E5E7EB] mb-4">
+                      <div className="flex-1 flex flex-col items-center justify-center">
+                        <span className="text-[#381313] font-extrabold text-[18px]">₹1,200</span>
+                        <span className="text-[#7B1C1D] text-[12px] font-medium">per night</span>
+                      </div>
+                      <div className="flex-1 flex flex-col items-center justify-center">
+                        <span className="text-[#381313] font-extrabold text-[18px]">₹2,400</span>
+                        <span className="text-[#7B1C1D] text-[12px] font-medium">Total (2 nights)</span>
+                      </div>
+                    </div>
+
+                    <div className="bg-[#FFF0F0] rounded-xl p-3 flex items-start space-x-3 mb-3">
+                      <div className="bg-[#DC2626] rounded-full p-1 mt-0.5 shrink-0">
+                        <X size={16} className="text-white" strokeWidth={3} />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[#8B0000] font-extrabold text-[14px] mb-0.5">Request Declined</span>
+                        <span className="text-[#5C1C1D] text-[12px] font-medium">8 Sep 2026, 12:15 PM</span>
+                        <span className="text-[#3A5D74] text-[13px] mt-0.5">The customer chose another option.</span>
+                      </div>
+                    </div>
+
+                    <div className="bg-[#F8F9FA] border border-[#E5E7EB] rounded-xl p-3 flex items-start space-x-3 mb-5">
+                      <div className="mt-0.5 shrink-0">
+                        <Info size={18} className="text-[#381313]" />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[#381313] font-extrabold text-[13px] mb-0.5">What happened?</span>
+                        <span className="text-[#3A5D74] text-[12px] font-medium leading-relaxed">
+                          The customer received multiple quotes and has selected a different service provider for this request.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Actions */}
-                <div className="flex items-center space-x-3 pt-1">
-                  <button 
-                    onClick={onClose}
-                    className="flex-1 py-3 rounded-xl border border-[#FF4D4D] text-[#FF4D4D] font-extrabold text-[14px] hover:bg-[#FFEAEA] transition-colors"
-                  >
-                    Decline
-                  </button>
-                  <button 
-                    onClick={() => setModalStep('quote')}
-                    className="flex-1 py-3 rounded-xl bg-[#5C1C1D] text-white font-extrabold text-[14px] hover:bg-[#4A1617] transition-colors shadow-md"
-                  >
-                    Accept & Quote
-                  </button>
+                <div className="flex items-center space-x-3 pt-1 relative z-10">
+                  {req.status === 'declined' ? (
+                    <>
+                      <button 
+                        onClick={onClose}
+                        className="flex-1 py-3.5 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] bg-white font-extrabold text-[14px] hover:bg-[#F6EBE5] transition-colors"
+                      >
+                        Back to Declined Requests
+                      </button>
+                      <button 
+                        onClick={onClose}
+                        className="flex-1 py-3.5 rounded-xl bg-[#612117] text-white font-extrabold text-[14px] hover:bg-[#4A1617] transition-colors shadow-md"
+                      >
+                        View Similar Requests
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        onClick={onClose}
+                        className="flex-1 py-3 rounded-xl border border-[#FF4D4D] text-[#FF4D4D] font-extrabold text-[14px] hover:bg-[#FFEAEA] transition-colors"
+                      >
+                        Decline
+                      </button>
+                      <button 
+                        onClick={() => setModalStep('quote')}
+                        className="flex-1 py-3 rounded-xl bg-[#5C1C1D] text-white font-extrabold text-[14px] hover:bg-[#4A1617] transition-colors shadow-md"
+                      >
+                        Accept & Quote
+                      </button>
+                    </>
+                  )}
                 </div>
               </>
             ) : modalStep === 'quote' ? (
