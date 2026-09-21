@@ -366,9 +366,31 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                   </div>
 
                   <h2 className="text-[24px] font-extrabold text-[#381313] mb-1 text-center">Quotation Sent!</h2>
-                  <p className="text-[#2B4B65] text-[14px] font-medium text-center mb-6 lg:mb-0 max-w-[280px]">
+                  <p className="text-[#2B4B65] text-[14px] font-medium text-center mb-6 max-w-[280px]">
                     Your quote has been sent to the pet parent for {req.petName}'s stay.
                   </p>
+
+                  {/* Desktop Buttons */}
+                  <div className="hidden lg:flex flex-col w-full max-w-[280px] mt-4 space-y-3">
+                    <button 
+                      onClick={() => {
+                        onClose();
+                        navigate('/caretaker/requests?tab=quotation_sent');
+                      }}
+                      className="w-full py-3 rounded-xl bg-[#612117] text-white font-extrabold text-[15px] hover:bg-[#4A1617] transition-colors"
+                    >
+                      View in Requests
+                    </button>
+                    <button 
+                      onClick={() => {
+                        onClose();
+                        navigate('/home');
+                      }}
+                      className="w-full py-3 rounded-xl border border-[#612117] text-[#612117] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors"
+                    >
+                      Go to Home
+                    </button>
+                  </div>
                 </div>
 
                 {/* Right Column (Cards + Buttons) */}
@@ -402,31 +424,34 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                   </div>
 
                   {/* Timer Box */}
-                  <div className="w-full bg-[#FEF2F2] border border-[#FECACA] rounded-xl py-3 flex items-center justify-center space-x-2 mb-5">
+                  <div className="w-full bg-[#FEF2F2] border border-[#FECACA] rounded-xl py-3 flex items-center justify-center space-x-2 mb-2 lg:mb-0">
                     <Clock className="text-[#DC2626] w-5 h-5" strokeWidth={2.5} />
                     <span className="text-[#DC2626] font-medium text-[14px]">
                       <strong className="font-extrabold">28:12</strong> remaining
                     </span>
                   </div>
 
-                  <button 
-                    onClick={() => {
-                      onClose();
-                      navigate('/caretaker/requests?tab=quotation_sent');
-                    }}
-                    className="w-full py-3.5 mb-3 rounded-xl bg-[#612117] text-white font-extrabold text-[15px] hover:bg-[#4A1617] transition-colors"
-                  >
-                    View in Requests
-                  </button>
-                  <button 
-                    onClick={() => {
-                      onClose();
-                      navigate('/home');
-                    }}
-                    className="w-full py-3.5 rounded-xl border border-[#612117] text-[#612117] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors"
-                  >
-                    Go to Home
-                  </button>
+                  {/* Mobile Buttons */}
+                  <div className="flex lg:hidden flex-col w-full mt-4 space-y-3">
+                    <button 
+                      onClick={() => {
+                        onClose();
+                        navigate('/caretaker/requests?tab=quotation_sent');
+                      }}
+                      className="w-full py-3.5 rounded-xl bg-[#612117] text-white font-extrabold text-[15px] hover:bg-[#4A1617] transition-colors"
+                    >
+                      View in Requests
+                    </button>
+                    <button 
+                      onClick={() => {
+                        onClose();
+                        navigate('/home');
+                      }}
+                      className="w-full py-3.5 rounded-xl border border-[#612117] text-[#612117] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors"
+                    >
+                      Go to Home
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
