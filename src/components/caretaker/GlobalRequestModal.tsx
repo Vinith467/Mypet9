@@ -18,7 +18,11 @@ import {
   MessageSquare,
   IndianRupee,
   XCircle,
-  Tag
+  Tag,
+  Check,
+  ShieldCheck,
+  Moon,
+  Coins
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +36,7 @@ const mockRequest = {
   endDate: '23 Sep 2026',
   nights: 3,
   service: 'Home Stay',
-  status: 'declined',
+  status: 'accepted',
   location: 'Koramangala, Bangalore',
   notes: 'Very friendly, loves outdoor play. Fully vaccinated. Prefers home-cooked food.',
   image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=200',
@@ -77,7 +81,11 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className={`relative w-full overflow-y-auto overflow-x-hidden bg-white rounded-3xl z-[101] shadow-2xl p-4 sm:p-5 max-h-[95vh] ${modalStep === 'quote' ? 'max-w-[420px] lg:max-w-[580px]' : 'max-w-[480px] lg:max-w-[640px]'}`}
+            className={`relative w-full overflow-y-auto overflow-x-hidden bg-white rounded-3xl z-[101] shadow-2xl p-4 sm:p-5 max-h-[95vh] ${
+              modalStep === 'quote' ? 'max-w-[420px] lg:max-w-[580px]' : 
+              req.status === 'accepted' ? 'max-w-[400px]' :
+              'max-w-[480px] lg:max-w-[640px]'
+            }`}
           >
             {req.status === 'declined' && modalStep === 'details' && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 overflow-hidden">
@@ -92,7 +100,125 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                 </div>
               </div>
             )}
-            {modalStep !== 'success' && (
+            
+            {req.status === 'accepted' ? (
+              <div className="flex flex-col items-center w-full max-w-[360px] mx-auto pt-6 pb-2">
+                <button 
+                  onClick={onClose}
+                  className="absolute top-4 right-4 lg:top-5 lg:right-5 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors z-10"
+                >
+                  <X size={24} />
+                </button>
+
+                {/* Big Check Icon */}
+                <div className="relative mb-6 mt-2">
+                  <div className="relative">
+                    {/* Left sparkles */}
+                    <svg className="absolute -left-8 top-1/2 -translate-y-1/2 w-6 h-16" viewBox="0 0 24 64" fill="none">
+                      <path d="M18 10L6 16" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                      <path d="M24 32L10 32" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                      <path d="M18 54L6 48" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                    </svg>
+                    {/* Right sparkles */}
+                    <svg className="absolute -right-8 top-1/2 -translate-y-1/2 w-6 h-16" viewBox="0 0 24 64" fill="none">
+                      <path d="M6 10L18 16" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                      <path d="M0 32L14 32" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                      <path d="M6 54L18 48" stroke="#7B1C1D" strokeWidth="3" strokeLinecap="round" />
+                    </svg>
+                    <div className="w-[100px] h-[100px] bg-[#7B1C1D] rounded-full flex items-center justify-center relative z-10 shadow-lg">
+                      <Check className="text-white w-14 h-14" strokeWidth={4} />
+                    </div>
+                  </div>
+                </div>
+
+                <h2 className="text-[28px] font-extrabold text-[#7B1C1D] mb-1.5 text-center leading-none">Booking Confirmed!</h2>
+                <p className="text-[#3A5D74] text-[15px] font-medium text-center mb-6 max-w-[280px] leading-tight">
+                  {req.petName}'s booking has been confirmed.<br/>Get ready to host!
+                </p>
+
+                {/* Info Card */}
+                <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 mb-5 shadow-[0_4px_15px_-4px_rgba(0,0,0,0.03)] flex flex-col">
+                  {/* Pet Info */}
+                  <div className="flex items-start mb-4">
+                    <img src={req.image} alt={req.petName} className="w-[72px] h-[72px] rounded-xl object-cover mr-4" />
+                    <div className="flex flex-col pt-1">
+                      <h3 className="font-extrabold text-[#7B1C1D] text-[20px] leading-none mb-1">{req.petName}</h3>
+                      <p className="text-[#381313] text-[13px] font-medium mb-2">{req.breed} • {req.size.split(' ')[0]}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        <div className="bg-[#FFF0F0] text-[#7B1C1D] px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center space-x-1">
+                          <PawPrint size={10} />
+                          <span>Vaccinated</span>
+                        </div>
+                        <div className="bg-[#FFF0F0] text-[#7B1C1D] px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center space-x-1">
+                          <ShieldCheck size={10} />
+                          <span>Friendly</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="w-full h-px bg-[#F0F0F0] mb-4"></div>
+
+                  {/* Stay Details */}
+                  <div className="flex flex-col space-y-3 px-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <Calendar size={18} className="text-[#7B1C1D]" strokeWidth={2} />
+                        <span className="text-[#381313] font-medium text-[14px]">Check-in</span>
+                      </div>
+                      <span className="text-[#381313] font-medium text-[14px]">{req.startDate}</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <Calendar size={18} className="text-[#7B1C1D]" strokeWidth={2} />
+                        <span className="text-[#381313] font-medium text-[14px]">Check-out</span>
+                      </div>
+                      <span className="text-[#381313] font-medium text-[14px]">{req.endDate}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <Moon size={18} className="text-[#7B1C1D]" strokeWidth={2} />
+                        <span className="text-[#381313] font-medium text-[14px]">Nights</span>
+                      </div>
+                      <span className="text-[#381313] font-medium text-[14px]">{req.nights}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1">
+                      <div className="flex items-center space-x-3">
+                        <Coins size={18} className="text-[#7B1C1D]" strokeWidth={2} />
+                        <span className="text-[#381313] font-medium text-[14px]">Total Amount</span>
+                      </div>
+                      <span className="text-[#7B1C1D] font-extrabold text-[18px]">₹{formatCurrency(quoteTotal)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-col w-full space-y-3">
+                  <button 
+                    onClick={() => {
+                      onClose();
+                      navigate('/caretaker/bookings');
+                    }}
+                    className="w-full py-3.5 rounded-xl bg-[#7B1C1D] text-white font-extrabold text-[15px] hover:bg-[#5C1C1D] transition-colors flex items-center justify-center relative shadow-sm"
+                  >
+                    View Booking
+                    <ChevronRight size={20} className="absolute right-4 text-white" />
+                  </button>
+                  <button 
+                    onClick={() => {
+                      onClose();
+                    }}
+                    className="w-full py-3.5 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <MessageSquare size={18} strokeWidth={2.5} />
+                    <span>Message Customer</span>
+                  </button>
+                </div>
+              </div>
+            ) : modalStep !== 'success' && req.status !== 'accepted' ? (
               <>
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3 relative z-10">
