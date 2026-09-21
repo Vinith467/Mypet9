@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { Button } from '../../components/ui/Button';
 import { PawPrint, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 const slides = [
   {
@@ -26,7 +27,26 @@ const SWIPE_THRESHOLD = 50;
 
 const SplashScreen = () => {
   const navigate = useNavigate();
+  const { user, userData } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    if (user && userData) {
+      if (userData.type === 'caretaker') {
+        const status = userData.status || 'draft';
+        if (status === 'draft') {
+          // Keep them on splash or send to auth screen to trigger the flow
+          navigate('/auth', { state: { mode: 'login' } });
+        } else if (status === 'under_review') {
+          navigate('/caretaker/under-review');
+        } else if (status === 'approved') {
+          navigate('/caretaker/dashboard'); // or congratulations
+        }
+      } else {
+        navigate('/home');
+      }
+    }
+  }, [user, userData, navigate]);
 
   const handleNext = () => {
     if (currentSlide < slides.length - 1) {

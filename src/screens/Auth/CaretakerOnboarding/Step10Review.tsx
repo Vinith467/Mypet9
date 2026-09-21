@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import type { CaretakerFormData } from './types';
 import { Button } from '../../../components/ui/Button';
 import { User, Phone, MapPin, PawPrint, Home, FileText, Image, MessageSquare } from 'lucide-react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../../config/firebase';
+import { collection, addDoc, updateDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { db, auth } from '../../../config/firebase';
 
 interface Props {
   data: CaretakerFormData;
@@ -19,15 +19,32 @@ export const Step10Review = ({ data, updateData, onBack, setStep, onSuccess }: P
 
   const handleSubmit = async () => {
     if (!data.termsAccepted) return;
+    
+    const user = auth.currentUser;
+    if (!user) {
+      setError('You must be logged in to submit an application.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     try {
-      await addDoc(collection(db, 'caretaker_applications'), {
+      // Use setDoc with user.uid to prevent multiple applications
+      await setDoc(doc(db, 'caretaker_applications', user.uid), {
         ...data,
         status: 'pending',
+        uid: user.uid,
         createdAt: serverTimestamp()
       });
+
+      // Update the user's status to under_review and save core profile data
+      await updateDoc(doc(db, 'users', user.uid), {
+        status: 'under_review',
+        name: data.firstName,
+        phone: data.phone
+      });
+
       onSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to submit application.');
@@ -93,7 +110,7 @@ export const Step10Review = ({ data, updateData, onBack, setStep, onSuccess }: P
               <div>
                 <span className="text-gray-400 w-16 inline-block">Services:</span> 
                 <span className="font-bold text-[#1B2B48]">
-                  {[data.services.homeStay && 'Home Stay', data.services.boarding && 'Boarding'].filter(Boolean).join(', ')}
+                  {[data.services.homeStay && 'Home Stay', data.services.boarding && 'Boarding', data.services.grooming && 'Grooming'].filter(Boolean).join(', ')}
                 </span>
               </div>
               <div>

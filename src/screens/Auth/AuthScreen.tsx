@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PawPrint, Mail, Lock, User, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
@@ -34,13 +35,31 @@ const AuthScreen = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { user, userData } = useAuth();
+
+  useEffect(() => {
+    // Only redirect if explicitly not trying to apply as a new caretaker
+    if (user && userData && caretakerMode === 'auth') {
+      if (userData.type === 'caretaker') {
+        const status = userData.status || 'draft';
+        if (status === 'under_review') {
+          navigate('/caretaker/under-review');
+        } else if (status === 'approved') {
+          navigate('/caretaker/dashboard');
+        }
+      } else {
+        navigate('/home');
+      }
+    }
+  }, [user, userData, navigate, caretakerMode]);
 
   const toggleMode = () => {
+    if (authRole === 'caretaker') return; // Caretakers cannot toggle to signup
     setMode((prev) => (prev === 'login' ? 'signup' : 'login'));
     setError(''); // Clear errors when switching
   };
 
-  const isLogin = mode === 'login';
+  const isLogin = mode === 'login' || authRole === 'caretaker';
 
   const handleSubmit = async () => {
     setError('');
@@ -74,11 +93,21 @@ const AuthScreen = () => {
           throw new Error('This is a Caretaker account. Please switch to the Caretaker login.');
         }
 
-        if (actualRole === 'caretaker') {
-          if (userDoc.exists() && userDoc.data().onboardingComplete) {
-            navigate('/caretaker/dashboard');
+        if (actualRole === 'admin') {
+          navigate('/admin');
+        } else if (actualRole === 'caretaker') {
+          const status = userDoc.data()?.status || 'draft';
+          
+          if (status === 'draft') {
+            setCaretakerMode('apply');
+            return;
+          } else if (status === 'under_review') {
+            navigate('/caretaker/under-review');
+          } else if (status === 'approved') {
+            navigate('/caretaker/congratulations');
           } else {
-            navigate('/caretaker/onboarding');
+            setCaretakerMode('apply');
+            return;
           }
         } else {
           navigate('/home');
@@ -124,7 +153,9 @@ const AuthScreen = () => {
       // Firebase throws errors with codes, we can make them readable
       let msg = err.message;
       if (err.code === 'auth/email-already-in-use') msg = 'This email is already registered.';
-      if (err.code === 'auth/invalid-credential') msg = 'Incorrect email or password.';
+      if (err.code === 'auth/invalid-credential') {
+        msg = 'Incorrect email or password.';
+      }
       setError(msg);
     } finally {
       setLoading(false);
@@ -180,25 +211,27 @@ const AuthScreen = () => {
             </p>
           </div>
 
-          {/* Toggle Tabs */}
-          <div className="flex max-w-[280px] mx-auto w-full bg-black/20 lg:bg-gray-100 rounded-full p-1 backdrop-blur-md lg:backdrop-blur-none mb-5 relative">
-            <div 
-              className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#FBBF24] rounded-full transition-all duration-300 ease-out shadow-sm`}
-              style={{ left: isLogin ? '4px' : 'calc(50%)' }}
-            />
-            <button 
-              className={`flex-1 py-2 text-[13px] font-extrabold tracking-wide z-10 transition-colors duration-300 rounded-full ${isLogin ? 'text-[#1B2B48]' : 'text-white/80 lg:text-gray-500 hover:text-white lg:hover:text-[#1B2B48] drop-shadow-sm lg:drop-shadow-none'}`}
-              onClick={() => setMode('login')}
-            >
-              Log In
-            </button>
-            <button 
-              className={`flex-1 py-2 text-[13px] font-extrabold tracking-wide z-10 transition-colors duration-300 rounded-full ${!isLogin ? 'text-[#1B2B48]' : 'text-white/80 lg:text-gray-500 hover:text-white lg:hover:text-[#1B2B48] drop-shadow-sm lg:drop-shadow-none'}`}
-              onClick={() => setMode('signup')}
-            >
-              Sign Up
-            </button>
-          </div>
+          {/* Toggle Tabs (Only for Pet Parents) */}
+          {authRole === 'user' && (
+            <div className="flex max-w-[280px] mx-auto w-full bg-black/20 lg:bg-gray-100 rounded-full p-1 backdrop-blur-md lg:backdrop-blur-none mb-5 relative">
+              <div 
+                className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#FBBF24] rounded-full transition-all duration-300 ease-out shadow-sm`}
+                style={{ left: isLogin ? '4px' : 'calc(50%)' }}
+              />
+              <button 
+                className={`flex-1 py-2 text-[13px] font-extrabold tracking-wide z-10 transition-colors duration-300 rounded-full ${isLogin ? 'text-[#1B2B48]' : 'text-white/80 lg:text-gray-500 hover:text-white lg:hover:text-[#1B2B48] drop-shadow-sm lg:drop-shadow-none'}`}
+                onClick={() => setMode('login')}
+              >
+                Log In
+              </button>
+              <button 
+                className={`flex-1 py-2 text-[13px] font-extrabold tracking-wide z-10 transition-colors duration-300 rounded-full ${!isLogin ? 'text-[#1B2B48]' : 'text-white/80 lg:text-gray-500 hover:text-white lg:hover:text-[#1B2B48] drop-shadow-sm lg:drop-shadow-none'}`}
+                onClick={() => setMode('signup')}
+              >
+                Sign Up
+              </button>
+            </div>
+          )}
 
           </div>
 
@@ -209,7 +242,7 @@ const AuthScreen = () => {
             </div>
           )}
 
-          {/* Form */}
+          {/* Only render Form if mode allows it */}
           <div className="w-full flex flex-col space-y-3">
             <AnimatePresence mode="popLayout">
               {isLogin ? (

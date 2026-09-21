@@ -19,6 +19,7 @@ export interface CaretakerFormData {
   services: {
     homeStay: boolean;
     boarding: boolean;
+    grooming: boolean;
   };
   acceptedPets: {
     dogs: boolean;
@@ -81,7 +82,7 @@ export const INITIAL_FORM_DATA: CaretakerFormData = {
   email: '',
   experienceYears: '3 - 5 years',
   address: '',
-  services: { homeStay: false, boarding: false },
+  services: { homeStay: false, boarding: false, grooming: false },
   acceptedPets: { dogs: false, cats: false, birds: false, rabbits: false, others: false },
   dogSize: { small: false, medium: false, large: false },
   homeType: 'Apartment',

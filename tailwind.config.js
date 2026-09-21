@@ -16,6 +16,8 @@ export default {
       },
       fontFamily: {
         sans: ['Nunito', 'sans-serif'],
+        outfit: ['Outfit', 'sans-serif'],
+        quicksand: ['Quicksand', 'sans-serif'],
       },
       borderRadius: {
         'large': '16px',

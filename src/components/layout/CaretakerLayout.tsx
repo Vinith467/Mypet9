@@ -1,7 +1,18 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useState, useEffect } from 'react';
 import { CaretakerNavigation } from './CaretakerNavigation';
+import { GlobalRequestModal } from '../caretaker/GlobalRequestModal';
 
 export const CaretakerLayout = ({ children }: { children: ReactNode }) => {
+  const [showGlobalModal, setShowGlobalModal] = useState(false);
+
+  // Simulate a new request popping up like Rapido Captain
+  // This will happen on whatever page the caretaker is on
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowGlobalModal(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <div className="flex h-screen w-full bg-[#FBF6EE] text-[#1B2B48] overflow-hidden">
       
@@ -13,7 +24,7 @@ export const CaretakerLayout = ({ children }: { children: ReactNode }) => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
         <main className="flex-1 overflow-y-auto scrollbar-hide pb-24 lg:pb-8">
-          <div className="max-w-4xl mx-auto w-full h-full lg:px-8">
+          <div className="w-full h-full lg:px-8 mx-auto">
             {children}
           </div>
         </main>
@@ -25,6 +36,11 @@ export const CaretakerLayout = ({ children }: { children: ReactNode }) => {
         </div>
       </div>
       
+      {/* Global Request Modal */}
+      <GlobalRequestModal 
+        isOpen={showGlobalModal} 
+        onClose={() => setShowGlobalModal(false)} 
+      />
     </div>
   );
 };

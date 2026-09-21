@@ -112,11 +112,15 @@ export const AdminOverview = () => {
               recentApps.map((app: any) => (
                 <div key={app.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
                   <div className="flex items-center space-x-3">
-                    <div className="w-9 h-9 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-sm">
-                      {app.fullName?.charAt(0)?.toUpperCase()}
-                    </div>
+                    {app.photos && app.photos[0] ? (
+                      <img src={app.photos[0]} alt={app.firstName} className="w-9 h-9 rounded-full object-cover shrink-0 border border-gray-100" />
+                    ) : (
+                      <div className="w-9 h-9 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-sm shrink-0">
+                        {app.firstName?.charAt(0)?.toUpperCase()}
+                      </div>
+                    )}
                     <div>
-                      <p className="text-sm font-bold text-[#1B2B48]">{app.fullName}</p>
+                      <p className="text-sm font-bold text-[#1B2B48]">{app.firstName || 'Unknown'}</p>
                       <p className="text-[11px] text-gray-400">{app.email}</p>
                     </div>
                   </div>
@@ -153,10 +157,10 @@ export const AdminOverview = () => {
                 <div key={user.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
                   <div className="flex items-center space-x-3">
                     <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 font-extrabold text-sm">
-                      {(user.name || user.fullName || '?').charAt(0).toUpperCase()}
+                      {(user.name || user.firstName || user.fullName || user.email || '?').charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-[#1B2B48]">{user.name || user.fullName}</p>
+                      <p className="text-sm font-bold text-[#1B2B48]">{user.name || user.firstName || user.fullName || 'User (Applying)'}</p>
                       <p className="text-[11px] text-gray-400">{user.email}</p>
                     </div>
                   </div>

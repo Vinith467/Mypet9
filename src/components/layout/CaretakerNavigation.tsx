@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, ClipboardList, Calendar, User, PawPrint } from 'lucide-react';
+import { Home, CalendarClock, CalendarCheck, User, IndianRupee, PawPrint } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { motion } from 'framer-motion';
 
@@ -8,9 +8,10 @@ export const CaretakerNavigation = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { label: 'Dashboard', path: '/caretaker/dashboard', icon: Home },
-    { label: 'Requests', path: '/caretaker/requests', icon: ClipboardList },
-    { label: 'Schedule', path: '/caretaker/schedule', icon: Calendar },
+    { label: 'Home', path: '/caretaker/dashboard', icon: Home },
+    { label: 'Requests', path: '/caretaker/requests', icon: CalendarClock },
+    { label: 'Bookings', path: '/caretaker/bookings', icon: CalendarCheck },
+    { label: 'Earnings', path: '/caretaker/earnings', icon: IndianRupee },
     { label: 'Profile', path: '/caretaker/profile', icon: User },
   ];
 
@@ -40,10 +41,10 @@ export const CaretakerNavigation = () => {
               key={item.label}
               onClick={() => navigate(item.path)}
               className={cn(
-                "relative flex flex-col lg:flex-row items-center lg:justify-start lg:space-x-4 py-1.5 lg:py-4 px-3 lg:px-5 rounded-[20px] transition-all outline-none group w-full",
+                "relative flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:space-x-4 py-2 lg:py-4 px-2 lg:px-5 rounded-[20px] transition-all outline-none group w-full",
                 isActive 
-                  ? "text-[#174F38]" 
-                  : "text-gray-400 hover:text-gray-900"
+                  ? "text-[#3E2723]" 
+                  : "text-gray-400 hover:text-[#3E2723]"
               )}
             >
               {/* Desktop Active Background Indicator */}
@@ -56,7 +57,7 @@ export const CaretakerNavigation = () => {
               )}
               
               <Icon 
-                size={24} 
+                size={22} 
                 className={cn(
                   "mb-1 lg:mb-0 transition-all z-10", 
                   isActive && "scale-110 lg:scale-100",
@@ -65,10 +66,15 @@ export const CaretakerNavigation = () => {
               />
               <span className={cn(
                 "text-[10px] lg:text-[15px] font-bold z-10 transition-colors",
-                isActive ? "text-[#174F38]" : "text-gray-500 group-hover:text-gray-900"
+                isActive ? "text-[#3E2723]" : "text-gray-500 group-hover:text-[#3E2723]"
               )}>
                 {item.label}
               </span>
+              
+              {/* Mobile Active Dash Indicator */}
+              {isActive && (
+                <div className="lg:hidden absolute bottom-0 w-4 h-[3px] bg-[#3E2723] rounded-t-full" />
+              )}
             </button>
           );
         })}

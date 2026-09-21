@@ -20,9 +20,23 @@ interface Props {
 }
 
 export const CaretakerApplicationForm = ({ onBack, onLoginClick }: Props) => {
-  const [step, setStep] = useState(0); // 0 = Sign Up, 1 = Basic Info... 9 = Review
-  const [formData, setFormData] = useState<CaretakerFormData>(INITIAL_FORM_DATA);
+  const [step, setStep] = useState(() => {
+    const saved = localStorage.getItem('caretaker_draft_step');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  const [formData, setFormData] = useState<CaretakerFormData>(() => {
+    const saved = localStorage.getItem('caretaker_draft_data');
+    return saved ? JSON.parse(saved) : INITIAL_FORM_DATA;
+  });
   const [submitted, setSubmitted] = useState(false);
+
+  React.useEffect(() => {
+    localStorage.setItem('caretaker_draft_step', step.toString());
+  }, [step]);
+
+  React.useEffect(() => {
+    localStorage.setItem('caretaker_draft_data', JSON.stringify(formData));
+  }, [formData]);
 
   const updateData = (newData: Partial<CaretakerFormData>) => {
     setFormData(prev => ({ ...prev, ...newData }));
@@ -32,6 +46,8 @@ export const CaretakerApplicationForm = ({ onBack, onLoginClick }: Props) => {
   const prevStep = () => setStep(prev => Math.max(prev - 1, 0));
 
   if (submitted) {
+    localStorage.removeItem('caretaker_draft_step');
+    localStorage.removeItem('caretaker_draft_data');
     return (
       <div className="flex flex-col h-full bg-white px-4 md:px-8 py-10 rounded-3xl w-full max-w-md mx-auto text-center items-center justify-center min-h-[500px]">
         <div className="w-20 h-20 bg-yellow-50 rounded-full flex items-center justify-center mb-6">

@@ -27,7 +27,7 @@ const menuItems = [
 
 export const ProfileScreen = () => {
   const navigate = useNavigate();
-  const { user, userData } = useAuth();
+  const { user, userData, logout } = useAuth();
 
   return (
     <DashboardLayout>
@@ -81,7 +81,10 @@ export const ProfileScreen = () => {
 
           {/* Logout Button */}
           <button 
-            onClick={() => navigate('/')}
+            onClick={async () => {
+              await logout();
+              navigate('/');
+            }}
             className="w-full bg-white rounded-[16px] p-4 flex items-center shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-gray-100 hover:bg-red-50 transition-colors group"
           >
             <div className="w-8 flex justify-center ml-4">

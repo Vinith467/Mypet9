@@ -46,12 +46,17 @@ export const AdminApplications = () => {
     finally { setLoading(false); }
   };
 
-  const updateStatus = async (id: string, newStatus: 'approved' | 'rejected') => {
+  const updateStatus = async (id: string, uid: string, newStatus: 'approved' | 'rejected') => {
     try {
       await updateDoc(doc(db, 'caretaker_applications', id), {
         status: newStatus,
         updatedAt: new Date().toISOString()
       });
+      if (uid) {
+        await updateDoc(doc(db, 'users', uid), {
+          status: newStatus
+        });
+      }
       fetchApplications();
       fetchCounts();
       setSelectedApp(null);
@@ -63,7 +68,7 @@ export const AdminApplications = () => {
 
   const filteredApps = applications.filter(app =>
     !searchQuery ||
-    app.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    app.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     app.phone?.includes(searchQuery) ||
     app.email?.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -134,21 +139,25 @@ export const AdminApplications = () => {
             filteredApps.map(app => (
               <div key={app.id} className="flex items-center justify-between px-5 py-4 hover:bg-gray-50/50 transition-colors cursor-pointer" onClick={() => setSelectedApp(app)}>
                 <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-sm shrink-0">
-                    {app.fullName?.charAt(0)?.toUpperCase()}
-                  </div>
+                  {app.photos && app.photos[0] ? (
+                    <img src={app.photos[0]} alt={app.firstName} className="w-10 h-10 rounded-full object-cover shrink-0 border border-gray-100" />
+                  ) : (
+                    <div className="w-10 h-10 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-sm shrink-0">
+                      {app.firstName?.charAt(0)?.toUpperCase()}
+                    </div>
+                  )}
                   <div>
-                    <p className="text-sm font-bold text-[#1B2B48]">{app.fullName}</p>
+                    <p className="text-sm font-bold text-[#1B2B48]">{app.firstName || 'Unknown'}</p>
                     <p className="text-[12px] text-gray-400">{app.email} · {app.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3 shrink-0">
                   {app.status === 'pending' && (
                     <div className="hidden sm:flex items-center space-x-2">
-                      <button onClick={(e) => { e.stopPropagation(); updateStatus(app.id, 'rejected'); }} className="px-3 py-1.5 rounded-lg text-xs font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-colors">
+                      <button onClick={(e) => { e.stopPropagation(); updateStatus(app.id, app.uid, 'rejected'); }} className="px-3 py-1.5 rounded-lg text-xs font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-colors">
                         Reject
                       </button>
-                      <button onClick={(e) => { e.stopPropagation(); updateStatus(app.id, 'approved'); }} className="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#174F38] hover:bg-[#113a29] transition-colors">
+                      <button onClick={(e) => { e.stopPropagation(); updateStatus(app.id, app.uid, 'approved'); }} className="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#174F38] hover:bg-[#113a29] transition-colors">
                         Approve
                       </button>
                     </div>
@@ -175,7 +184,7 @@ export const AdminApplications = () => {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl"
+              className="bg-white rounded-2xl w-full max-w-2xl p-6 shadow-xl max-h-[90vh] overflow-y-auto"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-6">
@@ -187,11 +196,15 @@ export const AdminApplications = () => {
 
               <div className="space-y-4">
                 <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl">
-                  <div className="w-14 h-14 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-xl">
-                    {selectedApp.fullName?.charAt(0)?.toUpperCase()}
-                  </div>
+                  {selectedApp.photos && selectedApp.photos[0] ? (
+                    <img src={selectedApp.photos[0]} alt={selectedApp.firstName} className="w-14 h-14 rounded-full object-cover shrink-0 border border-gray-200" />
+                  ) : (
+                    <div className="w-14 h-14 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-xl">
+                      {selectedApp.firstName?.charAt(0)?.toUpperCase()}
+                    </div>
+                  )}
                   <div>
-                    <p className="font-extrabold text-[#1B2B48] text-lg">{selectedApp.fullName}</p>
+                    <p className="font-extrabold text-[#1B2B48] text-lg">{selectedApp.firstName || 'Unknown'}</p>
                     <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
                       selectedApp.status === 'pending' ? 'bg-amber-100 text-amber-700' :
                       selectedApp.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
@@ -213,7 +226,7 @@ export const AdminApplications = () => {
                   </div>
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl">
                     <Briefcase size={16} className="text-gray-400 shrink-0" />
-                    <span className="text-sm text-gray-600">{selectedApp.experience} years experience</span>
+                    <span className="text-sm text-gray-600">{selectedApp.experienceYears || '0'}</span>
                   </div>
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl">
                     <PawPrint size={16} className="text-gray-400 shrink-0" />
@@ -226,23 +239,55 @@ export const AdminApplications = () => {
                   <span className="text-sm text-gray-600">{selectedApp.address}</span>
                 </div>
 
-                {selectedApp.acceptedPets?.length > 0 && (
+                {selectedApp.acceptedPets && (
                   <div>
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Accepted Pets</p>
                     <div className="flex flex-wrap gap-2">
-                      {selectedApp.acceptedPets.map((pet: string) => (
-                        <span key={pet} className="px-3 py-1 bg-[#174F38]/10 text-[#174F38] text-xs font-bold rounded-full">{pet}</span>
+                      {Object.entries(selectedApp.acceptedPets).filter(([_, v]) => v).map(([k]) => (
+                        <span key={k} className="px-3 py-1 bg-[#174F38]/10 text-[#174F38] text-xs font-bold rounded-full">{k.charAt(0).toUpperCase() + k.slice(1)}</span>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {selectedApp.services?.length > 0 && (
+                {selectedApp.services && (
                   <div>
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Services</p>
                     <div className="flex flex-wrap gap-2">
-                      {selectedApp.services.map((s: string) => (
-                        <span key={s} className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full">{s}</span>
+                      {Object.entries(selectedApp.services).filter(([_, v]) => v).map(([k]) => (
+                        <span key={k} className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full">{k === 'homeStay' ? 'Home Stay' : k.charAt(0).toUpperCase() + k.slice(1)}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {selectedApp.kyc && (
+                  <div>
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">KYC Documents</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {Object.entries(selectedApp.kyc).map(([key, url]: any) => url && typeof url === 'string' && url.startsWith('http') ? (
+                        <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="block w-full aspect-square rounded-xl overflow-hidden border border-gray-100 hover:border-[#174F38] transition-colors relative group">
+                          <img src={url} alt={key} className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="text-white text-[10px] font-bold uppercase tracking-wider">{key}</span>
+                          </div>
+                        </a>
+                      ) : null)}
+                    </div>
+                  </div>
+                )}
+
+                {selectedApp.photos && selectedApp.photos.length > 0 && (
+                  <div>
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Additional Photos</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {selectedApp.photos.map((url: string, index: number) => (
+                        <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="block w-full aspect-square rounded-xl overflow-hidden border border-gray-100 hover:border-[#174F38] transition-colors relative group">
+                          <img src={url} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="text-white text-[10px] font-bold uppercase tracking-wider">Photo {index + 1}</span>
+                          </div>
+                        </a>
                       ))}
                     </div>
                   </div>
@@ -252,13 +297,13 @@ export const AdminApplications = () => {
               {selectedApp.status === 'pending' && (
                 <div className="flex space-x-3 mt-6 pt-4 border-t border-gray-100">
                   <button
-                    onClick={() => updateStatus(selectedApp.id, 'rejected')}
+                    onClick={() => updateStatus(selectedApp.id, selectedApp.uid, 'rejected')}
                     className="flex-1 py-3 rounded-xl text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
                   >
                     Reject Application
                   </button>
                   <button
-                    onClick={() => updateStatus(selectedApp.id, 'approved')}
+                    onClick={() => updateStatus(selectedApp.id, selectedApp.uid, 'approved')}
                     className="flex-1 py-3 rounded-xl text-sm font-bold text-white bg-[#174F38] hover:bg-[#113a29] transition-colors shadow-sm"
                   >
                     Approve Partner

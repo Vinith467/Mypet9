@@ -27,6 +27,10 @@ import { EditProfileScreen } from './screens/Profile/EditProfileScreen';
 import { HelpSupportScreen } from './screens/Profile/HelpSupportScreen';
 import { AuthProvider } from './contexts/AuthContext';
 import { CaretakerDashboardScreen } from './screens/Caretaker/CaretakerDashboardScreen';
+import { HomeStayDashboardScreen } from './screens/Caretaker/HomeStayDashboardScreen';
+import { CaretakerBookingsScreen } from './screens/Caretaker/CaretakerBookingsScreen';
+import { CaretakerBookingDetailsScreen } from './screens/Caretaker/CaretakerBookingDetailsScreen';
+import { CaretakerRequestsScreen } from './screens/Caretaker/CaretakerRequestsScreen';
 import { CaretakerOnboardingScreen } from './screens/Caretaker/CaretakerOnboardingScreen';
 import { AdminLayout } from './screens/Admin/AdminLayout';
 import { AdminOverview } from './screens/Admin/AdminOverview';
@@ -34,6 +38,10 @@ import { AdminApplications } from './screens/Admin/AdminApplications';
 import { AdminUsers } from './screens/Admin/AdminUsers';
 import { AdminBookings } from './screens/Admin/AdminBookings';
 import { AdminSettings } from './screens/Admin/AdminSettings';
+import { AdminSupport } from './screens/Admin/AdminSupport';
+import { ApplicationUnderReviewScreen } from './screens/Auth/ApplicationUnderReviewScreen';
+import { CaretakerCongratulationsScreen } from './screens/Auth/CaretakerCongratulationsScreen';
+import { SupportChatWidget } from './components/ui/SupportChatWidget';
 
 function App() {
   return (
@@ -68,6 +76,7 @@ function App() {
             <Route path="applications" element={<AdminApplications />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="bookings" element={<AdminBookings />} />
+            <Route path="support" element={<AdminSupport />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
           
@@ -80,8 +89,15 @@ function App() {
             {/* Caretaker Routes */}
             <Route path="/caretaker/onboarding" element={<CaretakerOnboardingScreen />} />
             <Route path="/caretaker/dashboard" element={<CaretakerDashboardScreen />} />
+            <Route path="/caretaker/homestay" element={<HomeStayDashboardScreen />} />
+            <Route path="/caretaker/requests" element={<CaretakerRequestsScreen />} />
+            <Route path="/caretaker/bookings" element={<CaretakerBookingsScreen />} />
+            <Route path="/caretaker/bookings/:id" element={<CaretakerBookingDetailsScreen />} />
+            <Route path="/caretaker/under-review" element={<ApplicationUnderReviewScreen />} />
+            <Route path="/caretaker/congratulations" element={<CaretakerCongratulationsScreen />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <SupportChatWidget />
         </BrowserRouter>
       </AuthProvider>
     </div>

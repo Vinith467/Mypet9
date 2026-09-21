@@ -107,9 +107,11 @@ export const AdminUsers = () => {
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center font-extrabold text-sm shrink-0 ${
                     user.type === 'caretaker' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
                   }`}>
-                    {(user.name || user.fullName || '?').charAt(0).toUpperCase()}
+                    {(user.name || user.firstName || user.fullName || user.email || '?').charAt(0).toUpperCase()}
                   </div>
-                  <p className="text-sm font-bold text-[#1B2B48] truncate">{user.name || user.fullName}</p>
+                  <p className="text-sm font-bold text-[#1B2B48] truncate">
+                    {user.name || user.firstName || user.fullName || 'User (Applying)'}
+                  </p>
                 </div>
                 {/* Email */}
                 <div className="md:col-span-3 flex items-center space-x-1.5 md:space-x-0">
