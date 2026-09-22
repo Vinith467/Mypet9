@@ -29,6 +29,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { CaretakerDashboardScreen } from './screens/Caretaker/CaretakerDashboardScreen';
 import { HomeStayDashboardScreen } from './screens/Caretaker/HomeStayDashboardScreen';
 import { CaretakerPriceSettingsScreen } from './screens/Caretaker/CaretakerPriceSettingsScreen';
+import { CaretakerAvailabilityScreen } from './screens/Caretaker/CaretakerAvailabilityScreen';
 import { CaretakerBookingsScreen } from './screens/Caretaker/CaretakerBookingsScreen';
 import { CaretakerBookingDetailsScreen } from './screens/Caretaker/CaretakerBookingDetailsScreen';
 import { CaretakerRequestsScreen } from './screens/Caretaker/CaretakerRequestsScreen';
@@ -92,6 +93,7 @@ function App() {
             <Route path="/caretaker/dashboard" element={<CaretakerDashboardScreen />} />
             <Route path="/caretaker/homestay" element={<HomeStayDashboardScreen />} />
             <Route path="/caretaker/service-settings" element={<CaretakerPriceSettingsScreen />} />
+            <Route path="/caretaker/availability" element={<CaretakerAvailabilityScreen />} />
             <Route path="/caretaker/requests" element={<CaretakerRequestsScreen />} />
             <Route path="/caretaker/bookings" element={<CaretakerBookingsScreen />} />
             <Route path="/caretaker/bookings/:id" element={<CaretakerBookingDetailsScreen />} />
