@@ -225,6 +225,7 @@ export const CaretakerPriceSettingsScreen = () => {
           </div>
         </div>
       </div>
+      </div>
     );
   };
 
