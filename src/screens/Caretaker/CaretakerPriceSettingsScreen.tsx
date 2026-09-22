@@ -6,6 +6,18 @@ import { db } from '../../config/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ChevronLeft, Info, CheckCircle2, Home, Edit2, Check, PawPrint } from 'lucide-react';
 
+interface ServiceOption {
+  enabled: boolean;
+  price: string;
+}
+
+interface Services {
+  pickupDrop: ServiceOption;
+  vaccination: ServiceOption;
+  grooming: ServiceOption;
+  training?: ServiceOption;
+}
+
 export const CaretakerPriceSettingsScreen = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -18,7 +30,7 @@ export const CaretakerPriceSettingsScreen = () => {
   
   // State for Dog
   const [dogPrice, setDogPrice] = useState('800');
-  const [dogServices, setDogServices] = useState({
+  const [dogServices, setDogServices] = useState<Services>({
     pickupDrop: { enabled: false, price: '300' },
     vaccination: { enabled: false, price: '500' },
     grooming: { enabled: false, price: '800' },
@@ -27,11 +39,10 @@ export const CaretakerPriceSettingsScreen = () => {
 
   // State for Cat
   const [catPrice, setCatPrice] = useState('600');
-  const [catServices, setCatServices] = useState({
+  const [catServices, setCatServices] = useState<Services>({
     pickupDrop: { enabled: false, price: '300' },
     vaccination: { enabled: false, price: '500' },
     grooming: { enabled: false, price: '600' },
-    training: { enabled: false, price: '600' }
   });
 
   useEffect(() => {
@@ -215,7 +226,7 @@ export const CaretakerPriceSettingsScreen = () => {
 
   return (
     <CaretakerLayout>
-      <div className="w-full flex flex-col bg-[#FAFAFA] min-h-screen font-quicksand pb-20 text-petoo-textDark">
+      <div className="w-full flex flex-col bg-[#FAFAFA] min-h-screen font-quicksand pb-40 text-petoo-textDark">
         
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FAFAFA]/95 backdrop-blur-md z-50 border-b border-gray-100">
