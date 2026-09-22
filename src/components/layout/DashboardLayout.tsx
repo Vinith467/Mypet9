@@ -19,7 +19,7 @@ export const DashboardLayout = ({ children }: { children: ReactNode }) => {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40">
           <div className="absolute inset-0 bg-gradient-to-t from-[#FBF6EE] via-[#FBF6EE]/90 to-transparent -top-6 pointer-events-none" />
           <Navigation />
         </div>

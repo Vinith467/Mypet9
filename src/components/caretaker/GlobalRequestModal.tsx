@@ -89,7 +89,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             }`}
           >
             {req.status === 'declined' && modalStep === 'details' && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50 overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[60] overflow-hidden">
                 <div 
                   className="border-[5px] border-[#991B1B] text-[#991B1B] font-black text-[42px] tracking-widest px-6 py-2 rounded-lg transform -rotate-12 opacity-[0.85] select-none"
                   style={{
