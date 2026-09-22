@@ -354,7 +354,7 @@ export const CaretakerAvailabilityScreen = () => {
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl flex flex-col max-h-[90vh]"
+                className="w-full max-w-3xl bg-white rounded-t-3xl sm:rounded-3xl flex flex-col max-h-[90vh]"
                 onClick={e => e.stopPropagation()}
               >
                 {/* Modal Header */}
@@ -372,10 +372,12 @@ export const CaretakerAvailabilityScreen = () => {
                 </div>
 
                 {/* Modal Content */}
-                <div className="p-6 overflow-y-auto flex-1">
+                <div className="p-6 overflow-y-auto flex-1 flex flex-col md:flex-row md:gap-8">
                   
-                  {/* Block Dates Toggle */}
-                  <div className="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-6">
+                  {/* Left Column */}
+                  <div className="flex-1 flex flex-col">
+                    {/* Block Dates Toggle */}
+                    <div className="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-6">
                     <div className="flex-1 pr-4">
                       <h4 className="font-extrabold text-[15px] text-petoo-textDark">Block these dates?</h4>
                       <p className="text-[12px] text-gray-500 font-medium leading-snug mt-0.5">Toggle this if you are not available for any bookings (e.g. vacation).</p>
@@ -419,10 +421,14 @@ export const CaretakerAvailabilityScreen = () => {
                         />
                       </div>
                     </div>
+                    </div>
                   </div>
 
-                  {/* Booked Slots (Only show if not blocking) */}
-                  {!modalIsBlocked && (
+                  {/* Right Column */}
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      {/* Booked Slots (Only show if not blocking) */}
+                      {!modalIsBlocked ? (
                     <div className="mb-6">
                       <div className="flex items-center text-petoo-textDark mb-2">
                         <PawPrint size={18} className="mr-2" />
@@ -453,17 +459,23 @@ export const CaretakerAvailabilityScreen = () => {
                         </div>
                         <span className="text-gray-500 font-bold text-[14px] mt-3">/ {capacity} pets max capacity</span>
                       </div>
+                      </div>
+                    ) : (
+                      <div className="mb-6 flex-1 flex items-center justify-center text-center opacity-50 p-4 border border-dashed border-gray-300 rounded-2xl h-[160px]">
+                         <span className="text-gray-500 font-medium text-[13px]">Capacity management disabled when blocking dates</span>
+                      </div>
+                    )}
                     </div>
-                  )}
 
-                  {/* Info Warning */}
-                  <div className="bg-orange-50 border border-orange-100 p-4 rounded-2xl flex items-start">
-                    <Info size={20} className="text-orange-500 mt-0.5 shrink-0" />
-                    <p className="text-[13px] text-orange-800 font-medium ml-3 leading-relaxed">
-                      {modalIsBlocked 
-                        ? "Blocking these dates will prevent any new bookings for this period."
-                        : "Increase or decrease the number of booked slots. Use this when you receive a booking from another source or if a booking is cancelled."}
-                    </p>
+                    {/* Info Warning */}
+                    <div className="bg-orange-50 border border-orange-100 p-4 rounded-2xl flex items-start">
+                      <Info size={20} className="text-orange-500 mt-0.5 shrink-0" />
+                      <p className="text-[13px] text-orange-800 font-medium ml-3 leading-relaxed">
+                        {modalIsBlocked 
+                          ? "Blocking these dates will prevent any new bookings for this period."
+                          : "Increase or decrease the number of booked slots. Use this when you receive a booking from another source or if a booking is cancelled."}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -472,7 +484,7 @@ export const CaretakerAvailabilityScreen = () => {
                   <button 
                     onClick={handleSaveModal}
                     disabled={savingModal || !modalFromDate || !modalToDate}
-                    className="w-full bg-petoo-primary text-petoo-textDark font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] flex items-center justify-center disabled:opacity-50"
+                    className="w-full bg-[#FBBF24] text-[#1B2B48] font-bold text-[15px] py-3.5 px-6 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-[0.98] flex items-center justify-center disabled:opacity-50"
                   >
                     {savingModal ? 'Saving...' : 'Save Availability'}
                   </button>
