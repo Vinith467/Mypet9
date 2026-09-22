@@ -31,6 +31,7 @@ export const CaretakerPriceSettingsScreen = () => {
     pickupDrop: { enabled: false, price: '300' },
     vaccination: { enabled: false, price: '500' },
     grooming: { enabled: false, price: '600' },
+    training: { enabled: false, price: '600' }
   });
 
   useEffect(() => {
