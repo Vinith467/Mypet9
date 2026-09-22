@@ -9,7 +9,6 @@ export const CaretakerNavigation = () => {
 
   const navItems = [
     { label: 'Home', path: '/caretaker/dashboard', icon: Home },
-    { label: 'Requests', path: '/caretaker/requests', icon: CalendarClock },
     { label: 'Bookings', path: '/caretaker/bookings', icon: CalendarCheck },
     { label: 'Earnings', path: '/caretaker/earnings', icon: IndianRupee },
     { label: 'Profile', path: '/caretaker/profile', icon: User },

@@ -55,7 +55,7 @@ const mockBookings = [
 export const CaretakerBookingsScreen = () => {
   const { user, userData } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'upcoming' | 'ongoing' | 'completed'>('upcoming');
+  const [activeTab, setActiveTab] = useState<'upcoming' | 'ongoing' | 'completed' | 'declined'>('upcoming');
 
   const firstName = userData?.name ? userData.name.split(' ')[0] : 'Partner';
 
@@ -169,6 +169,16 @@ export const CaretakerBookingsScreen = () => {
               }`}
             >
               Completed (5)
+            </button>
+            <button
+              onClick={() => setActiveTab('declined')}
+              className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-2xl text-sm font-bold transition-all duration-300 ${
+                activeTab === 'declined'
+                  ? 'bg-[#1B2B48] text-white shadow-md'
+                  : 'text-[#1B2B48] hover:bg-white/50'
+              }`}
+            >
+              Declined (0)
             </button>
           </div>
 
