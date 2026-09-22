@@ -163,17 +163,17 @@ export const CaretakerAvailabilityScreen = () => {
               <div className="flex items-center justify-center space-x-4 mb-5">
                 <button 
                   onClick={decreaseCapacity}
-                  className="w-12 h-12 bg-[#1B2B48] rounded-xl flex items-center justify-center text-white active:scale-95 transition-transform"
+                  className="w-12 h-12 bg-petoo-primary rounded-xl flex items-center justify-center text-petoo-textDark active:scale-95 transition-transform"
                 >
                   <Minus size={24} />
                 </button>
                 <div className="flex items-center justify-center min-w-[80px]">
-                  <span className="text-4xl font-extrabold text-[#1B2B48]">{capacity}</span>
+                  <span className="text-4xl font-extrabold text-petoo-textDark">{capacity}</span>
                   <span className="text-gray-500 font-medium text-[16px] ml-2 mt-2">pets</span>
                 </div>
                 <button 
                   onClick={increaseCapacity}
-                  className="w-12 h-12 bg-[#1B2B48] rounded-xl flex items-center justify-center text-white active:scale-95 transition-transform"
+                  className="w-12 h-12 bg-petoo-primary rounded-xl flex items-center justify-center text-petoo-textDark active:scale-95 transition-transform"
                 >
                   <Plus size={24} />
                 </button>
@@ -182,7 +182,7 @@ export const CaretakerAvailabilityScreen = () => {
               <button 
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full py-3 border-2 border-[#1B2B48] text-[#1B2B48] rounded-2xl font-extrabold text-[15px] hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                className="w-full py-3 border-2 border-petoo-primary text-petoo-textDark rounded-2xl font-extrabold text-[15px] hover:bg-petoo-primary/10 active:bg-petoo-primary/20 transition-colors"
               >
                 Update Capacity
               </button>
@@ -263,7 +263,7 @@ export const CaretakerAvailabilityScreen = () => {
             <button 
               onClick={handleSave}
               disabled={saving}
-              className="w-full bg-[#1B2B48] text-white font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] mt-4 flex items-center justify-center disabled:opacity-50"
+              className="w-full bg-petoo-primary text-petoo-textDark font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] mt-4 flex items-center justify-center disabled:opacity-50"
             >
               <CalendarIcon size={20} className="mr-2" />
               {saving ? 'Saving...' : 'Update Availability'}
