@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, PawPrint } from 'lucide-react';
+import { MessageCircle, X, Send, PawPrint, ChevronLeft, Minus } from 'lucide-react';
 import { db } from '../../config/firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import { 
@@ -14,6 +14,7 @@ export const SupportChatWidget = () => {
   const { user, userData } = useAuth();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -81,15 +82,44 @@ export const SupportChatWidget = () => {
   return (
     <>
       <AnimatePresence>
-        {!isOpen && (
-          <motion.button
+        {!isOpen && !isMinimized && (
+          <motion.div
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            onClick={() => setIsOpen(true)}
-            className="fixed bottom-24 lg:bottom-6 right-6 z-50 bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] p-4 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(251,191,36,0.3)] transition-all duration-300"
+            className="fixed bottom-24 lg:bottom-6 right-6 z-50 flex items-start"
           >
-            <MessageCircle size={28} className="drop-shadow-sm" />
+            <div className="relative">
+              <button
+                onClick={() => setIsOpen(true)}
+                className="bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] p-4 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(251,191,36,0.3)] transition-all duration-300 block"
+              >
+                <MessageCircle size={28} className="drop-shadow-sm" />
+              </button>
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }}
+                className="absolute -top-1 -right-1 bg-[#1B2B48] text-white rounded-full p-1 shadow-md hover:bg-black transition-colors"
+                title="Minimize Chat"
+              >
+                <Minus size={14} />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {!isOpen && isMinimized && (
+          <motion.button
+            initial={{ x: 20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 20, opacity: 0 }}
+            onClick={() => setIsMinimized(false)}
+            className="fixed bottom-24 lg:bottom-6 right-0 z-50 bg-[#FBBF24] text-[#1B2B48] py-3 pl-2 pr-1 rounded-l-xl shadow-lg border border-r-0 border-yellow-500/30 hover:bg-[#F59E0B] transition-colors flex items-center"
+            title="Restore Chat"
+          >
+            <ChevronLeft size={20} className="-ml-1" />
+            <MessageCircle size={16} className="ml-0.5" />
           </motion.button>
         )}
       </AnimatePresence>
