@@ -124,10 +124,10 @@ export const CaretakerDashboardScreen = () => {
           </div>
 
           {/* Service Cards Container */}
-          <div className={`flex flex-col lg:flex-row gap-4 lg:gap-8 mb-4 lg:mb-10 ${(!services || (services.grooming && (services.homeStay || services.boarding))) ? '' : 'lg:max-w-2xl lg:mx-auto'}`}>
+          <div className={`flex flex-col lg:flex-row gap-4 lg:gap-8 mb-4 lg:mb-10 ${(!services || (services.grooming !== false && (services.homeStay !== false || services.boarding !== false))) ? '' : 'lg:max-w-2xl lg:mx-auto'}`}>
             
             {/* Home Stay / Boarding Card */}
-            {(!services || services.homeStay || services.boarding) && (
+            {(!services || services.homeStay !== false || services.boarding !== false) && (
               <motion.div 
                 whileHover={{ y: -6 }}
                 onClick={() => navigate('/caretaker/homestay')}
@@ -182,7 +182,7 @@ export const CaretakerDashboardScreen = () => {
             )}
 
             {/* Grooming Card */}
-            {(!services || services.grooming) && (
+            {(!services || services.grooming !== false) && (
               <motion.div 
                 whileHover={{ y: -6 }}
                 onClick={() => navigate('/caretaker/requests')}
