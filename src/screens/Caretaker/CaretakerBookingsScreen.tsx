@@ -63,25 +63,25 @@ export const CaretakerBookingsScreen = () => {
 
   return (
     <CaretakerLayout>
-      <div className="w-full flex flex-col bg-[#FDF8F3] min-h-screen font-quicksand pb-40 lg:pb-12 text-[#3E2723]">
+      <div className="w-full flex flex-col bg-[#FAFAFA] min-h-screen font-quicksand pb-40 lg:pb-12 text-[#1B2B48]">
         
         {/* Mobile Header */}
-        <div className="lg:hidden flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FDF8F3]/95 backdrop-blur-md z-50">
+        <div className="lg:hidden flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FAFAFA]/95 backdrop-blur-md z-50">
           <button 
             onClick={() => navigate(-1)}
-            className="w-10 h-10 flex items-center justify-center -ml-2 text-[#5C3A21]"
+            className="w-10 h-10 flex items-center justify-center -ml-2 text-[#1B2B48]"
           >
             <ChevronLeft size={28} />
           </button>
           
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center space-x-1.5">
-              <PawPrint size={22} className="text-[#A26D45]" fill="currentColor" />
-              <h1 className="text-xl font-extrabold tracking-tight text-[#3E2723]">
-                Mypet<span className="text-[#A26D45]">9</span>
+              <PawPrint size={22} className="text-[#FBBF24]" fill="currentColor" />
+              <h1 className="text-xl font-extrabold tracking-tight text-[#1B2B48]">
+                Mypet<span className="text-[#FBBF24]">9</span>
               </h1>
             </div>
-            <span className="text-[10px] font-bold text-[#A26D45] uppercase tracking-wider -mt-1 ml-[30px]">Partner</span>
+            <span className="text-[10px] font-bold text-[#FBBF24] uppercase tracking-wider -mt-1 ml-[30px]">Partner</span>
           </div>
 
           <div className="relative">
@@ -102,19 +102,19 @@ export const CaretakerBookingsScreen = () => {
             <div className="flex items-center space-x-4">
               <button 
                 onClick={() => navigate(-1)}
-                className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-sm hover:bg-[#FFF9F2] transition-colors"
+                className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-sm hover:bg-[#FFFFFF] transition-colors"
               >
-                <ChevronLeft size={24} className="text-[#5C3A21]" />
+                <ChevronLeft size={24} className="text-[#1B2B48]" />
               </button>
               <div className="flex flex-col">
-                 <h2 className="text-3xl font-extrabold text-[#3E2723] tracking-tight leading-none mb-1">Upcoming Services</h2>
-                 <p className="text-[#5C3A21]/70 text-sm font-medium">Manage your upcoming pet care services.</p>
+                 <h2 className="text-3xl font-extrabold text-[#1B2B48] tracking-tight leading-none mb-1">Upcoming Services</h2>
+                 <p className="text-[#1B2B48]/70 text-sm font-medium">Manage your upcoming pet care services.</p>
               </div>
             </div>
              
              <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.04)] border border-white">
                 <div className="text-right">
-                  <p className="font-bold text-[14px] text-[#3E2723]">{userData?.name || 'Partner'}</p>
+                  <p className="font-bold text-[14px] text-[#1B2B48]">{userData?.name || 'Partner'}</p>
                   <p className="text-[10px] text-green-600 font-bold flex items-center justify-end uppercase tracking-wider">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
                     Online
@@ -130,10 +130,10 @@ export const CaretakerBookingsScreen = () => {
 
           {/* Mobile Page Title */}
           <div className="lg:hidden mt-2 mb-6">
-            <h2 className="text-[28px] font-extrabold text-[#3E2723] tracking-tight leading-tight mb-1">
+            <h2 className="text-[28px] font-extrabold text-[#1B2B48] tracking-tight leading-tight mb-1">
               Upcoming Services
             </h2>
-            <p className="text-[#5C3A21]/70 text-[13px] font-medium leading-snug">
+            <p className="text-[#1B2B48]/70 text-[13px] font-medium leading-snug">
               Manage your upcoming pet care services.
             </p>
           </div>
@@ -144,8 +144,8 @@ export const CaretakerBookingsScreen = () => {
               onClick={() => setActiveTab('upcoming')}
               className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-2xl text-sm font-bold transition-all duration-300 ${
                 activeTab === 'upcoming'
-                  ? 'bg-[#5C3A21] text-white shadow-md'
-                  : 'text-[#5C3A21] hover:bg-white/50'
+                  ? 'bg-[#1B2B48] text-white shadow-md'
+                  : 'text-[#1B2B48] hover:bg-white/50'
               }`}
             >
               Upcoming (3)
@@ -154,8 +154,8 @@ export const CaretakerBookingsScreen = () => {
               onClick={() => setActiveTab('ongoing')}
               className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-2xl text-sm font-bold transition-all duration-300 ${
                 activeTab === 'ongoing'
-                  ? 'bg-[#5C3A21] text-white shadow-md'
-                  : 'text-[#5C3A21] hover:bg-white/50'
+                  ? 'bg-[#1B2B48] text-white shadow-md'
+                  : 'text-[#1B2B48] hover:bg-white/50'
               }`}
             >
               Ongoing (0)
@@ -164,8 +164,8 @@ export const CaretakerBookingsScreen = () => {
               onClick={() => setActiveTab('completed')}
               className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-2xl text-sm font-bold transition-all duration-300 ${
                 activeTab === 'completed'
-                  ? 'bg-[#5C3A21] text-white shadow-md'
-                  : 'text-[#5C3A21] hover:bg-white/50'
+                  ? 'bg-[#1B2B48] text-white shadow-md'
+                  : 'text-[#1B2B48] hover:bg-white/50'
               }`}
             >
               Completed (5)
@@ -196,34 +196,34 @@ export const CaretakerBookingsScreen = () => {
                   <div className="flex-1 flex flex-col justify-between h-full py-1 min-w-0">
                     <div className="flex items-start justify-between">
                       <div className="min-w-0 pr-2">
-                        <h3 className="text-xl lg:text-2xl font-extrabold text-[#3E2723] mb-0.5 truncate">
+                        <h3 className="text-xl lg:text-2xl font-extrabold text-[#1B2B48] mb-0.5 truncate">
                           {booking.petName}
                         </h3>
-                        <p className="text-[#5C3A21]/70 text-xs lg:text-sm font-medium truncate mb-2">
+                        <p className="text-[#1B2B48]/70 text-xs lg:text-sm font-medium truncate mb-2">
                           {booking.breed}
                         </p>
                       </div>
-                      <ChevronRight size={20} className="text-[#5C3A21]/40 shrink-0 mt-1 group-hover:translate-x-1 group-hover:text-[#5C3A21] transition-all" />
+                      <ChevronRight size={20} className="text-[#1B2B48]/40 shrink-0 mt-1 group-hover:translate-x-1 group-hover:text-[#1B2B48] transition-all" />
                     </div>
 
                     <div className="space-y-1.5 lg:space-y-2 mb-3">
-                      <div className="flex items-center text-[#5C3A21]/80 text-[11px] lg:text-[13px] font-semibold">
+                      <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
                         <Calendar size={14} className="mr-2 opacity-70" />
                         <span className="truncate">{booking.startDate} - {booking.endDate}</span>
                       </div>
-                      <div className="flex items-center text-[#5C3A21]/80 text-[11px] lg:text-[13px] font-semibold">
+                      <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
                         <Moon size={14} className="mr-2 opacity-70" />
                         <span>{booking.nights} nights</span>
                       </div>
-                      <div className="flex items-center text-[#5C3A21]/80 text-[11px] lg:text-[13px] font-semibold">
+                      <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
                         <Home size={14} className="mr-2 opacity-70" />
                         <span className="truncate">{booking.service}</span>
                       </div>
                     </div>
 
-                    <div className="inline-flex items-center self-start bg-[#FFF9F2] px-3 py-1.5 rounded-xl border border-[#8D5B3A]/10">
-                      <CalendarDays size={12} className="text-[#A26D45] mr-1.5" />
-                      <span className="text-[10px] lg:text-xs font-bold text-[#A26D45] uppercase tracking-wide">
+                    <div className="inline-flex items-center self-start bg-[#FFFFFF] px-3 py-1.5 rounded-xl border border-[#FBBF24]/10">
+                      <CalendarDays size={12} className="text-[#FBBF24] mr-1.5" />
+                      <span className="text-[10px] lg:text-xs font-bold text-[#FBBF24] uppercase tracking-wide">
                         {booking.statusText}
                       </span>
                     </div>
@@ -232,26 +232,26 @@ export const CaretakerBookingsScreen = () => {
               ))
             ) : (
               <div className="col-span-full py-16 flex flex-col items-center justify-center text-center">
-                <div className="w-16 h-16 bg-[#FFF9F2] rounded-full flex items-center justify-center mb-4">
-                  <CalendarDays size={28} className="text-[#A26D45]/50" />
+                <div className="w-16 h-16 bg-[#FFFFFF] rounded-full flex items-center justify-center mb-4">
+                  <CalendarDays size={28} className="text-[#FBBF24]/50" />
                 </div>
-                <h3 className="text-lg font-bold text-[#3E2723] mb-1">No {activeTab} bookings</h3>
-                <p className="text-[#5C3A21]/60 text-sm font-medium">You don't have any {activeTab} bookings at the moment.</p>
+                <h3 className="text-lg font-bold text-[#1B2B48] mb-1">No {activeTab} bookings</h3>
+                <p className="text-[#1B2B48]/60 text-sm font-medium">You don't have any {activeTab} bookings at the moment.</p>
               </div>
             )}
           </div>
 
           {/* Bottom Illustration */}
-          <div className="mt-auto mb-10 relative w-full h-[140px] lg:h-[200px] rounded-[32px] overflow-hidden shadow-[0_8px_30px_rgba(92,58,33,0.06)] bg-[#FFF9F2] flex flex-row">
+          <div className="mt-auto mb-10 relative w-full h-[140px] lg:h-[200px] rounded-[32px] overflow-hidden shadow-[0_8px_30px_rgba(92,58,33,0.06)] bg-[#FFFFFF] flex flex-row">
              
              {/* Content Side */}
              <div className="relative z-10 w-[60%] lg:w-[50%] h-full flex flex-col justify-center px-6 lg:px-10 shrink-0">
-                <p className="text-[#8D5B3A] font-extrabold text-[10px] lg:text-xs uppercase tracking-[0.2em] mb-2 lg:mb-3 opacity-80">
+                <p className="text-[#FBBF24] font-extrabold text-[10px] lg:text-xs uppercase tracking-[0.2em] mb-2 lg:mb-3 opacity-80">
                   Your Impact
                 </p>
-                <h3 className="text-[22px] lg:text-[34px] font-extrabold text-[#3E2723] leading-[1.15] tracking-tight">
+                <h3 className="text-[22px] lg:text-[34px] font-extrabold text-[#1B2B48] leading-[1.15] tracking-tight">
                   Every stay is a<br/>
-                  <span className="text-[#A26D45] font-caveat text-[32px] lg:text-[46px] font-bold leading-none inline-block mt-1">new story ♥</span>
+                  <span className="text-[#FBBF24] font-caveat text-[32px] lg:text-[46px] font-bold leading-none inline-block mt-1">new story ♥</span>
                 </h3>
              </div>
 
@@ -262,7 +262,7 @@ export const CaretakerBookingsScreen = () => {
                    alt="Happy Pets" 
                    className="w-full h-full object-cover object-left-center lg:object-center"
                  />
-                 <div className="absolute inset-y-0 left-0 w-16 lg:w-32 bg-gradient-to-r from-[#FFF9F2] via-[#FFF9F2]/80 to-transparent"></div>
+                 <div className="absolute inset-y-0 left-0 w-16 lg:w-32 bg-gradient-to-r from-[#FFFFFF] via-[#FFFFFF]/80 to-transparent"></div>
              </div>
           </div>
           

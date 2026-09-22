@@ -100,25 +100,25 @@ export const CaretakerRequestsScreen = () => {
 
   return (
     <CaretakerLayout>
-      <div className="w-full flex flex-col bg-[#FDF8F3] min-h-screen font-quicksand pb-40 lg:pb-12 text-[#3E2723]">
+      <div className="w-full flex flex-col bg-[#FAFAFA] min-h-screen font-quicksand pb-40 lg:pb-12 text-[#1B2B48]">
         
         {/* Mobile Header */}
-        <div className="lg:hidden flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FDF8F3]/95 backdrop-blur-md z-40">
+        <div className="lg:hidden flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FAFAFA]/95 backdrop-blur-md z-40">
           <button 
             onClick={() => navigate(-1)}
-            className="w-10 h-10 flex items-center justify-center -ml-2 text-[#5C3A21]"
+            className="w-10 h-10 flex items-center justify-center -ml-2 text-[#1B2B48]"
           >
             <ChevronLeft size={28} />
           </button>
           
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center space-x-1.5">
-              <PawPrint size={22} className="text-[#A26D45]" fill="currentColor" />
-              <h1 className="text-xl font-extrabold tracking-tight text-[#3E2723]">
+              <PawPrint size={22} className="text-[#FBBF24]" fill="currentColor" />
+              <h1 className="text-xl font-extrabold tracking-tight text-[#1B2B48]">
                 PetWali
               </h1>
             </div>
-            <span className="text-[10px] font-bold text-[#A26D45] uppercase tracking-wider -mt-1 ml-[25px]">Partner</span>
+            <span className="text-[10px] font-bold text-[#FBBF24] uppercase tracking-wider -mt-1 ml-[25px]">Partner</span>
           </div>
 
           <div className="relative">
@@ -139,19 +139,19 @@ export const CaretakerRequestsScreen = () => {
             <div className="flex items-center space-x-4">
               <button 
                 onClick={() => navigate(-1)}
-                className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-sm hover:bg-[#FFF9F2] transition-colors"
+                className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-sm hover:bg-[#FFFFFF] transition-colors"
               >
-                <ChevronLeft size={24} className="text-[#5C3A21]" />
+                <ChevronLeft size={24} className="text-[#1B2B48]" />
               </button>
               <div className="flex flex-col">
-                 <h2 className="text-3xl font-extrabold text-[#3E2723] tracking-tight leading-none mb-1">Home Stay Requests</h2>
-                 <p className="text-[#5C3A21]/70 text-sm font-medium">Manage your incoming pet care requests.</p>
+                 <h2 className="text-3xl font-extrabold text-[#1B2B48] tracking-tight leading-none mb-1">Home Stay Requests</h2>
+                 <p className="text-[#1B2B48]/70 text-sm font-medium">Manage your incoming pet care requests.</p>
               </div>
             </div>
              
              <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.04)] border border-white">
                 <div className="text-right">
-                  <p className="font-bold text-[14px] text-[#3E2723]">{userData?.name || 'Partner'}</p>
+                  <p className="font-bold text-[14px] text-[#1B2B48]">{userData?.name || 'Partner'}</p>
                   <p className="text-[10px] text-green-600 font-bold flex items-center justify-end uppercase tracking-wider">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
                     Online
@@ -167,7 +167,7 @@ export const CaretakerRequestsScreen = () => {
 
           {/* Mobile Page Title */}
           <div className="lg:hidden mt-2 mb-6">
-            <h2 className="text-[28px] font-extrabold text-[#3E2723] tracking-tight leading-tight mb-1">
+            <h2 className="text-[28px] font-extrabold text-[#1B2B48] tracking-tight leading-tight mb-1">
               Home Stay Requests
             </h2>
           </div>
@@ -179,7 +179,7 @@ export const CaretakerRequestsScreen = () => {
               className={`shrink-0 whitespace-nowrap py-2.5 px-4 lg:px-6 rounded-2xl text-[13px] font-bold transition-all duration-300 ${
                 activeTab === 'new'
                   ? 'bg-[#C79133] text-white shadow-md'
-                  : 'text-[#5C3A21] hover:bg-white/50'
+                  : 'text-[#1B2B48] hover:bg-white/50'
               }`}
             >
               New (2)
@@ -189,7 +189,7 @@ export const CaretakerRequestsScreen = () => {
               className={`shrink-0 whitespace-nowrap py-2.5 px-4 lg:px-6 rounded-2xl text-[13px] font-bold transition-all duration-300 ${
                 activeTab === 'quotation_sent'
                   ? 'bg-[#C79133] text-white shadow-md'
-                  : 'text-[#5C3A21] hover:bg-white/50'
+                  : 'text-[#1B2B48] hover:bg-white/50'
               }`}
             >
               Quotation Sent (3)
@@ -199,7 +199,7 @@ export const CaretakerRequestsScreen = () => {
               className={`shrink-0 whitespace-nowrap py-2.5 px-4 lg:px-6 rounded-2xl text-[13px] font-bold transition-all duration-300 ${
                 activeTab === 'confirmed'
                   ? 'bg-[#C79133] text-white shadow-md'
-                  : 'text-[#5C3A21] hover:bg-white/50'
+                  : 'text-[#1B2B48] hover:bg-white/50'
               }`}
             >
               Confirmed (1)
@@ -209,7 +209,7 @@ export const CaretakerRequestsScreen = () => {
               className={`shrink-0 whitespace-nowrap py-2.5 px-4 lg:px-6 rounded-2xl text-[13px] font-bold transition-all duration-300 ${
                 activeTab === 'missed'
                   ? 'bg-[#C79133] text-white shadow-md'
-                  : 'text-[#5C3A21] hover:bg-white/50'
+                  : 'text-[#1B2B48] hover:bg-white/50'
               }`}
             >
               Missed (0)
@@ -219,7 +219,7 @@ export const CaretakerRequestsScreen = () => {
               className={`shrink-0 whitespace-nowrap py-2.5 px-4 lg:px-6 rounded-2xl text-[13px] font-bold transition-all duration-300 ${
                 activeTab === 'declined'
                   ? 'bg-[#C79133] text-white shadow-md'
-                  : 'text-[#5C3A21] hover:bg-white/50'
+                  : 'text-[#1B2B48] hover:bg-white/50'
               }`}
             >
               Declined (0)
@@ -231,7 +231,7 @@ export const CaretakerRequestsScreen = () => {
             
             <div className="mb-2 px-1">
               <h2 className="text-[#5C1C1D] text-[20px] font-extrabold mb-1 tracking-tight">{getTabHeader().title} ({filteredRequests.length})</h2>
-              <p className="text-[#5C3A21]/70 text-[13px] font-medium">{getTabHeader().subtitle}</p>
+              <p className="text-[#1B2B48]/70 text-[13px] font-medium">{getTabHeader().subtitle}</p>
             </div>
 
             {filteredRequests.length > 0 ? (
@@ -267,24 +267,24 @@ export const CaretakerRequestsScreen = () => {
                         </span>
                       )}
                     </div>
-                    <p className="text-[#5C3A21]/70 text-[12px] font-medium truncate mb-2.5">
+                    <p className="text-[#1B2B48]/70 text-[12px] font-medium truncate mb-2.5">
                       {request.breed}
                     </p>
 
                     <div className="space-y-1">
-                      <div className="flex items-center text-[#5C3A21]/80 text-[12px] font-semibold">
+                      <div className="flex items-center text-[#1B2B48]/80 text-[12px] font-semibold">
                         <Calendar size={13} className="mr-2 text-[#5C1C1D] shrink-0" />
                         <span className="truncate">{request.startDate.replace(' 2026', '')} – {request.endDate}</span>
                       </div>
-                      <div className="flex items-center text-[#5C3A21]/80 text-[12px] font-semibold">
+                      <div className="flex items-center text-[#1B2B48]/80 text-[12px] font-semibold">
                         <Moon size={13} className="mr-2 text-[#5C1C1D] shrink-0" />
                         <span className="truncate">{request.nights} nights</span>
                       </div>
-                      <div className="flex items-center text-[#5C3A21]/80 text-[12px] font-semibold">
+                      <div className="flex items-center text-[#1B2B48]/80 text-[12px] font-semibold">
                         <Home size={13} className="mr-2 text-[#5C1C1D] shrink-0" />
                         <span className="truncate">{request.service || 'Home Stay'}</span>
                       </div>
-                      <div className="flex items-center text-[#5C3A21]/80 text-[12px] font-semibold">
+                      <div className="flex items-center text-[#1B2B48]/80 text-[12px] font-semibold">
                         <MapPin size={13} className="mr-2 text-[#5C1C1D] shrink-0" />
                         <span className="truncate">{request.location}</span>
                       </div>
@@ -299,11 +299,11 @@ export const CaretakerRequestsScreen = () => {
               ))
             ) : (
               <div className="col-span-full py-16 flex flex-col items-center justify-center text-center">
-                <div className="w-16 h-16 bg-[#FFF9F2] rounded-full flex items-center justify-center mb-4">
-                  <FileText size={28} className="text-[#A26D45]/50" />
+                <div className="w-16 h-16 bg-[#FFFFFF] rounded-full flex items-center justify-center mb-4">
+                  <FileText size={28} className="text-[#FBBF24]/50" />
                 </div>
-                <h3 className="text-lg font-bold text-[#3E2723] mb-1">No {activeTab} requests</h3>
-                <p className="text-[#5C3A21]/60 text-sm font-medium">You don't have any {activeTab} requests at the moment.</p>
+                <h3 className="text-lg font-bold text-[#1B2B48] mb-1">No {activeTab} requests</h3>
+                <p className="text-[#1B2B48]/60 text-sm font-medium">You don't have any {activeTab} requests at the moment.</p>
               </div>
             )}
           </div>

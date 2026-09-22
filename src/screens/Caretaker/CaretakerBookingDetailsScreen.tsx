@@ -96,20 +96,20 @@ export const CaretakerBookingDetailsScreen = () => {
 
   return (
     <CaretakerLayout>
-      <div className={`w-full flex flex-col bg-[#FDF8F3] font-quicksand text-[#3E2723] ${
+      <div className={`w-full flex flex-col bg-[#FAFAFA] font-quicksand text-[#1B2B48] ${
         activeTab === 'messages' && !isCompleted
           ? 'absolute inset-0 z-[40] pb-[72px] lg:pb-0' 
           : 'min-h-screen pb-32 lg:pb-12'
       }`}>
         
         {/* TOP SECTION */}
-        <div className={`flex flex-col shrink-0 ${activeTab === 'messages' && !isCompleted ? 'bg-[#FDF8F3] z-10 shadow-sm' : ''}`}>
+        <div className={`flex flex-col shrink-0 ${activeTab === 'messages' && !isCompleted ? 'bg-[#FAFAFA] z-10 shadow-sm' : ''}`}>
           
           {/* Mobile Header */}
-        <div className="lg:hidden flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FDF8F3]/95 backdrop-blur-md z-50">
+        <div className="lg:hidden flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FAFAFA]/95 backdrop-blur-md z-50">
           <button 
             onClick={() => navigate(-1)}
-            className="flex items-center space-x-1 -ml-2 text-[#5C3A21] font-bold"
+            className="flex items-center space-x-1 -ml-2 text-[#1B2B48] font-bold"
           >
             <ChevronLeft size={28} />
             <span className="text-sm">Back</span>
@@ -117,12 +117,12 @@ export const CaretakerBookingDetailsScreen = () => {
           
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center space-x-1.5">
-              <PawPrint size={22} className="text-[#A26D45]" fill="currentColor" />
-              <h1 className="text-xl font-extrabold tracking-tight text-[#3E2723]">
+              <PawPrint size={22} className="text-[#FBBF24]" fill="currentColor" />
+              <h1 className="text-xl font-extrabold tracking-tight text-[#1B2B48]">
                 PetWali
               </h1>
             </div>
-            <span className="text-[10px] font-bold text-[#A26D45] uppercase tracking-wider -mt-1 ml-[24px]">Partner</span>
+            <span className="text-[10px] font-bold text-[#FBBF24] uppercase tracking-wider -mt-1 ml-[24px]">Partner</span>
           </div>
 
           <div className="relative">
@@ -143,7 +143,7 @@ export const CaretakerBookingDetailsScreen = () => {
             <div className="flex items-center space-x-4">
               <button 
                 onClick={() => navigate(-1)}
-                className="flex items-center space-x-2 text-[#5C3A21] hover:text-[#3E2723] font-bold transition-colors"
+                className="flex items-center space-x-2 text-[#1B2B48] hover:text-[#1B2B48] font-bold transition-colors"
               >
                 <ChevronLeft size={24} />
                 <span>Back</span>
@@ -152,7 +152,7 @@ export const CaretakerBookingDetailsScreen = () => {
              
              <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.04)] border border-white">
                 <div className="text-right">
-                  <p className="font-bold text-[14px] text-[#3E2723]">{userData?.name || 'Partner'}</p>
+                  <p className="font-bold text-[14px] text-[#1B2B48]">{userData?.name || 'Partner'}</p>
                   <p className="text-[10px] text-green-600 font-bold flex items-center justify-end uppercase tracking-wider">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
                     Online
@@ -173,7 +173,7 @@ export const CaretakerBookingDetailsScreen = () => {
                   {isCompleted ? 'Booking Details' : (activeTab === 'timeline' ? 'Booking Timeline' : 'Booking Details')}
                 </h2>
                 {!isCompleted && (
-                  <p className="text-[#5C3A21] text-[13px] lg:text-sm font-medium leading-snug">
+                  <p className="text-[#1B2B48] text-[13px] lg:text-sm font-medium leading-snug">
                     {activeTab === 'timeline' ? 'Track the progress of this booking.' : (activeTab === 'messages' ? 'View details, timeline or chat with the customer.' : 'Here are the complete details for this booking.')}
                   </p>
                 )}
@@ -204,20 +204,20 @@ export const CaretakerBookingDetailsScreen = () => {
                 <h3 className="text-2xl lg:text-3xl font-extrabold text-[#4A1D1A] leading-none mb-1.5">
                   Buddy
                 </h3>
-                <p className="text-[#5C3A21]/70 text-xs lg:text-sm font-medium mb-3">
+                <p className="text-[#1B2B48]/70 text-xs lg:text-sm font-medium mb-3">
                   Golden Retriever • 3 years
                 </p>
                 
                 <div className="space-y-1.5">
-                  <div className="flex items-center text-[#5C3A21]/80 text-[11px] lg:text-[13px] font-semibold">
+                  <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
                     <span className="mr-2 opacity-70">♂</span>
                     <span>Male</span>
                   </div>
-                  <div className="flex items-center text-[#5C3A21]/80 text-[11px] lg:text-[13px] font-semibold">
+                  <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
                     <Calendar size={13} className="mr-2 opacity-70" />
                     <span>15 Sep – 18 Sep 2026 (3 nights)</span>
                   </div>
-                  <div className="flex items-center text-[#5C3A21]/80 text-[11px] lg:text-[13px] font-semibold">
+                  <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
                     <MapPin size={13} className="mr-2 opacity-70" />
                     <span className="truncate">With Pickup & Drop Service</span>
                   </div>
@@ -256,7 +256,7 @@ export const CaretakerBookingDetailsScreen = () => {
               
               {/* Success Text */}
               <h3 className="text-3xl lg:text-4xl font-extrabold text-[#4A1D1A] mb-3">Service Completed!</h3>
-              <p className="text-[#5C3A21] text-[15px] lg:text-[17px] font-medium text-center max-w-sm lg:max-w-md mb-10 leading-relaxed">
+              <p className="text-[#1B2B48] text-[15px] lg:text-[17px] font-medium text-center max-w-sm lg:max-w-md mb-10 leading-relaxed">
                 The stay and all services for Buddy have been successfully completed.
               </p>
 
@@ -268,7 +268,7 @@ export const CaretakerBookingDetailsScreen = () => {
                     <img src="https://ui-avatars.com/api/?name=Aditi+Sharma&background=F6EBE5&color=4A1D1A" alt="Aditi Sharma" className="w-12 h-12 rounded-full object-cover" />
                     <div>
                       <p className="text-[#4A1D1A] font-extrabold text-[14px]">Aditi Sharma</p>
-                      <p className="text-[#5C3A21] text-[12px] opacity-80 font-medium">15 Sep 2026</p>
+                      <p className="text-[#1B2B48] text-[12px] opacity-80 font-medium">15 Sep 2026</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-1">
@@ -278,7 +278,7 @@ export const CaretakerBookingDetailsScreen = () => {
                     <span className="text-[#4A1D1A] font-extrabold text-[14px] ml-1">5.0</span>
                   </div>
                 </div>
-                <p className="text-[#5C3A21] text-[13px] lg:text-[14px] italic font-medium leading-relaxed opacity-90">
+                <p className="text-[#1B2B48] text-[13px] lg:text-[14px] italic font-medium leading-relaxed opacity-90">
                   "Buddy had a wonderful stay! Great care, regular updates and lots of outdoor play. Highly recommended!"
                 </p>
               </div>
@@ -345,7 +345,7 @@ export const CaretakerBookingDetailsScreen = () => {
                   </div>
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Check-in</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px]">15 Sep 2026, 10:00 AM</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">15 Sep 2026, 10:00 AM</p>
                   </div>
                 </div>
 
@@ -355,7 +355,7 @@ export const CaretakerBookingDetailsScreen = () => {
                   </div>
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Check-out</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px]">18 Sep 2026, 5:00 PM</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">18 Sep 2026, 5:00 PM</p>
                   </div>
                 </div>
 
@@ -365,7 +365,7 @@ export const CaretakerBookingDetailsScreen = () => {
                   </div>
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Duration</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px]">3 nights</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">3 nights</p>
                   </div>
                 </div>
 
@@ -375,7 +375,7 @@ export const CaretakerBookingDetailsScreen = () => {
                   </div>
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Pet Type & Size</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px]">Dog (Large)</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">Dog (Large)</p>
                   </div>
                 </div>
 
@@ -385,7 +385,7 @@ export const CaretakerBookingDetailsScreen = () => {
                   </div>
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Space Type</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px]">Large Dog Space</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">Large Dog Space</p>
                   </div>
                 </div>
 
@@ -395,20 +395,20 @@ export const CaretakerBookingDetailsScreen = () => {
                   </div>
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Total Amount</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px]">
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">
                       <span className="font-extrabold text-[14px] lg:text-[15px]">₹3,000</span> (₹1,000 / night)
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between bg-[#FDF8F3] rounded-2xl p-3.5 border border-[#F3EBE1] shadow-sm mt-2 max-w-sm backdrop-blur-sm bg-opacity-90">
+                <div className="flex items-center justify-between bg-[#FAFAFA] rounded-2xl p-3.5 border border-[#F3EBE1] shadow-sm mt-2 max-w-sm backdrop-blur-sm bg-opacity-90">
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0">
                       <User size={18} className="text-[#4A1D1A]" />
                     </div>
                     <div>
                       <h4 className="text-[#4A1D1A] font-extrabold text-[13px] lg:text-[14px] mb-0.5">Customer</h4>
-                      <p className="text-[#5C3A21] font-medium text-[11px] lg:text-[12px]">Aditi Sharma</p>
+                      <p className="text-[#1B2B48] font-medium text-[11px] lg:text-[12px]">Aditi Sharma</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -448,26 +448,26 @@ export const CaretakerBookingDetailsScreen = () => {
 
               {/* Step 1 */}
               <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FDF8F3] mx-5 transition-transform group-hover:scale-110">
+                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
                   <Check size={20} className="text-white stroke-[3px]" />
                 </div>
                 <div className="flex-1 bg-[#F6EBE5]/60 rounded-2xl p-4 lg:p-5">
                   <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Booking Confirmed</h4>
-                  <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 9:30 AM</p>
-                  <p className="text-[#5C3A21] font-medium text-[13px] lg:text-[14px]">Customer selected your quotation.</p>
+                  <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 9:30 AM</p>
+                  <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">Customer selected your quotation.</p>
                 </div>
               </div>
 
               {/* Step 2 */}
               <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FDF8F3] mx-5 transition-transform group-hover:scale-110">
+                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
                   <Car size={18} className="text-white" />
                 </div>
                 <div className="flex-1 bg-[#F6EBE5]/60 rounded-2xl p-4 lg:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Pickup (From Pet Parent)</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 10:00 AM</p>
-                    <p className="text-[#5C3A21] font-medium text-[13px] lg:text-[14px]">You picked up Buddy from the pet parent's location.</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 10:00 AM</p>
+                    <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">You picked up Buddy from the pet parent's location.</p>
                   </div>
                   <button className="flex items-center space-x-1.5 px-4 py-2 bg-transparent border border-[#4A1D1A] rounded-[10px] text-[#4A1D1A] font-extrabold text-[13px] hover:bg-[#4A1D1A]/5 shrink-0 self-start lg:self-center transition-colors">
                     <MapPin size={14} />
@@ -478,14 +478,14 @@ export const CaretakerBookingDetailsScreen = () => {
 
               {/* Step 3 */}
               <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FDF8F3] mx-5 transition-transform group-hover:scale-110">
+                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
                   <Home size={18} className="text-white" />
                 </div>
                 <div className="flex-1 bg-[#F6EBE5]/60 rounded-2xl p-4 lg:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Pet Check-in (At Your Place)</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 10:30 AM</p>
-                    <p className="text-[#5C3A21] font-medium text-[13px] lg:text-[14px]">Share arrival photos and check-in details.</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 10:30 AM</p>
+                    <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">Share arrival photos and check-in details.</p>
                   </div>
                   <button className="flex items-center space-x-1.5 px-4 py-2 bg-[#4A1D1A] rounded-[10px] text-white font-extrabold text-[13px] hover:bg-[#3E1614] shrink-0 self-start lg:self-center shadow-sm transition-colors">
                     <Camera size={14} />
@@ -496,14 +496,14 @@ export const CaretakerBookingDetailsScreen = () => {
 
               {/* Step 4 */}
               <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FDF8F3] mx-5 transition-transform group-hover:scale-110">
+                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
                   <PawPrint size={18} className="text-[#4A1D1A]" />
                 </div>
                 <div className="flex-1 bg-white/60 border border-[#F3EBE1] rounded-2xl p-4 lg:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-sm">
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">During Stay</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep – 17 Sep 2026</p>
-                    <p className="text-[#5C3A21] font-medium text-[13px] lg:text-[14px]">Share updates, photos or videos.</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep – 17 Sep 2026</p>
+                    <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">Share updates, photos or videos.</p>
                   </div>
                   <button className="flex items-center space-x-1.5 px-4 py-2 bg-transparent border border-[#4A1D1A]/50 rounded-[10px] text-[#4A1D1A] font-extrabold text-[13px] hover:bg-[#4A1D1A]/5 shrink-0 self-start lg:self-center transition-colors">
                     <Camera size={14} />
@@ -514,14 +514,14 @@ export const CaretakerBookingDetailsScreen = () => {
 
               {/* Step 5 */}
               <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FDF8F3] mx-5 transition-transform group-hover:scale-110">
+                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
                   <Car size={18} className="text-[#4A1D1A]" />
                 </div>
                 <div className="flex-1 bg-white/60 border border-[#F3EBE1] rounded-2xl p-4 lg:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-sm">
                   <div>
                     <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Drop-off (To Pet Parent)</h4>
-                    <p className="text-[#5C3A21] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">18 Sep 2026, 5:00 PM</p>
-                    <p className="text-[#5C3A21] font-medium text-[13px] lg:text-[14px]">Our team will drop Buddy to the pet parent's location.</p>
+                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">18 Sep 2026, 5:00 PM</p>
+                    <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">Our team will drop Buddy to the pet parent's location.</p>
                   </div>
                   <button className="flex items-center space-x-1.5 px-4 py-2 bg-transparent border border-[#4A1D1A]/50 rounded-[10px] text-[#4A1D1A] font-extrabold text-[13px] hover:bg-[#4A1D1A]/5 shrink-0 self-start lg:self-center transition-colors">
                     <MapPin size={14} />
@@ -532,12 +532,12 @@ export const CaretakerBookingDetailsScreen = () => {
 
               {/* Step 6 */}
               <div className="flex items-start relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FDF8F3] mx-5 transition-transform group-hover:scale-110">
+                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
                   <FileText size={18} className="text-[#4A1D1A]" />
                 </div>
                 <div className="flex-1 bg-white/60 border border-[#F3EBE1] rounded-2xl p-4 lg:p-5 shadow-sm">
                   <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Service Complete</h4>
-                  <p className="text-[#5C3A21] font-medium text-[13px] lg:text-[14px]">This booking will be marked complete after drop-off.</p>
+                  <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">This booking will be marked complete after drop-off.</p>
                 </div>
               </div>
 
@@ -552,7 +552,7 @@ export const CaretakerBookingDetailsScreen = () => {
                   {/* Date Separator */}
                   {msg.date && (
                     <div className="flex justify-center mb-6 mt-4">
-                      <div className="bg-[#F6EBE5] px-4 py-1.5 rounded-full text-[12px] font-bold text-[#5C3A21]/70">
+                      <div className="bg-[#F6EBE5] px-4 py-1.5 rounded-full text-[12px] font-bold text-[#1B2B48]/70">
                         {msg.date}
                       </div>
                     </div>
@@ -571,8 +571,8 @@ export const CaretakerBookingDetailsScreen = () => {
                         )}
                       </div>
                       <div className="flex items-center space-x-1 mt-1.5 mr-1">
-                        <span className="text-[#5C3A21]/60 font-bold text-[10px]">{msg.time}</span>
-                        <CheckCheck size={12} className="text-[#5C3A21]/60" />
+                        <span className="text-[#1B2B48]/60 font-bold text-[10px]">{msg.time}</span>
+                        <CheckCheck size={12} className="text-[#1B2B48]/60" />
                       </div>
                     </div>
                   ) : (
@@ -583,7 +583,7 @@ export const CaretakerBookingDetailsScreen = () => {
                         <div className="bg-[#F6EBE5] rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] lg:max-w-[70%]">
                           <p className="text-[#4A1D1A] font-medium text-[14px]">{msg.text}</p>
                         </div>
-                        <span className="text-[#5C3A21]/60 font-bold text-[10px] mt-1.5 ml-1">{msg.time}</span>
+                        <span className="text-[#1B2B48]/60 font-bold text-[10px] mt-1.5 ml-1">{msg.time}</span>
                       </div>
                     </div>
                   )}
@@ -595,7 +595,7 @@ export const CaretakerBookingDetailsScreen = () => {
 
           {/* Action Buttons / Input Bar */}
           {activeTab === 'messages' && !isCompleted ? (
-            <div className="shrink-0 bg-[#FDF8F3] border-t border-[#F3EBE1] flex justify-center py-4 px-4 lg:px-0 lg:mt-4 lg:mb-8 lg:bg-transparent lg:border-none pb-safe-bottom z-10 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] lg:shadow-none">
+            <div className="shrink-0 bg-[#FAFAFA] border-t border-[#F3EBE1] flex justify-center py-4 px-4 lg:px-0 lg:mt-4 lg:mb-8 lg:bg-transparent lg:border-none pb-safe-bottom z-10 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] lg:shadow-none">
               <form onSubmit={handleSendMessage} className="w-full flex items-center space-x-3 max-w-5xl lg:w-4/5 lg:mx-0">
                 <button type="button" className="w-12 h-12 rounded-full flex items-center justify-center text-[#7B1C1D] hover:bg-[#F6EBE5] transition-colors shrink-0">
                   <Paperclip size={24} />
@@ -606,7 +606,7 @@ export const CaretakerBookingDetailsScreen = () => {
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Type a message..." 
-                    className="w-full bg-transparent outline-none text-[#4A1D1A] font-medium placeholder:text-[#5C3A21]/40 text-[15px]"
+                    className="w-full bg-transparent outline-none text-[#4A1D1A] font-medium placeholder:text-[#1B2B48]/40 text-[15px]"
                   />
                 </div>
                 <button type="submit" disabled={!inputText.trim()} className="w-12 h-12 rounded-full bg-[#7B1C1D] flex items-center justify-center text-white hover:bg-[#5A1213] disabled:opacity-50 transition-colors shrink-0 shadow-sm">
