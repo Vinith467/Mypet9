@@ -237,13 +237,7 @@ export const CaretakerPriceSettingsScreen = () => {
             </button>
             <h1 className="text-xl font-extrabold tracking-tight">Set Boarding Price</h1>
           </div>
-          <button 
-            onClick={handleSave}
-            disabled={saving}
-            className="text-petoo-textDark font-extrabold text-[16px] px-2 active:opacity-70 disabled:opacity-50"
-          >
-            {saving ? 'Saving...' : 'Save'}
-          </button>
+          <div className="w-10"></div> {/* Empty div to balance the header flex layout */}
         </div>
 
         {loading ? (
@@ -269,6 +263,15 @@ export const CaretakerPriceSettingsScreen = () => {
             </div>
 
             {renderContent()}
+            
+            {/* Bottom Save Button */}
+            <button 
+              onClick={handleSave}
+              disabled={saving}
+              className="w-full bg-petoo-primary text-petoo-textDark font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] mt-4 flex items-center justify-center disabled:opacity-50 disabled:active:scale-100"
+            >
+              {saving ? 'Saving...' : 'Save Settings'}
+            </button>
           </div>
         )}
       </div>
