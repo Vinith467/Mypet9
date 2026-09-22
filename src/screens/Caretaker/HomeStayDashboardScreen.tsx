@@ -34,7 +34,7 @@ export const HomeStayDashboardScreen = () => {
     },
     {
       icon: <Settings size={24} className="text-[#5C3A21]" />,
-      title: 'Service Settings',
+      title: 'Price Settings',
       subtitle: 'Manage pricing, service details and preferences.',
       onClick: () => navigate('/caretaker/service-settings')
     },
