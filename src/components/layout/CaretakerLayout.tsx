@@ -7,12 +7,6 @@ export const CaretakerLayout = ({ children }: { children: ReactNode }) => {
 
   // Simulate a new request popping up like Rapido Captain
   // This will happen on whatever page the caretaker is on
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowGlobalModal(true);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
   return (
     <div className="flex h-screen w-full bg-[#FBF6EE] text-[#1B2B48] overflow-hidden">
       
