@@ -15,7 +15,6 @@ interface Services {
   pickupDrop: ServiceOption;
   vaccination: ServiceOption;
   grooming: ServiceOption;
-  training?: ServiceOption;
 }
 
 export const CaretakerPriceSettingsScreen = () => {
@@ -33,8 +32,7 @@ export const CaretakerPriceSettingsScreen = () => {
   const [dogServices, setDogServices] = useState<Services>({
     pickupDrop: { enabled: false, price: '300' },
     vaccination: { enabled: false, price: '500' },
-    grooming: { enabled: false, price: '800' },
-    training: { enabled: false, price: '600' }
+    grooming: { enabled: false, price: '800' }
   });
 
   // State for Cat
