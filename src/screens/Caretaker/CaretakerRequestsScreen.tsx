@@ -47,6 +47,21 @@ const mockRequests = [
     location: 'Indiranagar, Bangalore',
     notes: 'Needs regular walks.',
     image: 'https://images.unsplash.com/photo-1589965716319-4a041b58fa8a?auto=format&fit=crop&q=80&w=200'
+  },
+  {
+    id: '3',
+    petName: 'Bella',
+    breed: 'Beagle',
+    age: '3 years',
+    size: 'Medium Dog',
+    startDate: '25 Sep 2026',
+    endDate: '28 Sep 2026',
+    nights: 3,
+    service: 'Home Stay',
+    status: 'declined',
+    location: 'HSR Layout, Bangalore',
+    notes: 'Very playful and energetic. Requires daily exercise.',
+    image: 'https://images.unsplash.com/photo-1537151608804-ea6f1c4228c2?auto=format&fit=crop&q=80&w=200'
   }
 ];
 

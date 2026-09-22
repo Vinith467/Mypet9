@@ -83,8 +83,8 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className={`relative w-full overflow-y-auto overflow-x-hidden bg-white rounded-3xl z-[101] shadow-2xl p-4 sm:p-5 max-h-[95vh] ${
               modalStep === 'quote' ? 'max-w-[420px] lg:max-w-[580px]' : 
-              req.status === 'accepted' ? 'max-w-[420px]' :
-              req.status === 'declined' ? 'max-w-[480px] lg:max-w-[760px]' :
+              req.status === 'accepted' ? 'max-w-[480px] lg:max-w-[700px]' :
+              req.status === 'declined' ? 'max-w-[480px] lg:max-w-[850px]' :
               'max-w-[480px] lg:max-w-[640px]'
             }`}
           >
@@ -103,16 +103,16 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
             )}
             
             {req.status === 'accepted' ? (
-              <div className="flex flex-col items-center w-full max-w-[380px] mx-auto pt-6 pb-2 relative">
+              <div className="flex flex-col w-full max-w-[400px] lg:max-w-none mx-auto pt-6 pb-2 relative">
                 <button 
                   onClick={onClose}
-                  className="absolute -top-1 -right-1 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors z-10"
+                  className="absolute -top-1 -right-1 lg:top-1 lg:right-1 text-[#7B1C1D] hover:bg-[#F6EBE5] p-1.5 rounded-full transition-colors z-10"
                 >
                   <X size={24} />
                 </button>
 
-                {/* Center Icon & Text */}
-                <div className="flex flex-col items-center justify-center w-full mb-2">
+                {/* TOP SECTION: Center Icon & Text */}
+                <div className="flex flex-col items-center justify-center w-full mb-8">
                   <div className="relative mb-5">
                     {/* Left sparkles */}
                     <svg className="absolute -left-6 top-1/2 -translate-y-1/2 w-5 h-12" viewBox="0 0 24 64" fill="none">
@@ -132,89 +132,94 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                   </div>
 
                   <h2 className="text-[26px] font-extrabold text-[#7B1C1D] mb-1.5 text-center leading-none tracking-tight">Booking Confirmed!</h2>
-                  <p className="text-[#381313] text-[15px] font-medium text-center leading-tight">
+                  <p className="text-[#381313] text-[15px] font-medium text-center leading-tight max-w-[320px]">
                     {req.petName}’s booking has been confirmed.<br/>Get ready to host!
                   </p>
                 </div>
 
-                {/* Pet Info & Stay Details Compact Card */}
-                <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 mb-6 shadow-sm flex flex-col mt-6">
-                  {/* Pet Info Header */}
-                  <div className="flex items-center mb-4">
-                    <img src={req.image} alt={req.petName} className="w-[70px] h-[70px] rounded-xl object-cover mr-4" />
-                    <div className="flex flex-col">
-                      <h3 className="font-extrabold text-[#7B1C1D] text-[20px] leading-none mb-1.5">{req.petName}</h3>
-                      <p className="text-[#381313] text-[13px] font-medium mb-2">{req.breed} • {req.size.split(' ')[0]}</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        <div className="bg-[#FFF0F0] text-[#7B1C1D] px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center space-x-1">
-                          <PawPrint size={12} />
-                          <span>Vaccinated</span>
+                {/* BOTTOM SECTION: 2 Columns on Desktop */}
+                <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-6 w-full">
+                  {/* Left Column: Pet Info & Stay Details Compact Card */}
+                  <div className="w-full">
+                    <div className="w-full bg-white border border-[#F0F0F0] rounded-2xl p-4 shadow-[0_4px_15px_-4px_rgba(0,0,0,0.03)] h-full flex flex-col justify-center">
+                      {/* Pet Info Header */}
+                      <div className="flex items-center mb-4">
+                        <img src={req.image} alt={req.petName} className="w-[70px] h-[70px] rounded-xl object-cover mr-4" />
+                        <div className="flex flex-col">
+                          <h3 className="font-extrabold text-[#7B1C1D] text-[20px] leading-none mb-1.5">{req.petName}</h3>
+                          <p className="text-[#381313] text-[13px] font-medium mb-2">{req.breed} • {req.size.split(' ')[0]}</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            <div className="bg-[#FFF0F0] text-[#7B1C1D] px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center space-x-1">
+                              <PawPrint size={12} />
+                              <span>Vaccinated</span>
+                            </div>
+                            <div className="bg-[#FFF0F0] text-[#7B1C1D] px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center space-x-1">
+                              <ShieldCheck size={12} />
+                              <span>Friendly</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="bg-[#FFF0F0] text-[#7B1C1D] px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center space-x-1">
-                          <ShieldCheck size={12} />
-                          <span>Friendly</span>
+                      </div>
+
+                      <div className="w-full h-px bg-[#F0F0F0] mb-4"></div>
+
+                      {/* Single-Column Details */}
+                      <div className="flex flex-col space-y-3.5 px-1">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3 text-[#7B1C1D]">
+                            <Calendar size={18} strokeWidth={2} />
+                            <span className="text-[#381313] font-medium text-[14px]">Check-in</span>
+                          </div>
+                          <span className="text-[#381313] font-medium text-[14px]">{req.startDate}</span>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3 text-[#7B1C1D]">
+                            <Calendar size={18} strokeWidth={2} />
+                            <span className="text-[#381313] font-medium text-[14px]">Check-out</span>
+                          </div>
+                          <span className="text-[#381313] font-medium text-[14px]">{req.endDate}</span>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3 text-[#7B1C1D]">
+                            <Moon size={18} strokeWidth={2} />
+                            <span className="text-[#381313] font-medium text-[14px]">Nights</span>
+                          </div>
+                          <span className="text-[#381313] font-medium text-[14px]">{req.nights}</span>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center space-x-3 text-[#7B1C1D]">
+                            <Coins size={18} strokeWidth={2} />
+                            <span className="text-[#381313] font-medium text-[14px]">Total Amount</span>
+                          </div>
+                          <span className="text-[#7B1C1D] font-extrabold text-[17px]">₹{formatCurrency(quoteTotal)}</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="w-full h-px bg-[#F0F0F0] mb-4"></div>
-
-                  {/* Single-Column Details */}
-                  <div className="flex flex-col space-y-3.5 px-1">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3 text-[#7B1C1D]">
-                        <Calendar size={18} strokeWidth={2} />
-                        <span className="text-[#381313] font-medium text-[14px]">Check-in</span>
-                      </div>
-                      <span className="text-[#381313] font-medium text-[14px]">{req.startDate}</span>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3 text-[#7B1C1D]">
-                        <Calendar size={18} strokeWidth={2} />
-                        <span className="text-[#381313] font-medium text-[14px]">Check-out</span>
-                      </div>
-                      <span className="text-[#381313] font-medium text-[14px]">{req.endDate}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3 text-[#7B1C1D]">
-                        <Moon size={18} strokeWidth={2} />
-                        <span className="text-[#381313] font-medium text-[14px]">Nights</span>
-                      </div>
-                      <span className="text-[#381313] font-medium text-[14px]">{req.nights}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-1">
-                      <div className="flex items-center space-x-3 text-[#7B1C1D]">
-                        <Coins size={18} strokeWidth={2} />
-                        <span className="text-[#381313] font-medium text-[14px]">Total Amount</span>
-                      </div>
-                      <span className="text-[#7B1C1D] font-extrabold text-[17px]">₹{formatCurrency(quoteTotal)}</span>
-                    </div>
+                  {/* Right Column: Actions Stacked Vertically */}
+                  <div className="flex flex-col w-full mt-5 lg:mt-0 justify-end space-y-3">
+                    <button 
+                      onClick={() => {
+                        onClose();
+                        navigate('/caretaker/bookings');
+                      }}
+                      className="w-full py-3.5 rounded-xl bg-[#7B1C1D] text-white font-extrabold text-[15px] hover:bg-[#5C1C1D] transition-colors flex items-center justify-center relative shadow-sm"
+                    >
+                      View Booking
+                      <ChevronRight size={18} className="absolute right-4 text-white" />
+                    </button>
+                    <button 
+                      onClick={onClose}
+                      className="w-full py-3.5 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <MessageSquare size={18} strokeWidth={2.5} />
+                      <span>Message Customer</span>
+                    </button>
                   </div>
-                </div>
-
-                {/* Actions Stacked Vertically */}
-                <div className="flex flex-col w-full space-y-3">
-                  <button 
-                    onClick={() => {
-                      onClose();
-                      navigate('/caretaker/bookings');
-                    }}
-                    className="w-full py-3.5 rounded-xl bg-[#7B1C1D] text-white font-extrabold text-[15px] hover:bg-[#5C1C1D] transition-colors flex items-center justify-center relative shadow-sm"
-                  >
-                    View Booking
-                    <ChevronRight size={18} className="absolute right-4 text-white" />
-                  </button>
-                  <button 
-                    onClick={onClose}
-                    className="w-full py-3.5 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors flex items-center justify-center space-x-2"
-                  >
-                    <MessageSquare size={18} strokeWidth={2.5} />
-                    <span>Message Customer</span>
-                  </button>
                 </div>
               </div>
             ) : modalStep !== 'success' && req.status !== 'accepted' ? (
@@ -307,7 +312,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                 {/* Left Column (or full width if not declined) */}
                 <div className={`flex flex-col ${req.status === 'declined' ? "flex-1" : "w-full"}`}>
                   {/* Details List */}
-                  <div className={`grid grid-cols-1 ${req.status === 'declined' ? "" : "lg:grid-cols-2"} gap-4 lg:gap-x-8 mb-5 px-1`}>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-x-6 mb-4 px-1">
                     
                     <div className="flex items-start space-x-3">
                     <div className="mt-0.5">
@@ -422,13 +427,13 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                     <div className="flex items-center space-x-3 pt-1 mt-auto">
                       <button 
                         onClick={onClose}
-                        className="flex-1 py-3.5 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] bg-white font-extrabold text-[14px] hover:bg-[#F6EBE5] transition-colors"
+                        className="flex-1 py-3 rounded-xl border border-[#7B1C1D] text-[#7B1C1D] bg-white font-extrabold text-[13px] hover:bg-[#F6EBE5] transition-colors"
                       >
                         Back to Declined Requests
                       </button>
                       <button 
                         onClick={onClose}
-                        className="flex-1 py-3.5 rounded-xl bg-[#612117] text-white font-extrabold text-[14px] hover:bg-[#4A1617] transition-colors shadow-md"
+                        className="flex-1 py-3 rounded-xl bg-[#612117] text-white font-extrabold text-[13px] hover:bg-[#4A1617] transition-colors shadow-md"
                       >
                         View Similar Requests
                       </button>
@@ -564,7 +569,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                   </div>
                 </div>
               </>
-            ) : (
+            ) : modalStep === 'success' && req.status !== 'accepted' ? (
                 <div className="flex flex-col w-full max-w-[400px] lg:max-w-none mx-auto pt-6 pb-2">
                   <button 
                     onClick={() => setModalStep('quote')}
@@ -663,7 +668,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                         <button 
                           onClick={() => {
                             onClose();
-                            navigate('/home');
+                            navigate('/caretaker/homestay');
                           }}
                           className="w-full py-3.5 rounded-xl border border-[#612117] text-[#612117] bg-white font-extrabold text-[15px] hover:bg-[#F6EBE5] transition-colors"
                         >
@@ -673,7 +678,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                     </div>
                   </div>
                 </div>
-            )}
+            ) : null}
 
           </motion.div>
         </div>
@@ -681,3 +686,5 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
     </AnimatePresence>
   );
 };
+
+

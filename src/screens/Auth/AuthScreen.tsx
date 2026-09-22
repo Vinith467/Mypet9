@@ -190,11 +190,11 @@ const AuthScreen = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, type: "spring", stiffness: 200, damping: 25 }}
-          className="w-full max-w-[380px] px-6 lg:px-0 flex flex-col items-center bg-transparent my-auto"
+          className="w-[90%] max-w-[380px] p-6 lg:p-0 flex flex-col items-center bg-black/40 backdrop-blur-md lg:bg-transparent lg:backdrop-blur-none rounded-3xl lg:rounded-none my-auto shadow-2xl lg:shadow-none border border-white/10 lg:border-none"
         >
           
-          {/* Sticky Header Wrapper */}
-          <div className="sticky top-0 z-30 w-full flex flex-col items-center pt-8 pb-4 bg-black/40 backdrop-blur-md lg:bg-white lg:backdrop-blur-none rounded-b-3xl lg:rounded-none -mx-4 px-4 lg:mx-0 lg:px-0">
+          {/* Header Wrapper */}
+          <div className="w-full flex flex-col items-center pt-2 pb-4 lg:bg-white lg:rounded-none">
           <div className="flex flex-col items-center mb-6">
             <div className="bg-white/20 backdrop-blur-md lg:bg-[#FBBF24]/10 p-2.5 rounded-xl mb-3 shadow-sm lg:shadow-none">
               <PawPrint size={28} className="text-white lg:text-[#FBBF24]" strokeWidth={2.5} />

@@ -8,17 +8,20 @@ import { useAuth } from '../../contexts/AuthContext';
 const slides = [
   {
     id: 1,
-    image: '/1.png',
+    desktopImage: '/1.png',
+    mobileImage: '/M1.png',
     text: "Trusted pet boarding when you're away.",
   },
   {
     id: 2,
-    image: '/2.png',
+    desktopImage: '/2.png',
+    mobileImage: '/M2.png',
     text: 'All our boarding partners are verified and love pets.',
   },
   {
     id: 3,
-    image: '/3.png',
+    desktopImage: '/3.png',
+    mobileImage: '/M3.png',
     text: 'We offer pickup and drop services for a stress-free experience.',
   },
 ];
@@ -81,9 +84,17 @@ const SplashScreen = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${slides[currentSlide].image})` }}
-        />
+          className="absolute inset-0"
+        >
+          <picture>
+            <source media="(max-width: 767px)" srcSet={slides[currentSlide].mobileImage} />
+            <img 
+              src={slides[currentSlide].desktopImage} 
+              alt={slides[currentSlide].text} 
+              className="w-full h-full object-cover object-center" 
+            />
+          </picture>
+        </motion.div>
       </AnimatePresence>
 
       {/* Gradients removed as requested since text/images are baked in */}
