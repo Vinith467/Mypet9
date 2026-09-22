@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../config/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { ChevronLeft, Info, Plus, Minus, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
+import { ChevronLeft, Info, Plus, Minus, ChevronRight, Calendar as CalendarIcon, CheckCircle2 } from 'lucide-react';
 
 type DateStatus = 'available' | 'limited' | 'full' | 'blocked';
 
@@ -14,6 +14,7 @@ export const CaretakerAvailabilityScreen = () => {
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   
   const [capacity, setCapacity] = useState(3);
   const [dateStatuses, setDateStatuses] = useState<Record<string, DateStatus>>({});
@@ -52,7 +53,8 @@ export const CaretakerAvailabilityScreen = () => {
           dateStatuses
         }
       }, { merge: true });
-      alert('Availability saved successfully!');
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
       console.error("Error saving availability:", error);
       alert('Failed to save settings.');
@@ -181,10 +183,14 @@ export const CaretakerAvailabilityScreen = () => {
               
               <button 
                 onClick={handleSave}
-                disabled={saving}
-                className="w-full py-3 border-2 border-petoo-primary text-petoo-textDark rounded-2xl font-extrabold text-[15px] hover:bg-petoo-primary/10 active:bg-petoo-primary/20 transition-colors"
+                disabled={saving || showSuccess}
+                className={`w-full py-3 border-2 rounded-2xl font-extrabold text-[15px] transition-colors ${
+                  showSuccess
+                    ? 'border-green-500 bg-green-50 text-green-600'
+                    : 'border-petoo-primary text-petoo-textDark hover:bg-petoo-primary/10 active:bg-petoo-primary/20'
+                }`}
               >
-                Update Capacity
+                {showSuccess ? 'Saved!' : 'Update Capacity'}
               </button>
             </div>
 
@@ -262,11 +268,26 @@ export const CaretakerAvailabilityScreen = () => {
             {/* Bottom Save Button */}
             <button 
               onClick={handleSave}
-              disabled={saving}
-              className="w-full bg-petoo-primary text-petoo-textDark font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] mt-4 flex items-center justify-center disabled:opacity-50"
+              disabled={saving || showSuccess}
+              className={`w-full font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all mt-4 flex items-center justify-center disabled:opacity-50 ${
+                showSuccess 
+                  ? 'bg-green-500 text-white active:scale-100' 
+                  : 'bg-petoo-primary text-petoo-textDark active:scale-[0.98]'
+              }`}
             >
-              <CalendarIcon size={20} className="mr-2" />
-              {saving ? 'Saving...' : 'Update Availability'}
+              {showSuccess ? (
+                <>
+                  <CheckCircle2 size={20} className="mr-2" />
+                  Successfully Saved!
+                </>
+              ) : saving ? (
+                'Saving...'
+              ) : (
+                <>
+                  <CalendarIcon size={20} className="mr-2" />
+                  Update Availability
+                </>
+              )}
             </button>
           </div>
         )}

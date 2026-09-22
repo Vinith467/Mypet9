@@ -23,6 +23,7 @@ export const CaretakerPriceSettingsScreen = () => {
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   
   const [activeTab, setActiveTab] = useState<'dog' | 'cat'>('dog');
   const [isEditingPrice, setIsEditingPrice] = useState(false);
@@ -81,7 +82,8 @@ export const CaretakerPriceSettingsScreen = () => {
         }
       }, { merge: true });
       setIsEditingPrice(false);
-      alert('Price settings saved successfully!');
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
       console.error("Error saving price settings:", error);
       alert('Failed to save settings.');
@@ -267,10 +269,23 @@ export const CaretakerPriceSettingsScreen = () => {
             {/* Bottom Save Button */}
             <button 
               onClick={handleSave}
-              disabled={saving}
-              className="w-full bg-petoo-primary text-petoo-textDark font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] mt-4 flex items-center justify-center disabled:opacity-50 disabled:active:scale-100"
+              disabled={saving || showSuccess}
+              className={`w-full font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all mt-4 flex items-center justify-center disabled:opacity-50 disabled:active:scale-100 ${
+                showSuccess 
+                  ? 'bg-green-500 text-white active:scale-100' 
+                  : 'bg-petoo-primary text-petoo-textDark active:scale-[0.98]'
+              }`}
             >
-              {saving ? 'Saving...' : 'Save Settings'}
+              {showSuccess ? (
+                <>
+                  <CheckCircle2 size={20} className="mr-2" />
+                  Successfully Saved!
+                </>
+              ) : saving ? (
+                'Saving...'
+              ) : (
+                'Save Settings'
+              )}
             </button>
           </div>
         )}
