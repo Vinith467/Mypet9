@@ -8,9 +8,10 @@ export default {
     extend: {
       colors: {
         petoo: {
-          primary: '#1F5E42',
+          primary: '#FBBF24',
+          primaryDark: '#F59E0B',
           bg: '#FBF6EE',
-          textDark: '#1A1A1A',
+          textDark: '#1B2B48',
           textMuted: '#6B6B6B',
         }
       },

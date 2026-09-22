@@ -89,11 +89,12 @@ export const HomeScreen = () => {
               </p>
               
               <button 
-                className="bg-white text-[#174f38] px-6 py-3 lg:px-8 lg:py-3.5 rounded-full font-extrabold text-sm lg:text-base shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center w-max hover:bg-gray-50 transition-all active:scale-95 group-hover:shadow-2xl"
+                onClick={() => navigate('/booking/services')}
+                className="mt-6 bg-white hover:bg-gray-50 text-[#1B2B48] rounded-2xl font-bold px-6 py-3.5 group shadow-xl shadow-black/10 transition-all border-none flex items-center w-max"
               >
-                <PawPrint size={18} className="mr-2 text-petoo-primary" />
+                <PawPrint size={18} className="mr-2 text-[#1B2B48]" />
                 Book a Stay
-                <ArrowRight size={18} className="ml-2 text-petoo-primary/70 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={18} className="ml-2 text-[#1B2B48]/70 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>

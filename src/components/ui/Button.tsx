@@ -13,8 +13,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = "inline-flex items-center justify-center font-bold transition-all focus:outline-none focus:ring-2 focus:ring-petoo-primary/50 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98]";
     
     const variants = {
-      solid: "bg-petoo-primary text-white shadow-md hover:bg-[#154631] hover:shadow-lg border-2 border-transparent",
-      outline: "bg-transparent text-petoo-primary border-2 border-petoo-primary hover:bg-petoo-primary/5",
+      solid: "bg-petoo-primary text-petoo-textDark shadow-md hover:bg-petoo-primaryDark hover:shadow-lg border-2 border-transparent",
+      outline: "bg-transparent text-petoo-textDark border-2 border-petoo-textDark hover:bg-black/5",
       ghost: "bg-transparent text-petoo-textDark hover:bg-black/5 border-2 border-transparent",
     };
     

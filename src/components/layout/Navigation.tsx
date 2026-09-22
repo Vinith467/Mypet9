@@ -22,7 +22,7 @@ export const Navigation = () => {
       {/* Desktop Logo */}
       <div className="hidden lg:flex items-center space-x-3 mb-12 px-6 cursor-pointer group" onClick={() => navigate('/home')}>
         <div className="bg-petoo-primary rounded-2xl p-2.5 shadow-lg shadow-petoo-primary/20 group-hover:scale-105 transition-transform">
-          <PawPrint size={24} className="text-white" />
+          <PawPrint size={24} className="text-petoo-textDark" />
         </div>
         <h2 className="text-3xl font-extrabold text-[#1B2B48] tracking-tight" style={{ fontFamily: 'serif' }}>
           Mypet9
@@ -41,7 +41,7 @@ export const Navigation = () => {
               className={cn(
                 "relative flex flex-col lg:flex-row items-center lg:justify-start lg:space-x-4 py-1.5 lg:py-4 px-3 lg:px-5 rounded-[20px] transition-all outline-none group w-full",
                 isActive 
-                  ? "text-petoo-primary" 
+                  ? "text-petoo-textDark" 
                   : "text-gray-400 hover:text-gray-900"
               )}
             >
@@ -64,7 +64,7 @@ export const Navigation = () => {
               />
               <span className={cn(
                 "text-[10px] lg:text-[15px] font-bold z-10 transition-colors",
-                isActive ? "text-petoo-primary" : "text-gray-500 group-hover:text-gray-900"
+                isActive ? "text-petoo-textDark" : "text-gray-500 group-hover:text-gray-900"
               )}>
                 {item.label}
               </span>
