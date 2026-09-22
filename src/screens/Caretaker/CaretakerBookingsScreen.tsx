@@ -95,7 +95,7 @@ export const CaretakerBookingsScreen = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 px-5 lg:px-12 lg:pt-10 w-full flex flex-col max-w-5xl mx-auto">
+        <div className="flex-1 px-5 lg:px-8 lg:pt-8 w-full flex flex-col max-w-7xl mx-auto">
           
           {/* Desktop Top Nav */}
           <div className="hidden lg:flex justify-between items-center mb-8">
@@ -193,8 +193,7 @@ export const CaretakerBookingsScreen = () => {
                   whileTap={{ scale: 0.99 }}
                   className="bg-white/80 lg:bg-white rounded-[28px] p-4 flex items-center cursor-pointer shadow-[0_4px_20px_rgba(92,58,33,0.03)] border border-white transition-all group"
                 >
-                  {/* Pet Image */}
-                  <div className="w-[100px] h-[120px] lg:w-[120px] lg:h-[140px] shrink-0 rounded-2xl overflow-hidden relative mr-4 lg:mr-6 shadow-sm">
+                  <div className="w-[100px] h-[120px] lg:w-[90px] lg:h-[110px] shrink-0 rounded-2xl overflow-hidden relative mr-4 lg:mr-6 shadow-sm">
                     <img 
                       src={booking.image} 
                       alt={booking.petName} 
@@ -206,7 +205,7 @@ export const CaretakerBookingsScreen = () => {
                   <div className="flex-1 flex flex-col justify-between h-full py-1 min-w-0">
                     <div className="flex items-start justify-between">
                       <div className="min-w-0 pr-2">
-                        <h3 className="text-xl lg:text-2xl font-extrabold text-[#1B2B48] mb-0.5 truncate">
+                        <h3 className="text-xl lg:text-[22px] font-extrabold text-[#1B2B48] mb-0.5 truncate">
                           {booking.petName}
                         </h3>
                         <p className="text-[#1B2B48]/70 text-xs lg:text-sm font-medium truncate mb-2">
@@ -259,9 +258,9 @@ export const CaretakerBookingsScreen = () => {
                 <p className="text-[#FBBF24] font-extrabold text-[10px] lg:text-xs uppercase tracking-[0.2em] mb-2 lg:mb-3 opacity-80">
                   Your Impact
                 </p>
-                <h3 className="text-[22px] lg:text-[34px] font-extrabold text-[#1B2B48] leading-[1.15] tracking-tight">
+                <h3 className="text-[22px] lg:text-[28px] font-extrabold text-[#1B2B48] leading-[1.15] tracking-tight">
                   Every stay is a<br/>
-                  <span className="text-[#FBBF24] font-caveat text-[32px] lg:text-[46px] font-bold leading-none inline-block mt-1">new story ♥</span>
+                  <span className="text-[#FBBF24] font-caveat text-[32px] lg:text-[40px] font-bold leading-none inline-block mt-1">new story ♥</span>
                 </h3>
              </div>
 

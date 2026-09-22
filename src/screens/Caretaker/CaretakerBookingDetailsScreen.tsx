@@ -136,7 +136,7 @@ export const CaretakerBookingDetailsScreen = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 px-5 lg:px-12 lg:pt-8 w-full flex flex-col max-w-5xl mx-auto">
+        <div className="flex-1 px-5 lg:px-8 lg:pt-8 w-full flex flex-col max-w-5xl mx-auto">
           
           {/* Desktop Top Nav */}
           <div className="hidden lg:flex justify-between items-center mb-10">
@@ -168,8 +168,8 @@ export const CaretakerBookingDetailsScreen = () => {
 
           {/* Page Title & Cute Graphic */}
           <div className="flex items-start justify-between mb-8 mt-2 lg:mt-0">
-             <div>
-                <h2 className="text-[26px] lg:text-[34px] font-extrabold text-[#4A1D1A] tracking-tight leading-tight mb-1">
+              <div>
+                <h2 className="text-[26px] lg:text-[30px] font-extrabold text-[#4A1D1A] tracking-tight leading-tight mb-1">
                   {isCompleted ? 'Booking Details' : (activeTab === 'timeline' ? 'Booking Timeline' : 'Booking Details')}
                 </h2>
                 {!isCompleted && (
@@ -191,7 +191,7 @@ export const CaretakerBookingDetailsScreen = () => {
 
           {/* Top Pet Card */}
           <div className="bg-white rounded-[24px] p-4 lg:p-6 shadow-[0_4px_20px_rgba(92,58,33,0.03)] border border-white flex mb-6">
-            <div className="w-[100px] h-[100px] lg:w-[120px] lg:h-[120px] rounded-[18px] overflow-hidden shrink-0 mr-4 lg:mr-6">
+            <div className="w-[100px] h-[100px] shrink-0 rounded-[18px] overflow-hidden mr-4 lg:mr-6">
               <img 
                 src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=300" 
                 alt="Buddy" 
@@ -201,7 +201,7 @@ export const CaretakerBookingDetailsScreen = () => {
             
             <div className="flex-1 flex justify-between relative min-w-0">
               <div className="flex flex-col justify-center">
-                <h3 className="text-2xl lg:text-3xl font-extrabold text-[#4A1D1A] leading-none mb-1.5">
+                <h3 className="text-2xl lg:text-[26px] font-extrabold text-[#4A1D1A] leading-none mb-1.5">
                   Buddy
                 </h3>
                 <p className="text-[#1B2B48]/70 text-xs lg:text-sm font-medium mb-3">

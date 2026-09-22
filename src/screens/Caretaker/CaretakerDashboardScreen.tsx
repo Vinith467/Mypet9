@@ -61,7 +61,7 @@ export const CaretakerDashboardScreen = () => {
         </div>
 
         {/* Main Content Container */}
-        <div className="flex-1 px-5 lg:px-12 lg:pt-10 w-full flex flex-col">
+        <div className="flex-1 px-5 lg:px-8 lg:pt-8 w-full flex flex-col max-w-7xl mx-auto">
           
           {/* Desktop Top Nav */}
           <div className="hidden lg:flex justify-between items-center mb-8">
@@ -83,16 +83,16 @@ export const CaretakerDashboardScreen = () => {
           </div>
 
           {/* Hero Section */}
-          <div className="relative w-full mb-6 lg:mb-10 bg-[#FFFFFF] rounded-[24px] lg:rounded-[32px] p-4 lg:p-12 flex flex-col lg:flex-row items-center justify-between shadow-[0_8px_30px_rgba(92,58,33,0.04)] border border-white relative overflow-hidden">
+          <div className="relative w-full mb-6 lg:mb-8 bg-[#FFFFFF] rounded-[24px] lg:rounded-[32px] p-4 lg:p-8 flex flex-col lg:flex-row items-center justify-between shadow-[0_8px_30px_rgba(92,58,33,0.04)] border border-white relative overflow-hidden">
             {/* Background Accent */}
             <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#F5EFE6] rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
             
             {/* Text Side */}
             <div className="flex-1 z-10 max-w-2xl">
-              <h2 className="text-xl lg:text-4xl font-semibold text-[#1B2B48] tracking-tight mb-1">
+              <h2 className="text-xl lg:text-3xl font-semibold text-[#1B2B48] tracking-tight mb-1">
                 Good morning,
               </h2>
-              <h1 className="text-2xl lg:text-[64px] font-black text-[#1B2B48] leading-[1.1] mb-2 lg:mb-6 tracking-tighter">
+              <h1 className="text-2xl lg:text-[52px] font-black text-[#1B2B48] leading-[1.1] mb-2 lg:mb-4 tracking-tighter">
                 {firstName}!
               </h1>
               <div className="w-10 lg:w-12 h-1 lg:h-1.5 bg-[#FBBF24] rounded-full mb-3 lg:mb-6"></div>
@@ -105,7 +105,7 @@ export const CaretakerDashboardScreen = () => {
             </div>
             
             {/* Image Side */}
-            <div className="w-full lg:w-[480px] h-[180px] lg:h-[280px] relative rounded-[16px] lg:rounded-[32px] overflow-hidden shadow-[0_10px_40px_rgba(92,58,33,0.12)] group mt-4 lg:mt-0 z-10 shrink-0">
+            <div className="w-full lg:w-[420px] h-[180px] lg:h-[240px] relative rounded-[16px] lg:rounded-[32px] overflow-hidden shadow-[0_10px_40px_rgba(92,58,33,0.12)] group mt-4 lg:mt-0 z-10 shrink-0">
                <img 
                   src="/assets/hero_pets.jpg" 
                   alt="Golden Retriever and Cat" 
@@ -124,14 +124,14 @@ export const CaretakerDashboardScreen = () => {
           </div>
 
           {/* Service Cards Container */}
-          <div className={`flex flex-col lg:flex-row gap-4 lg:gap-8 mb-4 lg:mb-10 ${(!services || (services.grooming !== false && (services.homeStay !== false || services.boarding !== false))) ? '' : 'lg:max-w-2xl lg:mx-auto'}`}>
+          <div className={`flex flex-col lg:flex-row gap-4 lg:gap-6 mb-4 lg:mb-8 ${(!services || (services.grooming !== false && (services.homeStay !== false || services.boarding !== false))) ? '' : 'lg:max-w-3xl lg:mx-auto'}`}>
             
             {/* Home Stay / Boarding Card */}
             {(!services || services.homeStay !== false || services.boarding !== false) && (
               <motion.div 
-                whileHover={{ y: -6 }}
+                whileHover={{ y: -4 }}
                 onClick={() => navigate('/caretaker/homestay')}
-                className="relative flex-1 rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer shadow-[0_10px_40px_rgba(92,58,33,0.06)] bg-[#FFFFFF] group flex flex-row h-[140px] lg:h-[280px]"
+                className="relative flex-1 rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer shadow-[0_10px_40px_rgba(92,58,33,0.06)] bg-[#FFFFFF] group flex flex-row h-[140px] lg:h-[220px]"
               >
                 {/* Text Side */}
                 <div className="flex-1 min-w-0 relative z-10 p-4 lg:p-8 flex flex-col h-full justify-between">
@@ -139,7 +139,7 @@ export const CaretakerDashboardScreen = () => {
                     <div className="w-9 h-9 lg:w-14 lg:h-14 bg-[#FBBF24] rounded-xl lg:rounded-2xl flex items-center justify-center mb-2 lg:mb-6 shadow-[0_8px_20px_rgba(74,46,27,0.2)] group-hover:scale-105 transition-transform duration-300 shrink-0">
                       <Home size={18} className="text-white lg:w-6 lg:h-6" />
                     </div>
-                    <h3 className="text-[16px] lg:text-[28px] font-extrabold text-[#1B2B48] leading-tight mb-1 lg:mb-2 tracking-tight">
+                    <h3 className="text-[16px] lg:text-[24px] font-extrabold text-[#1B2B48] leading-tight mb-1 tracking-tight">
                       Home Stay<br/>& Boarding
                     </h3>
                     <p className="text-[#1B2B48]/70 text-[10px] lg:text-sm font-medium leading-snug break-words line-clamp-2">
@@ -184,9 +184,9 @@ export const CaretakerDashboardScreen = () => {
             {/* Grooming Card */}
             {(!services || services.grooming !== false) && (
               <motion.div 
-                whileHover={{ y: -6 }}
+                whileHover={{ y: -4 }}
                 onClick={() => navigate('/caretaker/requests')}
-                className="relative flex-1 rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer shadow-[0_10px_40px_rgba(92,58,33,0.06)] bg-[#FFFFFF] group flex flex-row h-[140px] lg:h-[280px]"
+                className="relative flex-1 rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer shadow-[0_10px_40px_rgba(92,58,33,0.06)] bg-[#FFFFFF] group flex flex-row h-[140px] lg:h-[220px]"
               >
                 {/* Text Side */}
                 <div className="flex-1 min-w-0 relative z-10 p-4 lg:p-8 flex flex-col h-full justify-between">
@@ -194,7 +194,7 @@ export const CaretakerDashboardScreen = () => {
                     <div className="w-9 h-9 lg:w-14 lg:h-14 bg-[#FBBF24] rounded-xl lg:rounded-2xl flex items-center justify-center mb-2 lg:mb-6 shadow-[0_8px_20px_rgba(74,46,27,0.2)] group-hover:scale-105 transition-transform duration-300 shrink-0">
                       <Scissors size={18} className="text-white lg:w-6 lg:h-6" />
                     </div>
-                    <h3 className="text-[16px] lg:text-[28px] font-extrabold text-[#1B2B48] leading-tight mb-1 lg:mb-2 tracking-tight">
+                    <h3 className="text-[16px] lg:text-[24px] font-extrabold text-[#1B2B48] leading-tight mb-1 tracking-tight">
                       Grooming<br/>Services
                     </h3>
                     <p className="text-[#1B2B48]/70 text-[10px] lg:text-sm font-medium leading-snug break-words line-clamp-2">

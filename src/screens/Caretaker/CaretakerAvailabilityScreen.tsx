@@ -204,130 +204,138 @@ export const CaretakerAvailabilityScreen = () => {
             <div className="w-8 h-8 border-4 border-petoo-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
-          <div className="flex-1 px-5 lg:px-12 pt-6 w-full flex flex-col max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="flex-1 px-5 lg:px-8 pt-6 w-full flex flex-col max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300">
             
             <h2 className="text-[14px] text-gray-500 font-medium mb-6">View and manage your boarding schedule</h2>
             
-            {/* Capacity Card */}
-            <div className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 mb-8">
-              <div className="flex items-center mb-1">
-                <h3 className="text-petoo-textDark font-extrabold text-[16px]">Boarding Capacity</h3>
-                <Info size={16} className="text-gray-400 ml-2" />
-              </div>
-              <p className="text-gray-500 text-[13px] font-medium mb-5">
-                Maximum pets you can accommodate at the same time
-              </p>
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start w-full">
               
-              <div className="flex items-center justify-center space-x-4 mb-5">
-                <button 
-                  onClick={decreaseCapacity}
-                  className="w-12 h-12 bg-petoo-primary rounded-xl flex items-center justify-center text-petoo-textDark active:scale-95 transition-transform"
-                >
-                  <Minus size={24} />
-                </button>
-                <div className="flex items-center justify-center min-w-[80px]">
-                  <span className="text-4xl font-extrabold text-petoo-textDark">{capacity}</span>
-                  <span className="text-gray-500 font-medium text-[16px] ml-2 mt-2">pets</span>
-                </div>
-                <button 
-                  onClick={increaseCapacity}
-                  className="w-12 h-12 bg-petoo-primary rounded-xl flex items-center justify-center text-petoo-textDark active:scale-95 transition-transform"
-                >
-                  <Plus size={24} />
-                </button>
-              </div>
-              
-              <button 
-                onClick={handleSaveCapacity}
-                disabled={savingCapacity || showCapacitySuccess}
-                className={`w-full py-3 border-2 rounded-2xl font-extrabold text-[15px] transition-colors ${
-                  showCapacitySuccess
-                    ? 'border-green-500 bg-green-50 text-green-600'
-                    : 'border-petoo-primary text-petoo-textDark hover:bg-petoo-primary/10 active:bg-petoo-primary/20'
-                }`}
-              >
-                {showCapacitySuccess ? 'Saved!' : 'Update Capacity'}
-              </button>
-            </div>
-
-            {/* Calendar Section (View Only) */}
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-[#1B2B48] font-extrabold text-[18px]">
-                {monthNames[month]} {year}
-              </h3>
-              <div className="flex items-center space-x-2">
-                <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-full text-[#1B2B48] transition-colors"><ChevronLeft size={24} /></button>
-                <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-full text-[#1B2B48] transition-colors"><ChevronRight size={24} /></button>
-              </div>
-            </div>
-
-            {/* Calendar Grid */}
-            <div className="mb-8 bg-white p-5 rounded-3xl shadow-sm border border-gray-100">
-              <div className="grid grid-cols-7 gap-1 mb-2">
-                {weekDays.map(day => (
-                  <div key={day} className="text-center text-gray-400 font-medium text-[13px] py-2">
-                    {day}
+              {/* Left Column: Calendar */}
+              <div className="flex-1 w-full flex flex-col order-2 lg:order-1">
+                {/* Calendar Section (View Only) */}
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-[#1B2B48] font-extrabold text-[18px]">
+                    {monthNames[month]} {year}
+                  </h3>
+                  <div className="flex items-center space-x-2">
+                    <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-full text-[#1B2B48] transition-colors"><ChevronLeft size={24} /></button>
+                    <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-full text-[#1B2B48] transition-colors"><ChevronRight size={24} /></button>
                   </div>
-                ))}
-              </div>
-              
-              <div className="grid grid-cols-7 gap-1 gap-y-3">
-                {days.map((day, idx) => {
-                  if (day === null) {
-                    return <div key={`empty-${idx}`} className="h-12"></div>;
-                  }
-                  
-                  const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                  const status = dateStatuses[dateStr] || 'available';
-                  
-                  const isToday = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
-                  
-                  return (
-                    <div 
-                      key={day} 
-                      className="flex flex-col items-center justify-start h-12 pt-1 relative"
-                    >
-                      <span className={`text-[15px] font-bold z-10 w-8 h-8 flex items-center justify-center rounded-full
-                        ${status === 'blocked' ? 'text-gray-400 line-through decoration-gray-400/50' : 'text-[#1B2B48]'}
-                        ${isToday ? 'bg-petoo-primary/20' : ''}
-                      `}>
-                        {day}
-                      </span>
-                      <div className={`w-1.5 h-1.5 rounded-full mt-1 ${getStatusColor(status)}`}></div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+                </div>
 
-            {/* Legend */}
-            <div className="flex items-center justify-between px-2 mb-8 flex-wrap gap-2">
-              <div className="flex items-center space-x-1.5">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="text-[12px] font-bold text-gray-600">Available</span>
+                {/* Calendar Grid */}
+                <div className="mb-6 bg-white p-5 rounded-3xl shadow-sm border border-gray-100">
+                  <div className="grid grid-cols-7 gap-1 mb-2">
+                    {weekDays.map(day => (
+                      <div key={day} className="text-center text-gray-400 font-medium text-[13px] py-2">
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="grid grid-cols-7 gap-1 gap-y-3">
+                    {days.map((day, idx) => {
+                      if (day === null) {
+                        return <div key={`empty-${idx}`} className="h-12"></div>;
+                      }
+                      
+                      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                      const status = dateStatuses[dateStr] || 'available';
+                      
+                      const isToday = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
+                      
+                      return (
+                        <div 
+                          key={day} 
+                          className="flex flex-col items-center justify-start h-12 pt-1 relative"
+                        >
+                          <span className={`text-[15px] font-bold z-10 w-8 h-8 flex items-center justify-center rounded-full
+                            ${status === 'blocked' ? 'text-gray-400 line-through decoration-gray-400/50' : 'text-[#1B2B48]'}
+                            ${isToday ? 'bg-petoo-primary/20' : ''}
+                          `}>
+                            {day}
+                          </span>
+                          <div className={`w-1.5 h-1.5 rounded-full mt-1 ${getStatusColor(status)}`}></div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Legend */}
+                <div className="flex items-center justify-between px-2 mb-8 flex-wrap gap-2">
+                  <div className="flex items-center space-x-1.5">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span className="text-[12px] font-bold text-gray-600">Available</span>
+                  </div>
+                  <div className="flex items-center space-x-1.5">
+                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <span className="text-[12px] font-bold text-gray-600">Limited</span>
+                  </div>
+                  <div className="flex items-center space-x-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <span className="text-[12px] font-bold text-gray-600">Full</span>
+                  </div>
+                  <div className="flex items-center space-x-1.5">
+                    <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+                    <span className="text-[12px] font-bold text-gray-600">Blocked</span>
+                  </div>
+                </div>
+                
+                {/* Open Modal Button */}
+                <button 
+                  onClick={() => setIsModalOpen(true)}
+                  className="w-full bg-[#FBBF24] text-[#1B2B48] font-bold text-[15px] py-3.5 px-6 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-[0.98] mt-2 flex items-center justify-center"
+                >
+                  <CalendarIcon size={18} className="mr-2" />
+                  Update Availability
+                </button>
               </div>
-              <div className="flex items-center space-x-1.5">
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <span className="text-[12px] font-bold text-gray-600">Limited</span>
+
+              {/* Right Column: Capacity Card */}
+              <div className="w-full lg:w-[320px] shrink-0 flex flex-col order-1 lg:order-2">
+                <div className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 mb-8 lg:mb-0">
+                  <div className="flex items-center mb-1">
+                    <h3 className="text-petoo-textDark font-extrabold text-[16px]">Boarding Capacity</h3>
+                    <Info size={16} className="text-gray-400 ml-2" />
+                  </div>
+                  <p className="text-gray-500 text-[13px] font-medium mb-5">
+                    Maximum pets you can accommodate at the same time
+                  </p>
+                  
+                  <div className="flex items-center justify-center space-x-4 mb-5">
+                    <button 
+                      onClick={decreaseCapacity}
+                      className="w-10 h-10 bg-petoo-primary/20 rounded-xl flex items-center justify-center text-petoo-textDark hover:bg-petoo-primary active:scale-95 transition-all"
+                    >
+                      <Minus size={20} />
+                    </button>
+                    <div className="flex items-center justify-center min-w-[70px]">
+                      <span className="text-3xl font-extrabold text-petoo-textDark">{capacity}</span>
+                    </div>
+                    <button 
+                      onClick={increaseCapacity}
+                      className="w-10 h-10 bg-petoo-primary/20 rounded-xl flex items-center justify-center text-petoo-textDark hover:bg-petoo-primary active:scale-95 transition-all"
+                    >
+                      <Plus size={20} />
+                    </button>
+                  </div>
+                  
+                  <button 
+                    onClick={handleSaveCapacity}
+                    disabled={savingCapacity || showCapacitySuccess}
+                    className={`w-full py-3.5 px-6 border-2 rounded-xl font-bold text-[15px] transition-all ${
+                      showCapacitySuccess
+                        ? 'border-green-500 bg-green-50 text-green-600'
+                        : 'border-[#FBBF24] text-[#1B2B48] hover:bg-[#FBBF24]/10 active:bg-[#FBBF24]/20'
+                    }`}
+                  >
+                    {showCapacitySuccess ? 'Saved!' : 'Update Capacity'}
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center space-x-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span className="text-[12px] font-bold text-gray-600">Full</span>
-              </div>
-              <div className="flex items-center space-x-1.5">
-                <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-                <span className="text-[12px] font-bold text-gray-600">Blocked</span>
-              </div>
+
             </div>
-            
-            {/* Open Modal Button */}
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="w-full bg-petoo-primary text-petoo-textDark font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] mt-2 flex items-center justify-center"
-            >
-              <CalendarIcon size={20} className="mr-2" />
-              Update Availability
-            </button>
           </div>
         )}
 

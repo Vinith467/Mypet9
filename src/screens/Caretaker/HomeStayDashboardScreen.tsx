@@ -80,7 +80,7 @@ export const HomeStayDashboardScreen = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 px-5 lg:px-12 lg:pt-10 w-full flex flex-col max-w-5xl mx-auto">
+        <div className="flex-1 px-5 lg:px-8 lg:pt-8 w-full flex flex-col max-w-7xl mx-auto">
           
           {/* Desktop Top Nav */}
           <div className="hidden lg:flex justify-between items-center mb-8">
@@ -111,14 +111,14 @@ export const HomeStayDashboardScreen = () => {
           </div>
 
           {/* Hero Banner */}
-          <div className="relative w-full h-[180px] lg:h-[240px] rounded-[32px] overflow-hidden shadow-[0_10px_40px_rgba(92,58,33,0.08)] mb-8 lg:mb-12 bg-[#FFFFFF] flex flex-row">
+          <div className="relative w-full h-[180px] lg:h-[220px] rounded-[32px] overflow-hidden shadow-[0_10px_40px_rgba(92,58,33,0.08)] mb-8 bg-[#FFFFFF] flex flex-row">
             
             {/* Content Side */}
             <div className="relative z-10 p-5 lg:p-10 flex flex-col justify-center w-[55%] lg:w-[45%] h-full shrink-0">
               <div className="w-10 h-10 lg:w-14 lg:h-14 bg-[#FBBF24] rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-4 shadow-[0_8px_20px_rgba(74,46,27,0.2)] shrink-0">
                 <Home size={20} className="text-white lg:w-6 lg:h-6" />
               </div>
-              <h2 className="text-[20px] lg:text-[32px] font-extrabold text-[#1B2B48] leading-[1.1] mb-2 tracking-tight">
+              <h2 className="text-[20px] lg:text-[28px] font-extrabold text-[#1B2B48] leading-[1.1] mb-2 tracking-tight">
                 Home Stay /<br/>Boarding
               </h2>
               <p className="text-[#1B2B48]/80 text-[10px] lg:text-sm font-medium leading-snug">
@@ -139,21 +139,21 @@ export const HomeStayDashboardScreen = () => {
           </div>
 
           {/* Menu List */}
-          <div className="flex flex-col space-y-3 lg:space-y-4 mb-10">
+          <div className="flex flex-col space-y-3 lg:space-y-3.5 mb-10">
             {menuItems.map((item, index) => (
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.01, backgroundColor: '#ffffff' }}
                 whileTap={{ scale: 0.99 }}
                 onClick={item.onClick}
-                className="bg-white/80 lg:bg-white rounded-[24px] lg:rounded-[32px] p-4 lg:p-6 flex items-center justify-between cursor-pointer shadow-[0_4px_20px_rgba(92,58,33,0.03)] border border-white transition-all group"
+                className="bg-white/80 lg:bg-white rounded-[24px] lg:rounded-[28px] p-4 lg:p-5 flex items-center justify-between cursor-pointer shadow-[0_4px_20px_rgba(92,58,33,0.03)] border border-white transition-all group"
               >
-                <div className="flex items-center space-x-4 lg:space-x-6">
-                  <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-[#FFFFFF] flex items-center justify-center border border-[#FBBF24]/10 shadow-inner group-hover:bg-[#FBBF24]/5 transition-colors">
+                <div className="flex items-center space-x-4 lg:space-x-5">
+                  <div className="w-14 h-14 lg:w-14 lg:h-14 rounded-2xl bg-[#FFFFFF] flex items-center justify-center border border-[#FBBF24]/10 shadow-inner group-hover:bg-[#FBBF24]/5 transition-colors">
                     {item.icon}
                   </div>
                   <div className="flex flex-col max-w-[200px] lg:max-w-none">
-                    <h3 className="text-[17px] lg:text-xl font-extrabold text-[#1B2B48] mb-0.5 lg:mb-1">
+                    <h3 className="text-[17px] lg:text-[19px] font-extrabold text-[#1B2B48] mb-0.5">
                       {item.title}
                     </h3>
                     <p className="text-[#1B2B48]/70 text-[11px] lg:text-[13px] font-medium leading-snug">
@@ -170,7 +170,7 @@ export const HomeStayDashboardScreen = () => {
           </div>
 
           {/* Bottom Illustration Space */}
-          <div className="mt-auto mb-10 relative h-[120px] lg:h-[180px] rounded-[32px] bg-transparent flex items-end justify-center">
+          <div className="mt-auto mb-10 relative h-[120px] lg:h-[140px] rounded-[32px] bg-transparent flex items-end justify-center">
              <div className="absolute inset-0 flex flex-col items-center justify-center opacity-60">
                 <span className="font-caveat text-2xl lg:text-3xl font-bold text-[#FBBF24] rotate-[-5deg]">
                   Happy Pets

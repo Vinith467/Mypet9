@@ -132,7 +132,7 @@ export const CaretakerRequestsScreen = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 px-5 lg:px-12 lg:pt-10 w-full flex flex-col max-w-5xl mx-auto">
+        <div className="flex-1 px-5 lg:px-8 lg:pt-8 w-full flex flex-col max-w-7xl mx-auto">
           
           {/* Desktop Top Nav */}
           <div className="hidden lg:flex justify-between items-center mb-8">
@@ -246,8 +246,7 @@ export const CaretakerRequestsScreen = () => {
                   }}
                   className="bg-white rounded-3xl p-3 flex items-center cursor-pointer shadow-[0_2px_15px_rgba(92,58,33,0.04)] border border-white transition-all group relative"
                 >
-                  {/* Pet Image */}
-                  <div className="w-[110px] h-[110px] shrink-0 rounded-[20px] overflow-hidden relative mr-4">
+                  <div className="w-[100px] h-[120px] lg:w-[90px] lg:h-[110px] shrink-0 rounded-2xl overflow-hidden relative mr-4 lg:mr-6 shadow-sm">
                     <img 
                       src={request.image} 
                       alt={request.petName} 
@@ -258,9 +257,11 @@ export const CaretakerRequestsScreen = () => {
                   {/* Info */}
                   <div className="flex-1 flex flex-col py-1 min-w-0 pr-8">
                     <div className="flex items-center justify-between mb-0.5">
-                      <h3 className="text-[17px] font-extrabold text-[#5C1C1D] truncate mr-2">
-                        {request.petName}
-                      </h3>
+                      <div className="min-w-0 pr-2">
+                        <h3 className="text-xl lg:text-[22px] font-extrabold text-[#1B2B48] mb-0.5 truncate">
+                          {request.petName}
+                        </h3>
+                      </div>
                       {getPillStyle(request.status) && (
                         <span className={`${getPillStyle(request.status)?.bg} ${getPillStyle(request.status)?.text} px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide shrink-0`}>
                           {getPillStyle(request.status)?.label}

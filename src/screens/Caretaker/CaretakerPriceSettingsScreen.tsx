@@ -100,7 +100,8 @@ export const CaretakerPriceSettingsScreen = () => {
     const setServices = isDog ? setDogServices : setCatServices;
 
     return (
-      <div className="flex flex-col space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="flex flex-col lg:flex-row gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300 w-full">
+        <div className="flex-1 flex flex-col space-y-4">
         {/* Top Header Card */}
         <div className="flex items-center space-x-3 mb-2">
           <div className="w-12 h-12 bg-petoo-primary/20 rounded-xl flex items-center justify-center text-petoo-textDark shrink-0">
@@ -174,9 +175,12 @@ export const CaretakerPriceSettingsScreen = () => {
           </div>
         </div>
 
+        </div>
+
         {/* Additional Services */}
-        <div className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 mb-8">
-          <div className="flex items-start space-x-3 mb-5">
+        <div className="flex-1 flex flex-col space-y-4">
+          <div className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 h-full">
+            <div className="flex items-start space-x-3 mb-5">
             <div className="mt-0.5 text-petoo-textDark">
               <PawPrint size={24} fill="currentColor" />
             </div>
@@ -247,18 +251,18 @@ export const CaretakerPriceSettingsScreen = () => {
             <div className="w-8 h-8 border-4 border-petoo-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
-          <div className="flex-1 px-5 lg:px-12 pt-6 w-full flex flex-col max-w-2xl mx-auto">
+          <div className="flex-1 px-5 lg:px-8 pt-6 w-full flex flex-col max-w-5xl mx-auto">
             {/* Tabs */}
-            <div className="flex space-x-4 mb-8">
+            <div className="flex space-x-4 mb-6">
               <button
                 onClick={() => setActiveTab('dog')}
-                className={`flex-1 py-3 rounded-2xl font-bold transition-all duration-300 ${activeTab === 'dog' ? 'bg-petoo-primary text-petoo-textDark shadow-lg shadow-petoo-primary/20 scale-105' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
+                className={`flex-1 py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'dog' ? 'bg-petoo-primary text-petoo-textDark shadow-lg shadow-petoo-primary/20 scale-105' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
               >
                 Dog Boarding
               </button>
               <button
                 onClick={() => setActiveTab('cat')}
-                className={`flex-1 py-3 rounded-2xl font-bold transition-all duration-300 ${activeTab === 'cat' ? 'bg-petoo-primary text-petoo-textDark shadow-lg shadow-petoo-primary/20 scale-105' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
+                className={`flex-1 py-3 rounded-xl font-bold transition-all duration-300 ${activeTab === 'cat' ? 'bg-petoo-primary text-petoo-textDark shadow-lg shadow-petoo-primary/20 scale-105' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
               >
                 Cat Boarding
               </button>
@@ -270,10 +274,10 @@ export const CaretakerPriceSettingsScreen = () => {
             <button 
               onClick={handleSave}
               disabled={saving || showSuccess}
-              className={`w-full font-extrabold text-[16px] py-4 rounded-2xl shadow-md hover:shadow-lg transition-all mt-4 flex items-center justify-center disabled:opacity-50 disabled:active:scale-100 ${
+              className={`w-full font-bold text-[15px] py-3.5 px-6 rounded-xl shadow-sm hover:shadow-md transition-all mt-6 flex items-center justify-center disabled:opacity-50 disabled:active:scale-100 ${
                 showSuccess 
                   ? 'bg-green-500 text-white active:scale-100' 
-                  : 'bg-petoo-primary text-petoo-textDark active:scale-[0.98]'
+                  : 'bg-[#FBBF24] text-[#1B2B48] active:scale-[0.98]'
               }`}
             >
               {showSuccess ? (
