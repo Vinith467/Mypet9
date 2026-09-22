@@ -98,10 +98,10 @@ export const SupportChatWidget = () => {
               </button>
               <button 
                 onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }}
-                className="absolute -top-1 -right-1 bg-[#1B2B48] text-white rounded-full p-1 shadow-md hover:bg-black transition-colors"
+                className="absolute -top-1 -right-1 bg-white text-[#1B2B48] rounded-full p-1 shadow-md hover:bg-gray-50 border border-gray-100 transition-colors"
                 title="Minimize Chat"
               >
-                <Minus size={14} />
+                <Minus size={14} strokeWidth={3} />
               </button>
             </div>
           </motion.div>
