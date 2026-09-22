@@ -15,7 +15,7 @@ export const CaretakerNavigation = () => {
   ];
 
   return (
-    <nav className="fixed lg:sticky lg:top-0 bottom-0 left-0 right-0 lg:right-auto w-full lg:w-[280px] lg:h-screen bg-[#FBF6EE] lg:bg-transparent z-40 flex lg:flex-col lg:px-6 lg:py-10 shadow-[0_-8px_30px_-15px_rgba(0,0,0,0.08)] lg:shadow-none border-t lg:border-t-0 border-[#1B2B48]/5">
+    <nav className="fixed lg:sticky lg:top-0 bottom-0 left-0 right-0 lg:right-auto w-full lg:w-[280px] lg:h-screen bg-[#FBF6EE] lg:bg-transparent z-50 flex lg:flex-col lg:px-6 lg:py-10 shadow-[0_-8px_30px_-15px_rgba(0,0,0,0.08)] lg:shadow-none border-t lg:border-t-0 border-[#1B2B48]/5">
       
       {/* Desktop Logo */}
       <div className="hidden lg:flex items-center space-x-3 mb-12 px-6 cursor-pointer group" onClick={() => navigate('/caretaker/dashboard')}>

@@ -346,7 +346,7 @@ export const CaretakerAvailabilityScreen = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-[#1B2B48]/40 backdrop-blur-sm sm:p-5"
+              className="fixed inset-0 z-40 flex items-end sm:items-center justify-center bg-[#1B2B48]/40 backdrop-blur-sm sm:p-5 pb-[70px] lg:pb-0"
               onClick={() => setIsModalOpen(false)}
             >
               <motion.div 
