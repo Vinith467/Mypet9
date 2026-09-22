@@ -105,7 +105,7 @@ export const CaretakerDashboardScreen = () => {
             </div>
             
             {/* Image Side */}
-            <div className="w-full lg:w-[480px] h-[120px] lg:h-[280px] relative rounded-[16px] lg:rounded-[32px] overflow-hidden shadow-[0_10px_40px_rgba(92,58,33,0.12)] group mt-4 lg:mt-0 z-10 shrink-0">
+            <div className="w-full lg:w-[480px] h-[180px] lg:h-[280px] relative rounded-[16px] lg:rounded-[32px] overflow-hidden shadow-[0_10px_40px_rgba(92,58,33,0.12)] group mt-4 lg:mt-0 z-10 shrink-0">
                <img 
                   src="/assets/hero_pets.jpg" 
                   alt="Golden Retriever and Cat" 
