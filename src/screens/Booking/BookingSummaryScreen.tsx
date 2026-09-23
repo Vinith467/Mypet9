@@ -5,13 +5,18 @@ import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
 import { MapSelectionModal } from '../../components/ui/MapSelectionModal';
 
-// Dummy pet data for the summary
-const petData = {
-  name: 'Bruno',
-  breed: 'Golden Retriever',
-  age: '3 years',
-  size: 'Large',
-  image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=200'
+const formatDate = (dateStr: string) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+};
+
+const calculateNights = (dropoff: string, pickup: string): number => {
+  if (!dropoff || !pickup) return 1;
+  const d1 = new Date(dropoff);
+  const d2 = new Date(pickup);
+  const diff = Math.ceil((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.max(diff, 1);
 };
 
 const ADD_ONS = [
@@ -22,13 +27,22 @@ export const BookingSummaryScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const provider = location.state?.provider;
+  const bookingData = location.state?.bookingData;
 
-  // Use provider price if available, otherwise default to 1800 (as per mockup)
-  const basePricePerNight = provider?.price || 1800;
-  const nights = 6;
+  // Real data from the flow
+  const pet = bookingData?.pet;
+  const service = bookingData?.service || 'Home Stay';
+  const dropoffDate = bookingData?.dropoffDate || '';
+  const dropoffTime = bookingData?.dropoffTime || '';
+  const pickupDate = bookingData?.pickupDate || '';
+  const pickupTime = bookingData?.pickupTime || '';
+  const specialRequirements = bookingData?.specialRequirements || '';
+
+  const basePricePerNight = provider?.price || 800;
+  const nights = calculateNights(dropoffDate, pickupDate);
   const baseTotal = basePricePerNight * nights;
 
-  // Setup add-ons state
+  // Add-ons state
   const [addons, setAddons] = useState(
     ADD_ONS.reduce((acc, addon) => ({ ...acc, [addon.id]: addon.defaultChecked }), {} as Record<string, boolean>)
   );
@@ -71,39 +85,41 @@ export const BookingSummaryScreen = () => {
           {/* Provider Card */}
           <div className="bg-white rounded-[20px] p-4 flex items-center space-x-4 shadow-sm border border-gray-100">
             <img 
-              src={provider?.images?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=200'} 
+              src={provider?.images?.[0] || provider?.photo || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=200'} 
               alt="Provider" 
               className="w-20 h-14 rounded-[12px] object-cover bg-gray-100 shrink-0" 
             />
             <div className="flex flex-col">
               <h3 className="text-[16px] font-extrabold text-[#1B2B48] leading-tight mb-1">
-                {provider?.name || 'The Happy Tails Home'}
+                {provider?.name || 'Caretaker'}
               </h3>
               <div className="text-[13px] font-medium text-[#465E87] flex items-center">
                 <span className="w-[14px] flex justify-center mr-1 shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-gray-400 block" />
                 </span>
-                {provider?.locationStr || 'Indiranagar, Bengaluru'}
+                {provider?.locationStr || 'Location'}
               </div>
             </div>
           </div>
 
           {/* Pet Info Card */}
-          <div className="bg-white rounded-[20px] p-4 flex items-center space-x-4 shadow-sm border border-gray-100">
-            <img 
-              src={petData.image} 
-              alt={petData.name} 
-              className="w-14 h-14 rounded-full object-cover bg-gray-100 shrink-0 shadow-sm border border-gray-50" 
-            />
-            <div className="flex flex-col">
-              <h3 className="text-[16px] font-extrabold text-[#1B2B48] leading-tight mb-1">
-                {petData.name}
-              </h3>
-              <p className="text-[13px] font-medium text-[#465E87]">
-                {petData.breed} • {petData.age} • {petData.size}
-              </p>
+          {pet && (
+            <div className="bg-white rounded-[20px] p-4 flex items-center space-x-4 shadow-sm border border-gray-100">
+              <img 
+                src={pet.image || `https://ui-avatars.com/api/?name=${pet.name}&background=FBBF24&color=1B2B48`} 
+                alt={pet.name} 
+                className="w-14 h-14 rounded-full object-cover bg-gray-100 shrink-0 shadow-sm border border-gray-50" 
+              />
+              <div className="flex flex-col">
+                <h3 className="text-[16px] font-extrabold text-[#1B2B48] leading-tight mb-1">
+                  {pet.name}
+                </h3>
+                <p className="text-[13px] font-medium text-[#465E87]">
+                  {pet.breed} • {pet.age} • {pet.weight || pet.gender || ''}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Dates Card */}
           <div className="bg-white rounded-[20px] p-4 lg:p-5 flex items-start space-x-4 shadow-sm border border-gray-100">
@@ -112,10 +128,14 @@ export const BookingSummaryScreen = () => {
             </div>
             <div className="flex flex-col mt-0.5">
               <p className="text-[15px] font-extrabold text-[#1B2B48] mb-1">
-                12 Sep 2025 – 18 Sep 2025
+                {dropoffDate && pickupDate 
+                  ? `${formatDate(dropoffDate)} – ${formatDate(pickupDate)}`
+                  : 'Dates not selected'}
               </p>
               <p className="text-[13px] font-semibold text-[#465E87]">
-                {nights} nights
+                {nights} night{nights > 1 ? 's' : ''}
+                {dropoffTime && ` • Drop-off: ${dropoffTime}`}
+                {pickupTime && ` • Pick-up: ${pickupTime}`}
               </p>
             </div>
           </div>
@@ -129,7 +149,7 @@ export const BookingSummaryScreen = () => {
               <div className="flex flex-col mt-0.5">
                 <p className="text-[13px] font-bold text-[#1B2B48] mb-1">Service</p>
                 <p className="text-[15px] font-semibold text-[#465E87]">
-                  Premium Boarding
+                  {service}
                 </p>
               </div>
             </div>
@@ -230,7 +250,17 @@ export const BookingSummaryScreen = () => {
             </div>
 
             <Button 
-              onClick={() => navigate('/payment', { state: { bookingAmount: baseTotal, pickupFee: addonsTotal } })}
+              onClick={() => navigate('/payment', { 
+                state: { 
+                  provider,
+                  bookingData: { ...bookingData, specialRequirements },
+                  bookingAmount: baseTotal, 
+                  pickupFee: addonsTotal,
+                  pickupAddress: addons['pickup'] ? pickupAddress : '',
+                  nights,
+                  totalAmount: finalTotal
+                } 
+              })}
               className="w-full py-4 text-[17px] font-extrabold rounded-[16px] shadow-lg shadow-petoo-primary/20 hover:scale-[1.01] transition-transform"
             >
               Proceed to Payment

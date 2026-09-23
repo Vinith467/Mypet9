@@ -7,7 +7,6 @@ import {
   CalendarDays,
   Clock,
   Settings,
-  Image as ImageIcon,
   ChevronRight,
   Home
 } from 'lucide-react';
@@ -34,15 +33,9 @@ export const HomeStayDashboardScreen = () => {
     },
     {
       icon: <Settings size={24} className="text-[#1B2B48]" />,
-      title: 'Price Settings',
-      subtitle: 'Manage pricing, service details and preferences.',
-      onClick: () => navigate('/caretaker/service-settings')
-    },
-    {
-      icon: <ImageIcon size={24} className="text-[#1B2B48]" />,
-      title: 'Photos & Facility',
-      subtitle: 'Update your home photos and facilities.',
-      onClick: () => navigate('/caretaker/facility')
+      title: 'Settings',
+      subtitle: 'Manage pricing, facilities and preferences.',
+      onClick: () => navigate('/caretaker/settings')
     }
   ];
 

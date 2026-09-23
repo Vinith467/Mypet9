@@ -14,7 +14,6 @@ export const SupportChatWidget = () => {
   const { user, userData } = useAuth();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -82,41 +81,14 @@ export const SupportChatWidget = () => {
   return (
     <>
       <AnimatePresence>
-        {!isOpen && !isMinimized && (
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            className="fixed bottom-24 lg:bottom-6 right-6 z-50 flex items-start"
-          >
-            <div className="relative">
-              <button
-                onClick={() => setIsOpen(true)}
-                className="bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] p-4 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(251,191,36,0.3)] transition-all duration-300 block"
-              >
-                <MessageCircle size={28} className="drop-shadow-sm" />
-              </button>
-              <button 
-                onClick={(e) => { e.stopPropagation(); setIsMinimized(true); }}
-                className="absolute -top-1 -right-1 bg-white text-[#1B2B48] rounded-full p-1 shadow-md hover:bg-gray-50 border border-gray-100 transition-colors"
-                title="Minimize Chat"
-              >
-                <Minus size={14} strokeWidth={3} />
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {!isOpen && isMinimized && (
+        {!isOpen && (
           <motion.button
             initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 20, opacity: 0 }}
-            onClick={() => setIsMinimized(false)}
+            onClick={() => setIsOpen(true)}
             className="fixed bottom-24 lg:bottom-6 right-0 z-50 bg-[#FBBF24] text-[#1B2B48] py-3 pl-2 pr-1 rounded-l-xl shadow-lg border border-r-0 border-yellow-500/30 hover:bg-[#F59E0B] transition-colors flex items-center"
-            title="Restore Chat"
+            title="Open Support Chat"
           >
             <ChevronLeft size={20} className="-ml-1" />
             <MessageCircle size={16} className="ml-0.5" />

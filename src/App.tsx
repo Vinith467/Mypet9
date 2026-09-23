@@ -29,10 +29,16 @@ import { AuthProvider } from './contexts/AuthContext';
 import { CaretakerDashboardScreen } from './screens/Caretaker/CaretakerDashboardScreen';
 import { HomeStayDashboardScreen } from './screens/Caretaker/HomeStayDashboardScreen';
 import { CaretakerPriceSettingsScreen } from './screens/Caretaker/CaretakerPriceSettingsScreen';
+import { CaretakerSettingsScreen } from './screens/Caretaker/CaretakerSettingsScreen';
+import { CaretakerFacilitySettingsScreen } from './screens/Caretaker/CaretakerFacilitySettingsScreen';
+import { CaretakerPhotosVideosScreen } from './screens/Caretaker/CaretakerPhotosVideosScreen';
+import { CaretakerAddressLocationScreen } from './screens/Caretaker/CaretakerAddressLocationScreen';
 import { CaretakerAvailabilityScreen } from './screens/Caretaker/CaretakerAvailabilityScreen';
 import { CaretakerBookingsScreen } from './screens/Caretaker/CaretakerBookingsScreen';
 import { CaretakerBookingDetailsScreen } from './screens/Caretaker/CaretakerBookingDetailsScreen';
 import { CaretakerRequestsScreen } from './screens/Caretaker/CaretakerRequestsScreen';
+import { CaretakerEarningsScreen } from './screens/Caretaker/CaretakerEarningsScreen';
+import { CaretakerProfileScreen as CaretakerProfilePage } from './screens/Caretaker/CaretakerProfileScreen';
 import { CaretakerOnboardingScreen } from './screens/Caretaker/CaretakerOnboardingScreen';
 import { AdminLayout } from './screens/Admin/AdminLayout';
 import { AdminOverview } from './screens/Admin/AdminOverview';
@@ -92,12 +98,18 @@ function App() {
             <Route path="/caretaker/onboarding" element={<CaretakerOnboardingScreen />} />
             <Route path="/caretaker/dashboard" element={<CaretakerDashboardScreen />} />
             <Route path="/caretaker/homestay" element={<HomeStayDashboardScreen />} />
+            <Route path="/caretaker/settings" element={<CaretakerSettingsScreen />} />
             <Route path="/caretaker/service-settings" element={<CaretakerPriceSettingsScreen />} />
+            <Route path="/caretaker/facility-settings" element={<CaretakerFacilitySettingsScreen />} />
+            <Route path="/caretaker/photos-videos" element={<CaretakerPhotosVideosScreen />} />
+            <Route path="/caretaker/address-location" element={<CaretakerAddressLocationScreen />} />
             <Route path="/caretaker/availability" element={<CaretakerAvailabilityScreen />} />
             <Route path="/caretaker/requests" element={<CaretakerRequestsScreen />} />
             <Route path="/caretaker/bookings" element={<CaretakerBookingsScreen />} />
             <Route path="/caretaker/bookings/:id" element={<CaretakerBookingDetailsScreen />} />
             <Route path="/caretaker/under-review" element={<ApplicationUnderReviewScreen />} />
+            <Route path="/caretaker/earnings" element={<CaretakerEarningsScreen />} />
+            <Route path="/caretaker/profile" element={<CaretakerProfilePage />} />
             <Route path="/caretaker/congratulations" element={<CaretakerCongratulationsScreen />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

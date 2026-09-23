@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { CaretakerLayout } from '../../components/layout/CaretakerLayout';
 import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { db } from '../../config/firebase';
+import { doc, getDoc, updateDoc, serverTimestamp, collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { 
   PawPrint, 
   ChevronLeft,
@@ -11,7 +13,6 @@ import {
   MessageCircle,
   Phone,
   User,
-  IndianRupee,
   MapPin,
   CheckCircle2,
   Car,
@@ -21,78 +22,140 @@ import {
   Star,
   Paperclip,
   Send,
-  CheckCheck
+  CheckCheck,
+  Loader2
 } from 'lucide-react';
 
 export const CaretakerBookingDetailsScreen = () => {
   const { user, userData } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
+  const initialBooking = location.state?.booking;
   
   const [activeTab, setActiveTab] = useState<'details' | 'timeline' | 'messages'>('details');
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [booking, setBooking] = useState<any>(initialBooking || null);
+  const [loading, setLoading] = useState(!initialBooking);
+  const [updating, setUpdating] = useState(false);
   
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [messagesList, setMessagesList] = useState([
-    {
-      id: 1,
-      sender: 'Aditi Sharma',
-      text: 'Hi! Is Buddy doing well?',
-      time: '12 Sep, 3:15 PM',
-      isCaretaker: false,
-      avatar: 'https://ui-avatars.com/api/?name=Aditi+Sharma&background=EAE1DA&color=4A1D1A',
-      date: '12 Sep 2026'
-    },
-    {
-      id: 2,
-      sender: 'Me',
-      text: "Yes! Buddy is doing great. He's happy and settled in. 😊",
-      time: '12 Sep, 3:10 PM',
-      isCaretaker: true,
-    },
-    {
-      id: 3,
-      sender: 'Aditi Sharma',
-      text: 'Thank you for the update! Looking forward to more photos. 😊',
-      time: '15 Sep, 11:02 AM',
-      isCaretaker: false,
-      avatar: 'https://ui-avatars.com/api/?name=Aditi+Sharma&background=EAE1DA&color=4A1D1A',
-      date: '15 Sep 2026'
-    },
-    {
-      id: 4,
-      sender: 'Me',
-      text: 'Buddy had a great walk today!',
-      time: '15 Sep, 12:10 PM',
-      isCaretaker: true,
-      image: '/assets/bandana_dog.jpg'
-    }
-  ]);
-
-  useEffect(() => {
-    if (activeTab === 'messages' && !isCompleted) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messagesList, activeTab, isCompleted]);
-
-  const handleSendMessage = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!inputText.trim()) return;
-    
-    const newMsg = {
-      id: Date.now(),
-      sender: 'Me',
-      text: inputText.trim(),
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      isCaretaker: true
-    };
-    
-    setMessagesList(prev => [...prev, newMsg]);
-    setInputText('');
-  };
+  const [messagesList, setMessagesList] = useState<any[]>([]);
 
   const firstName = userData?.name ? userData.name.split(' ')[0] : 'Partner';
+
+  // Fetch booking details if not in state
+  useEffect(() => {
+    const fetchBooking = async () => {
+      if (!id) return;
+      try {
+        const docRef = doc(db, 'bookings', id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setBooking({ id: docSnap.id, ...docSnap.data() });
+        }
+      } catch (error) {
+        console.error("Error fetching booking details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!booking) {
+      fetchBooking();
+    }
+  }, [id, booking]);
+
+  // Real-time chat listener
+  useEffect(() => {
+    if (!id) return;
+    
+    const messagesRef = collection(db, 'bookings', id, 'messages');
+    const q = query(messagesRef, orderBy('createdAt', 'asc'));
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const msgs = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        time: doc.data().createdAt ? new Date(doc.data().createdAt.toMillis()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '',
+      }));
+      setMessagesList(msgs);
+    });
+    
+    return () => unsubscribe();
+  }, [id]);
+
+  useEffect(() => {
+    if (activeTab === 'messages') {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messagesList, activeTab]);
+
+  const handleSendMessage = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!inputText.trim() || !user || !id) return;
+    
+    const msgText = inputText.trim();
+    setInputText('');
+    
+    try {
+      await addDoc(collection(db, 'bookings', id, 'messages'), {
+        senderId: user.uid,
+        sender: firstName,
+        text: msgText,
+        isCaretaker: true,
+        createdAt: serverTimestamp()
+      });
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  const updateStatus = async (newStatus: string) => {
+    if (!id || !user) return;
+    setUpdating(true);
+    try {
+      await updateDoc(doc(db, 'bookings', id), {
+        status: newStatus,
+        updatedAt: serverTimestamp()
+      });
+      setBooking(prev => ({ ...prev, status: newStatus }));
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Failed to update status.");
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <CaretakerLayout>
+        <div className="flex h-screen items-center justify-center bg-[#FAFAFA]">
+          <Loader2 size={40} className="animate-spin text-[#FBBF24]" />
+        </div>
+      </CaretakerLayout>
+    );
+  }
+
+  if (!booking) {
+    return (
+      <CaretakerLayout>
+        <div className="flex flex-col h-screen items-center justify-center bg-[#FAFAFA] text-center px-4">
+          <FileText size={48} className="text-gray-300 mb-4" />
+          <h2 className="text-xl font-bold text-[#1B2B48] mb-2">Booking Not Found</h2>
+          <button onClick={() => navigate('/caretaker/bookings')} className="text-petoo-primary font-bold">Go Back</button>
+        </div>
+      </CaretakerLayout>
+    );
+  }
+
+  const isCompleted = booking.status === 'completed';
+  const isOngoing = booking.status === 'ongoing';
+  
+  const dropoffD = new Date(booking.dropoffDate);
+  const pickupD = new Date(booking.pickupDate);
+  const dateRangeStr = `${dropoffD.toLocaleDateString('en-GB', {day:'2-digit', month:'short'})} – ${pickupD.toLocaleDateString('en-GB', {day:'2-digit', month:'short'})} ${dropoffD.getFullYear()}`;
 
   return (
     <CaretakerLayout>
@@ -106,546 +169,524 @@ export const CaretakerBookingDetailsScreen = () => {
         <div className={`flex flex-col shrink-0 ${activeTab === 'messages' && !isCompleted ? 'bg-[#FAFAFA] z-10 shadow-sm' : ''}`}>
           
           {/* Mobile Header */}
-        <div className="lg:hidden flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FAFAFA]/95 backdrop-blur-md z-50">
-          <button 
-            onClick={() => navigate(-1)}
-            className="flex items-center space-x-1 -ml-2 text-[#1B2B48] font-bold"
-          >
-            <ChevronLeft size={28} />
-            <span className="text-sm">Back</span>
-          </button>
-          
-          <div className="flex flex-col items-center justify-center">
-            <div className="flex items-center space-x-1.5">
-              <PawPrint size={22} className="text-[#FBBF24]" fill="currentColor" />
-              <h1 className="text-xl font-extrabold tracking-tight text-[#1B2B48]">
-                PetWali
-              </h1>
+          <div className="lg:hidden flex items-center justify-between px-5 pt-6 pb-4 sticky top-0 bg-[#FAFAFA]/95 backdrop-blur-md z-50">
+            <button 
+              onClick={() => navigate(-1)}
+              className="flex items-center space-x-1 -ml-2 text-[#1B2B48] font-bold"
+            >
+              <ChevronLeft size={28} />
+              <span className="text-sm">Back</span>
+            </button>
+            
+            <div className="flex flex-col items-center justify-center">
+              <div className="flex items-center space-x-1.5">
+                <PawPrint size={22} className="text-[#FBBF24]" fill="currentColor" />
+                <h1 className="text-xl font-extrabold tracking-tight text-[#1B2B48]">
+                  PetWali
+                </h1>
+              </div>
+              <span className="text-[10px] font-bold text-[#FBBF24] uppercase tracking-wider -mt-1 ml-[24px]">Partner</span>
             </div>
-            <span className="text-[10px] font-bold text-[#FBBF24] uppercase tracking-wider -mt-1 ml-[24px]">Partner</span>
+
+            <div className="relative">
+              <img 
+                src={user?.photoURL || "https://ui-avatars.com/api/?name=" + firstName + "&background=E5E7EB&color=3E2723"} 
+                alt="Profile" 
+                className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
+              />
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+            </div>
           </div>
 
-          <div className="relative">
-            <img 
-              src={user?.photoURL || "https://ui-avatars.com/api/?name=" + firstName + "&background=E5E7EB&color=3E2723"} 
-              alt="Profile" 
-              className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
-            />
-            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 px-5 lg:px-8 lg:pt-8 w-full flex flex-col max-w-5xl mx-auto">
-          
-          {/* Desktop Top Nav */}
-          <div className="hidden lg:flex justify-between items-center mb-10">
-            <div className="flex items-center space-x-4">
-              <button 
-                onClick={() => navigate(-1)}
-                className="flex items-center space-x-2 text-[#1B2B48] hover:text-[#1B2B48] font-bold transition-colors"
-              >
-                <ChevronLeft size={24} />
-                <span>Back</span>
-              </button>
-            </div>
-             
-             <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.04)] border border-white">
-                <div className="text-right">
-                  <p className="font-bold text-[14px] text-[#1B2B48]">{userData?.name || 'Partner'}</p>
-                  <p className="text-[10px] text-green-600 font-bold flex items-center justify-end uppercase tracking-wider">
-                    <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
-                    Online
-                  </p>
+          {/* Main Content */}
+          <div className="flex-1 px-5 lg:px-8 lg:pt-8 w-full flex flex-col max-w-5xl mx-auto">
+            
+            {/* Desktop Top Nav */}
+            <div className="hidden lg:flex justify-between items-center mb-10">
+              <div className="flex items-center space-x-4">
+                <button 
+                  onClick={() => navigate(-1)}
+                  className="flex items-center space-x-2 text-[#1B2B48] hover:text-[#1B2B48] font-bold transition-colors"
+                >
+                  <ChevronLeft size={24} />
+                  <span>Back</span>
+                </button>
+              </div>
+              
+              <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.04)] border border-white">
+                  <div className="text-right">
+                    <p className="font-bold text-[14px] text-[#1B2B48]">{userData?.name || 'Partner'}</p>
+                    <p className="text-[10px] text-green-600 font-bold flex items-center justify-end uppercase tracking-wider">
+                      <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
+                      Online
+                    </p>
+                  </div>
+                  <img 
+                    src={user?.photoURL || "https://ui-avatars.com/api/?name=" + firstName + "&background=E5E7EB&color=3E2723"} 
+                    alt="Profile" 
+                    className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
+                  />
                 </div>
+            </div>
+
+            {/* Page Title */}
+            <div className="flex items-start justify-between mb-8 mt-2 lg:mt-0">
+                <div>
+                  <h2 className="text-[26px] lg:text-[30px] font-extrabold text-[#4A1D1A] tracking-tight leading-tight mb-1">
+                    {isCompleted ? 'Booking Details' : (activeTab === 'timeline' ? 'Booking Timeline' : 'Booking Details')}
+                  </h2>
+                  {!isCompleted && (
+                    <p className="text-[#1B2B48] text-[13px] lg:text-sm font-medium leading-snug">
+                      {activeTab === 'timeline' ? 'Track the progress of this booking.' : (activeTab === 'messages' ? 'View details, timeline or chat with the customer.' : 'Here are the complete details for this booking.')}
+                    </p>
+                  )}
+               </div>
+            </div>
+
+            {/* Top Pet Card */}
+            <div className="bg-white rounded-[24px] p-4 lg:p-6 shadow-[0_4px_20px_rgba(92,58,33,0.03)] border border-white flex mb-6">
+              <div className="w-[100px] h-[100px] shrink-0 rounded-[18px] overflow-hidden mr-4 lg:mr-6">
                 <img 
-                  src={user?.photoURL || "https://ui-avatars.com/api/?name=" + firstName + "&background=E5E7EB&color=3E2723"} 
-                  alt="Profile" 
-                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
+                  src={booking.petImage || `https://ui-avatars.com/api/?name=${booking.petName}&background=FBBF24&color=1B2B48`} 
+                  alt={booking.petName} 
+                  className="w-full h-full object-cover"
                 />
               </div>
-          </div>
-
-          {/* Page Title & Cute Graphic */}
-          <div className="flex items-start justify-between mb-8 mt-2 lg:mt-0">
-              <div>
-                <h2 className="text-[26px] lg:text-[30px] font-extrabold text-[#4A1D1A] tracking-tight leading-tight mb-1">
-                  {isCompleted ? 'Booking Details' : (activeTab === 'timeline' ? 'Booking Timeline' : 'Booking Details')}
-                </h2>
-                {!isCompleted && (
-                  <p className="text-[#1B2B48] text-[13px] lg:text-sm font-medium leading-snug">
-                    {activeTab === 'timeline' ? 'Track the progress of this booking.' : (activeTab === 'messages' ? 'View details, timeline or chat with the customer.' : 'Here are the complete details for this booking.')}
+              
+              <div className="flex-1 flex justify-between relative min-w-0">
+                <div className="flex flex-col justify-center">
+                  <h3 className="text-2xl lg:text-[26px] font-extrabold text-[#4A1D1A] leading-none mb-1.5">
+                    {booking.petName}
+                  </h3>
+                  <p className="text-[#1B2B48]/70 text-xs lg:text-sm font-medium mb-3">
+                    {booking.petBreed} • {booking.petAge}
                   </p>
-                )}
-             </div>
-             <div className="flex flex-col items-center opacity-80 pt-1 hidden lg:flex">
-                <PawPrint size={24} className="text-[#E8D4C8] mb-1 -ml-8 rotate-[-10deg]" fill="currentColor" />
-                <span className="font-caveat text-xl lg:text-2xl font-bold text-[#4A1D1A] leading-tight rotate-[-5deg]">
-                  Happy Pets
-                </span>
-                <span className="font-caveat text-xl lg:text-2xl font-bold text-[#4A1D1A] leading-tight rotate-[-5deg] ml-4">
-                  Happier People ♥
-                </span>
-             </div>
-          </div>
+                  
+                  <div className="space-y-1.5">
+                    <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
+                      <Calendar size={13} className="mr-2 opacity-70" />
+                      <span>{dateRangeStr} ({booking.nights} nights)</span>
+                    </div>
+                    <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
+                      <MapPin size={13} className="mr-2 opacity-70" />
+                      <span className="truncate">{booking.addons?.pickupDrop ? 'With Pickup & Drop Service' : 'Drop-off by Parent'}</span>
+                    </div>
+                  </div>
+                </div>
 
-          {/* Top Pet Card */}
-          <div className="bg-white rounded-[24px] p-4 lg:p-6 shadow-[0_4px_20px_rgba(92,58,33,0.03)] border border-white flex mb-6">
-            <div className="w-[100px] h-[100px] shrink-0 rounded-[18px] overflow-hidden mr-4 lg:mr-6">
-              <img 
-                src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=300" 
-                alt="Buddy" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            
-            <div className="flex-1 flex justify-between relative min-w-0">
-              <div className="flex flex-col justify-center">
-                <h3 className="text-2xl lg:text-[26px] font-extrabold text-[#4A1D1A] leading-none mb-1.5">
-                  Buddy
-                </h3>
-                <p className="text-[#1B2B48]/70 text-xs lg:text-sm font-medium mb-3">
-                  Golden Retriever • 3 years
-                </p>
-                
-                <div className="space-y-1.5">
-                  <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
-                    <span className="mr-2 opacity-70">♂</span>
-                    <span>Male</span>
-                  </div>
-                  <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
-                    <Calendar size={13} className="mr-2 opacity-70" />
-                    <span>15 Sep – 18 Sep 2026 (3 nights)</span>
-                  </div>
-                  <div className="flex items-center text-[#1B2B48]/80 text-[11px] lg:text-[13px] font-semibold">
-                    <MapPin size={13} className="mr-2 opacity-70" />
-                    <span className="truncate">With Pickup & Drop Service</span>
+                {/* Badges */}
+                <div className="flex flex-col items-end space-y-2 absolute top-0 right-0">
+                  {isCompleted ? (
+                    <div className="bg-gray-100 px-3 py-1.5 rounded-lg text-[12px] lg:text-sm font-bold text-gray-700 flex items-center space-x-1.5 shadow-sm">
+                      <CheckCircle2 size={16} className="text-gray-600" />
+                      <span>Completed</span>
+                    </div>
+                  ) : isOngoing ? (
+                    <div className="bg-green-100 px-3 py-1.5 rounded-lg text-[12px] lg:text-sm font-bold text-green-700 flex items-center space-x-1.5 shadow-sm">
+                      <CheckCircle2 size={16} className="text-green-600" />
+                      <span>Ongoing</span>
+                    </div>
+                  ) : (
+                    <div className="bg-blue-100 px-3 py-1 rounded-lg text-[11px] lg:text-xs font-bold text-blue-700">
+                      Confirmed
+                    </div>
+                  )}
+                  <div className="bg-[#EAE1DA] px-3 py-1 rounded-lg text-[11px] lg:text-xs font-bold text-[#4A1D1A]">
+                    #{booking.id.slice(0,6).toUpperCase()}
                   </div>
                 </div>
               </div>
-
-              {/* Badges */}
-              <div className="flex flex-col items-end space-y-2 absolute top-0 right-0">
-                {isCompleted ? (
-                  <div className="bg-green-100 px-3 py-1.5 rounded-lg text-[12px] lg:text-sm font-bold text-green-700 flex items-center space-x-1.5 shadow-sm">
-                    <CheckCircle2 size={16} className="text-green-600" />
-                    <span>Completed</span>
-                  </div>
-                ) : (
-                  <>
-                    <div className="bg-[#F6EBE5] px-3 py-1 rounded-lg text-[11px] lg:text-xs font-bold text-[#4A1D1A]">
-                      Confirmed
-                    </div>
-                    <div className="bg-[#EAE1DA] px-3 py-1 rounded-lg text-[11px] lg:text-xs font-bold text-[#4A1D1A]">
-                      #1845201
-                    </div>
-                  </>
-                )}
-              </div>
             </div>
-          </div>
 
           </div> {/* End TOP SECTION */}
 
           {isCompleted ? (
-            <div className="flex flex-col items-center mt-6 mb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              {/* Large Checkmark */}
-              <div className="w-24 h-24 lg:w-32 lg:h-32 bg-[#4A1D1A] rounded-full flex items-center justify-center mb-6 shadow-[0_10px_30px_rgba(74,29,26,0.25)]">
-                <Check size={48} strokeWidth={4} className="text-white lg:scale-125" />
-              </div>
-              
-              {/* Success Text */}
-              <h3 className="text-3xl lg:text-4xl font-extrabold text-[#4A1D1A] mb-3">Service Completed!</h3>
-              <p className="text-[#1B2B48] text-[15px] lg:text-[17px] font-medium text-center max-w-sm lg:max-w-md mb-10 leading-relaxed">
-                The stay and all services for Buddy have been successfully completed.
-              </p>
+            /* COMPLETED STATE VIEW */
+            <div className="flex-1 px-5 lg:px-8 w-full max-w-5xl mx-auto flex flex-col items-center pt-8 lg:pt-16 pb-12">
+               
+               <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6 shadow-inner border border-green-200">
+                 <CheckCircle2 size={48} className="text-green-600" />
+               </div>
+               <h2 className="text-2xl font-extrabold text-[#4A1D1A] mb-2 text-center">Booking Completed Successfully</h2>
+               <p className="text-[#1B2B48]/70 text-sm font-medium mb-12 text-center max-w-md">
+                 You have successfully completed this booking. Your earnings have been added to your wallet.
+               </p>
 
-              {/* Customer Review Card */}
-              <div className="w-full max-w-md bg-white border border-[#F3EBE1] rounded-[24px] p-5 lg:p-6 shadow-[0_8px_30px_rgba(92,58,33,0.04)] mb-10">
-                <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-4">Customer Review</h4>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <img src="https://ui-avatars.com/api/?name=Aditi+Sharma&background=F6EBE5&color=4A1D1A" alt="Aditi Sharma" className="w-12 h-12 rounded-full object-cover" />
-                    <div>
-                      <p className="text-[#4A1D1A] font-extrabold text-[14px]">Aditi Sharma</p>
-                      <p className="text-[#1B2B48] text-[12px] opacity-80 font-medium">15 Sep 2026</p>
+               <div className="w-full max-w-md space-y-4">
+                  <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex justify-between items-center">
+                    <span className="text-[#1B2B48] font-bold">Total Earnings</span>
+                    <span className="text-xl font-extrabold text-[#4A1D1A]">₹{booking.totalAmount?.toLocaleString('en-IN')}</span>
+                  </div>
+                  
+                  <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex justify-between items-center">
+                    <span className="text-[#1B2B48] font-bold">Customer Review</span>
+                    <div className="flex space-x-1 text-amber-400">
+                      <Star size={18} fill="currentColor" />
+                      <Star size={18} fill="currentColor" />
+                      <Star size={18} fill="currentColor" />
+                      <Star size={18} fill="currentColor" />
+                      <Star size={18} fill="currentColor" />
                     </div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} size={14} className="text-yellow-400 fill-yellow-400" />
-                    ))}
-                    <span className="text-[#4A1D1A] font-extrabold text-[14px] ml-1">5.0</span>
-                  </div>
-                </div>
-                <p className="text-[#1B2B48] text-[13px] lg:text-[14px] italic font-medium leading-relaxed opacity-90">
-                  "Buddy had a wonderful stay! Great care, regular updates and lots of outdoor play. Highly recommended!"
-                </p>
-              </div>
-
-              {/* Buttons */}
-              <div className="w-full max-w-md flex flex-col space-y-3">
-                <button className="w-full py-4 rounded-2xl bg-transparent border-2 border-[#4A1D1A] text-[#4A1D1A] font-extrabold text-[15px] hover:bg-[#4A1D1A]/5 transition-colors">
-                  View Booking Summary
-                </button>
-                <button 
-                  onClick={() => navigate('/caretaker/bookings')}
-                  className="w-full py-4 rounded-2xl bg-[#4A1D1A] text-white font-extrabold text-[15px] shadow-[0_8px_20px_rgba(74,29,26,0.25)] hover:bg-[#3E1614] transition-colors"
-                >
-                  Back to Bookings
-                </button>
-              </div>
+               </div>
             </div>
           ) : (
+            /* ACTIVE BOOKING VIEW WITH TABS */
             <>
-              {/* Tabs */}
-        <div className="flex bg-[#FBF6EE] rounded-[24px] mb-6 shadow-sm overflow-x-auto scrollbar-hide shrink-0">
-          <button
-            onClick={() => setActiveTab('details')}
-              className={`flex-1 py-3 px-4 rounded-[20px] text-sm font-extrabold transition-all duration-300 ${
-                activeTab === 'details'
-                  ? 'bg-[#4A1D1A] text-white shadow-md'
-                  : 'text-[#4A1D1A] hover:bg-white/50 bg-white border border-[#F3EBE1]'
-              }`}
-            >
-              Details
-            </button>
-            <button
-              onClick={() => setActiveTab('timeline')}
-              className={`flex-1 py-3 px-4 rounded-[20px] text-sm font-extrabold transition-all duration-300 ${
-                activeTab === 'timeline'
-                  ? 'bg-[#4A1D1A] text-white shadow-md'
-                  : 'text-[#4A1D1A] hover:bg-white/50 bg-white border border-[#F3EBE1]'
-              } mx-2`}
-            >
-              Timeline
-            </button>
-            <button
-              onClick={() => setActiveTab('messages')}
-              className={`flex-1 py-3 px-4 rounded-[20px] text-sm font-extrabold transition-all duration-300 ${
-                activeTab === 'messages'
-                  ? 'bg-[#4A1D1A] text-white shadow-md'
-                  : 'text-[#4A1D1A] hover:bg-white/50 bg-white border border-[#F3EBE1]'
-              }`}
-            >
-              Messages
-            </button>
-          </div>
-
-          {/* Details Content */}
-          {activeTab === 'details' && (
-            <div className="relative bg-white rounded-[32px] overflow-hidden flex flex-col mb-8 shadow-[0_8px_30px_rgba(92,58,33,0.04)] border border-white">
-              
-              {/* Content Container */}
-              <div className="p-5 lg:p-8 flex flex-col space-y-4 z-10 relative w-full lg:w-[65%]">
-                
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-[#F6EBE5] flex items-center justify-center shrink-0">
-                    <Calendar size={18} className="text-[#4A1D1A]" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Check-in</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">15 Sep 2026, 10:00 AM</p>
-                  </div>
+              {/* Tabs Container */}
+              <div className="px-5 lg:px-8 w-full max-w-5xl mx-auto z-20">
+                <div className="flex bg-[#F5EFE6]/50 p-1.5 rounded-[20px] mb-8 w-full shadow-inner border border-[#E8D4C8]/50">
+                  <button
+                    onClick={() => setActiveTab('details')}
+                    className={`flex-1 py-3 px-2 lg:px-6 rounded-2xl text-[13px] font-bold transition-all duration-300 flex items-center justify-center ${
+                      activeTab === 'details'
+                        ? 'bg-[#4A1D1A] text-white shadow-md'
+                        : 'text-[#1B2B48] hover:bg-white/50'
+                    }`}
+                  >
+                    <FileText size={16} className={`mr-2 hidden sm:block ${activeTab === 'details' ? 'text-[#FBBF24]' : ''}`} />
+                    Details
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('timeline')}
+                    className={`flex-1 py-3 px-2 lg:px-6 rounded-2xl text-[13px] font-bold transition-all duration-300 flex items-center justify-center ${
+                      activeTab === 'timeline'
+                        ? 'bg-[#4A1D1A] text-white shadow-md'
+                        : 'text-[#1B2B48] hover:bg-white/50'
+                    }`}
+                  >
+                    <Clock size={16} className={`mr-2 hidden sm:block ${activeTab === 'timeline' ? 'text-[#FBBF24]' : ''}`} />
+                    Timeline
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('messages')}
+                    className={`flex-1 py-3 px-2 lg:px-6 rounded-2xl text-[13px] font-bold transition-all duration-300 flex items-center justify-center relative ${
+                      activeTab === 'messages'
+                        ? 'bg-[#4A1D1A] text-white shadow-md'
+                        : 'text-[#1B2B48] hover:bg-white/50'
+                    }`}
+                  >
+                    <MessageCircle size={16} className={`mr-2 hidden sm:block ${activeTab === 'messages' ? 'text-[#FBBF24]' : ''}`} />
+                    Messages
+                    {/* Unread badge example */}
+                    {activeTab !== 'messages' && (
+                      <span className="absolute top-2.5 right-2 sm:right-4 w-2 h-2 rounded-full bg-red-500"></span>
+                    )}
+                  </button>
                 </div>
+              </div>
 
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-[#F6EBE5] flex items-center justify-center shrink-0">
-                    <Calendar size={18} className="text-[#4A1D1A] border-b-2 border-dashed border-[#4A1D1A]/30 pb-0.5" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Check-out</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">18 Sep 2026, 5:00 PM</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-[#F6EBE5] flex items-center justify-center shrink-0">
-                    <Clock size={18} className="text-[#4A1D1A]" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Duration</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">3 nights</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-[#F6EBE5] flex items-center justify-center shrink-0">
-                    <PawPrint size={18} className="text-[#4A1D1A]" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Pet Type & Size</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">Dog (Large)</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-[#F6EBE5] flex items-center justify-center shrink-0">
-                    <Home size={18} className="text-[#4A1D1A]" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Space Type</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">Large Dog Space</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-[#F6EBE5] flex items-center justify-center shrink-0">
-                    <IndianRupee size={18} className="text-[#4A1D1A]" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] mb-0.5">Total Amount</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px]">
-                      <span className="font-extrabold text-[14px] lg:text-[15px]">₹3,000</span> (₹1,000 / night)
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between bg-[#FAFAFA] rounded-2xl p-3.5 border border-[#F3EBE1] shadow-sm mt-2 max-w-sm backdrop-blur-sm bg-opacity-90">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0">
-                      <User size={18} className="text-[#4A1D1A]" />
-                    </div>
+              {/* DETAILS TAB */}
+              {activeTab === 'details' && (
+                <div className="flex-1 px-5 lg:px-8 w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 overflow-y-auto">
+                  
+                  {/* Left Column */}
+                  <div className="space-y-6 lg:space-y-8">
+                    
+                    {/* Pet Parent Info */}
                     <div>
-                      <h4 className="text-[#4A1D1A] font-extrabold text-[13px] lg:text-[14px] mb-0.5">Customer</h4>
-                      <p className="text-[#1B2B48] font-medium text-[11px] lg:text-[12px]">Aditi Sharma</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button className="w-9 h-9 rounded-full bg-[#EAE1DA] flex items-center justify-center text-[#4A1D1A] hover:bg-[#D9CFC6] transition-colors">
-                      <Phone size={16} />
-                    </button>
-                    <button className="w-9 h-9 rounded-full bg-[#EAE1DA] flex items-center justify-center text-[#4A1D1A] hover:bg-[#D9CFC6] transition-colors">
-                      <MessageCircle size={16} />
-                    </button>
-                  </div>
-                </div>
-                
-              </div>
-
-              {/* Decorative Blob Image - Absolute on both */}
-              <div className="absolute right-[-40px] bottom-[20px] lg:right-[-20px] lg:bottom-0 w-[220px] h-[300px] lg:w-[380px] lg:h-[480px] pointer-events-none z-0">
-                 <div 
-                   className="w-full h-full overflow-hidden relative"
-                   style={{ borderRadius: '43% 57% 70% 30% / 48% 63% 37% 52%' }}
-                 >
-                   <img 
-                     src="/assets/bandana_dog.jpg" 
-                     alt="Dog" 
-                     className="absolute inset-0 w-full h-full object-cover scale-[1.1] translate-y-3 lg:translate-y-6"
-                   />
-                 </div>
-              </div>
-
-            </div>
-          )}
-
-          {/* Timeline Content */}
-          {activeTab === 'timeline' && (
-            <div className="relative mb-8 pt-4 pb-12 w-full lg:w-4/5">
-              {/* Vertical Line */}
-              <div className="absolute left-[39px] lg:left-[43px] top-[24px] bottom-[100px] lg:bottom-[110px] w-0.5 bg-gradient-to-b from-[#4A1D1A] from-50% to-[#EAE1DA] to-50%"></div>
-
-              {/* Step 1 */}
-              <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
-                  <Check size={20} className="text-white stroke-[3px]" />
-                </div>
-                <div className="flex-1 bg-[#F6EBE5]/60 rounded-2xl p-4 lg:p-5">
-                  <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Booking Confirmed</h4>
-                  <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 9:30 AM</p>
-                  <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">Customer selected your quotation.</p>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
-                  <Car size={18} className="text-white" />
-                </div>
-                <div className="flex-1 bg-[#F6EBE5]/60 rounded-2xl p-4 lg:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Pickup (From Pet Parent)</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 10:00 AM</p>
-                    <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">You picked up Buddy from the pet parent's location.</p>
-                  </div>
-                  <button className="flex items-center space-x-1.5 px-4 py-2 bg-transparent border border-[#4A1D1A] rounded-[10px] text-[#4A1D1A] font-extrabold text-[13px] hover:bg-[#4A1D1A]/5 shrink-0 self-start lg:self-center transition-colors">
-                    <MapPin size={14} />
-                    <span>View Details</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#4A1D1A] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
-                  <Home size={18} className="text-white" />
-                </div>
-                <div className="flex-1 bg-[#F6EBE5]/60 rounded-2xl p-4 lg:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Pet Check-in (At Your Place)</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep 2026, 10:30 AM</p>
-                    <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">Share arrival photos and check-in details.</p>
-                  </div>
-                  <button className="flex items-center space-x-1.5 px-4 py-2 bg-[#4A1D1A] rounded-[10px] text-white font-extrabold text-[13px] hover:bg-[#3E1614] shrink-0 self-start lg:self-center shadow-sm transition-colors">
-                    <Camera size={14} />
-                    <span>Send Update</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Step 4 */}
-              <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
-                  <PawPrint size={18} className="text-[#4A1D1A]" />
-                </div>
-                <div className="flex-1 bg-white/60 border border-[#F3EBE1] rounded-2xl p-4 lg:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-sm">
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">During Stay</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">15 Sep – 17 Sep 2026</p>
-                    <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">Share updates, photos or videos.</p>
-                  </div>
-                  <button className="flex items-center space-x-1.5 px-4 py-2 bg-transparent border border-[#4A1D1A]/50 rounded-[10px] text-[#4A1D1A] font-extrabold text-[13px] hover:bg-[#4A1D1A]/5 shrink-0 self-start lg:self-center transition-colors">
-                    <Camera size={14} />
-                    <span>Send Update</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Step 5 */}
-              <div className="flex items-start mb-8 relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
-                  <Car size={18} className="text-[#4A1D1A]" />
-                </div>
-                <div className="flex-1 bg-white/60 border border-[#F3EBE1] rounded-2xl p-4 lg:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-sm">
-                  <div>
-                    <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Drop-off (To Pet Parent)</h4>
-                    <p className="text-[#1B2B48] font-medium text-[12px] lg:text-[13px] opacity-70 mb-1">18 Sep 2026, 5:00 PM</p>
-                    <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">Our team will drop Buddy to the pet parent's location.</p>
-                  </div>
-                  <button className="flex items-center space-x-1.5 px-4 py-2 bg-transparent border border-[#4A1D1A]/50 rounded-[10px] text-[#4A1D1A] font-extrabold text-[13px] hover:bg-[#4A1D1A]/5 shrink-0 self-start lg:self-center transition-colors">
-                    <MapPin size={14} />
-                    <span>Mark as Dropped</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Step 6 */}
-              <div className="flex items-start relative z-10 group">
-                <div className="w-[38px] h-[38px] lg:w-[46px] lg:h-[46px] rounded-full bg-[#EAE1DA] flex items-center justify-center shrink-0 border-[4px] border-[#FAFAFA] mx-5 transition-transform group-hover:scale-110">
-                  <FileText size={18} className="text-[#4A1D1A]" />
-                </div>
-                <div className="flex-1 bg-white/60 border border-[#F3EBE1] rounded-2xl p-4 lg:p-5 shadow-sm">
-                  <h4 className="text-[#4A1D1A] font-extrabold text-[15px] lg:text-[16px] mb-0.5">Service Complete</h4>
-                  <p className="text-[#1B2B48] font-medium text-[13px] lg:text-[14px]">This booking will be marked complete after drop-off.</p>
-                </div>
-              </div>
-
-            </div>
-          )}
-
-          {/* Messages Tab Content */}
-          {activeTab === 'messages' && !isCompleted && (
-            <div className="flex-1 flex flex-col w-full lg:w-4/5 overflow-y-auto scrollbar-hide px-4 lg:px-0 mx-auto">
-              {messagesList.map((msg) => (
-                <div key={msg.id} className="flex flex-col">
-                  {/* Date Separator */}
-                  {msg.date && (
-                    <div className="flex justify-center mb-6 mt-4">
-                      <div className="bg-[#F6EBE5] px-4 py-1.5 rounded-full text-[12px] font-bold text-[#1B2B48]/70">
-                        {msg.date}
+                      <h3 className="text-[18px] lg:text-xl font-extrabold text-[#4A1D1A] mb-4">Pet Parent</h3>
+                      <div className="bg-white rounded-3xl p-5 shadow-[0_2px_15px_rgba(92,58,33,0.04)] border border-white flex flex-col">
+                        <div className="flex justify-between items-center mb-4">
+                          <div className="flex items-center">
+                            <img src={booking.petParentPhoto || `https://ui-avatars.com/api/?name=${booking.petParentName}&background=FBBF24&color=1B2B48`} alt={booking.petParentName} className="w-12 h-12 rounded-full object-cover shadow-sm mr-4" />
+                            <div>
+                              <p className="font-extrabold text-[#1B2B48] text-[16px]">{booking.petParentName}</p>
+                              <p className="text-[13px] text-[#1B2B48]/60 font-medium">Customer</p>
+                            </div>
+                          </div>
+                          <div className="flex space-x-2">
+                            <button className="w-10 h-10 rounded-full bg-[#EAE1DA] flex items-center justify-center text-[#4A1D1A] hover:bg-[#DCD0C7] transition-colors">
+                              <Phone size={18} />
+                            </button>
+                            <button 
+                              onClick={() => setActiveTab('messages')}
+                              className="w-10 h-10 rounded-full bg-[#EAE1DA] flex items-center justify-center text-[#4A1D1A] hover:bg-[#DCD0C7] transition-colors"
+                            >
+                              <MessageCircle size={18} />
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  )}
 
-                  {msg.isCaretaker ? (
-                    <div className="flex flex-col items-end mb-6">
-                      <div className={`bg-[#7B1C1D] rounded-2xl rounded-tr-sm ${msg.image ? 'p-1.5 flex items-center pr-4' : 'px-4 py-3'} max-w-[85%] lg:max-w-[70%] shadow-sm`}>
-                        {msg.image ? (
-                          <>
-                            <img src={msg.image} alt="Buddy Update" className="w-14 h-14 rounded-xl object-cover mr-3" />
-                            <p className="text-white font-medium text-[14px]">{msg.text}</p>
-                          </>
-                        ) : (
-                          <p className="text-white font-medium text-[14px]">{msg.text}</p>
+                    {/* Booking Specifics */}
+                    <div>
+                      <h3 className="text-[18px] lg:text-xl font-extrabold text-[#4A1D1A] mb-4">Stay Details</h3>
+                      <div className="bg-white rounded-3xl p-5 shadow-[0_2px_15px_rgba(92,58,33,0.04)] border border-white space-y-5">
+                        
+                        <div className="flex">
+                          <div className="w-10 h-10 rounded-full bg-[#F6EBE5] flex items-center justify-center mr-4 shrink-0">
+                            <Calendar size={18} className="text-[#4A1D1A]" />
+                          </div>
+                          <div>
+                            <p className="text-[12px] font-bold text-[#1B2B48]/60 uppercase tracking-wider mb-0.5">Drop-off</p>
+                            <p className="font-extrabold text-[#1B2B48] text-[15px]">{new Date(booking.dropoffDate).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'})}</p>
+                            <p className="text-[13px] text-[#1B2B48]/70 font-medium">{booking.dropoffTime || 'Not specified'}</p>
+                          </div>
+                        </div>
+
+                        <div className="w-px h-8 bg-gray-200 ml-5 -my-2"></div>
+
+                        <div className="flex">
+                          <div className="w-10 h-10 rounded-full bg-[#F6EBE5] flex items-center justify-center mr-4 shrink-0">
+                            <Calendar size={18} className="text-[#4A1D1A]" />
+                          </div>
+                          <div>
+                            <p className="text-[12px] font-bold text-[#1B2B48]/60 uppercase tracking-wider mb-0.5">Pick-up</p>
+                            <p className="font-extrabold text-[#1B2B48] text-[15px]">{new Date(booking.pickupDate).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'})}</p>
+                            <p className="text-[13px] text-[#1B2B48]/70 font-medium">{booking.pickupTime || 'Not specified'}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="h-px w-full bg-gray-100"></div>
+
+                        <div className="flex">
+                          <div className="w-10 h-10 rounded-full bg-[#F6EBE5] flex items-center justify-center mr-4 shrink-0">
+                            <Home size={18} className="text-[#4A1D1A]" />
+                          </div>
+                          <div>
+                            <p className="text-[12px] font-bold text-[#1B2B48]/60 uppercase tracking-wider mb-0.5">Service Type</p>
+                            <p className="font-extrabold text-[#1B2B48] text-[15px]">{booking.service}</p>
+                          </div>
+                        </div>
+
+                        {booking.addons?.pickupDrop && (
+                          <div className="flex">
+                            <div className="w-10 h-10 rounded-full bg-[#F6EBE5] flex items-center justify-center mr-4 shrink-0">
+                              <Car size={18} className="text-[#4A1D1A]" />
+                            </div>
+                            <div>
+                              <p className="text-[12px] font-bold text-[#1B2B48]/60 uppercase tracking-wider mb-0.5">Transportation</p>
+                              <p className="font-extrabold text-[#1B2B48] text-[15px]">Pickup & Drop Service Included</p>
+                              <p className="text-[13px] text-[#1B2B48]/70 font-medium mt-1 pr-2">{booking.addons.pickupAddress}</p>
+                            </div>
+                          </div>
                         )}
                       </div>
-                      <div className="flex items-center space-x-1 mt-1.5 mr-1">
-                        <span className="text-[#1B2B48]/60 font-bold text-[10px]">{msg.time}</span>
-                        <CheckCheck size={12} className="text-[#1B2B48]/60" />
-                      </div>
                     </div>
-                  ) : (
-                    <div className="flex items-start space-x-3 mb-6">
-                      <img src={msg.avatar} alt={msg.sender} className="w-10 h-10 rounded-full object-cover shrink-0 mt-1" />
-                      <div className="flex flex-col">
-                        <span className="text-[#7B1C1D] font-extrabold text-[12px] mb-1 ml-1">{msg.sender}</span>
-                        <div className="bg-[#F6EBE5] rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] lg:max-w-[70%]">
-                          <p className="text-[#4A1D1A] font-medium text-[14px]">{msg.text}</p>
-                        </div>
-                        <span className="text-[#1B2B48]/60 font-bold text-[10px] mt-1.5 ml-1">{msg.time}</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-              <div ref={messagesEndRef} className="h-4" />
-            </div>
-          )}
-
-          {/* Action Buttons / Input Bar */}
-          {activeTab === 'messages' && !isCompleted ? (
-            <div className="shrink-0 bg-[#FAFAFA] border-t border-[#F3EBE1] flex justify-center py-4 px-4 lg:px-0 lg:mt-4 lg:mb-8 lg:bg-transparent lg:border-none pb-safe-bottom z-10 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] lg:shadow-none">
-              <form onSubmit={handleSendMessage} className="w-full flex items-center space-x-3 max-w-5xl lg:w-4/5 lg:mx-0">
-                <button type="button" className="w-12 h-12 rounded-full flex items-center justify-center text-[#7B1C1D] hover:bg-[#F6EBE5] transition-colors shrink-0">
-                  <Paperclip size={24} />
-                </button>
-                <div className="flex-1 bg-white border border-[#F3EBE1] rounded-full px-5 py-3.5 shadow-sm">
-                  <input 
-                    type="text" 
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Type a message..." 
-                    className="w-full bg-transparent outline-none text-[#4A1D1A] font-medium placeholder:text-[#1B2B48]/40 text-[15px]"
-                  />
-                </div>
-                <button type="submit" disabled={!inputText.trim()} className="w-12 h-12 rounded-full bg-[#7B1C1D] flex items-center justify-center text-white hover:bg-[#5A1213] disabled:opacity-50 transition-colors shrink-0 shadow-sm">
-                  <Send size={18} className="ml-1" />
-                </button>
-              </form>
-            </div>
-          ) : (
-            <div className="w-full flex space-x-3 lg:space-x-4 lg:justify-end mb-8">
-              {activeTab === 'timeline' ? (
-                <button 
-                  onClick={() => setIsCompleted(true)}
-                  className="w-full lg:w-[320px] lg:flex-none flex items-center justify-center py-3.5 lg:py-4 rounded-2xl bg-[#4A1D1A] text-white font-extrabold text-[15px] lg:text-[16px] shadow-[0_8px_20px_rgba(74,29,26,0.25)] hover:bg-[#3E1614] transition-colors"
-                >
-                  <div className="bg-white text-[#4A1D1A] rounded-full p-1 mr-3">
-                    <Check size={16} strokeWidth={4} />
                   </div>
-                  Service Completed
-                </button>
-              ) : (
-                <>
-                  <button className="flex-1 lg:flex-none lg:w-56 py-3.5 rounded-2xl border-2 border-[#4A1D1A] text-[#4A1D1A] font-extrabold text-[14px] lg:text-[15px] hover:bg-[#4A1D1A]/5 transition-colors">
-                    Contact Customer
-                  </button>
-                  <button 
-                    onClick={() => setActiveTab('timeline')}
-                    className="flex-1 lg:flex-none lg:w-56 py-3.5 rounded-2xl bg-[#4A1D1A] text-white font-extrabold text-[14px] lg:text-[15px] shadow-[0_8px_20px_rgba(74,29,26,0.25)] hover:bg-[#3E1614] transition-colors"
-                  >
-                    View Timeline
-                  </button>
-                </>
+
+                  {/* Right Column */}
+                  <div className="space-y-6 lg:space-y-8">
+                    
+                    {/* Special Needs */}
+                    <div>
+                      <h3 className="text-[18px] lg:text-xl font-extrabold text-[#4A1D1A] mb-4">Pet Needs & Notes</h3>
+                      <div className="bg-white rounded-3xl p-5 shadow-[0_2px_15px_rgba(92,58,33,0.04)] border border-white">
+                        <p className="text-[#1B2B48]/80 text-[14px] font-medium leading-relaxed">
+                          {booking.specialRequirements || "No special requirements provided by the parent."}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Payment Summary */}
+                    <div>
+                      <h3 className="text-[18px] lg:text-xl font-extrabold text-[#4A1D1A] mb-4">Earnings</h3>
+                      <div className="bg-white rounded-3xl p-5 shadow-[0_2px_15px_rgba(92,58,33,0.04)] border border-white flex flex-col space-y-4">
+                         
+                         <div className="flex justify-between items-center text-[14px]">
+                           <span className="text-[#1B2B48]/70 font-bold">Stay ({booking.nights} nights)</span>
+                           <span className="text-[#1B2B48] font-bold">₹{booking.bookingAmount}</span>
+                         </div>
+                         
+                         {booking.addons?.pickupDrop && (
+                           <div className="flex justify-between items-center text-[14px]">
+                             <span className="text-[#1B2B48]/70 font-bold">Pickup & Drop</span>
+                             <span className="text-[#1B2B48] font-bold">₹{booking.addons.pickupFee}</span>
+                           </div>
+                         )}
+
+                         <div className="h-px w-full bg-gray-100"></div>
+
+                         <div className="flex justify-between items-center">
+                           <span className="text-[16px] text-[#1B2B48] font-extrabold">Total Earnings</span>
+                           <span className="text-[20px] text-[#4A1D1A] font-extrabold">₹{booking.totalAmount}</span>
+                         </div>
+
+                         <div className="mt-2 bg-[#F5EFE6]/50 rounded-xl p-3 flex items-start">
+                           <CheckCircle2 size={16} className="text-[#C79133] mr-2 shrink-0 mt-0.5" />
+                           <p className="text-[12px] text-[#1B2B48]/70 font-medium">
+                             Payment will be credited to your linked bank account after the stay is completed.
+                           </p>
+                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
-            </div>
+
+              {/* TIMELINE TAB */}
+              {activeTab === 'timeline' && (
+                <div className="flex-1 px-5 lg:px-8 w-full max-w-2xl mx-auto pb-10">
+                  <div className="bg-white rounded-3xl p-6 lg:p-8 shadow-[0_2px_15px_rgba(92,58,33,0.04)] border border-white">
+                    <div className="relative pl-6 border-l-2 border-[#EAE1DA] space-y-10">
+                      
+                      {/* Step 1: Booking Confirmed */}
+                      <div className="relative">
+                        <div className="absolute -left-[35px] top-0 w-8 h-8 rounded-full bg-[#4A1D1A] flex items-center justify-center border-4 border-white shadow-sm z-10">
+                          <Check size={14} className="text-white stroke-[3]" />
+                        </div>
+                        <div>
+                          <h4 className="text-[16px] font-extrabold text-[#1B2B48] mb-1">Booking Confirmed</h4>
+                          <p className="text-[13px] text-[#1B2B48]/60 font-bold mb-2">
+                            {new Date(booking.createdAt?.toMillis() || Date.now()).toLocaleDateString('en-GB', {day:'2-digit', month:'short'})}
+                          </p>
+                          <p className="text-[14px] text-[#1B2B48]/80 font-medium">
+                            You accepted the booking request from {booking.petParentName}.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Step 2: Drop-off */}
+                      <div className="relative">
+                        <div className={`absolute -left-[35px] top-0 w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-sm z-10 transition-colors ${
+                          isOngoing ? 'bg-[#4A1D1A]' : 'bg-[#EAE1DA]'
+                        }`}>
+                          {isOngoing ? <Check size={14} className="text-white stroke-[3]" /> : <div className="w-2.5 h-2.5 rounded-full bg-white"></div>}
+                        </div>
+                        <div>
+                          <h4 className={`text-[16px] font-extrabold mb-1 transition-colors ${isOngoing ? 'text-[#1B2B48]' : 'text-[#1B2B48]/60'}`}>Pet Drop-off</h4>
+                          <p className="text-[13px] text-[#1B2B48]/60 font-bold mb-2">
+                            Scheduled: {new Date(booking.dropoffDate).toLocaleDateString('en-GB', {day:'2-digit', month:'short'})}
+                          </p>
+                          <p className={`text-[14px] font-medium transition-colors ${isOngoing ? 'text-[#1B2B48]/80' : 'text-[#1B2B48]/50'}`}>
+                            {isOngoing 
+                              ? `${booking.petName} has arrived and is currently in your care.`
+                              : `Mark as arrived when ${booking.petName} is dropped off.`}
+                          </p>
+                          {!isOngoing && booking.status === 'accepted' && (
+                            <button 
+                              onClick={() => updateStatus('ongoing')}
+                              disabled={updating}
+                              className="mt-4 bg-[#174F38] text-white px-5 py-2.5 rounded-xl text-[13px] font-bold shadow-sm hover:bg-[#113a29] transition-colors flex items-center disabled:opacity-50"
+                            >
+                              {updating ? <Loader2 size={16} className="animate-spin mr-2" /> : <CheckCircle2 size={16} className="mr-2" />}
+                              Mark as Arrived
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Step 3: Pick-up / Completion */}
+                      <div className="relative">
+                        <div className="absolute -left-[35px] top-0 w-8 h-8 rounded-full bg-[#EAE1DA] flex items-center justify-center border-4 border-white shadow-sm z-10">
+                          <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
+                        </div>
+                        <div>
+                          <h4 className="text-[16px] font-extrabold text-[#1B2B48]/60 mb-1">Stay Completed</h4>
+                          <p className="text-[13px] text-[#1B2B48]/60 font-bold mb-2">
+                            Scheduled: {new Date(booking.pickupDate).toLocaleDateString('en-GB', {day:'2-digit', month:'short'})}
+                          </p>
+                          <p className="text-[14px] text-[#1B2B48]/50 font-medium">
+                            Mark as completed once the pet is picked up.
+                          </p>
+                          {isOngoing && (
+                            <button 
+                              onClick={() => updateStatus('completed')}
+                              disabled={updating}
+                              className="mt-4 bg-[#C79133] text-white px-5 py-2.5 rounded-xl text-[13px] font-bold shadow-sm hover:bg-[#a67727] transition-colors flex items-center disabled:opacity-50"
+                            >
+                              {updating ? <Loader2 size={16} className="animate-spin mr-2" /> : <CheckCircle2 size={16} className="mr-2" />}
+                              Mark as Completed
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* MESSAGES TAB */}
+              {activeTab === 'messages' && (
+                <div className="flex-1 w-full bg-[#FAFAFA] flex flex-col relative z-20 overflow-hidden">
+                  
+                  {/* Chat Area */}
+                  <div className="flex-1 overflow-y-auto px-4 lg:px-8 py-6 space-y-6">
+                    {messagesList.length === 0 ? (
+                      <div className="h-full flex flex-col items-center justify-center opacity-50">
+                        <MessageCircle size={48} className="mb-4" />
+                        <p className="font-bold">No messages yet.</p>
+                      </div>
+                    ) : (
+                      messagesList.map((msg, idx) => {
+                        const isMe = msg.isCaretaker;
+                        return (
+                          <div key={idx} className={`flex w-full ${isMe ? 'justify-end' : 'justify-start'}`}>
+                            <div className={`flex max-w-[85%] lg:max-w-[70%] ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
+                               {!isMe && (
+                                  <img 
+                                    src={booking.petParentPhoto || `https://ui-avatars.com/api/?name=${booking.petParentName}&background=FBBF24&color=1B2B48`} 
+                                    alt="Avatar" 
+                                    className="w-8 h-8 rounded-full mt-auto mr-3 shrink-0 object-cover" 
+                                  />
+                               )}
+                               
+                               <div className="flex flex-col">
+                                  <div className={`p-4 shadow-sm relative ${
+                                    isMe 
+                                      ? 'bg-[#1B2B48] text-white rounded-[20px] rounded-br-sm' 
+                                      : 'bg-white text-[#1B2B48] rounded-[20px] rounded-bl-sm border border-gray-100'
+                                  }`}>
+                                    <p className={`text-[14px] lg:text-[15px] leading-relaxed font-medium ${isMe ? 'text-white' : 'text-[#1B2B48]'}`}>
+                                      {msg.text}
+                                    </p>
+                                  </div>
+                                  <div className={`flex items-center mt-1.5 space-x-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
+                                    <span className="text-[10px] lg:text-[11px] font-bold text-[#1B2B48]/40">
+                                      {msg.time}
+                                    </span>
+                                  </div>
+                               </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                    <div ref={messagesEndRef} />
+                  </div>
+
+                  {/* Message Input Container */}
+                  <div className="bg-white border-t border-gray-100 p-4 lg:p-6 w-full shrink-0 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
+                    <form 
+                      onSubmit={handleSendMessage}
+                      className="max-w-4xl mx-auto flex items-end space-x-2 lg:space-x-4 relative"
+                    >
+                      <div className="flex-1 bg-[#F8F9FA] border border-gray-200 rounded-[24px] flex items-end pl-4 pr-2 py-2 min-h-[52px]">
+                         <textarea
+                           value={inputText}
+                           onChange={(e) => setInputText(e.target.value)}
+                           placeholder="Type your message..."
+                           className="flex-1 bg-transparent border-none focus:ring-0 resize-none text-[14px] lg:text-[15px] font-medium text-[#1B2B48] py-2 max-h-[120px] outline-none placeholder:text-[#465E87]/50"
+                           rows={1}
+                           onKeyDown={(e) => {
+                             if (e.key === 'Enter' && !e.shiftKey) {
+                               e.preventDefault();
+                               handleSendMessage();
+                             }
+                           }}
+                         />
+                         <button type="button" className="p-2 text-[#465E87] hover:text-[#1B2B48] hover:bg-white rounded-full transition-colors self-end mb-0.5">
+                           <Camera size={20} />
+                         </button>
+                      </div>
+                      <button 
+                        type="submit"
+                        disabled={!inputText.trim()}
+                        className="w-[52px] h-[52px] shrink-0 bg-[#4A1D1A] rounded-full flex items-center justify-center text-white shadow-[0_4px_15px_rgba(74,29,26,0.3)] hover:bg-[#3d1815] transition-colors disabled:opacity-50 disabled:shadow-none"
+                      >
+                        <Send size={20} className="ml-1" />
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              )}
+            </>
           )}
-        </>
-      )}
 
         </div>
-
       </div>
     </CaretakerLayout>
   );

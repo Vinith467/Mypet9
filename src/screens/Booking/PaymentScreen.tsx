@@ -3,25 +3,107 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2, Circle, Smartphone, CreditCard, Building2, Wallet, Loader2 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
+import { useAuth } from '../../contexts/AuthContext';
+import { db } from '../../config/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export const PaymentScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, userData } = useAuth();
   const [selectedMethod, setSelectedMethod] = useState('upi');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const handlePayment = () => {
-    setIsProcessing(true);
-    // Simulate gateway delay
-    setTimeout(() => {
-      navigate('/booking-confirmed');
-    }, 1500);
-  };
+  // Extract all data from navigation state
+  const provider = location.state?.provider;
+  const bookingData = location.state?.bookingData;
+  const bookingAmount = location.state?.bookingAmount || 0;
+  const pickupFee = location.state?.pickupFee || 0;
+  const pickupAddress = location.state?.pickupAddress || '';
+  const nights = location.state?.nights || 1;
+  const totalAmount = location.state?.totalAmount || bookingAmount + pickupFee;
 
-  // We could extract these from location.state if passed, else use defaults
-  const bookingAmount = location.state?.bookingAmount || 10800;
-  const pickupFee = location.state?.pickupFee || 300;
-  const totalAmount = bookingAmount + pickupFee;
+  const pet = bookingData?.pet;
+
+  const handlePayment = async () => {
+    if (!user?.uid) return;
+    setIsProcessing(true);
+    
+    try {
+      // Create booking in Firestore
+      const bookingRef = await addDoc(collection(db, 'bookings'), {
+        // Pet parent info
+        petParentId: user.uid,
+        petParentName: userData?.name || user.displayName || 'Pet Parent',
+        petParentPhoto: user.photoURL || '',
+        petParentEmail: user.email || '',
+        
+        // Caretaker info
+        caretakerId: provider?.id || '',
+        caretakerName: provider?.name || 'Caretaker',
+        caretakerPhoto: provider?.photo || provider?.images?.[0] || '',
+        caretakerLocation: provider?.locationStr || '',
+        
+        // Pet info
+        petId: pet?.id || '',
+        petName: pet?.name || 'Pet',
+        petBreed: pet?.breed || '',
+        petAge: pet?.age || '',
+        petImage: pet?.image || '',
+        petType: pet?.type || 'dog',
+        
+        // Booking details
+        service: bookingData?.service || 'Home Stay',
+        dropoffDate: bookingData?.dropoffDate || '',
+        dropoffTime: bookingData?.dropoffTime || '',
+        pickupDate: bookingData?.pickupDate || '',
+        pickupTime: bookingData?.pickupTime || '',
+        nights,
+        
+        // Pricing
+        pricePerNight: provider?.price || 800,
+        bookingAmount,
+        pickupFee,
+        totalAmount,
+        
+        // Add-ons
+        addons: {
+          pickupDrop: pickupFee > 0,
+          pickupFee,
+          pickupAddress,
+        },
+        
+        // Extra
+        specialRequirements: bookingData?.specialRequirements || '',
+        paymentMethod: selectedMethod,
+        
+        // Status
+        status: 'pending',
+        
+        // Timestamps
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+
+      // Navigate to confirmed screen with booking data
+      navigate('/booking-confirmed', { 
+        state: { 
+          bookingId: bookingRef.id,
+          petName: pet?.name || 'Pet',
+          petImage: pet?.image || '',
+          caretakerName: provider?.name || 'Caretaker',
+          dropoffDate: bookingData?.dropoffDate,
+          pickupDate: bookingData?.pickupDate,
+          totalAmount,
+          pickupDrop: pickupFee > 0,
+        } 
+      });
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      alert("Failed to create booking. Please try again.");
+      setIsProcessing(false);
+    }
+  };
 
   const paymentMethods = [
     { id: 'upi', name: 'UPI', desc: '(Google Pay, PhonePe, etc.)', icon: Smartphone },
@@ -48,13 +130,15 @@ export const PaymentScreen = () => {
           {/* Amount Summary Box */}
           <div className="bg-white rounded-[20px] p-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100">
             <div className="flex justify-between items-center mb-4">
-              <span className="text-[15px] font-medium text-[#465E87]">Booking Amount</span>
+              <span className="text-[15px] font-medium text-[#465E87]">Booking Amount ({nights} night{nights > 1 ? 's' : ''})</span>
               <span className="text-[15px] font-extrabold text-[#1B2B48]">₹{bookingAmount.toLocaleString('en-IN')}</span>
             </div>
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-[15px] font-medium text-[#465E87]">Pickup & Drop Fee</span>
-              <span className="text-[15px] font-extrabold text-[#1B2B48]">₹{pickupFee.toLocaleString('en-IN')}</span>
-            </div>
+            {pickupFee > 0 && (
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-[15px] font-medium text-[#465E87]">Pickup & Drop Fee</span>
+                <span className="text-[15px] font-extrabold text-[#1B2B48]">₹{pickupFee.toLocaleString('en-IN')}</span>
+              </div>
+            )}
             <div className="border-t border-gray-100 my-4"></div>
             <div className="flex justify-between items-center">
               <span className="text-[16px] font-extrabold text-[#1B2B48]">Total Amount</span>
@@ -90,7 +174,6 @@ export const PaymentScreen = () => {
                         <Circle size={24} className="text-gray-300 stroke-[1.5]" />
                       )}
                     </div>
-                    {/* Hidden radio input for accessibility */}
                     <input 
                       type="radio" 
                       name="payment_method" 
@@ -100,7 +183,6 @@ export const PaymentScreen = () => {
                       className="hidden"
                     />
                   </label>
-                  {/* Separator line */}
                   {index < paymentMethods.length - 1 && (
                     <div className="border-t border-gray-100"></div>
                   )}

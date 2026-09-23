@@ -1,24 +1,14 @@
-import { ArrowLeft, Heart, Share2, Star, MapPin, CheckCircle, Clock, ShieldCheck, HeartPulse } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, Star, MapPin, CheckCircle, Clock, ShieldCheck, HeartPulse, Home, PawPrint } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
 import { useSavedCaretakers } from '../../hooks/useSavedCaretakers';
 
-// Mock caretaker image resembling the user's mockup
-const caretakerImage = 'https://images.unsplash.com/photo-1544717301-9cdcb1f5940f?auto=format&fit=crop&q=80&w=800'; 
-
-// Mock badges
-const badges = [
-  { icon: ShieldCheck, label: 'Verified Caretaker' },
-  { icon: HeartPulse, label: 'Pet First Aid Certified' },
-  { icon: CheckCircle, label: 'Home-like Environment' },
-  { icon: Clock, label: 'Daily Photo & Video Updates' },
-];
-
 export const CaretakerProfileScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const provider = location.state?.provider;
+  const bookingData = location.state?.bookingData;
   const { isSaved, toggleSaved } = useSavedCaretakers();
   const isProviderSaved = provider ? isSaved(provider.id) : false;
 
@@ -33,13 +23,34 @@ export const CaretakerProfileScreen = () => {
     );
   }
 
+  // Use real photo or first image
+  const mainImage = provider.images?.[0] || provider.photo || 'https://images.unsplash.com/photo-1544717301-9cdcb1f5940f?auto=format&fit=crop&q=80&w=800';
+  
+  // Build badges from real data
+  const badges = [
+    { icon: ShieldCheck, label: 'Verified Caretaker' },
+    ...(provider.facilities?.includes('firstAid') ? [{ icon: HeartPulse, label: 'Pet First Aid Kit' }] : []),
+    ...(provider.facilities?.includes('garden') || provider.facilities?.includes('outdoorArea') ? [{ icon: Home, label: 'Garden / Outdoor Area' }] : []),
+    ...(provider.capacity ? [{ icon: PawPrint, label: `Capacity: ${provider.capacity} pets` }] : []),
+    { icon: Clock, label: 'Daily Photo & Video Updates' },
+  ];
+
+  const handleBookNow = () => {
+    navigate('/booking-summary', { 
+      state: { 
+        provider,
+        bookingData 
+      } 
+    });
+  };
+
   return (
     <DashboardLayout>
       <div className="min-h-full bg-[#F8F9FA] pb-[100px] lg:pb-12 relative overflow-hidden">
         
         {/* MOBILE HEADER (hidden on desktop) */}
         <div className="lg:hidden relative w-full h-[280px]">
-          <img src={caretakerImage} alt="Caretaker" className="w-full h-full object-cover" />
+          <img src={mainImage} alt="Caretaker" className="w-full h-full object-cover" />
           
           {/* Top Actions */}
           <div className="absolute top-0 w-full p-4 flex justify-between items-center z-10 pt-safe-top">
@@ -82,9 +93,9 @@ export const CaretakerProfileScreen = () => {
             {/* COLUMN 1: Images & Core Info */}
             <div className="flex flex-col space-y-6">
                
-               {/* Desktop specific top image (since mobile header handles it above) */}
+               {/* Desktop specific top image */}
                <div className="hidden lg:block w-full h-[280px] rounded-[20px] overflow-hidden relative border border-gray-100 shadow-sm">
-                 <img src={caretakerImage} alt="Caretaker" className="w-full h-full object-cover" />
+                 <img src={mainImage} alt="Caretaker" className="w-full h-full object-cover" />
                  <div className="absolute top-4 right-4 flex space-x-3">
                    <button 
                      onClick={() => toggleSaved(provider)}
@@ -116,7 +127,7 @@ export const CaretakerProfileScreen = () => {
                    <div className="w-[16px] flex justify-center shrink-0">
                      <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
                    </div>
-                   <span className="text-[15px] font-medium">{provider.services.join(' • ')}</span>
+                   <span className="text-[15px] font-medium">{provider.services?.join(' • ') || 'Home Stay'}</span>
                  </div>
 
                  <div className="flex items-center text-[#465E87] space-x-2.5">
@@ -129,13 +140,12 @@ export const CaretakerProfileScreen = () => {
                  </div>
                </div>
 
-               {/* 3 Images Gallery */}
+               {/* Photo Gallery */}
                <div className="flex gap-3 overflow-x-auto scrollbar-hide py-2">
-                 {provider.images.map((img: string, idx: number) => (
+                 {provider.images?.map((img: string, idx: number) => (
                    <img key={idx} src={img} alt="" className="w-[90px] h-[90px] lg:w-[110px] lg:h-[110px] rounded-[16px] object-cover shrink-0 border border-gray-100 shadow-sm" />
                  ))}
-                 {/* Pad out if less than 3 images */}
-                 {provider.images.length < 3 && Array(3 - provider.images.length).fill(0).map((_, idx) => (
+                 {(provider.images?.length || 0) < 3 && Array(Math.max(0, 3 - (provider.images?.length || 0))).fill(0).map((_, idx) => (
                     <div key={`empty-${idx}`} className="w-[90px] h-[90px] lg:w-[110px] lg:h-[110px] rounded-[16px] bg-gray-50 shrink-0 border border-gray-100 shadow-sm" />
                  ))}
                </div>
@@ -157,11 +167,12 @@ export const CaretakerProfileScreen = () => {
                <div>
                  <h2 className="text-[18px] lg:text-[20px] font-extrabold text-[#1B2B48] mb-3">About Me</h2>
                  <p className="text-[15px] lg:text-[16px] leading-relaxed text-[#465E87] font-medium">
-                   Hi! I'm Priya, a lifelong animal lover with 5+ years of experience in pet care. My home has a large garden and a safe, friendly environment for your pet.
+                   {provider.bio || `Hi! I'm ${provider.name}, a pet lover providing quality care for your furry friends. My home offers a safe, loving environment with plenty of space and attention for your pet.`}
+                   {provider.experience ? ` I have ${provider.experience}+ years of experience in pet care.` : ''}
                  </p>
                </div>
 
-               {/* Badges Grid (Mobile) / Vertical List (Desktop) */}
+               {/* Badges Grid */}
                <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-5">
                  {badges.map((badge, idx) => (
                    <div key={idx} className="flex flex-col lg:flex-row items-start lg:items-center space-y-2 lg:space-y-0 lg:space-x-4 bg-[#174F38]/5 lg:bg-transparent rounded-[16px] p-4 lg:p-0">
@@ -178,7 +189,7 @@ export const CaretakerProfileScreen = () => {
                {/* Desktop Book Button */}
                <div className="hidden lg:block mt-auto pt-8">
                  <Button 
-                   onClick={() => navigate('/booking-summary', { state: { provider } })}
+                   onClick={handleBookNow}
                    className="w-full py-4 text-[16px] font-bold rounded-[16px] shadow-lg shadow-petoo-primary/20 hover:scale-[1.02] transition-transform"
                  >
                    Book Now
@@ -199,7 +210,7 @@ export const CaretakerProfileScreen = () => {
              </div>
            </div>
            <Button 
-             onClick={() => navigate('/booking-summary', { state: { provider } })}
+             onClick={handleBookNow}
              className="px-8 py-3.5 text-[15px] font-bold rounded-[14px] shadow-lg shadow-petoo-primary/20"
            >
              Book Now

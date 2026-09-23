@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
@@ -26,6 +26,9 @@ const formatCustomDate = (dateStr: string) => {
 
 export const BoardingDetailsScreen = () => {
   const navigate = useNavigate();
+  const loc = useLocation();
+  const pet = loc.state?.pet;
+  const service = loc.state?.service || 'Home Stay';
   
   // States for interactivity
   const [location, setLocation] = useState('Bengaluru, Karnataka');
@@ -39,6 +42,7 @@ export const BoardingDetailsScreen = () => {
   const [pickupTime, setPickupTime] = useState<string>('');
 
   const [specialReqOpen, setSpecialReqOpen] = useState(false);
+  const [specialRequirements, setSpecialRequirements] = useState('');
 
   // Reusable GPS detection logic
   const detectGPS = async (setAddress: (val: string) => void, setLoading: (val: boolean) => void) => {
@@ -217,6 +221,8 @@ export const BoardingDetailsScreen = () => {
                   >
                     <textarea 
                       placeholder="e.g. feeding, medication, behaviour..."
+                      value={specialRequirements}
+                      onChange={(e) => setSpecialRequirements(e.target.value)}
                       className="w-full bg-gray-50/50 rounded-xl p-3 text-[14px] text-[#1B2B48] placeholder:text-[#465E87]/60 border border-gray-100 focus:outline-none focus:border-petoo-primary/30 min-h-[80px] resize-none"
                     />
                   </motion.div>
@@ -238,7 +244,7 @@ export const BoardingDetailsScreen = () => {
               <Button 
                 fullWidth 
                 className="py-4 rounded-[18px] text-[16px] font-bold shadow-xl shadow-petoo-primary/20"
-                onClick={() => navigate('/search-boarding', { state: { location, dropoffDate, pickupDate } })}
+                onClick={() => navigate('/search-boarding', { state: { pet, service, location, dropoffDate, dropoffTime, pickupDate, pickupTime, specialRequirements } })}
               >
                 Search Boarding
               </Button>

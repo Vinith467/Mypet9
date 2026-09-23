@@ -1,10 +1,20 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Check, ChevronRight } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
 
 export const BookingConfirmedScreen = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const bookingState = location.state || {};
+  
+  const petName = bookingState.petName || 'Your Pet';
+  const petImage = bookingState.petImage || 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=200';
+  const caretakerName = bookingState.caretakerName || 'Caretaker';
+  const dropoffDate = bookingState.dropoffDate ? new Date(bookingState.dropoffDate).toLocaleDateString('en-GB', {day:'2-digit', month:'short'}) : '';
+  const pickupDate = bookingState.pickupDate ? new Date(bookingState.pickupDate).toLocaleDateString('en-GB', {day:'2-digit', month:'short'}) : '';
+  const totalAmount = bookingState.totalAmount || 0;
+  const pickupDrop = bookingState.pickupDrop || false;
 
   return (
     <DashboardLayout>
@@ -35,20 +45,20 @@ export const BookingConfirmedScreen = () => {
               Booking Successful!
             </h1>
             <p className="text-[15px] font-medium text-[#465E87] mb-8 relative z-10">
-              Your booking has been confirmed with The Happy Tails Home. We're excited to host your pet!
+              Your booking has been confirmed with {caretakerName}. We're excited to host your pet!
             </p>
 
             {/* Booking Details Card */}
             <div className="w-full border border-gray-100 rounded-[16px] p-4 bg-gray-50/50 mb-6 flex items-center relative z-10">
               <img 
-                src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=200" 
-                alt="Bruno" 
+                src={petImage} 
+                alt={petName} 
                 className="w-16 h-16 rounded-[12px] object-cover mr-4"
               />
               <div className="flex flex-col text-left flex-1">
-                <span className="text-[16px] font-extrabold text-[#1B2B48] mb-1">Bruno</span>
-                <span className="text-[13px] font-medium text-[#465E87]">12 Sep – 18 Sep • ₹11,100</span>
-                <span className="text-[12px] font-bold text-petoo-primary mt-0.5">+ Pickup & Drop</span>
+                <span className="text-[16px] font-extrabold text-[#1B2B48] mb-1">{petName}</span>
+                <span className="text-[13px] font-medium text-[#465E87]">{dropoffDate && pickupDate ? `${dropoffDate} – ${pickupDate}` : 'Dates confirmed'} {totalAmount > 0 ? `• ₹${totalAmount.toLocaleString('en-IN')}` : ''}</span>
+                {pickupDrop && <span className="text-[12px] font-bold text-petoo-primary mt-0.5">+ Pickup & Drop</span>}
               </div>
             </div>
 

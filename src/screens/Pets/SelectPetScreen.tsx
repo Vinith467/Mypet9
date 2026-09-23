@@ -38,7 +38,8 @@ export const SelectPetScreen = () => {
 
   const handleNext = () => {
     if (selectedPetId) {
-      navigate('/choose-service');
+      const selectedPet = pets.find(p => p.id === selectedPetId);
+      navigate('/choose-service', { state: { pet: selectedPet } });
     }
   };
 

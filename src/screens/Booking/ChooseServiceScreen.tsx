@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Home, Crown, Gem, UserCircle, ArrowRight } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
@@ -40,6 +40,8 @@ const services = [
 
 export const ChooseServiceScreen = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pet = location.state?.pet;
 
   return (
     <DashboardLayout>
@@ -74,7 +76,7 @@ export const ChooseServiceScreen = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1, type: "spring", stiffness: 100 }}
-                onClick={() => navigate('/boarding-details')} 
+                onClick={() => navigate('/boarding-details', { state: { pet, service: service.title } })} 
                 className="relative flex flex-row w-full bg-white rounded-3xl group cursor-pointer border border-gray-100/80 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_30px_rgb(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-0.5 p-3"
               >
                 {/* 1:1 Premium Image Frame */}
