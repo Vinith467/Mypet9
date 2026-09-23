@@ -119,7 +119,7 @@ export const CaretakerBookingDetailsScreen = () => {
         status: newStatus,
         updatedAt: serverTimestamp()
       });
-      setBooking(prev => ({ ...prev, status: newStatus }));
+      setBooking((prev: any) => ({ ...prev, status: newStatus }));
     } catch (error) {
       console.error("Error updating status:", error);
       alert("Failed to update status.");
