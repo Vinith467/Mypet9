@@ -96,11 +96,11 @@ export const DateTimePickerModal = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-40 bg-[#1B2B48]/40 backdrop-blur-sm"
+            className="fixed inset-0 z-[90] bg-[#1B2B48]/40 backdrop-blur-sm"
           />
 
           {/* Modal Container */}
-          <div className="fixed inset-0 z-50 flex items-end lg:items-center justify-center pointer-events-none">
+          <div className="fixed inset-0 z-[100] flex items-end lg:items-center justify-center pointer-events-none">
             <motion.div
               initial={{ y: "100%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -153,12 +153,12 @@ export const DateTimePickerModal = ({
                 {/* Time Selection */}
                 <div className="flex flex-col space-y-4 px-6">
                   <h3 className="text-sm font-bold text-[#465E87] uppercase tracking-wider">Time Slot</h3>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-4 lg:grid-cols-3 gap-2 lg:gap-3">
                     {timeSlots.map((time) => (
                       <button
                         key={time}
                         onClick={() => setSelectedTime(time)}
-                        className={`py-3 px-2 rounded-xl border-2 text-sm font-bold transition-all ${
+                        className={`py-2 lg:py-3 px-1 lg:px-2 rounded-xl border-2 text-[11px] lg:text-sm font-bold transition-all ${
                           selectedTime === time
                             ? 'border-petoo-primary bg-petoo-primary/5 text-petoo-primary shadow-sm'
                             : 'border-gray-100 bg-white text-[#1B2B48] hover:border-gray-200'

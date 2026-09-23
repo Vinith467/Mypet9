@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { db, storage } from '../../config/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { uploadImageToCloudinary } from '../../utils/cloudinary';
 import { 
   ChevronLeft,
   Camera,
@@ -71,10 +71,9 @@ export const CaretakerPhotosVideosScreen = () => {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const fileName = `${Date.now()}_${file.name}`;
-        const storageRef = ref(storage, `caretakers/${user.uid}/${type}s/${fileName}`);
         
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
+        // Upload to Cloudinary
+        const url = await uploadImageToCloudinary(file);
         
         newItems.push({ url, type, name: fileName });
       }
@@ -85,7 +84,7 @@ export const CaretakerPhotosVideosScreen = () => {
         setVideos(prev => [...prev, ...newItems]);
       }
     } catch (error) {
-      console.error("Error uploading:", error);
+      console.error("Error uploading to Cloudinary:", error);
       alert('Failed to upload. Please try again.');
     } finally {
       setUploading(false);
@@ -94,23 +93,11 @@ export const CaretakerPhotosVideosScreen = () => {
 
   const removeMedia = async (item: MediaItem) => {
     if (!user?.uid) return;
-    try {
-      const storageRef = ref(storage, `caretakers/${user.uid}/${item.type}s/${item.name}`);
-      await deleteObject(storageRef);
-      
-      if (item.type === 'photo') {
-        setPhotos(prev => prev.filter(p => p.name !== item.name));
-      } else {
-        setVideos(prev => prev.filter(v => v.name !== item.name));
-      }
-    } catch (error) {
-      console.error("Error removing media:", error);
-      // Still remove from UI even if storage delete fails
-      if (item.type === 'photo') {
-        setPhotos(prev => prev.filter(p => p.name !== item.name));
-      } else {
-        setVideos(prev => prev.filter(v => v.name !== item.name));
-      }
+    // We only remove from local state and firestore since we don't have cloudinary delete signature here
+    if (item.type === 'photo') {
+      setPhotos(prev => prev.filter(p => p.name !== item.name));
+    } else {
+      setVideos(prev => prev.filter(v => v.name !== item.name));
     }
   };
 

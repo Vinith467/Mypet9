@@ -13,7 +13,7 @@ export const DashboardLayout = ({ children }: { children: ReactNode }) => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
         <main className="flex-1 overflow-y-auto scrollbar-hide pb-24 lg:pb-8">
-          <div className="max-w-4xl mx-auto w-full h-full lg:px-8">
+          <div className="w-full h-full lg:px-8">
             {children}
           </div>
         </main>
