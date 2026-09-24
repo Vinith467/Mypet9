@@ -202,7 +202,7 @@ export const CaretakerProfileScreen = () => {
                       onClick={handleBookNow}
                       className="px-6 py-3 text-[14px] font-extrabold rounded-[12px] bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] flex items-center space-x-1"
                     >
-                      <span>Book Now</span>
+                      <span className="pr-1">Continue</span>
                       <ChevronRight size={16} strokeWidth={2.5} />
                     </Button>
                   </div>
@@ -374,7 +374,7 @@ export const CaretakerProfileScreen = () => {
                     onClick={handleBookNow}
                     className="w-full py-3 text-[15px] font-extrabold rounded-[12px] shadow-lg shadow-petoo-primary/20 hover:scale-[1.02] transition-transform flex justify-center items-center space-x-2"
                   >
-                    <span>Book Now</span>
+                    <span>Continue</span>
                     <ChevronRight size={18} />
                   </Button>
                 </div>
