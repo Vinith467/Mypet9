@@ -3,10 +3,10 @@ import { Navigation } from './Navigation';
 
 export const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex h-screen w-full bg-[#FBF6EE] text-[#1B2B48] overflow-hidden">
+    <div className="flex h-screen w-full bg-[#F8F9FA] text-[#1B2B48] overflow-hidden">
       
       {/* Desktop Sidebar Navigation */}
-      <div className="hidden lg:flex w-64 h-full border-r border-[#1B2B48]/5 bg-[#FBF6EE]">
+      <div className="hidden lg:flex w-64 h-full border-r border-[#1B2B48]/5 bg-[#F8F9FA]">
         <Navigation />
       </div>
 
