@@ -39,10 +39,11 @@ export const CaretakerProfileScreen = () => {
   const hasVideo = provider.videos && provider.videos.length > 0;
 
   const handleBookNow = () => {
-    navigate('/booking-summary', { 
+    navigate('/select-pet', { 
       state: { 
         provider,
-        bookingData 
+        bookingData,
+        selectedPets: location.state?.selectedPets
       } 
     });
   };

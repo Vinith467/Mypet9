@@ -30,16 +30,20 @@ export const BoardingDetailsScreen = () => {
   const pet = loc.state?.pet;
   const service = loc.state?.service || 'Home Stay';
   
+  const bookingData = loc.state?.bookingData;
+  const passedSelectedPets = loc.state?.selectedPets;
+  const passedProvider = loc.state?.provider;
+
   // States for interactivity
-  const [location, setLocation] = useState('Bengaluru, Karnataka');
+  const [location, setLocation] = useState(bookingData?.location || 'Bengaluru, Karnataka');
   const [isDetecting, setIsDetecting] = useState(false);
   
   const [activePicker, setActivePicker] = useState<'dropoff' | 'pickup' | null>(null);
-  const [dropoffDate, setDropoffDate] = useState<string>(''); 
-  const [dropoffTime, setDropoffTime] = useState<string>('');
+  const [dropoffDate, setDropoffDate] = useState<string>(bookingData?.dropoffDate || ''); 
+  const [dropoffTime, setDropoffTime] = useState<string>(bookingData?.dropoffTime || '');
   
-  const [pickupDate, setPickupDate] = useState<string>('');
-  const [pickupTime, setPickupTime] = useState<string>('');
+  const [pickupDate, setPickupDate] = useState<string>(bookingData?.pickupDate || '');
+  const [pickupTime, setPickupTime] = useState<string>(bookingData?.pickupTime || '');
 
   const [specialReqOpen, setSpecialReqOpen] = useState(false);
   const [specialRequirements, setSpecialRequirements] = useState('');
@@ -239,12 +243,11 @@ export const BoardingDetailsScreen = () => {
 
 
 
-            {/* Normal flow Continue Button on desktop, absolute on mobile */}
             <div className="mt-8 pt-4">
               <Button 
                 fullWidth 
                 className="py-4 rounded-[18px] text-[16px] font-bold shadow-xl shadow-petoo-primary/20"
-                onClick={() => navigate('/search-boarding', { state: { pet, service, location, dropoffDate, dropoffTime, pickupDate, pickupTime, specialRequirements } })}
+                onClick={() => navigate('/search-boarding', { state: { pet, service, location, dropoffDate, dropoffTime, pickupDate, pickupTime, specialRequirements, selectedPets: passedSelectedPets, provider: passedProvider, bookingData } })}
               >
                 Search Boarding
               </Button>

@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Plus, CheckCircle2, PawPrint } from 'lucide-react';
-import { DashboardLayout } from '../../components/layout/DashboardLayout';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ArrowLeft, MoreVertical, Plus, CheckCircle2 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { collection, query, getDocs } from 'firebase/firestore';
@@ -11,10 +9,16 @@ import type { Pet } from './MyPetsScreen';
 
 export const SelectPetScreen = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
+  
+  const provider = location.state?.provider;
+  const bookingData = location.state?.bookingData;
+  const passedSelectedPets = location.state?.selectedPets;
+
   const [pets, setPets] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
+  const [selectedPetIds, setSelectedPetIds] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchPets = async () => {
@@ -24,8 +28,19 @@ export const SelectPetScreen = () => {
         const snapshot = await getDocs(q);
         const petsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Pet));
         setPets(petsData);
-        if (petsData.length > 0) {
-          setSelectedPetId(petsData[0].id);
+        
+        if (petsData.length === 0) {
+          navigate('/add-pet', { state: { returnTo: '/select-pet', provider, bookingData }, replace: true });
+        } else {
+          // If we came back from booking summary, restore selection
+          if (passedSelectedPets && passedSelectedPets.length > 0) {
+            setSelectedPetIds(passedSelectedPets.map((p: Pet) => p.id));
+          } else if (bookingData?.pets && bookingData.pets.length > 0) {
+            setSelectedPetIds(bookingData.pets.map((p: Pet) => p.id));
+          } else {
+            // Otherwise pre-select the first pet
+            setSelectedPetIds([petsData[0].id]);
+          }
         }
       } catch (error) {
         console.error("Error fetching pets:", error);
@@ -34,137 +49,140 @@ export const SelectPetScreen = () => {
       }
     };
     fetchPets();
-  }, [user]);
+  }, [user, navigate, provider, bookingData]);
+
+  const togglePetSelection = (id: string) => {
+    setSelectedPetIds(prev => 
+      prev.includes(id) ? prev.filter(pId => pId !== id) : [...prev, id]
+    );
+  };
 
   const handleNext = () => {
-    if (selectedPetId) {
-      const selectedPet = pets.find(p => p.id === selectedPetId);
-      navigate('/choose-service', { state: { pet: selectedPet } });
+    if (selectedPetIds.length > 0) {
+      const selectedPets = pets.filter(p => selectedPetIds.includes(p.id));
+      // For now, console log and navigate to placeholder. The user will provide the next step.
+      console.log("Selected pets:", selectedPets);
+      // Wait for user instruction for the next page, but pass state just in case.
+      navigate('/booking-summary', { 
+        state: { 
+          provider, 
+          bookingData, 
+          selectedPets 
+        } 
+      });
     }
   };
 
-  return (
-    <DashboardLayout>
-      <div className="w-full flex flex-col pt-6 lg:pt-10 space-y-6 max-w-2xl mx-auto lg:max-w-none px-4 lg:px-0 pb-20">
-        
-        {/* Header */}
-        <h1 className="text-2xl lg:text-3xl font-extrabold text-[#1B2B48] tracking-tight">
-          Select Your Pet
-        </h1>
-
-        {loading ? (
-          <div className="w-full flex justify-center p-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-petoo-primary"></div>
-          </div>
-        ) : (
-          <>
-            {/* Pet List */}
-            <div className="flex flex-col space-y-4 w-full">
-              {pets.map((pet) => {
-                const isSelected = selectedPetId === pet.id;
-
-                return (
-                  <motion.div
-                    key={pet.id}
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setSelectedPetId(pet.id)}
-                    className={`relative flex items-center bg-white p-3 lg:p-4 rounded-3xl cursor-pointer transition-all duration-300 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] ${
-                      isSelected 
-                        ? 'border-2 border-petoo-primary shadow-lg shadow-petoo-primary/10' 
-                        : 'border border-gray-100 hover:border-petoo-primary/30'
-                    }`}
-                  >
-                    {/* Pet Image (Square) */}
-                    <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl overflow-hidden shrink-0 bg-gray-100 flex items-center justify-center">
-                      {pet.image ? (
-                        <img src={pet.image} alt={pet.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <PawPrint className="text-gray-400" size={32} />
-                      )}
-                    </div>
-
-                    {/* Pet Details */}
-                    <div className="ml-4 lg:ml-6 flex flex-col flex-1">
-                      <h3 className="text-lg lg:text-xl font-bold text-[#1B2B48] leading-tight">
-                        {pet.name}
-                      </h3>
-                      <p className="text-[13px] lg:text-[15px] font-medium text-[#465E87] mt-1 lg:mt-1.5">
-                        {pet.breed || pet.type}
-                      </p>
-                      <p className="text-[12px] lg:text-[14px] font-medium text-[#1B2B48]/60 mt-1 flex items-center gap-1.5">
-                        <span>{pet.gender}</span>
-                        {pet.age && (
-                          <>
-                            <span className="w-1 h-1 rounded-full bg-[#1B2B48]/30" />
-                            <span>{pet.age}</span>
-                          </>
-                        )}
-                        {pet.weight && (
-                          <>
-                            <span className="w-1 h-1 rounded-full bg-[#1B2B48]/30" />
-                            <span>{pet.weight} kg</span>
-                          </>
-                        )}
-                      </p>
-                    </div>
-
-                    {/* Selected Checkmark */}
-                    {isSelected && (
-                      <motion.div 
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className="absolute top-4 right-4"
-                      >
-                        <div className="bg-petoo-primary rounded-full p-0.5 shadow-sm">
-                          <CheckCircle2 className="text-white fill-petoo-primary" size={24} />
-                        </div>
-                      </motion.div>
-                    )}
-                  </motion.div>
-                );
-              })}
-
-              {pets.length === 0 && (
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center py-10">
-                  <div className="w-16 h-16 bg-petoo-primary/10 rounded-full flex items-center justify-center mb-4">
-                    <PawPrint className="text-petoo-primary" size={32} />
-                  </div>
-                  <h3 className="text-[18px] font-extrabold text-[#1B2B48] mb-2">No pets found</h3>
-                  <p className="text-[#465E87] text-[14px] font-medium max-w-sm mb-6">
-                    Add a pet to continue with your booking.
-                  </p>
-                </div>
-              )}
-
-              {/* Add New Pet Button */}
-              <button 
-                onClick={() => navigate('/add-pet')}
-                className="flex items-center justify-center p-4 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-gray-50 hover:border-gray-300 transition-colors cursor-pointer group h-24"
-              >
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3 shadow-sm group-hover:scale-105 transition-transform">
-                  <Plus className="text-[#1B2B48]" size={20} />
-                </div>
-                <span className="text-[15px] font-bold text-[#1B2B48]">Add another pet</span>
-              </button>
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="w-full mt-8 flex justify-center lg:justify-start">
-              <Button 
-                fullWidth 
-                size="lg"
-                onClick={handleNext}
-                disabled={!selectedPetId}
-                className="shadow-[0_4px_12px_rgba(23,79,56,0.2)] lg:w-[300px] h-14 text-[16px] font-bold rounded-2xl"
-              >
-                Continue
-              </Button>
-            </div>
-          </>
-        )}
+  if (loading) {
+    return (
+      <div className="flex-1 min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FBBF24]"></div>
       </div>
-    </DashboardLayout>
+    );
+  }
+
+  // If auto-redirecting, return null to avoid flash
+  if (pets.length === 0) return null;
+
+  return (
+    <div className="flex-1 min-h-screen bg-white flex flex-col relative pb-28">
+      {/* Header */}
+      <div className="px-5 pt-12 pb-4 flex items-center sticky top-0 bg-white/90 backdrop-blur-md z-30">
+        <button 
+          onClick={() => navigate(-1)}
+          className="w-10 h-10 flex items-center justify-center -ml-2"
+        >
+          <ArrowLeft size={24} className="text-[#1B2B48]" />
+        </button>
+      </div>
+
+      <div className="px-6">
+        <div className="mb-8 text-center">
+          <h1 className="text-[22px] font-extrabold text-[#1B2B48] mb-1 tracking-tight">Your Pets</h1>
+          <p className="text-[14px] text-[#465E87] font-medium">
+            You've added {pets.length} pet{pets.length !== 1 ? 's' : ''} so far.
+          </p>
+        </div>
+
+        {/* Pet List */}
+        <div className="space-y-4">
+          {pets.map(pet => {
+            const isSelected = selectedPetIds.includes(pet.id);
+            return (
+              <div 
+                key={pet.id}
+                onClick={() => togglePetSelection(pet.id)}
+                className={`relative flex flex-row p-4 rounded-[20px] transition-all cursor-pointer border ${
+                  isSelected 
+                    ? 'border-[#FBBF24] bg-[#FFF9EC] shadow-[0_4px_15px_rgba(251,191,36,0.15)]' 
+                    : 'border-gray-100 bg-white shadow-[0_4px_15px_rgba(0,0,0,0.03)]'
+                }`}
+              >
+                {/* Check Mark for Selected State */}
+                {isSelected && (
+                  <div className="absolute -top-2 -right-2 bg-white rounded-full p-0.5 shadow-sm z-10 animate-in zoom-in duration-200">
+                    <CheckCircle2 size={24} className="text-white fill-[#FBBF24]" />
+                  </div>
+                )}
+
+                {/* Pet Image */}
+                <div className="w-[72px] h-[72px] rounded-[16px] overflow-hidden shrink-0 bg-gray-100 mr-4">
+                  {pet.image ? (
+                    <img src={pet.image} alt={pet.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold text-xl">
+                      {pet.name.charAt(0)}
+                    </div>
+                  )}
+                </div>
+
+                {/* Details */}
+                <div className="flex-1 flex flex-col justify-center">
+                  <div className="flex justify-between items-start">
+                    <h3 className="text-[16px] font-extrabold text-[#1B2B48] leading-tight mb-1">{pet.name}</h3>
+                    <button className="text-gray-400 p-1 -mr-2" onClick={(e) => e.stopPropagation()}>
+                      <MoreVertical size={18} />
+                    </button>
+                  </div>
+                  <p className="text-[13px] font-medium text-[#465E87] mb-1">{pet.breed || pet.type || 'Breed'}</p>
+                  <div className="flex items-center text-[12px] font-semibold text-[#465E87]/70 space-x-1.5">
+                    {pet.age && <span>{pet.age}</span>}
+                    {pet.age && pet.gender && <span>•</span>}
+                    {pet.gender && <span>{pet.gender}</span>}
+                    {pet.gender && pet.weight && <span>•</span>}
+                    {pet.weight && <span>{pet.weight} {pet.weight.toString().includes('kg') ? '' : 'kg'}</span>}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Add Another Pet */}
+        <div 
+          onClick={() => navigate('/add-pet', { state: { returnTo: '/select-pet', provider, bookingData } })}
+          className="mt-6 border-2 border-dashed border-gray-200 rounded-[20px] p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
+        >
+          <div className="w-12 h-12 bg-[#FDD835] rounded-full flex items-center justify-center mb-3">
+            <Plus size={24} className="text-[#1B2B48]" strokeWidth={2.5} />
+          </div>
+          <h4 className="text-[15px] font-extrabold text-[#1B2B48] mb-1">Add Another Pet</h4>
+          <p className="text-[12px] font-medium text-[#465E87]">You can add multiple pets</p>
+        </div>
+      </div>
+
+      {/* Fixed Bottom Button */}
+      <div className="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom">
+        <Button 
+          onClick={handleNext}
+          disabled={selectedPetIds.length === 0}
+          className="w-full h-14 bg-[#FDD835] hover:bg-[#FBBF24] text-[#1B2B48] text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2"
+        >
+          <span>Continue</span>
+          <ArrowLeft size={18} className="rotate-180" />
+        </Button>
+      </div>
+
+    </div>
   );
 };

@@ -43,6 +43,9 @@ export const BoardingSearchScreen = () => {
     };
     otherPetName?: string;
     isNewSearch?: boolean;
+    selectedPets?: any[];
+    provider?: any;
+    bookingData?: any;
   } | null;
   
   const [searchLocation, setSearchLocation] = useState(state?.location || '');
@@ -260,10 +263,12 @@ export const BoardingSearchScreen = () => {
           longitude: caretaker.longitude,
         },
         bookingData: {
+          ...state,
           pets: state?.pets,
           dropoffDate: state?.dropoffDate,
           pickupDate: state?.pickupDate,
-        }
+        },
+        selectedPets: state?.selectedPets
       }
     });
   };
@@ -384,7 +389,7 @@ export const BoardingSearchScreen = () => {
               </p>
             </div>
           ) : (
-            <div className="px-0 lg:px-8 pt-0 lg:pt-6 pb-32 flex flex-col space-y-2 lg:space-y-4 max-w-5xl mx-auto w-full">
+            <div className="px-3 lg:px-8 pt-4 lg:pt-6 pb-32 flex flex-col space-y-3 lg:space-y-4 max-w-5xl mx-auto w-full">
               {filteredCaretakers.map((caretaker, index) => (
                 <motion.div
                   key={caretaker.id}
@@ -392,10 +397,10 @@ export const BoardingSearchScreen = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => handleViewProfile(caretaker)}
-                  className="bg-[#FFFCF5] rounded-none lg:rounded-[16px] p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border-y lg:border border-[#FBECCB]/50 cursor-pointer flex flex-row gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 group"
+                  className="bg-[#FFFCF5] rounded-[16px] p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#FBECCB]/50 cursor-pointer flex flex-row gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 group"
                 >
                   {/* Image (Left side) - Square-ish fixed dimensions */}
-                  <div className="w-[110px] sm:w-[130px] h-[130px] sm:h-[150px] relative rounded-[12px] overflow-hidden shrink-0">
+                  <div className="w-[120px] sm:w-[140px] relative rounded-[12px] overflow-hidden shrink-0 min-h-[150px]">
                     <img 
                       src={caretaker.images[0]}
                       alt={caretaker.name}
@@ -413,21 +418,21 @@ export const BoardingSearchScreen = () => {
                     <div className="flex justify-between items-start">
                       <div className="flex-1 min-w-0 pr-1">
                         <div className="flex items-center flex-wrap gap-1 mb-1">
-                          <h3 className="text-[14px] sm:text-[16px] font-extrabold text-[#1B2B48] leading-tight truncate">{caretaker.name}</h3>
-                          <div className="flex items-center space-x-0.5 bg-[#E8F5E9] px-1 py-0.5 rounded text-[8px] sm:text-[9px] font-bold text-[#2E7D32] shrink-0">
-                            <BadgeCheck size={8} />
+                          <h3 className="text-[16px] sm:text-[18px] font-extrabold text-[#1B2B48] leading-tight truncate">{caretaker.name}</h3>
+                          <div className="flex items-center space-x-0.5 bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold text-[#2E7D32] shrink-0">
+                            <BadgeCheck size={10} />
                             <span>Verified Partner</span>
                           </div>
                         </div>
                         
                         <div className="flex items-center space-x-1 mb-1">
-                          <Star size={10} className="fill-[#FBBF24] text-[#FBBF24]" />
-                          <span className="text-[11px] sm:text-[12px] font-extrabold text-[#1B2B48]">{caretaker.rating.toFixed(1)}</span>
-                          <span className="text-[10px] sm:text-[11px] font-medium text-[#465E87]">({caretaker.reviews} reviews)</span>
+                          <Star size={12} className="fill-[#FBBF24] text-[#FBBF24]" />
+                          <span className="text-[13px] sm:text-[14px] font-extrabold text-[#1B2B48]">{caretaker.rating.toFixed(1)}</span>
+                          <span className="text-[12px] sm:text-[13px] font-medium text-[#465E87]">({caretaker.reviews} reviews)</span>
                         </div>
 
-                        <div className="flex items-center space-x-1 text-[10px] sm:text-[11px] font-medium text-[#465E87] truncate">
-                          <MapPin size={10} className="text-[#465E87] shrink-0" />
+                        <div className="flex items-center space-x-1 text-[12px] sm:text-[13px] font-medium text-[#465E87] truncate">
+                          <MapPin size={12} className="text-[#465E87] shrink-0" />
                           <span className="truncate">{caretaker.distanceStr} • {caretaker.locationStr.split(',')[0]}</span>
                         </div>
                       </div>
@@ -435,10 +440,10 @@ export const BoardingSearchScreen = () => {
                       {/* Price Block & Arrow */}
                       <div className="text-right flex flex-col items-end shrink-0 pl-2">
                         <div className="flex items-center space-x-0.5 text-[#1B2B48]">
-                          <span className="text-[16px] sm:text-[18px] font-extrabold">₹{caretaker.price}</span>
-                          <ChevronRight size={16} strokeWidth={2.5} className="mb-0.5" />
+                          <span className="text-[18px] sm:text-[20px] font-extrabold">₹{caretaker.price}</span>
+                          <ChevronRight size={18} strokeWidth={2.5} className="mb-0.5" />
                         </div>
-                        <span className="text-[8px] sm:text-[9px] font-medium text-[#465E87] text-right mt-0.5 leading-tight">per pet, per night</span>
+                        <span className="text-[10px] sm:text-[11px] font-medium text-[#465E87] text-right mt-0.5 leading-tight">per pet, per night</span>
                       </div>
                     </div>
 
@@ -447,34 +452,34 @@ export const BoardingSearchScreen = () => {
                       
                       {/* Pick up & drop */}
                       <div className="flex flex-col items-center">
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
-                          <Car size={11} className="text-[#8B5A2B]" />
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                          <Car size={13} className="text-[#8B5A2B]" />
                         </div>
-                        <span className="text-[6.5px] sm:text-[7.5px] font-semibold text-[#465E87] leading-tight text-center">Pickup & Drop<br/>Service</span>
+                        <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Pickup & Drop<br/>Service</span>
                       </div>
 
                       {/* Vaccination */}
                       <div className="flex flex-col items-center">
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
-                          <Syringe size={11} className="text-[#8B5A2B]" />
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                          <Syringe size={13} className="text-[#8B5A2B]" />
                         </div>
-                        <span className="text-[6.5px] sm:text-[7.5px] font-semibold text-[#465E87] leading-tight text-center">Vaccination<br/>Assistance</span>
+                        <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Vaccination<br/>Assistance</span>
                       </div>
 
                       {/* Grooming */}
                       <div className="flex flex-col items-center">
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
-                          <Scissors size={11} className="text-[#8B5A2B]" />
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                          <Scissors size={13} className="text-[#8B5A2B]" />
                         </div>
-                        <span className="text-[6.5px] sm:text-[7.5px] font-semibold text-[#465E87] leading-tight text-center">Grooming<br/>Available</span>
+                        <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Grooming<br/>Available</span>
                       </div>
 
                       {/* Experience */}
                       <div className="flex flex-col items-center">
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
-                          <User size={11} className="text-[#8B5A2B]" />
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                          <User size={13} className="text-[#8B5A2B]" />
                         </div>
-                        <span className="text-[6.5px] sm:text-[7.5px] font-semibold text-[#465E87] leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>
+                        <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>
                       </div>
                       
                     </div>
