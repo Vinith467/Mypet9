@@ -42,12 +42,15 @@ export const BoardingSearchScreen = () => {
       other: number;
     };
     otherPetName?: string;
+    isNewSearch?: boolean;
   } | null;
   
   const [searchLocation, setSearchLocation] = useState(state?.location || '');
   
   // Try to load cached data to avoid replaying the animation on back navigation
-  const cachedData = sessionStorage.getItem('cachedCaretakers');
+  // But ignore cache if it's a completely new search from the landing page
+  const isNewSearch = state?.isNewSearch === true;
+  const cachedData = !isNewSearch ? sessionStorage.getItem('cachedCaretakers') : null;
   const initialCaretakers = cachedData ? JSON.parse(cachedData) : [];
   
   const [caretakers, setCaretakers] = useState<CaretakerResult[]>(initialCaretakers);
