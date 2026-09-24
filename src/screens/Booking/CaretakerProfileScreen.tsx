@@ -293,7 +293,7 @@ export const CaretakerProfileScreen = () => {
                         { img: '/src/assets/images/medium_dog.jpg', label: 'Medium Dogs' },
                         { img: '/src/assets/images/large_dog.jpg', label: 'Large Dogs' },
                         { img: '/src/assets/images/cat.jpg', label: 'Cats' },
-                        { icon: PawPrint, label: 'Multiple Pets' },
+                        { img: '/src/assets/images/multiple_pets.jpg', label: 'Multiple Pets' },
                       ].map((item, idx) => (
                         <div key={idx} className="flex flex-col items-center shrink-0">
                           <div className="w-14 h-14 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2 overflow-hidden border border-[#FBECCB]/50 shadow-sm">
