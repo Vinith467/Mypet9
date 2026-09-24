@@ -342,43 +342,42 @@ export const BoardingSearchScreen = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => handleViewProfile(caretaker)}
-                  className="bg-white rounded-[16px] lg:rounded-[24px] p-2.5 lg:p-5 shadow-sm border border-gray-100 cursor-pointer flex flex-row gap-3 lg:gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                  className="bg-white rounded-[20px] lg:rounded-[24px] overflow-hidden lg:p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-gray-100 cursor-pointer flex flex-col lg:flex-row gap-0 lg:gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
                 >
-                  {/* Image (Left side) */}
-                  <div className="w-[110px] sm:w-[130px] lg:w-[260px] self-stretch min-h-[140px] relative rounded-[12px] lg:rounded-[16px] overflow-hidden shrink-0">
+                  {/* Image (Top on mobile, Left on desktop) */}
+                  <div className="w-full h-[180px] lg:w-[260px] lg:h-auto lg:min-h-[160px] relative shrink-0">
                     <img 
                       src={caretaker.images[0]}
                       alt={caretaker.name}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="absolute inset-0 w-full h-full object-cover lg:rounded-[16px] group-hover:scale-105 transition-transform duration-500"
                     />
-                    <button className="absolute top-2 right-2 w-7 h-7 lg:w-10 lg:h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/30 transition-colors z-10">
-                      <Heart size={14} className="text-white lg:w-5 lg:h-5" />
+                    <button className="absolute top-3 right-3 lg:top-2 lg:right-2 w-8 h-8 lg:w-10 lg:h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/30 transition-colors z-10">
+                      <Heart size={16} className="text-white lg:w-5 lg:h-5" />
                     </button>
                   </div>
 
-                  {/* Details (Right side) */}
-                  <div className="flex-1 flex flex-col justify-between py-0.5 lg:py-2 min-w-0">
+                  {/* Details */}
+                  <div className="flex-1 flex flex-col justify-between p-4 lg:p-0 min-w-0">
                     
                     {/* Top Row: Title, Verified, Price */}
-                    <div className="flex justify-between items-start lg:mb-1">
+                    <div className="flex justify-between items-start mb-2 lg:mb-1">
                       <div className="flex-1 pr-2 min-w-0">
-                        <div className="flex items-center flex-wrap gap-1.5 lg:gap-2 mb-1 lg:mb-2.5">
-                          <h3 className="text-[15px] lg:text-[22px] font-extrabold text-[#1B2B48] leading-tight truncate">{caretaker.name}</h3>
-                          <div className="flex items-center space-x-1 bg-[#E8F5E9] px-1.5 lg:px-2 py-0.5 rounded text-[9px] lg:text-[11px] font-bold text-[#2E7D32] shrink-0">
-                            <BadgeCheck size={10} className="lg:w-4 lg:h-4" />
-                            <span className="hidden lg:inline">Verified Partner</span>
-                            <span className="lg:hidden">Verified Partner</span>
+                        <div className="flex items-center flex-wrap gap-2 mb-1.5 lg:mb-2.5">
+                          <h3 className="text-[18px] lg:text-[22px] font-extrabold text-[#1B2B48] leading-tight truncate">{caretaker.name}</h3>
+                          <div className="flex items-center space-x-1 bg-[#E8F5E9] px-2 py-0.5 rounded text-[10px] lg:text-[11px] font-bold text-[#2E7D32] shrink-0">
+                            <BadgeCheck size={12} className="lg:w-4 lg:h-4" />
+                            <span>Verified Partner</span>
                           </div>
                         </div>
                         
-                        <div className="flex items-center space-x-1 mb-1.5 lg:mb-3">
-                          <Star size={12} className="fill-[#FBBF24] text-[#FBBF24] lg:w-5 lg:h-5" />
-                          <span className="text-[12px] lg:text-[16px] font-extrabold text-[#1B2B48]">{caretaker.rating.toFixed(1)}</span>
-                          <span className="text-[11px] lg:text-[15px] font-medium text-[#465E87]">({caretaker.reviews} reviews)</span>
+                        <div className="flex items-center space-x-1.5 mb-2 lg:mb-3">
+                          <Star size={14} className="fill-[#FBBF24] text-[#FBBF24] lg:w-5 lg:h-5" />
+                          <span className="text-[14px] lg:text-[16px] font-extrabold text-[#1B2B48]">{caretaker.rating.toFixed(1)}</span>
+                          <span className="text-[13px] lg:text-[15px] font-medium text-[#465E87]">({caretaker.reviews} reviews)</span>
                         </div>
 
-                        <div className="flex items-center space-x-1 text-[11px] lg:text-[15px] font-medium text-[#465E87] mb-2 lg:mb-0 truncate">
-                          <MapPin size={11} className="text-[#465E87] shrink-0 lg:w-5 lg:h-5" />
+                        <div className="flex items-center space-x-1 text-[13px] lg:text-[15px] font-medium text-[#465E87] truncate">
+                          <MapPin size={14} className="text-[#465E87] shrink-0 lg:w-5 lg:h-5" />
                           <span className="truncate">{caretaker.distanceStr} • {caretaker.locationStr.split(',')[0]}</span>
                         </div>
                       </div>
@@ -386,46 +385,46 @@ export const BoardingSearchScreen = () => {
                       {/* Price Block */}
                       <div className="text-right flex flex-col items-end shrink-0 pl-2 lg:pl-4">
                         <div className="flex items-center space-x-0.5 lg:space-x-1">
-                          <span className="text-[16px] lg:text-[28px] font-extrabold text-[#1B2B48]">₹{caretaker.price}</span>
-                          <ChevronLeft size={16} className="text-[#1B2B48] rotate-180 shrink-0 lg:w-6 lg:h-6" />
+                          <span className="text-[20px] lg:text-[28px] font-extrabold text-[#1B2B48]">₹{caretaker.price}</span>
+                          <ChevronLeft size={20} className="text-[#1B2B48] rotate-180 shrink-0 lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[9px] lg:text-[13px] font-medium text-[#465E87] text-right mt-0.5 lg:mt-1 leading-tight">per pet, per night</span>
+                        <span className="text-[11px] lg:text-[13px] font-medium text-[#465E87] text-right mt-0.5 lg:mt-1 leading-tight">per pet, per night</span>
                       </div>
                     </div>
 
                     {/* Facilities Icons Row */}
-                    <div className="flex flex-row justify-between lg:justify-start lg:gap-12 mt-auto pt-2 border-t border-gray-50 lg:border-none lg:pt-0">
+                    <div className="flex flex-row justify-between lg:justify-start lg:gap-12 mt-4 lg:mt-auto pt-4 lg:pt-0 border-t border-gray-100 lg:border-none">
                       
                       {/* Pick up & drop */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
-                          <Car size={13} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm">
+                          <Car size={18} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Pickup & Drop<br/>Service</span>
+                        <span className="text-[9.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Pickup & Drop<br/>Service</span>
                       </div>
 
                       {/* Vaccination */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
-                          <Syringe size={13} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm">
+                          <Syringe size={18} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Vaccination<br/>Assistance</span>
+                        <span className="text-[9.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Vaccination<br/>Assistance</span>
                       </div>
 
                       {/* Grooming */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
-                          <Scissors size={13} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm">
+                          <Scissors size={18} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Grooming<br/>Available</span>
+                        <span className="text-[9.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Grooming<br/>Available</span>
                       </div>
 
                       {/* Experience */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
-                          <User size={13} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm">
+                          <User size={18} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>
+                        <span className="text-[9.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>
                       </div>
                       
                     </div>
