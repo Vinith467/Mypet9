@@ -45,8 +45,13 @@ export const BoardingSearchScreen = () => {
   } | null;
   
   const [searchLocation, setSearchLocation] = useState(state?.location || '');
-  const [loading, setLoading] = useState(true);
-  const [caretakers, setCaretakers] = useState<CaretakerResult[]>([]);
+  
+  // Try to load cached data to avoid replaying the animation on back navigation
+  const cachedData = sessionStorage.getItem('cachedCaretakers');
+  const initialCaretakers = cachedData ? JSON.parse(cachedData) : [];
+  
+  const [caretakers, setCaretakers] = useState<CaretakerResult[]>(initialCaretakers);
+  const [loading, setLoading] = useState(initialCaretakers.length === 0);
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [sortBy, setSortBy] = useState<'distance' | 'price' | 'rating'>('distance');
 
@@ -142,6 +147,7 @@ export const BoardingSearchScreen = () => {
 
         results.sort((a, b) => a.distance - b.distance);
         setCaretakers(results);
+        sessionStorage.setItem('cachedCaretakers', JSON.stringify(results));
       } catch (error) {
         console.error("Error fetching caretakers:", error);
       } finally {
