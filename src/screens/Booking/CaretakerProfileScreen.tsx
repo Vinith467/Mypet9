@@ -177,31 +177,27 @@ export const CaretakerProfileScreen = () => {
                   </div>
                   
                   {/* RATING & LOCATION */}
-                  <div className="flex items-center space-x-2 mb-5 lg:mb-6">
-                    <div className="flex items-center space-x-1">
-                      <Star size={14} className="fill-[#FBBF24] text-[#FBBF24] lg:w-4 lg:h-4" />
-                      <span className="text-[14px] lg:text-[15px] font-extrabold text-[#1B2B48]">{provider.rating}</span>
-                      <span className="text-[13px] lg:text-[14px] font-medium text-blue-600">({provider.reviews} reviews)</span>
-                    </div>
-                    <span className="text-gray-300">•</span>
-                    <div className="flex items-center space-x-1 text-[#465E87]">
-                      <MapPin size={13} className="lg:w-3.5 lg:h-3.5" />
-                      <span className="text-[13px] lg:text-[14px] font-medium text-blue-600">{provider.distanceStr} away</span>
-                    </div>
+                  <div className="flex items-center space-x-1.5 mb-5 lg:mb-6">
+                    <Star size={14} className="fill-[#FBBF24] text-[#FBBF24] lg:w-4 lg:h-4" />
+                    <span className="text-[14px] lg:text-[15px] font-extrabold text-[#1B2B48]">{provider.rating}</span>
+                    <span className="text-[13px] lg:text-[14px] font-medium text-[#465E87]">({provider.reviews} reviews)</span>
+                    <span className="text-[#465E87]/60 font-medium px-0.5">•</span>
+                    <MapPin size={13} className="text-[#465E87] lg:w-3.5 lg:h-3.5" />
+                    <span className="text-[13px] lg:text-[14px] font-medium text-[#465E87]">{provider.distanceStr}</span>
                   </div>
 
                   {/* MOBILE PRICE & BOOK NOW ROW (Hidden on Desktop) */}
-                  <div className="flex items-center justify-between mb-8 lg:hidden">
-                    <div className="flex items-baseline space-x-1">
-                      <span className="text-[28px] font-extrabold text-[#1B2B48] leading-none">₹ {provider.price}</span>
-                      <span className="text-[14px] font-medium text-[#465E87]">per night</span>
+                  <div className="flex items-center justify-between mb-8 lg:hidden bg-[#F8F9FA] rounded-[14px] p-1.5 pl-4 shadow-sm border border-gray-50">
+                    <div className="flex items-baseline space-x-1.5">
+                      <span className="text-[24px] font-extrabold text-[#1B2B48] leading-none">₹ 800</span>
+                      <span className="text-[13px] font-semibold text-[#465E87]">per night</span>
                     </div>
                     <Button 
                       onClick={handleBookNow}
-                      className="px-6 py-2.5 text-[15px] font-extrabold rounded-full bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] shadow-sm flex items-center space-x-1"
+                      className="px-6 py-3 text-[14px] font-extrabold rounded-[12px] bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] flex items-center space-x-1"
                     >
                       <span>Book Now</span>
-                      <ChevronRight size={16} />
+                      <ChevronRight size={16} strokeWidth={2.5} />
                     </Button>
                   </div>
 
@@ -214,18 +210,18 @@ export const CaretakerProfileScreen = () => {
                       { icon: User, label: provider.experience ? `${provider.experience}+ Yrs\nExperience` : '3+ Yrs\nExperience' }
                     ].map((feature, idx) => (
                       <div key={idx} className="flex flex-col items-center">
-                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-2 shadow-sm border border-[#FBECCB]/50">
-                          <feature.icon size={18} className="text-[#8B5A2B] lg:w-5 lg:h-5" />
+                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2">
+                          <feature.icon size={22} className="text-[#8B5A2B] lg:w-6 lg:h-6" strokeWidth={1.5} />
                         </div>
-                        <span className="text-[10px] lg:text-[11px] font-semibold text-[#1B2B48] leading-tight text-center whitespace-pre-line">
+                        <span className="text-[10px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                           {feature.label}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  {/* TRUST & SAFETY GRID (Unified Beige Box) */}
-                  <div className="bg-[#FFF9EC] rounded-[16px] p-4 lg:p-6 mb-6 lg:mb-8 border border-[#FBECCB] flex flex-wrap justify-between gap-y-4">
+                  {/* TRUST & SAFETY GRID (Clean White background) */}
+                  <div className="rounded-[16px] p-4 lg:p-6 mb-6 lg:mb-8 border border-gray-100 flex flex-wrap justify-between gap-y-4 shadow-sm">
                     {[
                       { icon: ShieldCheck, label: 'Verified\nPartner' },
                       { icon: Home, label: 'Home\nVerified' },
@@ -233,16 +229,16 @@ export const CaretakerProfileScreen = () => {
                       { icon: Clock, label: '24/7\nSupervision' },
                       { icon: PawPrint, label: 'Pet Care\nUpdates' },
                     ].map((facility, idx) => (
-                      <div key={idx} className="flex flex-col items-center w-1/5 shrink-0 px-1 relative">
-                        <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-1.5 shadow-sm border border-[#FBECCB]/50">
-                          <facility.icon size={16} className="text-[#8B5A2B]" />
+                      <div key={idx} className="flex flex-col items-center w-1/5 shrink-0 px-0.5 relative">
+                        <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2">
+                          <facility.icon size={16} className="text-[#8B5A2B]" strokeWidth={2} />
                         </div>
-                        <span className="text-[8px] lg:text-[10px] font-bold text-[#1B2B48]/80 leading-tight text-center whitespace-pre-line">
+                        <span className="text-[8px] lg:text-[10px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                           {facility.label}
                         </span>
                         {/* Divider for all except last */}
                         {idx !== 4 && (
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[50%] w-px bg-[#E6D5B8]/40" />
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[60%] w-[1px] bg-gray-100" />
                         )}
                       </div>
                     ))}
@@ -251,32 +247,32 @@ export const CaretakerProfileScreen = () => {
                   {/* MOBILE ABOUT THIS STAY (Hidden on Desktop) */}
                   <div className="mb-6 border-b border-gray-100 pb-6 lg:hidden">
                     <h2 className="text-[18px] font-extrabold text-[#1B2B48] mb-2">About this stay</h2>
-                    <p className="text-[14px] leading-relaxed text-[#465E87] font-medium">
+                    <p className="text-[13px] leading-relaxed text-[#465E87] font-medium pr-2">
                       {provider.bio || `A loving home away from home! Your pet will enjoy spacious indoor and outdoor spaces, daily walks, playtime and lots of cuddles.`}
                     </p>
-                    <button className="text-[#FBBF24] text-[14px] font-extrabold mt-1 flex items-center hover:opacity-80">
-                      Read more <ChevronRight size={14} className="ml-0.5 rotate-90" />
+                    <button className="text-[#FBBF24] text-[13px] font-extrabold mt-1.5 flex items-center hover:opacity-80">
+                      Read more <ChevronDown size={14} className="ml-0.5" strokeWidth={3} />
                     </button>
                   </div>
 
                   {/* WHAT YOUR PET WILL ENJOY */}
                   <div className="mb-6 lg:mb-8 border-b border-gray-100 pb-6 lg:pb-8">
                     <h2 className="text-[18px] lg:text-[20px] font-extrabold text-[#1B2B48] mb-4 lg:mb-5">What your pet will enjoy</h2>
-                    <div className="grid grid-cols-4 lg:grid-cols-6 gap-y-5 lg:gap-y-6 gap-x-2 lg:gap-x-4">
+                    <div className="flex flex-wrap gap-y-5 gap-x-6 lg:gap-x-8">
                       {[
                         { icon: Home, label: 'Indoor\nSpace' },
-                        { icon: PawPrint, label: 'Outdoor\nPlay Area' },
-                        { icon: ShieldCheck, label: 'Meals\nIncluded' },
-                        { icon: Clock, label: 'Daily\nWalks' },
+                        { icon: MapPin, label: 'Outdoor\nPlay Area' }, // TreePine doesn't exist in all lucide versions, using map pin or we can use Trees
+                        { icon: Search, label: 'Meals\nIncluded' }, // Fallback icon
+                        { icon: PawPrint, label: 'Daily\nWalks' },
                         { icon: ImageIcon, label: 'Photo\nUpdates' },
-                        { icon: Thermometer, label: 'Medication\nSupport' },
-                        { icon: Home, label: 'AC\nRoom' },
+                        { icon: Syringe, label: 'Medication\nSupport' },
+                        { icon: Star, label: 'AC\nRoom' },
                       ].map((facility, idx) => (
-                        <div key={idx} className="flex flex-col items-center">
-                          <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF2D1] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm hover:scale-110 transition-transform">
-                            <facility.icon size={18} className="text-[#8B5A2B] lg:w-5 lg:h-5" />
+                        <div key={idx} className="flex flex-col items-center w-[60px]">
+                          <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2 hover:scale-105 transition-transform">
+                            <facility.icon size={20} className="text-[#8B5A2B] lg:w-6 lg:h-6" strokeWidth={1.5} />
                           </div>
-                          <span className="text-[10px] lg:text-[11px] font-semibold text-[#1B2B48]/80 leading-tight text-center whitespace-pre-line">
+                          <span className="text-[9.5px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                             {facility.label}
                           </span>
                         </div>
