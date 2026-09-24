@@ -205,23 +205,45 @@ export const CaretakerProfileScreen = () => {
                     </Button>
                   </div>
 
-                  {/* MAIN FACILITIES GRID (4 Columns) */}
-                  <div className="grid grid-cols-4 lg:grid-cols-6 gap-y-5 lg:gap-y-6 gap-x-2 lg:gap-x-4 mb-6 lg:mb-8 border-b border-gray-100 pb-6 lg:pb-8">
+                  {/* SERVICE FEATURES (Top Row) */}
+                  <div className="grid grid-cols-4 gap-2 mb-4 lg:mb-6">
+                    {[
+                      { icon: Car, label: 'Pickup & Drop\nService' },
+                      { icon: Syringe, label: 'Vaccination\nAssistance' },
+                      { icon: Scissors, label: 'Grooming\nAvailable' },
+                      { icon: User, label: provider.experience ? `${provider.experience}+ Yrs\nExperience` : '3+ Yrs\nExperience' }
+                    ].map((feature, idx) => (
+                      <div key={idx} className="flex flex-col items-center">
+                        <div className="mb-1 lg:mb-2">
+                          <feature.icon size={22} className="text-[#B99266] lg:w-7 lg:h-7" strokeWidth={1.5} />
+                        </div>
+                        <span className="text-[10px] lg:text-[11px] font-semibold text-[#1B2B48] leading-tight text-center whitespace-pre-line">
+                          {feature.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* TRUST & SAFETY GRID (Unified Beige Box) */}
+                  <div className="bg-[#FFF9EC] rounded-[16px] p-4 lg:p-6 mb-6 lg:mb-8 border border-[#FBECCB] flex flex-wrap justify-between gap-y-4">
                     {[
                       { icon: ShieldCheck, label: 'Verified\nPartner' },
                       { icon: Home, label: 'Home\nVerified' },
                       { icon: CheckCircle, label: 'Background\nChecked' },
                       { icon: Clock, label: '24/7\nSupervision' },
                       { icon: PawPrint, label: 'Pet Care\nUpdates' },
-                      ...(provider.experience ? [{ icon: User, label: `${provider.experience}+ Yrs\nExperience` }] : [])
                     ].map((facility, idx) => (
-                      <div key={idx} className="flex flex-col items-center">
-                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FDD835] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm hover:scale-110 transition-transform">
-                          <facility.icon size={18} className="text-[#1B2B48] lg:w-5 lg:h-5" />
+                      <div key={idx} className="flex flex-col items-center w-1/5 shrink-0 px-1 relative">
+                        <div className="w-8 h-8 lg:w-10 lg:h-10 bg-[#FFF2D1] rounded-full flex items-center justify-center mb-1.5 shadow-sm">
+                          <facility.icon size={16} className="text-[#8B5A2B]" />
                         </div>
-                        <span className="text-[10px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
+                        <span className="text-[8.5px] lg:text-[10px] font-bold text-[#1B2B48]/80 leading-tight text-center whitespace-pre-line">
                           {facility.label}
                         </span>
+                        {/* Divider for all except last */}
+                        {idx !== 4 && (
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[60%] w-px bg-[#FBECCB]" />
+                        )}
                       </div>
                     ))}
                   </div>
@@ -251,10 +273,10 @@ export const CaretakerProfileScreen = () => {
                         { icon: Home, label: 'AC\nRoom' },
                       ].map((facility, idx) => (
                         <div key={idx} className="flex flex-col items-center">
-                          <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FDD835] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm hover:scale-110 transition-transform">
-                            <facility.icon size={18} className="text-[#1B2B48] lg:w-5 lg:h-5" />
+                          <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF2D1] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm hover:scale-110 transition-transform">
+                            <facility.icon size={18} className="text-[#8B5A2B] lg:w-5 lg:h-5" />
                           </div>
-                          <span className="text-[10px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
+                          <span className="text-[10px] lg:text-[11px] font-semibold text-[#1B2B48]/80 leading-tight text-center whitespace-pre-line">
                             {facility.label}
                           </span>
                         </div>
