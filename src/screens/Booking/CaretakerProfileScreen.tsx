@@ -5,6 +5,12 @@ import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
 import { useSavedCaretakers } from '../../hooks/useSavedCaretakers';
 
+import smallDogImg from '../../assets/images/small_dog.jpg';
+import mediumDogImg from '../../assets/images/medium_dog.jpg';
+import largeDogImg from '../../assets/images/large_dog.jpg';
+import catImg from '../../assets/images/cat.jpg';
+import multiplePetsImg from '../../assets/images/multiple_pets.jpg';
+
 export const CaretakerProfileScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -285,11 +291,11 @@ export const CaretakerProfileScreen = () => {
                     <h2 className="text-[18px] lg:text-[20px] font-extrabold text-[#1B2B48] mb-4 lg:mb-5">Suitable for</h2>
                     <div className="flex overflow-x-auto scrollbar-hide space-x-4">
                       {[
-                        { img: '/src/assets/images/small_dog.jpg', label: 'Small Dogs' },
-                        { img: '/src/assets/images/medium_dog.jpg', label: 'Medium Dogs' },
-                        { img: '/src/assets/images/large_dog.jpg', label: 'Large Dogs' },
-                        { img: '/src/assets/images/cat.jpg', label: 'Cats' },
-                        { img: '/src/assets/images/multiple_pets.jpg', label: 'Multiple Pets' },
+                        { img: smallDogImg, label: 'Small Dogs' },
+                        { img: mediumDogImg, label: 'Medium Dogs' },
+                        { img: largeDogImg, label: 'Large Dogs' },
+                        { img: catImg, label: 'Cats' },
+                        { img: multiplePetsImg, label: 'Multiple Pets' },
                       ].map((item, idx) => (
                         <div key={idx} className="flex flex-col items-center shrink-0">
                           <div className="w-14 h-14 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2 overflow-hidden border border-[#FBECCB]/50 shadow-sm">
