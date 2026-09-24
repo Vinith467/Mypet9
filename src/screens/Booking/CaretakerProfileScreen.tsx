@@ -297,11 +297,7 @@ export const CaretakerProfileScreen = () => {
                       ].map((item, idx) => (
                         <div key={idx} className="flex flex-col items-center shrink-0">
                           <div className="w-14 h-14 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2 overflow-hidden border border-[#FBECCB]/50 shadow-sm">
-                            {item.img ? (
-                              <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
-                            ) : (
-                              item.icon && <item.icon size={26} className="text-[#C95C25]" strokeWidth={1.5} />
-                            )}
+                            <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
                           </div>
                           <span className="text-[11px] font-semibold text-[#465E87] leading-tight text-center">
                             {item.label}
