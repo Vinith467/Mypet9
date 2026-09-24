@@ -289,18 +289,21 @@ export const CaretakerProfileScreen = () => {
                     <h2 className="text-[18px] lg:text-[20px] font-extrabold text-[#1B2B48] mb-4 lg:mb-5">Suitable for</h2>
                     <div className="flex overflow-x-auto scrollbar-hide space-x-4">
                       {[
-                        { icon: Dog, label: 'Small Dogs' },
-                        { icon: Dog, label: 'Medium Dogs' },
-                        { icon: Dog, label: 'Large Dogs' },
-                        { icon: Cat, label: 'Cats' },
+                        { img: '/src/assets/images/small_dog.jpg', label: 'Small Dogs' },
+                        { img: '/src/assets/images/medium_dog.jpg', label: 'Medium Dogs' },
+                        { img: '/src/assets/images/large_dog.jpg', label: 'Large Dogs' },
+                        { img: '/src/assets/images/cat.jpg', label: 'Cats' },
                         { icon: PawPrint, label: 'Multiple Pets' },
-                        { icon: Heart, label: 'Senior Pets' },
                       ].map((item, idx) => (
                         <div key={idx} className="flex flex-col items-center shrink-0">
-                          <div className="w-14 h-14 lg:w-14 lg:h-14 bg-orange-50 border border-orange-100 rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm">
-                            <item.icon size={24} className="text-orange-700 lg:w-7 lg:h-7" />
+                          <div className="w-14 h-14 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2 overflow-hidden border border-[#FBECCB]/50 shadow-sm">
+                            {item.img ? (
+                              <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
+                            ) : (
+                              item.icon && <item.icon size={26} className="text-[#C95C25]" strokeWidth={1.5} />
+                            )}
                           </div>
-                          <span className="text-[11px] lg:text-[12px] font-semibold text-[#465E87] leading-tight text-center">
+                          <span className="text-[11px] font-semibold text-[#465E87] leading-tight text-center">
                             {item.label}
                           </span>
                         </div>
