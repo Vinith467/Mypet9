@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Heart, Share2, Star, MapPin, Play, Image as ImageIcon, ChevronRight, ShieldCheck, Home, CheckCircle, Clock, PawPrint, Thermometer, Dog, Cat, User, X } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, Star, MapPin, Play, Image as ImageIcon, ChevronRight, ShieldCheck, Home, CheckCircle, Clock, PawPrint, Thermometer, Dog, Cat, User, X, Car, Syringe, Scissors } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
