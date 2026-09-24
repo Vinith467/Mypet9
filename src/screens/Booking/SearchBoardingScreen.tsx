@@ -149,6 +149,53 @@ export const BoardingSearchScreen = () => {
         });
 
         results.sort((a, b) => a.distance - b.distance);
+
+        // --- INJECT DUMMY CARETAKERS FOR TESTING ---
+        if (results.length > 0) {
+          const dummy1 = {
+            ...results[0],
+            id: 'dummy-1',
+            name: 'Sarah M.',
+            photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80',
+            images: ['https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80'],
+            price: 650,
+            rating: 4.8,
+            reviews: 42,
+            distance: results[0].distance + 1.2,
+            distanceStr: formatDistance(results[0].distance + 1.2),
+            experience: 5,
+          };
+          const dummy2 = {
+            ...results[0],
+            id: 'dummy-2',
+            name: 'David & Lisa',
+            photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
+            images: ['https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80'],
+            price: 900,
+            rating: 4.9,
+            reviews: 18,
+            distance: results[0].distance + 3.5,
+            distanceStr: formatDistance(results[0].distance + 3.5),
+            experience: 2,
+          };
+          const dummy3 = {
+            ...results[0],
+            id: 'dummy-3',
+            name: 'Happy Paws Co.',
+            photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80',
+            images: ['https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80'],
+            price: 750,
+            rating: 4.7,
+            reviews: 89,
+            distance: results[0].distance + 5.1,
+            distanceStr: formatDistance(results[0].distance + 5.1),
+            experience: 7,
+          };
+          
+          results.push(dummy1, dummy2, dummy3);
+        }
+        // -------------------------------------------
+
         setCaretakers(results);
         sessionStorage.setItem('cachedCaretakers', JSON.stringify(results));
       } catch (error) {
@@ -345,7 +392,7 @@ export const BoardingSearchScreen = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => handleViewProfile(caretaker)}
-                  className="bg-white rounded-[16px] p-2.5 shadow-sm border border-gray-100 cursor-pointer flex flex-row gap-3 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                  className="bg-white rounded-[16px] p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 cursor-pointer flex flex-row gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 group mb-2"
                 >
                   {/* Image (Left side) - Square-ish fixed dimensions */}
                   <div className="w-[110px] sm:w-[130px] h-[130px] sm:h-[150px] relative rounded-[12px] overflow-hidden shrink-0">
@@ -386,16 +433,12 @@ export const BoardingSearchScreen = () => {
                       </div>
 
                       {/* Price Block & Arrow */}
-                      <div className="text-right flex flex-col items-end shrink-0 pl-1 relative pr-3">
-                        <div className="flex items-center space-x-0.5">
-                          <span className="text-[15px] sm:text-[18px] font-extrabold text-[#1B2B48]">₹{caretaker.price}</span>
+                      <div className="text-right flex flex-col items-end shrink-0 pl-2">
+                        <div className="flex items-center space-x-0.5 text-[#1B2B48]">
+                          <span className="text-[16px] sm:text-[18px] font-extrabold">₹{caretaker.price}</span>
+                          <ChevronRight size={16} strokeWidth={2.5} className="mb-0.5" />
                         </div>
                         <span className="text-[8px] sm:text-[9px] font-medium text-[#465E87] text-right mt-0.5 leading-tight">per pet, per night</span>
-                        
-                        {/* Right Arrow */}
-                        <div className="absolute right-[-4px] top-0 text-[#1B2B48]">
-                          <ChevronRight size={14} strokeWidth={3} />
-                        </div>
                       </div>
                     </div>
 
