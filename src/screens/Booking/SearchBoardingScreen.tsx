@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronDown, Star, MapPin, Heart, Search, BadgeCheck, Car, Syringe, Scissors, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Star, MapPin, Heart, Search, BadgeCheck, Car, Syringe, Scissors, User } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
