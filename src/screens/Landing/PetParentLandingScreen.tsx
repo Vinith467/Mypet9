@@ -179,16 +179,17 @@ export const PetParentLandingScreen = () => {
               <input 
                 type="text" 
                 placeholder="Where do you need a caretaker?" 
-                className="w-full outline-none text-gray-900 font-bold text-base md:text-lg bg-transparent placeholder:text-gray-500 min-w-0"
+                className="w-full outline-none text-gray-900 font-bold text-[15px] sm:text-base md:text-lg bg-transparent placeholder:text-gray-500 min-w-0 pr-24 sm:pr-28"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
               <button 
                 onClick={getCurrentLocation}
-                className="absolute right-2 p-1.5 hover:bg-gray-100 rounded-md text-[#1B2B48] transition-colors shrink-0"
+                className="absolute right-2 px-2 py-1.5 hover:bg-gray-200 rounded-md text-[#1B2B48] transition-colors shrink-0 flex items-center gap-1.5 bg-gray-100 border border-gray-200 shadow-sm"
                 title="Use current location"
               >
-                <Target size={20} />
+                <MapPin size={14} className="sm:w-4 sm:h-4" />
+                <span className="text-[11px] sm:text-xs font-bold whitespace-nowrap">Locate Me</span>
               </button>
             </div>
 

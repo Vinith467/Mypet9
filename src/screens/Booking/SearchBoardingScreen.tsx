@@ -345,13 +345,13 @@ export const BoardingSearchScreen = () => {
                   className="bg-white rounded-[16px] lg:rounded-[24px] p-2.5 lg:p-5 shadow-sm border border-gray-100 cursor-pointer flex flex-row gap-3 lg:gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
                 >
                   {/* Image (Left side) */}
-                  <div className="w-[110px] h-[120px] lg:w-[260px] lg:h-[220px] relative rounded-[12px] lg:rounded-[16px] overflow-hidden shrink-0">
+                  <div className="w-[110px] sm:w-[130px] lg:w-[260px] self-stretch min-h-[140px] relative rounded-[12px] lg:rounded-[16px] overflow-hidden shrink-0">
                     <img 
                       src={caretaker.images[0]}
                       alt={caretaker.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <button className="absolute top-2 right-2 w-7 h-7 lg:w-10 lg:h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/30 transition-colors">
+                    <button className="absolute top-2 right-2 w-7 h-7 lg:w-10 lg:h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/30 transition-colors z-10">
                       <Heart size={14} className="text-white lg:w-5 lg:h-5" />
                     </button>
                   </div>
@@ -398,34 +398,34 @@ export const BoardingSearchScreen = () => {
                       
                       {/* Pick up & drop */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-1 lg:mb-2">
-                          <Car size={13} className="text-[#B99266] lg:w-6 lg:h-6" />
+                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FBBF24] rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
+                          <Car size={13} className="text-[#1B2B48] lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[7.5px] lg:text-[12px] font-semibold text-[#465E87] leading-tight text-center">Pickup & Drop<br/>Service</span>
+                        <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/90 leading-tight text-center">Pickup & Drop<br/>Service</span>
                       </div>
 
                       {/* Vaccination */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-1 lg:mb-2">
-                          <Syringe size={13} className="text-[#B99266] lg:w-6 lg:h-6" />
+                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FBBF24] rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
+                          <Syringe size={13} className="text-[#1B2B48] lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[7.5px] lg:text-[12px] font-semibold text-[#465E87] leading-tight text-center">Vaccination<br/>Assistance</span>
+                        <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/90 leading-tight text-center">Vaccination<br/>Assistance</span>
                       </div>
 
                       {/* Grooming */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-1 lg:mb-2">
-                          <Scissors size={13} className="text-[#B99266] lg:w-6 lg:h-6" />
+                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FBBF24] rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
+                          <Scissors size={13} className="text-[#1B2B48] lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[7.5px] lg:text-[12px] font-semibold text-[#465E87] leading-tight text-center">Grooming<br/>Available</span>
+                        <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/90 leading-tight text-center">Grooming<br/>Available</span>
                       </div>
 
                       {/* Experience */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-1 lg:mb-2">
-                          <User size={13} className="text-[#B99266] lg:w-6 lg:h-6" />
+                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FBBF24] rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
+                          <User size={13} className="text-[#1B2B48] lg:w-6 lg:h-6" />
                         </div>
-                        <span className="text-[7.5px] lg:text-[12px] font-semibold text-[#465E87] leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>
+                        <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/90 leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>
                       </div>
                       
                     </div>
