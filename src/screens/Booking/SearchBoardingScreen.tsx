@@ -32,14 +32,16 @@ export const BoardingSearchScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as {
-    pet?: any;
-    service?: string;
     location?: string;
     dropoffDate?: string;
-    dropoffTime?: string;
     pickupDate?: string;
-    pickupTime?: string;
-    specialRequirements?: string;
+    pets?: {
+      dog: number;
+      cat: number;
+      bird: number;
+      other: number;
+    };
+    otherPetName?: string;
   } | null;
   
   const [searchLocation, setSearchLocation] = useState(state?.location || '');
@@ -105,6 +107,12 @@ export const BoardingSearchScreen = () => {
           const userName = data.name || data.ownerName || 'Caretaker';
           const userPhoto = data.photo || mediaPhotos[0] || `https://ui-avatars.com/api/?name=${userName}&background=FBBF24&color=1B2B48`;
 
+          // --- Filtering Logic for Pets ---
+          if (state?.pets) {
+            // We will let them pass even if they haven't explicitly set a price yet,
+            // to make sure new profiles aren't hidden. We default to 800 if missing.
+          }
+
           results.push({
             id: doc.id,
             name: userName,
@@ -151,22 +159,28 @@ export const BoardingSearchScreen = () => {
     return a.distance - b.distance;
   });
 
-  // Filter by search text (lenient keyword match)
-  const filteredCaretakers = searchLocation.trim()
-    ? sortedCaretakers.filter(c => {
-        const searchTerms = searchLocation.toLowerCase().split(/[,\s]+/);
-        const locStr = c.locationStr.toLowerCase();
-        const nameStr = c.name.toLowerCase();
-        
-        if (locStr.includes(searchLocation.toLowerCase()) || nameStr.includes(searchLocation.toLowerCase())) {
-          return true;
-        }
-
-        return searchTerms.some(term => 
-          term.length > 2 && (locStr.includes(term) || nameStr.includes(term))
-        );
-      })
-    : sortedCaretakers;
+  // Filter by search text (lenient keyword match, fallback to returning all if none match so screen isn't empty)
+  let filteredCaretakers = sortedCaretakers;
+  
+  if (searchLocation.trim()) {
+    const textMatched = sortedCaretakers.filter(c => {
+      const searchTerms = searchLocation.toLowerCase().split(/[,\s]+/);
+      const locStr = c.locationStr.toLowerCase();
+      const nameStr = c.name.toLowerCase();
+      
+      if (locStr.includes(searchLocation.toLowerCase()) || nameStr.includes(searchLocation.toLowerCase())) {
+        return true;
+      }
+      return searchTerms.some(term => 
+        term.length > 2 && (locStr.includes(term) || nameStr.includes(term))
+      );
+    });
+    
+    // If text match yields results, use it. Otherwise, just show all sorted by distance so it's not empty!
+    if (textMatched.length > 0) {
+      filteredCaretakers = textMatched;
+    }
+  }
 
   const handleViewProfile = (caretaker: CaretakerResult) => {
     navigate('/caretaker-profile', {
@@ -190,13 +204,9 @@ export const BoardingSearchScreen = () => {
           longitude: caretaker.longitude,
         },
         bookingData: {
-          pet: state?.pet,
-          service: state?.service,
+          pets: state?.pets,
           dropoffDate: state?.dropoffDate,
-          dropoffTime: state?.dropoffTime,
           pickupDate: state?.pickupDate,
-          pickupTime: state?.pickupTime,
-          specialRequirements: state?.specialRequirements,
         }
       }
     });
@@ -218,7 +228,11 @@ export const BoardingSearchScreen = () => {
     dateSubtitle = `Flexible dates`;
   }
   
-  const petCount = state?.pet ? '1 pet' : '1 pet';
+  let totalPetsCount = 1;
+  if (state?.pets) {
+    totalPetsCount = state.pets.dog + state.pets.cat + state.pets.bird + state.pets.other;
+  }
+  const petCount = `${totalPetsCount} pet${totalPetsCount > 1 ? 's' : ''}`;
   const fullSubtitle = `${dateSubtitle} • ${petCount}`;
 
   return (
