@@ -89,11 +89,13 @@ export const PetParentLandingScreen = () => {
             const data = await response.json();
             
             if (data && data.address) {
-              const city = data.address.city || data.address.town || data.address.village || data.address.county || '';
-              const neighbourhood = data.address.neighbourhood || data.address.suburb || data.address.road || '';
+              const area = data.address.neighbourhood || data.address.suburb || data.address.village || data.address.residential || data.address.road || '';
+              const district = data.address.city_district || data.address.state_district || data.address.county || data.address.city || data.address.town || '';
               
-              if (neighbourhood && city) {
-                setLocation(`${neighbourhood}, ${city}`);
+              if (area && district && area !== district) {
+                setLocation(`${area}, ${district}`);
+              } else if (district || area) {
+                setLocation(district || area);
               } else {
                 setLocation(data.display_name.split(',').slice(0, 2).join(', '));
               }
@@ -191,27 +193,60 @@ export const PetParentLandingScreen = () => {
             </div>
 
             {/* Dates */}
-            <div className="bg-white rounded-sm p-3.5 flex items-center gap-2 md:gap-3 flex-1">
-              <Calendar className="text-gray-500 shrink-0" size={20} />
-              <div className="flex items-center gap-2 w-full text-gray-900 font-bold">
+            <div className="bg-white rounded-sm p-3 md:p-3.5 flex items-center flex-1">
+              <Calendar className="text-gray-500 shrink-0 hidden sm:block mr-3" size={20} />
+              
+              <div 
+                className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
+                onClick={(e) => {
+                  const input = e.currentTarget.querySelector('input');
+                  if (input && 'showPicker' in input) {
+                    try { input.showPicker(); } catch (err) {}
+                  }
+                }}
+              >
+                <span className="text-[10px] sm:text-[11px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">From</span>
                 <input 
                   type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full min-w-0 text-sm md:text-base" 
+                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] md:text-base font-bold text-gray-900" 
                   value={dropoffDate} 
                   onChange={(e) => setDropoffDate(e.target.value)} 
+                  onClick={(e) => {
+                    if ('showPicker' in HTMLInputElement.prototype) {
+                      try { (e.target as HTMLInputElement).showPicker(); } catch (err) {}
+                    }
+                  }}
                 />
-                <span className="text-gray-400 shrink-0 font-medium">-</span>
+              </div>
+              
+              <div className="w-[1px] h-6 bg-gray-200 mx-1 sm:mx-3 shrink-0"></div>
+              
+              <div 
+                className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
+                onClick={(e) => {
+                  const input = e.currentTarget.querySelector('input');
+                  if (input && 'showPicker' in input) {
+                    try { input.showPicker(); } catch (err) {}
+                  }
+                }}
+              >
+                <span className="text-[10px] sm:text-[11px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">To</span>
                 <input 
                   type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full min-w-0 text-sm md:text-base" 
+                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] md:text-base font-bold text-gray-900" 
                   value={pickupDate} 
                   onChange={(e) => setPickupDate(e.target.value)} 
+                  onClick={(e) => {
+                    if ('showPicker' in HTMLInputElement.prototype) {
+                      try { (e.target as HTMLInputElement).showPicker(); } catch (err) {}
+                    }
+                  }}
                 />
               </div>
             </div>
 
             {/* Pets - Inline directly in the bar */}
-            <div className="bg-white rounded-sm p-3.5 flex flex-wrap items-center justify-center sm:justify-between gap-3 md:gap-4 md:flex-1">
+            <div className="bg-white rounded-sm p-3 md:p-3.5 flex flex-row items-center justify-between gap-1 sm:gap-3 md:gap-4 md:flex-1 overflow-hidden">
               <InlinePetCounter label="Dog" count={pets.dog} onIncrement={() => updatePetCount('dog', true)} onDecrement={() => updatePetCount('dog', false)} />
               <InlinePetCounter label="Cat" count={pets.cat} onIncrement={() => updatePetCount('cat', true)} onDecrement={() => updatePetCount('cat', false)} />
               <InlinePetCounter label="Bird" count={pets.bird} onIncrement={() => updatePetCount('bird', true)} onDecrement={() => updatePetCount('bird', false)} />
