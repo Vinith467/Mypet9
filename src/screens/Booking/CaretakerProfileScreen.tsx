@@ -216,8 +216,8 @@ export const CaretakerProfileScreen = () => {
                       ...(provider.experience ? [{ icon: User, label: `${provider.experience}+ Yrs\nExperience` }] : [])
                     ].map((facility, idx) => (
                       <div key={idx} className="flex flex-col items-center">
-                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm hover:scale-110 transition-transform">
-                          <facility.icon size={18} className="text-[#B99266] lg:w-5 lg:h-5" />
+                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FDD835] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm hover:scale-110 transition-transform">
+                          <facility.icon size={18} className="text-[#1B2B48] lg:w-5 lg:h-5" />
                         </div>
                         <span className="text-[10px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                           {facility.label}
@@ -251,8 +251,8 @@ export const CaretakerProfileScreen = () => {
                         { icon: Home, label: 'AC\nRoom' },
                       ].map((facility, idx) => (
                         <div key={idx} className="flex flex-col items-center">
-                          <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm hover:scale-110 transition-transform">
-                            <facility.icon size={18} className="text-[#B99266] lg:w-5 lg:h-5" />
+                          <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FDD835] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 shadow-sm hover:scale-110 transition-transform">
+                            <facility.icon size={18} className="text-[#1B2B48] lg:w-5 lg:h-5" />
                           </div>
                           <span className="text-[10px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                             {facility.label}
