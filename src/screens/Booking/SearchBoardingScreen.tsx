@@ -392,7 +392,7 @@ export const BoardingSearchScreen = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => handleViewProfile(caretaker)}
-                  className="bg-white rounded-none lg:rounded-[16px] p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border-y lg:border border-gray-100 cursor-pointer flex flex-row gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 group"
+                  className="bg-[#FFFCF5] rounded-none lg:rounded-[16px] p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border-y lg:border border-[#FBECCB]/50 cursor-pointer flex flex-row gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 group"
                 >
                   {/* Image (Left side) - Square-ish fixed dimensions */}
                   <div className="w-[110px] sm:w-[130px] h-[130px] sm:h-[150px] relative rounded-[12px] overflow-hidden shrink-0">
