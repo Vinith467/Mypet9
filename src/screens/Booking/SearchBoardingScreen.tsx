@@ -384,7 +384,7 @@ export const BoardingSearchScreen = () => {
               </p>
             </div>
           ) : (
-            <div className="px-3 lg:px-8 pt-4 lg:pt-6 pb-32 flex flex-col space-y-3 lg:space-y-5 max-w-5xl mx-auto w-full">
+            <div className="px-0 lg:px-8 pt-0 lg:pt-6 pb-32 flex flex-col space-y-2 lg:space-y-4 max-w-5xl mx-auto w-full">
               {filteredCaretakers.map((caretaker, index) => (
                 <motion.div
                   key={caretaker.id}
@@ -392,7 +392,7 @@ export const BoardingSearchScreen = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => handleViewProfile(caretaker)}
-                  className="bg-white rounded-[16px] p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 cursor-pointer flex flex-row gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 group mb-2"
+                  className="bg-white rounded-none lg:rounded-[16px] p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border-y lg:border border-gray-100 cursor-pointer flex flex-row gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 group"
                 >
                   {/* Image (Left side) - Square-ish fixed dimensions */}
                   <div className="w-[110px] sm:w-[130px] h-[130px] sm:h-[150px] relative rounded-[12px] overflow-hidden shrink-0">
