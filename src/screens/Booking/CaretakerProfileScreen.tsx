@@ -112,20 +112,20 @@ export const CaretakerProfileScreen = () => {
 
                 {/* Bottom Pills */}
                 {!isVideoPlaying && (
-                  <div className="absolute bottom-4 left-4 right-4 flex justify-between">
+                  <div className="absolute bottom-6 lg:bottom-8 left-4 right-4 flex justify-between z-10">
                     {hasVideo ? (
                       <button 
                         onClick={() => setIsVideoPlaying(true)}
-                        className="bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-5 py-2 lg:py-2.5 rounded-full flex items-center space-x-2 text-[12px] lg:text-[14px] font-bold shadow-sm hover:bg-black transition"
+                        className="bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-5 py-1.5 lg:py-2.5 rounded-full flex items-center space-x-2 text-[11px] lg:text-[14px] font-bold shadow-sm hover:bg-black transition border border-white/10"
                       >
-                        <Play size={14} className="fill-white" />
+                        <Play size={12} className="fill-white lg:w-4 lg:h-4" />
                         <span>Watch Video</span>
                       </button>
                     ) : (
                       <div />
                     )}
-                    <button className="bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-5 py-2 lg:py-2.5 rounded-full flex items-center space-x-2 text-[12px] lg:text-[14px] font-bold shadow-sm">
-                      <ImageIcon size={14} />
+                    <button className="bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-5 py-1.5 lg:py-2.5 rounded-full flex items-center space-x-2 text-[11px] lg:text-[14px] font-bold shadow-sm border border-white/10">
+                      <ImageIcon size={12} className="lg:w-4 lg:h-4" />
                       <span>See Photos ({allImages.length})</span>
                     </button>
                   </div>
@@ -133,15 +133,15 @@ export const CaretakerProfileScreen = () => {
                 {isVideoPlaying && (
                   <button 
                     onClick={() => setIsVideoPlaying(false)}
-                    className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-5 py-2 lg:py-2.5 rounded-full flex items-center space-x-2 text-[12px] lg:text-[14px] font-bold shadow-sm"
+                    className="absolute bottom-6 left-4 bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-5 py-1.5 lg:py-2.5 rounded-full flex items-center space-x-2 text-[11px] lg:text-[14px] font-bold shadow-sm"
                   >
-                    <X size={14} />
+                    <X size={12} />
                     <span>Close Video</span>
                   </button>
                 )}
               </div>
 
-              <div className="bg-white rounded-t-[24px] -mt-4 lg:mt-0 relative z-20 pt-5 lg:pt-6">
+              <div className="bg-white rounded-t-[24px] -mt-5 lg:mt-0 relative z-20 pt-6 lg:pt-8">
                 {/* THUMBNAILS ROW */}
                 <div className="flex gap-2 lg:gap-3 overflow-x-auto scrollbar-hide px-5 lg:px-0 pb-5">
                   {allImages.map((img: string, idx: number) => (
@@ -151,7 +151,7 @@ export const CaretakerProfileScreen = () => {
                         setActiveMediaIndex(idx);
                         setIsVideoPlaying(false);
                       }}
-                      className={`relative w-[65px] h-[65px] lg:w-[80px] lg:h-[80px] rounded-[12px] lg:rounded-[16px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${idx === activeMediaIndex && !isVideoPlaying ? 'border-[2.5px] lg:border-[3px] border-[#FBBF24] scale-95 shadow-md' : 'opacity-90 hover:opacity-100'}`}
+                      className={`relative w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] rounded-[10px] lg:rounded-[16px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${idx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[3px] border-[#FBBF24] scale-95 shadow-md' : 'opacity-90 hover:opacity-100 border border-gray-100'}`}
                     >
                       <img src={img} alt="" className="w-full h-full object-cover" />
                       {idx === Math.min(allImages.length - 1, 4) && allImages.length > 5 && (
@@ -167,7 +167,7 @@ export const CaretakerProfileScreen = () => {
                 <div className="px-5 lg:px-0">
                   {/* TITLE & VERIFIED */}
                   <div className="flex items-center flex-wrap gap-2 mb-1">
-                    <h1 className="text-[26px] lg:text-[26px] font-extrabold text-[#1B2B48] leading-tight">
+                    <h1 className="text-[24px] lg:text-[26px] font-extrabold text-[#1B2B48] leading-tight">
                       {provider.name}
                     </h1>
                     <div className="flex items-center space-x-1 bg-[#E8F5E9] px-2 py-0.5 rounded text-[10px] lg:text-[11px] font-bold text-[#2E7D32]">
@@ -198,7 +198,7 @@ export const CaretakerProfileScreen = () => {
                     </div>
                     <Button 
                       onClick={handleBookNow}
-                      className="px-6 py-2.5 text-[15px] font-extrabold rounded-[12px] shadow-sm flex items-center space-x-1"
+                      className="px-6 py-2.5 text-[15px] font-extrabold rounded-full bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] shadow-sm flex items-center space-x-1"
                     >
                       <span>Book Now</span>
                       <ChevronRight size={16} />
@@ -206,7 +206,7 @@ export const CaretakerProfileScreen = () => {
                   </div>
 
                   {/* SERVICE FEATURES (Top Row) */}
-                  <div className="grid grid-cols-4 gap-2 mb-4 lg:mb-6">
+                  <div className="flex justify-between items-start mb-6 lg:mb-8 px-2">
                     {[
                       { icon: Car, label: 'Pickup & Drop\nService' },
                       { icon: Syringe, label: 'Vaccination\nAssistance' },
@@ -214,8 +214,8 @@ export const CaretakerProfileScreen = () => {
                       { icon: User, label: provider.experience ? `${provider.experience}+ Yrs\nExperience` : '3+ Yrs\nExperience' }
                     ].map((feature, idx) => (
                       <div key={idx} className="flex flex-col items-center">
-                        <div className="mb-1 lg:mb-2">
-                          <feature.icon size={22} className="text-[#B99266] lg:w-7 lg:h-7" strokeWidth={1.5} />
+                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-2 shadow-sm border border-[#FBECCB]/50">
+                          <feature.icon size={18} className="text-[#8B5A2B] lg:w-5 lg:h-5" />
                         </div>
                         <span className="text-[10px] lg:text-[11px] font-semibold text-[#1B2B48] leading-tight text-center whitespace-pre-line">
                           {feature.label}
@@ -234,15 +234,15 @@ export const CaretakerProfileScreen = () => {
                       { icon: PawPrint, label: 'Pet Care\nUpdates' },
                     ].map((facility, idx) => (
                       <div key={idx} className="flex flex-col items-center w-1/5 shrink-0 px-1 relative">
-                        <div className="w-8 h-8 lg:w-10 lg:h-10 bg-[#FFF2D1] rounded-full flex items-center justify-center mb-1.5 shadow-sm">
+                        <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#FFF5D1] rounded-full flex items-center justify-center mb-1.5 shadow-sm border border-[#FBECCB]/50">
                           <facility.icon size={16} className="text-[#8B5A2B]" />
                         </div>
-                        <span className="text-[8.5px] lg:text-[10px] font-bold text-[#1B2B48]/80 leading-tight text-center whitespace-pre-line">
+                        <span className="text-[8px] lg:text-[10px] font-bold text-[#1B2B48]/80 leading-tight text-center whitespace-pre-line">
                           {facility.label}
                         </span>
                         {/* Divider for all except last */}
                         {idx !== 4 && (
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[60%] w-px bg-[#FBECCB]" />
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[50%] w-px bg-[#E6D5B8]/40" />
                         )}
                       </div>
                     ))}
