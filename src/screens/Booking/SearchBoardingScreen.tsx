@@ -398,7 +398,7 @@ export const BoardingSearchScreen = () => {
                       
                       {/* Pick up & drop */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FFF2D1] rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
+                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
                           <Car size={13} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
                         </div>
                         <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Pickup & Drop<br/>Service</span>
@@ -406,7 +406,7 @@ export const BoardingSearchScreen = () => {
 
                       {/* Vaccination */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FFF2D1] rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
+                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
                           <Syringe size={13} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
                         </div>
                         <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Vaccination<br/>Assistance</span>
@@ -414,7 +414,7 @@ export const BoardingSearchScreen = () => {
 
                       {/* Grooming */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FFF2D1] rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
+                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
                           <Scissors size={13} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
                         </div>
                         <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">Grooming<br/>Available</span>
@@ -422,7 +422,7 @@ export const BoardingSearchScreen = () => {
 
                       {/* Experience */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-[#FFF2D1] rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
+                        <div className="w-7 h-7 lg:w-12 lg:h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-1 lg:mb-2 shadow-sm">
                           <User size={13} className="text-[#8B5A2B] lg:w-6 lg:h-6" />
                         </div>
                         <span className="text-[7.5px] lg:text-[12px] font-bold text-[#1B2B48]/80 leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>
