@@ -258,21 +258,21 @@ export const CaretakerProfileScreen = () => {
                   {/* WHAT YOUR PET WILL ENJOY */}
                   <div className="mb-6 lg:mb-8 border-b border-gray-100 pb-6 lg:pb-8">
                     <h2 className="text-[18px] lg:text-[20px] font-extrabold text-[#1B2B48] mb-4 lg:mb-5">What your pet will enjoy</h2>
-                    <div className="flex flex-wrap gap-y-5 gap-x-6 lg:gap-x-8">
+                    <div className="flex justify-between items-start w-full">
                       {[
                         { icon: Home, label: 'Indoor\nSpace' },
-                        { icon: MapPin, label: 'Outdoor\nPlay Area' }, // TreePine doesn't exist in all lucide versions, using map pin or we can use Trees
-                        { icon: Search, label: 'Meals\nIncluded' }, // Fallback icon
+                        { icon: MapPin, label: 'Outdoor\nPlay Area' }, 
+                        { icon: Search, label: 'Meals\nIncluded' },
                         { icon: PawPrint, label: 'Daily\nWalks' },
                         { icon: ImageIcon, label: 'Photo\nUpdates' },
                         { icon: Syringe, label: 'Medication\nSupport' },
                         { icon: Star, label: 'AC\nRoom' },
                       ].map((facility, idx) => (
-                        <div key={idx} className="flex flex-col items-center w-[60px]">
-                          <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2 hover:scale-105 transition-transform">
-                            <facility.icon size={20} className="text-[#8B5A2B] lg:w-6 lg:h-6" strokeWidth={1.5} />
+                        <div key={idx} className="flex flex-col items-center flex-1 px-0.5">
+                          <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 hover:scale-105 transition-transform">
+                            <facility.icon size={16} className="text-[#8B5A2B] lg:w-5 lg:h-5" strokeWidth={2} />
                           </div>
-                          <span className="text-[9.5px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
+                          <span className="text-[8px] lg:text-[9px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                             {facility.label}
                           </span>
                         </div>
