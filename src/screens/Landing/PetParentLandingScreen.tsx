@@ -89,8 +89,8 @@ export const PetParentLandingScreen = () => {
             const data = await response.json();
             
             if (data && data.address) {
-              const area = data.address.neighbourhood || data.address.suburb || data.address.village || data.address.residential || data.address.road || '';
-              const district = data.address.city_district || data.address.state_district || data.address.county || data.address.city || data.address.town || '';
+              const area = data.address.neighbourhood || data.address.suburb || data.address.village || data.address.city_district || data.address.residential || data.address.road || '';
+              const district = data.address.city || data.address.town || data.address.state_district || data.address.county || '';
               
               if (area && district && area !== district) {
                 setLocation(`${area}, ${district}`);
