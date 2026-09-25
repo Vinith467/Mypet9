@@ -5,7 +5,6 @@ import { HomeScreen } from './screens/Home/HomeScreen';
 import { SelectPetScreen } from './screens/Pets/SelectPetScreen';
 import { ChooseServiceScreen } from './screens/Booking/ChooseServiceScreen';
 import { BoardingDetailsScreen } from './screens/Booking/BoardingDetailsScreen';
-// Trigger IDE refresh
 import { BoardingSearchScreen } from './screens/Booking/SearchBoardingScreen';
 import { CaretakerProfileScreen } from './screens/Booking/CaretakerProfileScreen';
 import { BookingSummaryScreen } from './screens/Booking/BookingSummaryScreen';
@@ -13,6 +12,8 @@ import { PaymentScreen } from './screens/Booking/PaymentScreen';
 import { BookingConfirmedScreen } from './screens/Booking/BookingConfirmedScreen';
 import { MyBookingsScreen } from './screens/Booking/MyBookingsScreen';
 import { BookingProgressScreen } from './screens/Booking/BookingProgressScreen';
+import { ExtendStayScreen } from './screens/Booking/ExtendStayScreen';
+import { ExtensionSuccessScreen } from './screens/Booking/ExtensionSuccessScreen';
 import { ProfileScreen } from './screens/Profile/ProfileScreen';
 import { MessagesListScreen } from './screens/Booking/MessagesListScreen';
 import { ChatScreen } from './screens/Booking/ChatScreen';
@@ -46,14 +47,15 @@ function App() {
             <Route path="/home" element={<HomeScreen />} />
             <Route path="/select-pet" element={<SelectPetScreen />} />
             <Route path="/choose-service" element={<ChooseServiceScreen />} />
-            <Route path="/boarding-details" element={<BoardingDetailsScreen />} />
             <Route path="/search-boarding" element={<BoardingSearchScreen />} />
             <Route path="/caretaker-profile" element={<CaretakerProfileScreen />} />
             <Route path="/booking-summary" element={<BookingSummaryScreen />} />
             <Route path="/payment" element={<PaymentScreen />} />
             <Route path="/booking-confirmed" element={<BookingConfirmedScreen />} />
             <Route path="/bookings" element={<MyBookingsScreen />} />
-            <Route path="/booking-progress" element={<BookingProgressScreen />} />
+            <Route path="/booking-progress/:id" element={<BookingProgressScreen />} />
+            <Route path="/extend-stay/:id" element={<ExtendStayScreen />} />
+            <Route path="/extension-success" element={<ExtensionSuccessScreen />} />
             <Route path="/profile" element={<ProfileScreen />} />
             <Route path="/messages" element={<MessagesListScreen />} />
             <Route path="/chat/:id" element={<ChatScreen />} />

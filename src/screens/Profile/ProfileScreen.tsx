@@ -40,9 +40,13 @@ export const ProfileScreen = () => {
             className="flex items-center mb-8 w-full text-left bg-white p-4 rounded-[20px] shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors"
           >
             <img 
-              src={user?.photoURL || "https://ui-avatars.com/api/?name=" + (userData?.name || "User") + "&background=E5E7EB&color=1B2B48"} 
+              src={user?.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.name || "User")}&background=E5E7EB&color=1B2B48`} 
               alt={userData?.name || "User"} 
               className="w-16 h-16 rounded-full object-cover mr-4 shadow-sm"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.name || "User")}&background=E5E7EB&color=1B2B48`;
+              }}
             />
             <div className="flex flex-col flex-1">
               <span className="text-[22px] font-extrabold text-[#1B2B48]">{userData?.name || 'User'}</span>

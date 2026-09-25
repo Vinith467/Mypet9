@@ -1,17 +1,81 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Wallet, Plus, CreditCard, Landmark, ArrowUpRight, ArrowDownLeft, ReceiptText } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
+import { useAuth } from '../../contexts/AuthContext';
+import { db } from '../../config/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
-const transactions = [
-  { id: '1', title: 'Paid to The Happy Tails Home', date: '12 Sep 2026', amount: 1200, type: 'debit', category: 'boarding' },
-  { id: '2', title: 'Added to Wallet', date: '10 Sep 2026', amount: 500, type: 'credit', category: 'topup' },
-  { id: '3', title: 'Refund for Pet Taxi', date: '05 Sep 2026', amount: 250, type: 'credit', category: 'refund' },
-  { id: '4', title: 'Paid to Paws & Play Retreat', date: '22 Aug 2026', amount: 3400, type: 'debit', category: 'boarding' },
-];
+interface Transaction {
+  id: string;
+  title: string;
+  date: string;
+  amount: number;
+  type: 'credit' | 'debit';
+  category: string;
+}
 
 export const PaymentsScreen = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      if (!user?.uid) {
+        setLoading(false);
+        return;
+      }
+      try {
+        const q = query(
+          collection(db, 'bookings'),
+          where('petParentId', '==', user.uid)
+        );
+        const snapshot = await getDocs(q);
+        
+        let txns: Transaction[] = [];
+        snapshot.docs.forEach(doc => {
+          const data = doc.data();
+          if (data.paymentMethod === 'online' && data.totalAmount) {
+            // Original booking payment
+            const d = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+            const dateStr = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            
+            txns.push({
+              id: doc.id,
+              title: `Paid to ${data.caretakerName}`,
+              date: dateStr,
+              amount: data.originalTotalAmount || data.totalAmount,
+              type: 'debit',
+              category: 'boarding'
+            });
+
+            if (data.isExtended && data.totalAdditionalAmount) {
+              txns.push({
+                id: doc.id + '_ext',
+                title: `Extended stay - ${data.caretakerName}`,
+                date: dateStr,
+                amount: data.totalAdditionalAmount,
+                type: 'debit',
+                category: 'boarding'
+              });
+            }
+          }
+        });
+        
+        // Sort newest first
+        txns.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        setTransactions(txns);
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTransactions();
+  }, [user]);
 
   return (
     <DashboardLayout>
@@ -104,27 +168,37 @@ export const PaymentsScreen = () => {
               </div>
               
               <div className="bg-white rounded-[20px] p-2 shadow-sm border border-gray-100 flex flex-col">
-                {transactions.map((txn, index) => (
-                  <div key={txn.id} className={`flex items-center justify-between p-4 ${index !== transactions.length - 1 ? 'border-b border-gray-50' : ''}`}>
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                        txn.type === 'credit' ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-600'
-                      }`}>
-                        {txn.category === 'boarding' ? <ReceiptText size={18} /> : 
-                         txn.type === 'credit' ? <ArrowDownLeft size={18} /> : <ArrowUpRight size={18} />}
+                {loading ? (
+                   <div className="flex justify-center py-6">
+                     <div className="w-6 h-6 border-2 border-petoo-primary border-t-transparent rounded-full animate-spin"></div>
+                   </div>
+                ) : transactions.length > 0 ? (
+                  transactions.map((txn, index) => (
+                    <div key={txn.id} className={`flex items-center justify-between p-4 ${index !== transactions.length - 1 ? 'border-b border-gray-50' : ''}`}>
+                      <div className="flex items-center space-x-4">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                          txn.type === 'credit' ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-600'
+                        }`}>
+                          {txn.category === 'boarding' ? <ReceiptText size={18} /> : 
+                           txn.type === 'credit' ? <ArrowDownLeft size={18} /> : <ArrowUpRight size={18} />}
+                        </div>
+                        <div>
+                          <p className="text-[15px] font-bold text-[#1B2B48] leading-snug">{txn.title}</p>
+                          <p className="text-[13px] font-medium text-[#465E87]">{txn.date}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[15px] font-bold text-[#1B2B48] leading-snug">{txn.title}</p>
-                        <p className="text-[13px] font-medium text-[#465E87]">{txn.date}</p>
+                      <div className="text-right shrink-0 ml-4">
+                        <p className={`text-[15px] font-extrabold ${txn.type === 'credit' ? 'text-green-600' : 'text-[#1B2B48]'}`}>
+                          {txn.type === 'credit' ? '+' : '-'}₹{txn.amount.toLocaleString('en-IN')}
+                        </p>
                       </div>
                     </div>
-                    <div className="text-right shrink-0 ml-4">
-                      <p className={`text-[15px] font-extrabold ${txn.type === 'credit' ? 'text-green-600' : 'text-[#1B2B48]'}`}>
-                        {txn.type === 'credit' ? '+' : '-'}₹{txn.amount}
-                      </p>
-                    </div>
+                  ))
+                ) : (
+                  <div className="py-8 text-center text-[#465E87] text-[14px]">
+                    No online payments found
                   </div>
-                ))}
+                )}
               </div>
             </div>
 

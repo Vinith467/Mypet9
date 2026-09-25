@@ -153,50 +153,6 @@ export const BoardingSearchScreen = () => {
 
         results.sort((a, b) => a.distance - b.distance);
 
-        // --- INJECT DUMMY CARETAKERS FOR TESTING ---
-        if (results.length > 0) {
-          const dummy1 = {
-            ...results[0],
-            id: 'dummy-1',
-            name: 'Sarah M.',
-            photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80',
-            images: ['https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80'],
-            price: 650,
-            rating: 4.8,
-            reviews: 42,
-            distance: results[0].distance + 1.2,
-            distanceStr: formatDistance(results[0].distance + 1.2),
-            experience: 5,
-          };
-          const dummy2 = {
-            ...results[0],
-            id: 'dummy-2',
-            name: 'David & Lisa',
-            photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
-            images: ['https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80'],
-            price: 900,
-            rating: 4.9,
-            reviews: 18,
-            distance: results[0].distance + 3.5,
-            distanceStr: formatDistance(results[0].distance + 3.5),
-            experience: 2,
-          };
-          const dummy3 = {
-            ...results[0],
-            id: 'dummy-3',
-            name: 'Happy Paws Co.',
-            photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80',
-            images: ['https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80'],
-            price: 750,
-            rating: 4.7,
-            reviews: 89,
-            distance: results[0].distance + 5.1,
-            distanceStr: formatDistance(results[0].distance + 5.1),
-            experience: 7,
-          };
-          
-          results.push(dummy1, dummy2, dummy3);
-        }
         // -------------------------------------------
 
         setCaretakers(results);

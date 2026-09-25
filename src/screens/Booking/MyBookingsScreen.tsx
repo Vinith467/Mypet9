@@ -14,12 +14,14 @@ interface Booking {
   petBreed: string;
   caretakerName: string;
   caretakerLocation: string;
+  caretakerImage?: string;
   service: string;
   dropoffDate: string;
   pickupDate: string;
   nights: number;
   totalAmount: number;
   status: string;
+  selectedPets?: any[];
   createdAt: any;
 }
 
@@ -44,7 +46,7 @@ const getStatusStyle = (status: string) => {
 export const MyBookingsScreen = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
+  const [activeTab, setActiveTab] = useState<'ongoing' | 'past' | 'cancelled'>('ongoing');
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState<Booking[]>([]);
 
@@ -82,16 +84,19 @@ export const MyBookingsScreen = () => {
     fetchBookings();
   }, [user]);
 
-  const now = new Date();
-  const upcomingBookings = bookings.filter(b => {
-    if (b.status === 'completed' || b.status === 'cancelled' || b.status === 'declined') return false;
-    return true;
+  const ongoingBookings = bookings.filter(b => {
+    return b.status === 'ongoing' || b.status === 'pending' || b.status === 'accepted';
   });
+  
   const pastBookings = bookings.filter(b => {
-    return b.status === 'completed' || b.status === 'cancelled' || b.status === 'declined';
+    return b.status === 'completed';
   });
 
-  const displayedBookings = activeTab === 'upcoming' ? upcomingBookings : pastBookings;
+  const cancelledBookings = bookings.filter(b => {
+    return b.status === 'cancelled' || b.status === 'declined';
+  });
+
+  const displayedBookings = activeTab === 'ongoing' ? ongoingBookings : activeTab === 'past' ? pastBookings : cancelledBookings;
 
   return (
     <DashboardLayout>
@@ -110,26 +115,36 @@ export const MyBookingsScreen = () => {
           </div>
 
           {/* Tabs */}
-          <div className="flex bg-white rounded-[12px] p-1 shadow-sm border border-gray-100 mb-6">
+          <div className="flex bg-white rounded-full p-1 shadow-sm border border-gray-100 mb-6">
             <button
-              onClick={() => setActiveTab('upcoming')}
-              className={`flex-1 py-2.5 rounded-[10px] text-[15px] font-bold transition-colors ${
-                activeTab === 'upcoming' 
-                  ? 'bg-petoo-primary text-white shadow-md' 
+              onClick={() => setActiveTab('ongoing')}
+              className={`flex-1 py-2.5 rounded-full text-[13px] sm:text-[14px] font-bold transition-colors ${
+                activeTab === 'ongoing' 
+                  ? 'bg-[#FDD835] text-[#111111] shadow-sm' 
                   : 'text-[#465E87] hover:bg-gray-50'
               }`}
             >
-              Upcoming ({upcomingBookings.length})
+              Ongoing ({ongoingBookings.length})
             </button>
             <button
               onClick={() => setActiveTab('past')}
-              className={`flex-1 py-2.5 rounded-[10px] text-[15px] font-bold transition-colors ${
+              className={`flex-1 py-2.5 rounded-full text-[13px] sm:text-[14px] font-bold transition-colors ${
                 activeTab === 'past' 
-                  ? 'bg-petoo-primary text-white shadow-md' 
+                  ? 'bg-[#FDD835] text-[#111111] shadow-sm' 
                   : 'text-[#465E87] hover:bg-gray-50'
               }`}
             >
               Past ({pastBookings.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('cancelled')}
+              className={`flex-1 py-2.5 rounded-full text-[13px] sm:text-[14px] font-bold transition-colors ${
+                activeTab === 'cancelled' 
+                  ? 'bg-[#FDD835] text-[#111111] shadow-sm' 
+                  : 'text-[#465E87] hover:bg-gray-50'
+              }`}
+            >
+              Cancelled ({cancelledBookings.length})
             </button>
           </div>
 
@@ -149,10 +164,10 @@ export const MyBookingsScreen = () => {
               <p className="text-[#465E87] text-[14px] font-medium max-w-[280px]">
                 When you book a stay for your pet, it will appear here.
               </p>
-              {activeTab === 'upcoming' && (
+              {activeTab === 'ongoing' && (
                 <button 
-                  onClick={() => navigate('/select-pet')}
-                  className="mt-6 bg-petoo-primary text-white px-6 py-3 rounded-full font-bold text-[15px] shadow-lg shadow-petoo-primary/20 hover:bg-[#113a29] transition-colors"
+                  onClick={() => navigate('/')}
+                  className="mt-6 bg-[#FDD835] text-[#111111] px-6 py-3 rounded-full font-bold text-[15px] shadow-sm hover:bg-[#FBBF24] transition-colors"
                 >
                   Book a Stay
                 </button>
@@ -162,46 +177,100 @@ export const MyBookingsScreen = () => {
             /* Booking Cards */
             <div className="space-y-4">
               {displayedBookings.map((booking, index) => {
-                const statusStyle = getStatusStyle(booking.status);
+                const petNames = booking.selectedPets ? booking.selectedPets.map((p: any) => p.name).join(', ') : booking.petName;
+                const petCount = booking.selectedPets ? booking.selectedPets.length : 1;
+                
                 return (
                   <motion.div
                     key={booking.id}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.06 }}
-                    className="bg-white rounded-[20px] p-4 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-all"
-                    onClick={() => navigate(`/booking-progress/${booking.id}`, { state: { booking } })}
+                    className="bg-white rounded-[24px] p-4 sm:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col"
                   >
-                    <div className="flex items-start space-x-4">
+                    <div className="flex gap-4">
+                      {/* Host Image */}
                       <img 
-                        src={booking.petImage || `https://ui-avatars.com/api/?name=${booking.petName}&background=FBBF24&color=1B2B48`}
-                        alt={booking.petName}
-                        className="w-14 h-14 rounded-[12px] object-cover shrink-0 bg-gray-100"
+                        src={booking.caretakerImage || `https://ui-avatars.com/api/?name=${booking.caretakerName}&background=E8F5E9&color=174F38`}
+                        alt={booking.caretakerName}
+                        className="w-[90px] h-[100px] rounded-[16px] object-cover shrink-0 bg-gray-100"
                       />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-1">
-                          <h3 className="text-[15px] font-extrabold text-[#1B2B48] truncate pr-2">{booking.petName}</h3>
-                          <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0 ${statusStyle.bg} ${statusStyle.text}`}>
-                            {statusStyle.label}
-                          </span>
-                        </div>
-                        <p className="text-[12px] text-gray-500 font-medium mb-2">{booking.petBreed} • {booking.service}</p>
-                        
-                        <div className="flex items-center text-[12px] text-gray-500 space-x-3">
-                          <div className="flex items-center space-x-1">
-                            <Calendar size={12} />
-                            <span className="font-medium">
-                              {formatDate(booking.dropoffDate)} – {formatDate(booking.pickupDate)}
-                            </span>
+                      
+                      {/* Details */}
+                      <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                        <div className="flex items-start justify-between w-full mb-1.5">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <h3 className="text-[17px] font-extrabold text-[#111111] truncate">{booking.caretakerName}</h3>
+                            <div className="flex items-center space-x-1 px-1.5 py-0.5 bg-[#E8F5E9] rounded-full shrink-0">
+                              <svg className="w-2.5 h-2.5 text-[#174F38]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                              <span className="text-[9px] font-bold text-[#174F38]">Verified Host</span>
+                            </div>
                           </div>
-                          <span className="font-bold text-[#1B2B48]">₹{booking.totalAmount?.toLocaleString('en-IN')}</span>
+                          {activeTab === 'ongoing' && (
+                            <button onClick={() => navigate(`/booking-progress/${booking.id}`, { state: { booking } })}>
+                              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                          )}
                         </div>
                         
-                        <p className="text-[11px] text-gray-400 font-medium mt-1">
-                          with {booking.caretakerName}
-                        </p>
+                        <div className="space-y-1.5 mb-2.5">
+                          <div className="flex items-center space-x-2 min-w-0">
+                            <MapPin size={14} className="text-[#666666] shrink-0" />
+                            <span className="text-[12px] font-medium text-[#666666] truncate">{booking.caretakerLocation || ''}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 min-w-0">
+                            <Calendar size={14} className="text-[#666666] shrink-0" />
+                            <span className="text-[12px] font-medium text-[#666666] truncate">{formatDate(booking.dropoffDate)} - {formatDate(booking.pickupDate)}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 min-w-0">
+                            <svg className="w-3.5 h-3.5 text-[#666666] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 14c0 4.418 7.163 8 16 8s16-3.582 16-8-7.163-8-16-8-16 3.582-16 8z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"></path></svg>
+                            <span className="text-[12px] font-medium text-[#666666] truncate">{petNames} ({petCount} pet{petCount > 1 ? 's' : ''})</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center space-x-3">
+                          {booking.status === 'completed' ? (
+                            <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-[#F1F5F9] rounded-full">
+                              <svg className="w-3.5 h-3.5 text-[#475569]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                              <span className="text-[11px] font-extrabold text-[#475569] capitalize">Completed</span>
+                            </div>
+                          ) : booking.status === 'cancelled' || booking.status === 'declined' ? (
+                            <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-[#FEF2F2] rounded-full">
+                              <svg className="w-3.5 h-3.5 text-[#EF4444]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"></path></svg>
+                              <span className="text-[11px] font-extrabold text-[#EF4444] capitalize">{booking.status}</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-[#E8F5E9] rounded-full">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#10B981]"></div>
+                              <span className="text-[11px] font-extrabold text-[#10B981] capitalize">{booking.status}</span>
+                            </div>
+                          )}
+                          
+                          {activeTab === 'ongoing' && (
+                            <span className="text-[12px] font-medium text-[#666666]">{booking.nights} days left</span>
+                          )}
+                        </div>
                       </div>
                     </div>
+                    
+                    {/* Action Buttons */}
+                    {activeTab === 'ongoing' && (
+                      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+                        <button 
+                          onClick={() => navigate(`/extend-stay/${booking.id}`, { state: { booking } })}
+                          className="flex-1 h-[42px] bg-white border border-[#FDD835] text-[#111111] hover:bg-gray-50 text-[14px] font-extrabold rounded-full flex items-center justify-center space-x-2 transition-colors"
+                        >
+                          <Calendar size={16} />
+                          <span>Extend Stay</span>
+                        </button>
+                        <button 
+                          onClick={() => navigate(`/booking-progress/${booking.id}`, { state: { booking } })}
+                          className="flex-1 h-[42px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[14px] font-extrabold rounded-full flex items-center justify-center transition-colors shadow-sm"
+                        >
+                          <span>View Details</span>
+                        </button>
+                      </div>
+                    )}
                   </motion.div>
                 );
               })}

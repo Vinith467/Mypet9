@@ -4,6 +4,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { DateTimePickerModal } from '../../components/ui/DateTimePickerModal';
 import type { Pet } from '../Pets/MyPetsScreen';
+import { useAuth } from '../../contexts/AuthContext';
+import { db } from '../../config/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return '12 Oct 2026';
@@ -12,10 +15,10 @@ const formatDate = (dateStr: string) => {
 };
 
 const formatDayTime = (dateStr: string, timeStr: string) => {
-  if (!dateStr) return 'Monday, 10:00 AM';
+  if (!dateStr) return '';
   const d = new Date(dateStr);
   const day = d.toLocaleDateString('en-GB', { weekday: 'long' });
-  return `${day}, ${timeStr || '10:00 AM'}`;
+  return `${day}${timeStr ? `, ${timeStr}` : ''}`;
 };
 
 const calculateNights = (dropoff: string, pickup: string): number => {
@@ -33,8 +36,10 @@ export const BookingSummaryScreen = () => {
   const bookingData = location.state?.bookingData;
   const selectedPets: Pet[] = location.state?.selectedPets || [];
 
+  const { user } = useAuth();
   const [activePicker, setActivePicker] = useState<'dropoff' | 'pickup' | null>(null);
   const [tempDropoff, setTempDropoff] = useState<{date: string, time: string} | null>(null);
+  const [isBooking, setIsBooking] = useState(false);
 
   const dropoffDate = bookingData?.dropoffDate || '';
   const dropoffTime = bookingData?.dropoffTime || '';
@@ -48,6 +53,54 @@ export const BookingSummaryScreen = () => {
   const platformFee = 160;
   const gst = Math.round((baseTotal + platformFee) * 0.18);
   const finalTotal = baseTotal + platformFee + gst;
+
+  const handleConfirmBooking = async (paymentMethod: 'pay_now' | 'pay_later') => {
+    if (!user) {
+      alert("Please login first");
+      return;
+    }
+    setIsBooking(true);
+    try {
+      const newBooking = {
+        petParentId: user.uid,
+        providerId: provider?.id || 'unknown',
+        caretakerName: provider?.name || 'Priya S.',
+        caretakerLocation: provider?.locationStr || '', // Simplified
+        caretakerImage: provider?.images?.[0] || provider?.photo || '',
+        service: 'Boarding',
+        dropoffDate,
+        dropoffTime,
+        pickupDate,
+        pickupTime,
+        nights,
+        totalAmount: finalTotal,
+        paymentMethod,
+        status: 'ongoing', // Per user request, book directly as ongoing
+        selectedPets: selectedPets,
+        petName: selectedPets[0]?.name || 'Your Pet',
+        petImage: selectedPets[0]?.image || '',
+        petBreed: selectedPets[0]?.breed || '',
+        createdAt: serverTimestamp(),
+      };
+
+      const docRef = await addDoc(collection(db, 'bookings'), newBooking);
+      
+      navigate('/booking-confirmed', { 
+        state: { 
+          provider, 
+          bookingData, 
+          selectedPets, 
+          finalTotal, 
+          paymentMethod,
+          bookingId: docRef.id
+        } 
+      });
+    } catch (error) {
+      console.error("Error creating booking: ", error);
+      alert("Failed to confirm booking. Please try again.");
+      setIsBooking(false);
+    }
+  };
 
   return (
     <>
@@ -70,11 +123,12 @@ export const BookingSummaryScreen = () => {
         </div>
 
         {/* Content Container */}
-        <div className="py-2 space-y-2 max-w-2xl mx-auto w-full pb-32">
-          
-          {/* Host Card */}
-          <div className="bg-white rounded-none sm:rounded-[20px] px-3 py-4 sm:p-4 border-y sm:border border-[#F3E8CC]">
-            <div className="flex gap-3 sm:gap-4">
+        <div className="py-4 px-4 max-w-2xl mx-auto w-full pb-32">
+          <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col">
+            
+            {/* Host Card */}
+            <div className="px-3 py-4 sm:p-4">
+              <div className="flex gap-3 sm:gap-4">
               <div className="w-[88px] h-[88px] sm:w-[100px] sm:h-[100px] rounded-[16px] overflow-hidden shrink-0 mt-1">
                 <img 
                   src={provider?.images?.[0] || provider?.photo || 'https://images.unsplash.com/photo-1544717301-9cdcb1f5940f?auto=format&fit=crop&q=80&w=200'} 
@@ -129,15 +183,14 @@ export const BookingSummaryScreen = () => {
 
                 <div className="flex items-center space-x-1.5 mt-2.5 text-[11px] font-medium text-[#666666]">
                   <MapPin size={12} className="text-[#111111]" />
-                  <span>{provider?.distanceStr || '2.3 km away'} • {provider?.locationStr?.split(',')[0] || 'HSR Layout, Bengaluru'}</span>
+                  <span>{provider?.distanceStr || ''}{provider?.distanceStr && provider?.locationStr ? ' • ' : ''}{provider?.locationStr?.split(',')[0] || ''}</span>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Stay Details */}
-          <div className="bg-white rounded-none sm:rounded-[20px] px-3 py-4 sm:p-4 border-y sm:border border-[#F3E8CC]">
-            <div className="flex items-center justify-between mb-4">
+            {/* Stay Details */}
+            <div className="px-3 py-4 sm:p-4">
+              <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className="w-[36px] h-[36px] rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
                   <Calendar size={18} className="text-[#111111]" />
@@ -177,12 +230,12 @@ export const BookingSummaryScreen = () => {
                   <span className="text-[13px] sm:text-[15px] font-extrabold text-[#111111] truncate">{nights} nights</span>
                 </div>
               </div>
+              </div>
             </div>
-          </div>
 
-          {/* Pet Details */}
-          <div className="bg-white rounded-none sm:rounded-[20px] px-3 py-4 sm:p-4 border-y sm:border border-[#F3E8CC]">
-            <div className="flex items-center justify-between mb-4">
+            {/* Pet Details */}
+            <div className="px-3 py-4 sm:p-4">
+              <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className="w-[36px] h-[36px] rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
                   <PawPrint size={18} className="text-[#111111]" />
@@ -237,8 +290,8 @@ export const BookingSummaryScreen = () => {
           </div>
 
           {/* Price Details */}
-          <div className="bg-white rounded-none sm:rounded-[20px] px-3 py-4 sm:p-5 border-y sm:border border-[#F3E8CC] mb-4">
-            <div className="flex items-center space-x-3 mb-5">
+            <div className="px-3 py-4 sm:p-5 mb-4">
+              <div className="flex items-center space-x-3 mb-5">
               <div className="w-[36px] h-[36px] rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
                 <Wallet size={18} className="text-[#111111]" />
               </div>
@@ -271,10 +324,12 @@ export const BookingSummaryScreen = () => {
                 <span className="text-[16px] font-extrabold text-[#111111]">Total Amount</span>
                 <span className="text-[22px] font-extrabold text-[#111111]">₹{finalTotal.toLocaleString('en-IN')}</span>
               </div>
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Secure Payment */}
+        {/* Secure Payment */}
           <div className="bg-[#E8F5E9] rounded-[16px] p-4 flex items-start space-x-3 mx-1 mb-8">
             <div className="bg-[#2E7D32] rounded-full p-1.5 shrink-0 mt-0.5">
               <ShieldCheck size={14} className="text-white" />
@@ -289,11 +344,20 @@ export const BookingSummaryScreen = () => {
 
       {/* Bottom Fixed Banner & Button */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#FAFAFA] pt-2 pb-safe-bottom">
-        <div className="max-w-2xl mx-auto w-full px-4 pb-4">
+        <div className="max-w-2xl mx-auto w-full px-4 pb-4 flex flex-col space-y-3">
           <Button 
-            className="w-full h-[60px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[18px] font-extrabold rounded-full flex items-center justify-center space-x-2 shadow-[0_4px_14px_rgba(253,216,53,0.4)]"
+            onClick={() => handleConfirmBooking('pay_later')}
+            disabled={isBooking}
+            className="w-full h-[54px] bg-white border-2 border-[#1B2B48] text-[#1B2B48] hover:bg-gray-50 text-[16px] font-extrabold rounded-full flex items-center justify-center transition-colors shadow-sm disabled:opacity-50"
           >
-            <span>Pay ₹{finalTotal.toLocaleString('en-IN')}</span>
+            <span>{isBooking ? 'Processing...' : 'Pay After Service'}</span>
+          </Button>
+          <Button 
+            onClick={() => handleConfirmBooking('pay_now')}
+            disabled={isBooking}
+            className="w-full h-[54px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[18px] font-extrabold rounded-full flex items-center justify-center space-x-2 shadow-[0_4px_14px_rgba(253,216,53,0.4)] disabled:opacity-50"
+          >
+            <span>{isBooking ? 'Processing...' : `Pay ₹${finalTotal.toLocaleString('en-IN')} Now`}</span>
             <ArrowLeft size={20} className="rotate-180" />
           </Button>
         </div>

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Calendar, Users, Search, Target, PawPrint, Plus, Minus, X, Menu, Bell } from 'lucide-react';
+import { MapPin, Calendar, Users, Search, Target, PawPrint, Plus, Minus, X, Menu, Bell, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const InlinePetCounter = ({ label, count, onIncrement, onDecrement }: { label: string, count: number, onIncrement: () => void, onDecrement: () => void }) => (
@@ -143,16 +143,19 @@ export const PetParentLandingScreen = () => {
           {/* Right Actions */}
           <div className="flex items-center gap-2 md:gap-4 shrink-0">
             {user ? (
-              <button onClick={() => navigate('/home')} className="font-bold text-sm md:text-base hover:text-[#1B2B48]/80 transition-colors">
-                Dashboard
+              <button onClick={() => navigate('/home')} className="font-bold text-sm md:text-base flex items-center gap-2 bg-[#1B2B48] text-white px-4 py-2 rounded-full hover:bg-[#1B2B48]/90 transition-colors">
+                <LayoutDashboard size={18} />
+                <span>Dashboard</span>
               </button>
             ) : (
-              <button onClick={handleGoogleSignIn} className="font-bold flex items-center gap-1.5 md:gap-2 text-sm md:text-base hover:text-[#1B2B48]/80 transition-colors">
-                <img src="https://www.google.com/favicon.ico" alt="G" className="w-4 h-4 bg-white rounded-full p-0.5" />
-                <span className="hidden sm:inline">Sign in</span>
-              </button>
+              <>
+                <button onClick={handleGoogleSignIn} className="font-bold flex items-center gap-1.5 md:gap-2 text-sm md:text-base hover:text-[#1B2B48]/80 transition-colors">
+                  <img src="https://www.google.com/favicon.ico" alt="G" className="w-4 h-4 bg-white rounded-full p-0.5" />
+                  <span className="hidden sm:inline">Sign in</span>
+                </button>
+                <Menu className="w-5 h-5 md:w-6 md:h-6 ml-1 md:ml-2" />
+              </>
             )}
-            <Menu className="w-5 h-5 md:w-6 md:h-6 ml-1 md:ml-2" />
           </div>
         </header>
 
@@ -275,10 +278,7 @@ export const PetParentLandingScreen = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               <div className="relative z-10 text-white">
                 <h3 className="font-bold text-xl md:text-2xl mb-1">Find caretakers near you</h3>
-                <p className="text-white/90 mb-3 md:mb-4 font-medium text-sm md:text-base">Trusted, verified caretakers for your furry family members.</p>
-                <button className="bg-white text-gray-900 px-4 py-2 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors">
-                  Explore options
-                </button>
+                <p className="text-white/90 font-medium text-sm md:text-base">Trusted, verified caretakers for your furry family members.</p>
               </div>
             </div>
 
@@ -286,18 +286,20 @@ export const PetParentLandingScreen = () => {
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">Offers</h2>
               {/* Offers Cards */}
               <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1 border border-gray-200 bg-white rounded-2xl p-5 md:p-6 flex flex-col justify-between shadow-sm min-h-[140px] md:min-h-[160px]">
-                  <div>
-                    <h3 className="font-bold text-lg mb-1">New to MyPet9?</h3>
-                    <p className="text-sm text-gray-600 mb-4">Get 10% off your first boarding booking when you sign up with Google.</p>
+                {!user && (
+                  <div className="flex-1 border border-gray-200 bg-white rounded-2xl p-5 md:p-6 flex flex-col justify-between shadow-sm min-h-[140px] md:min-h-[160px]">
+                    <div>
+                      <h3 className="font-bold text-lg mb-1">New to MyPet9?</h3>
+                      <p className="text-sm text-gray-600 mb-4">Get 10% off your first boarding booking when you sign up with Google.</p>
+                    </div>
+                    <button 
+                      onClick={handleGoogleSignIn}
+                      className="bg-[#1B2B48] text-white w-full sm:w-max px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#121c2e] transition-colors"
+                    >
+                      Sign in with Google
+                    </button>
                   </div>
-                  <button 
-                    onClick={handleGoogleSignIn}
-                    className="bg-[#1B2B48] text-white w-full sm:w-max px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#121c2e] transition-colors"
-                  >
-                    Sign in with Google
-                  </button>
-                </div>
+                )}
                 
                 <div className="flex-1 border border-gray-200 bg-white rounded-2xl p-5 md:p-6 flex flex-col justify-between shadow-sm min-h-[140px] md:min-h-[160px]">
                   <div>

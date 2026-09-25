@@ -72,7 +72,7 @@ export const HomeScreen = () => {
         {/* Banner CTA */}
         <motion.div variants={itemVariants} className="w-full px-2 mt-4">
           <div 
-            onClick={() => navigate('/select-pet')}
+            onClick={() => navigate('/')}
             className="w-full h-56 lg:h-[280px] rounded-3xl bg-cover bg-center shadow-xl relative overflow-hidden group cursor-pointer border border-gray-100"
             style={{ backgroundImage: "url('/home-banner.png')" }}
           >
@@ -89,7 +89,10 @@ export const HomeScreen = () => {
               </p>
               
               <button 
-                onClick={() => navigate('/booking/services')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/');
+                }}
                 className="mt-6 bg-white hover:bg-gray-50 text-[#1B2B48] rounded-2xl font-bold px-6 py-3.5 group shadow-xl shadow-black/10 transition-all border-none flex items-center w-max"
               >
                 <PawPrint size={18} className="mr-2 text-[#1B2B48]" />
