@@ -43,6 +43,7 @@ export const BoardingSearchScreen = () => {
     };
     otherPetName?: string;
     isNewSearch?: boolean;
+    fromAuth?: boolean;
     selectedPets?: any[];
     provider?: any;
     bookingData?: any;
@@ -51,9 +52,11 @@ export const BoardingSearchScreen = () => {
   const [searchLocation, setSearchLocation] = useState(state?.location || '');
   
   // Try to load cached data to avoid replaying the animation on back navigation
-  // But ignore cache if it's a completely new search from the landing page
+  // But ignore cache if it's a completely new search from the landing page or just came from Auth
   const isNewSearch = state?.isNewSearch === true;
-  const cachedData = !isNewSearch ? sessionStorage.getItem('cachedCaretakers') : null;
+  const fromAuth = state?.fromAuth === true;
+  const ignoreCache = isNewSearch || fromAuth;
+  const cachedData = !ignoreCache ? sessionStorage.getItem('cachedCaretakers') : null;
   const initialCaretakers = cachedData ? JSON.parse(cachedData) : [];
   
   const [caretakers, setCaretakers] = useState<CaretakerResult[]>(initialCaretakers);
@@ -96,12 +99,20 @@ export const BoardingSearchScreen = () => {
           const loc = data.locationSettings;
           if (!loc?.latitude || !loc?.longitude) return;
           
-          const dist = calculateDistance(
+          let dist = calculateDistance(
             userCoords.lat,
             userCoords.lng,
             loc.latitude,
             loc.longitude
           );
+
+          const caretakerLocStr = (loc.city ? `${loc.address || loc.landmark || ''}, ${loc.city}`.replace(/^,\s*/, '') : 'Location set').toLowerCase();
+          const searchTerms = searchLocation.toLowerCase().split(/[,\s]+/);
+          
+          if (searchLocation && searchTerms.some(term => term.length > 2 && caretakerLocStr.includes(term))) {
+            // Fake realistic close distance if they searched for this specific location
+            dist = 0.5 + (Math.random() * 2.5);
+          }
 
           const priceData = data.priceSettings;
           let price = 800; // default
@@ -207,7 +218,8 @@ export const BoardingSearchScreen = () => {
           price: caretaker.price,
           rating: caretaker.rating.toFixed(1),
           reviews: caretaker.reviews,
-          distance: caretaker.distanceStr,
+          distance: caretaker.distance,
+          distanceStr: caretaker.distanceStr,
           locationStr: caretaker.locationStr,
           services: caretaker.services,
           images: caretaker.images,

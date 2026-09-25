@@ -100,7 +100,7 @@ const AuthScreen = () => {
         });
 
         const returnTo = location.state?.returnTo || '/home';
-        navigate(returnTo, { state: location.state?.searchState });
+        navigate(returnTo, { state: { ...location.state?.searchState, fromAuth: true } });
       }
     } catch (err: any) {
       console.error('Auth error:', err);
@@ -186,7 +186,7 @@ const AuthScreen = () => {
         });
       }
       const returnTo = location.state?.returnTo || '/home';
-      navigate(returnTo, { state: location.state?.searchState });
+      navigate(returnTo, { state: { ...location.state?.searchState, fromAuth: true } });
     } catch (err: any) {
       console.error(err);
       setError('Invalid OTP code');
@@ -233,16 +233,6 @@ const AuthScreen = () => {
                   </svg>
                 </div>
                 Continue with Google
-              </button>
-
-              <button 
-                onClick={() => setStep('phone')}
-                className="w-full bg-white border border-gray-300 hover:bg-gray-50 text-[#1a1a1a] font-semibold py-3.5 px-4 rounded-md flex items-center justify-center relative transition-colors shadow-sm"
-              >
-                <div className="absolute left-4 text-[#1B2B48]">
-                  <Phone size={20} />
-                </div>
-                Continue with Phone
               </button>
 
               <button 

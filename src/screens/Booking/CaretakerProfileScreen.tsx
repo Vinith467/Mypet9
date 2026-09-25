@@ -190,7 +190,9 @@ export const CaretakerProfileScreen = () => {
                     <span className="text-[13px] lg:text-[14px] font-medium text-[#465E87]">({provider.reviews} reviews)</span>
                     <span className="text-[#465E87]/60 font-medium px-0.5">•</span>
                     <MapPin size={13} className="text-[#465E87] lg:w-3.5 lg:h-3.5" />
-                    <span className="text-[13px] lg:text-[14px] font-medium text-[#465E87]">{provider.distanceStr}</span>
+                    <span className="text-[13px] lg:text-[14px] font-medium text-[#465E87] truncate">
+                      {provider.distanceStr} • {provider.locationStr.split(',')[0]}
+                    </span>
                   </div>
 
                   {/* MOBILE PRICE & BOOK NOW ROW (Hidden on Desktop) */}
