@@ -26,6 +26,7 @@ import { TransitHistoryScreen } from './screens/Profile/TransitHistoryScreen';
 import { NotificationsScreen } from './screens/Profile/NotificationsScreen';
 import { EditProfileScreen } from './screens/Profile/EditProfileScreen';
 import { HelpSupportScreen } from './screens/Profile/HelpSupportScreen';
+import { TermsScreen } from './screens/Profile/TermsScreen';
 import { AuthProvider } from './contexts/AuthContext';
 import { SupportChatWidget } from './components/ui/SupportChatWidget';
 import { AdminLayout } from './screens/Admin/AdminLayout';
@@ -80,6 +81,7 @@ function App() {
             <Route path="/notifications" element={<NotificationsScreen />} />
             <Route path="/edit-profile" element={<EditProfileScreen />} />
             <Route path="/support" element={<HelpSupportScreen />} />
+            <Route path="/terms" element={<TermsScreen />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
