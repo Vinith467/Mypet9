@@ -250,7 +250,7 @@ export const PetParentLandingScreen = () => {
             </div>
 
             {/* Pets - Inline directly in the bar */}
-            <div className="bg-white rounded-sm p-3 md:p-3.5 flex flex-row items-center justify-between gap-2 sm:gap-3 lg:gap-4 md:flex-[1.2] lg:flex-[1.5] overflow-x-auto scrollbar-hide">
+            <div className="bg-white rounded-sm p-3 md:p-3.5 flex flex-row items-center justify-between gap-2 sm:gap-3 lg:gap-4 md:shrink-0 overflow-x-auto scrollbar-hide">
               <InlinePetCounter label="Dog" count={pets.dog} onIncrement={() => updatePetCount('dog', true)} onDecrement={() => updatePetCount('dog', false)} />
               <InlinePetCounter label="Cat" count={pets.cat} onIncrement={() => updatePetCount('cat', true)} onDecrement={() => updatePetCount('cat', false)} />
               <InlinePetCounter label="Bird" count={pets.bird} onIncrement={() => updatePetCount('bird', true)} onDecrement={() => updatePetCount('bird', false)} />
