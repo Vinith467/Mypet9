@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { Capacitor } from '@capacitor/core';
 import type { User } from 'firebase/auth';
 import { 
   onAuthStateChanged,
   signOut,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  signInWithCredential
 } from 'firebase/auth';
 import { auth, db } from '../config/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -71,9 +73,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signInWithGoogle = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      let user;
+      
+      // If we are on mobile, use the native Capacitor plugin
+      if (Capacitor.getPlatform() !== 'web') {
+        const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
+        const result = await FirebaseAuthentication.signInWithGoogle();
+        
+        if (!result.credential?.idToken) throw new Error("No ID token returned from Google");
+        const credential = GoogleAuthProvider.credential(result.credential.idToken);
+        const userCredential = await signInWithCredential(auth, credential);
+        user = userCredential.user;
+      } else {
+        // If we are on the web browser, use the standard popup
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        user = result.user;
+      }
       
       // Check if user exists in Firestore
       const userDocRef = doc(db, 'users', user.uid);

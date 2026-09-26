@@ -219,7 +219,7 @@ export const ChatScreen = () => {
               <p className="text-center text-sm text-gray-400 mt-4">No messages yet. Send a message to start the conversation!</p>
             ) : (
               messages.map((msg) => {
-                const isMe = msg.senderId === user?.uid;
+                const isMe = !msg.isCaretaker;
                 const hasMedia = !!msg.mediaUrl;
 
                 return (

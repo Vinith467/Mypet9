@@ -198,7 +198,7 @@ export const CaretakerProfileScreen = () => {
                   {/* MOBILE PRICE & BOOK NOW ROW (Hidden on Desktop) */}
                   <div className="flex items-center justify-between mb-8 lg:hidden bg-[#F8F9FA] rounded-[14px] p-1.5 pl-4 shadow-sm border border-gray-50">
                     <div className="flex items-baseline space-x-1.5">
-                      <span className="text-[24px] font-extrabold text-[#1B2B48] leading-none">₹ 800</span>
+                      <span className="text-[24px] font-extrabold text-[#1B2B48] leading-none">₹{provider.price}</span>
                       <span className="text-[13px] font-semibold text-[#465E87]">per night</span>
                     </div>
                     <Button 
@@ -213,11 +213,11 @@ export const CaretakerProfileScreen = () => {
                   {/* SERVICE FEATURES (Top Row) */}
                   <div className="flex justify-between items-start mb-6 lg:mb-8 px-2">
                     {[
-                      { icon: Car, label: 'Pickup & Drop\nService' },
-                      { icon: Syringe, label: 'Vaccination\nAssistance' },
-                      { icon: Scissors, label: 'Grooming\nAvailable' },
-                      { icon: User, label: provider.experience ? `${provider.experience}+ Yrs\nExperience` : '3+ Yrs\nExperience' }
-                    ].map((feature, idx) => (
+                      { icon: Car, label: 'Pickup & Drop\nService', id: 'Pickup & Drop Service' },
+                      { icon: Syringe, label: 'Vaccination\nAssistance', id: 'Vaccination Assistance' },
+                      { icon: Scissors, label: 'Grooming\nAvailable', id: 'Grooming Available' },
+                      { icon: User, label: provider.experience ? `${provider.experience}+ Yrs\nExperience` : '3+ Yrs\nExperience', id: 'Experience' }
+                    ].filter(f => f.id === 'Experience' || (provider.services && provider.services.includes(f.id))).map((feature, idx) => (
                       <div key={idx} className="flex flex-col items-center">
                         <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2">
                           <feature.icon size={22} className="text-[#8B5A2B] lg:w-6 lg:h-6" strokeWidth={1.5} />
@@ -232,13 +232,13 @@ export const CaretakerProfileScreen = () => {
                   {/* TRUST & SAFETY GRID (Clean White background) */}
                   <div className="rounded-[16px] p-4 lg:p-6 mb-6 lg:mb-8 border border-gray-100 flex flex-wrap justify-between gap-y-4 shadow-sm">
                     {[
-                      { icon: ShieldCheck, label: 'Verified\nPartner' },
-                      { icon: Home, label: 'Home\nVerified' },
-                      { icon: CheckCircle, label: 'Background\nChecked' },
-                      { icon: Clock, label: '24/7\nSupervision' },
-                      { icon: PawPrint, label: 'Pet Care\nUpdates' },
-                    ].map((facility, idx) => (
-                      <div key={idx} className="flex flex-col items-center w-1/5 shrink-0 px-0.5 relative">
+                      { icon: ShieldCheck, label: 'Verified\nPartner', id: 'Verified Partner' },
+                      { icon: Home, label: 'Home\nVerified', id: 'Home Verified' },
+                      { icon: CheckCircle, label: 'Background\nChecked', id: 'Background Checked' },
+                      { icon: Clock, label: '24/7\nSupervision', id: '24/7 Supervision' },
+                      { icon: PawPrint, label: 'Pet Care\nUpdates', id: 'Pet Care Updates' },
+                    ].filter(f => !provider.facilities || provider.facilities.includes(f.id) || f.id === 'Verified Partner').map((facility, idx, arr) => (
+                      <div key={idx} className={`flex flex-col items-center shrink-0 px-0.5 relative ${arr.length > 4 ? 'w-1/5' : 'w-1/4'}`}>
                         <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2">
                           <facility.icon size={16} className="text-[#8B5A2B]" strokeWidth={2} />
                         </div>
@@ -246,7 +246,7 @@ export const CaretakerProfileScreen = () => {
                           {facility.label}
                         </span>
                         {/* Divider for all except last */}
-                        {idx !== 4 && (
+                        {idx !== arr.length - 1 && (
                           <div className="absolute right-0 top-1/2 -translate-y-1/2 h-[60%] w-[1px] bg-gray-100" />
                         )}
                       </div>

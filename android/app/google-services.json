@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1055677962449",
+    "project_id": "mypet9-d6f6e",
+    "storage_bucket": "mypet9-d6f6e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055677962449:android:799bd43defda72ef0e0df0",
+        "android_client_info": {
+          "package_name": "com.mypet9.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055677962449-sim20phcl0fogf605eicu89c22klkpc1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeu5Ns2chmCVv9AOuqiJ9kaLc2Rb2lHYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055677962449-sim20phcl0fogf605eicu89c22klkpc1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

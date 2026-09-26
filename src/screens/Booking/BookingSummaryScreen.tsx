@@ -63,7 +63,7 @@ export const BookingSummaryScreen = () => {
     try {
       const newBooking = {
         petParentId: user.uid,
-        providerId: provider?.id || 'unknown',
+        caretakerId: provider?.id || 'unknown',
         caretakerName: provider?.name || 'Priya S.',
         caretakerLocation: provider?.locationStr || '', // Simplified
         caretakerImage: provider?.images?.[0] || provider?.photo || '',

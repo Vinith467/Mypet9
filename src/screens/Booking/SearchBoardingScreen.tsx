@@ -87,7 +87,7 @@ export const BoardingSearchScreen = () => {
       
       try {
         const [snapshot] = await Promise.all([
-          getDocs(collection(db, 'caretaker_applications')),
+          getDocs(collection(db, 'caretakers')),
           new Promise(r => setTimeout(r, 2000)) // Force a 2 second search time like Rapido
         ]);
         
