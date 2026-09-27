@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1055677962449-egrhonadvu32gf75mm1co1g08b1pvcgn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mypet9.app",
+            "certificate_hash": "8742913eb4015ee22dc5d62bef1df5ce88a17d3a"
+          }
+        },
+        {
+          "client_id": "1055677962449-emup5pll7gn4gapgo0uvfnd0ggs1diut.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mypet9.app",
+            "certificate_hash": "e4613b47c74b3313a20c8622909a1217eedf489d"
+          }
+        },
+        {
           "client_id": "1055677962449-sim20phcl0fogf605eicu89c22klkpc1.apps.googleusercontent.com",
           "client_type": 3
         }
