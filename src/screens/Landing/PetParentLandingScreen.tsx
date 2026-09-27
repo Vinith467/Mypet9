@@ -144,7 +144,7 @@ export const PetParentLandingScreen = () => {
 
           {/* Right Actions */}
           <div className="flex items-center shrink-0">
-            {user ? (
+            {user && (
               <button 
                 onClick={() => navigate('/profile')}
                 className="w-10 h-10 rounded-full border-2 border-[#1B2B48] overflow-hidden flex items-center justify-center bg-white shrink-0 shadow-sm"
@@ -156,14 +156,6 @@ export const PetParentLandingScreen = () => {
                     {(user.displayName || user.email || 'U')[0].toUpperCase()}
                   </span>
                 )}
-              </button>
-            ) : (
-              <button 
-                onClick={handleGoogleSignIn} 
-                className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
-                title="Sign in with Google"
-              >
-                <img src="https://www.google.com/favicon.ico" alt="G" className="w-5 h-5" />
               </button>
             )}
           </div>
