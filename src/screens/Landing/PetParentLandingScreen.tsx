@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Calendar, Users, Search, Target, PawPrint, Plus, Minus, X, Menu, Bell, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
+import { Geolocation } from '@capacitor/geolocation';
 
 const InlinePetCounter = ({ label, count, onIncrement, onDecrement }: { label: string, count: number, onIncrement: () => void, onDecrement: () => void }) => (
   <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
@@ -79,43 +80,46 @@ export const PetParentLandingScreen = () => {
     });
   };
 
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
+  const getCurrentLocation = async () => {
+    try {
       setLocation('Locating...');
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          try {
-            const { latitude, longitude } = position.coords;
-            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`);
-            const data = await response.json();
-            
-            if (data && data.address) {
-              const area = data.address.neighbourhood || data.address.suburb || data.address.village || data.address.city_district || data.address.residential || data.address.road || '';
-              const district = data.address.city || data.address.town || data.address.state_district || data.address.county || '';
-              
-              if (area && district && area !== district) {
-                setLocation(`${area}, ${district}`);
-              } else if (district || area) {
-                setLocation(district || area);
-              } else {
-                setLocation(data.display_name.split(',').slice(0, 2).join(', '));
-              }
-            } else {
-              setLocation('Location found');
-            }
-          } catch (error) {
-            console.error("Error fetching address:", error);
-            setLocation('Unable to get address');
-          }
-        },
-        (error) => {
-          console.error("Error getting location", error);
+      
+      const permissions = await Geolocation.checkPermissions();
+      if (permissions.location !== 'granted') {
+        const requested = await Geolocation.requestPermissions();
+        if (requested.location !== 'granted') {
           setLocation('');
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-      );
-    } else {
-      setLocation('Geolocation not supported');
+          return;
+        }
+      }
+
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0
+      });
+      
+      const { latitude, longitude } = position.coords;
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`);
+      const data = await response.json();
+      
+      if (data && data.address) {
+        const area = data.address.neighbourhood || data.address.suburb || data.address.village || data.address.city_district || data.address.residential || data.address.road || '';
+        const district = data.address.city || data.address.town || data.address.state_district || data.address.county || '';
+        
+        if (area && district && area !== district) {
+          setLocation(`${area}, ${district}`);
+        } else if (district || area) {
+          setLocation(district || area);
+        } else {
+          setLocation(data.display_name.split(',').slice(0, 2).join(', '));
+        }
+      } else {
+        setLocation('Location found');
+      }
+    } catch (error) {
+      console.error("Error getting location", error);
+      setLocation('');
     }
   };
 

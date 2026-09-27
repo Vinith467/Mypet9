@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { Capacitor } from '@capacitor/core';
+import { PushNotifications } from '@capacitor/push-notifications';
 import type { User } from 'firebase/auth';
 import { 
   onAuthStateChanged,
@@ -48,6 +49,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUserData(userDocSnap.data());
           } else {
             setUserData(null);
+          }
+
+          // Register for push notifications if on native mobile
+          if (Capacitor.isNativePlatform()) {
+            PushNotifications.requestPermissions().then(result => {
+              if (result.receive === 'granted') {
+                PushNotifications.register();
+              }
+            });
+
+            PushNotifications.addListener('registration', (token) => {
+              // Save the token to the user's document
+              setDoc(userDocRef, { pushToken: token.value }, { merge: true });
+            });
+
+            PushNotifications.addListener('pushNotificationReceived', (notification) => {
+              console.log('Push notification received: ', notification);
+            });
+
+            PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+              console.log('Push notification action performed: ', notification);
+            });
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
