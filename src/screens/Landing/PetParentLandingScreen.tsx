@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Calendar, Users, Search, Target, PawPrint, Plus, Minus, X, Menu, Bell, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { DashboardLayout } from '../../components/layout/DashboardLayout';
 
 const InlinePetCounter = ({ label, count, onIncrement, onDecrement }: { label: string, count: number, onIncrement: () => void, onDecrement: () => void }) => (
   <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
@@ -127,8 +128,9 @@ export const PetParentLandingScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans overflow-x-hidden">
-      {/* MyPet9 Style Header & Navigation (Yellow Theme) */}
+    <DashboardLayout>
+      <div className="min-h-screen bg-gray-50 flex flex-col font-sans overflow-x-hidden">
+        {/* MyPet9 Style Header & Navigation (Yellow Theme) */}
       <div className="bg-[#FBBF24] text-[#1B2B48]">
         {/* Top Header */}
         <header className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -321,6 +323,7 @@ export const PetParentLandingScreen = () => {
         </div>
       </main>
     </div>
+    </DashboardLayout>
   );
 };
 
