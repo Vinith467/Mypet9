@@ -194,27 +194,27 @@ export const PetParentLandingScreen = () => {
             
             {/* Location */}
             <div className="bg-white rounded-md p-2 md:p-2.5 md:col-span-7 flex items-center gap-2 relative">
-              <Search className="text-gray-500 shrink-0" size={16} />
+              <Search className="text-gray-500 shrink-0 w-5 h-5 md:w-4 md:h-4" />
               <input 
                 type="text" 
                 placeholder="Where do you need a caretaker?" 
-                className="w-full outline-none text-gray-900 font-bold text-[13px] sm:text-[14px] bg-transparent placeholder:text-gray-500 min-w-0 pr-24 sm:pr-24"
+                className="w-full outline-none text-gray-900 font-bold text-[14px] sm:text-[15px] md:text-[13px] lg:text-[14px] bg-transparent placeholder:text-gray-500 min-w-0 pr-24 sm:pr-28 md:pr-24"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
               <button 
                 onClick={getCurrentLocation}
-                className="absolute right-1.5 px-2 py-1 hover:bg-gray-200 rounded-md text-[#1B2B48] transition-colors shrink-0 flex items-center gap-1.5 bg-gray-100 border border-gray-200 shadow-sm"
+                className="absolute right-2 md:right-1.5 px-2 py-1.5 md:py-1 hover:bg-gray-200 rounded-md text-[#1B2B48] transition-colors shrink-0 flex items-center gap-1.5 bg-gray-100 border border-gray-200 shadow-sm"
                 title="Use current location"
               >
-                <MapPin size={12} className="sm:w-3 sm:h-3" />
-                <span className="text-[10px] sm:text-[11px] font-bold whitespace-nowrap">Locate Me</span>
+                <MapPin className="w-[14px] h-[14px] sm:w-4 sm:h-4 md:w-3 md:h-3" />
+                <span className="text-[11px] sm:text-xs md:text-[10px] lg:text-[11px] font-bold whitespace-nowrap">Locate Me</span>
               </button>
             </div>
 
             {/* Dates */}
-            <div className="bg-white rounded-md p-2 md:p-2.5 md:col-span-5 flex items-center">
-              <Calendar className="text-gray-500 shrink-0 hidden sm:block mr-2" size={16} />
+            <div className="bg-white rounded-sm md:rounded-md p-3 md:p-2.5 md:col-span-5 flex items-center">
+              <Calendar className="text-gray-500 shrink-0 hidden sm:block mr-3 md:mr-2 w-5 h-5 md:w-4 md:h-4" />
               
               <div 
                 className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
@@ -225,10 +225,10 @@ export const PetParentLandingScreen = () => {
                   }
                 }}
               >
-                <span className="text-[9px] sm:text-[10px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">From</span>
+                <span className="text-[10px] sm:text-[11px] md:text-[9px] lg:text-[10px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">From</span>
                 <input 
                   type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer text-[11px] sm:text-[13px] font-bold text-gray-900" 
+                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] md:text-[11px] lg:text-[13px] font-bold text-gray-900" 
                   value={dropoffDate} 
                   onChange={(e) => setDropoffDate(e.target.value)} 
                   onClick={(e) => {
@@ -239,7 +239,7 @@ export const PetParentLandingScreen = () => {
                 />
               </div>
               
-              <div className="w-[1px] h-5 bg-gray-200 mx-1.5 sm:mx-2 shrink-0"></div>
+              <div className="w-[1px] h-6 md:h-5 bg-gray-200 mx-1 sm:mx-3 md:mx-1.5 lg:mx-2 shrink-0"></div>
               
               <div 
                 className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
@@ -250,10 +250,10 @@ export const PetParentLandingScreen = () => {
                   }
                 }}
               >
-                <span className="text-[9px] sm:text-[10px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">To</span>
+                <span className="text-[10px] sm:text-[11px] md:text-[9px] lg:text-[10px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">To</span>
                 <input 
                   type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer text-[11px] sm:text-[13px] font-bold text-gray-900" 
+                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] md:text-[11px] lg:text-[13px] font-bold text-gray-900" 
                   value={pickupDate} 
                   onChange={(e) => setPickupDate(e.target.value)} 
                   onClick={(e) => {
@@ -266,7 +266,7 @@ export const PetParentLandingScreen = () => {
             </div>
 
             {/* Pets - Inline directly in the bar */}
-            <div className="bg-white rounded-md p-2 md:p-2.5 md:col-span-9 flex flex-row items-center justify-start gap-3 sm:gap-4 overflow-x-auto scrollbar-hide">
+            <div className="bg-white rounded-sm md:rounded-md p-3 md:p-2.5 md:col-span-9 flex flex-row items-center justify-between md:justify-start gap-2 sm:gap-3 md:gap-4 overflow-x-auto scrollbar-hide">
               <InlinePetCounter label="Dog" count={pets.dog} onIncrement={() => updatePetCount('dog', true)} onDecrement={() => updatePetCount('dog', false)} />
               <InlinePetCounter label="Cat" count={pets.cat} onIncrement={() => updatePetCount('cat', true)} onDecrement={() => updatePetCount('cat', false)} />
               <InlinePetCounter label="Bird" count={pets.bird} onIncrement={() => updatePetCount('bird', true)} onDecrement={() => updatePetCount('bird', false)} />
@@ -276,7 +276,7 @@ export const PetParentLandingScreen = () => {
             <button 
               onClick={handleSearch}
               disabled={totalPets === 0 || !location}
-              className="bg-[#1B2B48] border border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-2 md:p-2.5 md:col-span-3 rounded-md text-sm md:text-base font-bold transition-colors w-full h-full flex items-center justify-center tracking-wide"
+              className="bg-[#1B2B48] border-2 md:border border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-2 md:p-2.5 md:col-span-3 rounded-sm md:rounded-md text-base md:text-sm lg:text-base font-bold transition-colors w-full h-full flex items-center justify-center tracking-wide shrink-0 md:shrink"
             >
               Search
             </button>
