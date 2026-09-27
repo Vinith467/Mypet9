@@ -7,22 +7,22 @@ import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Geolocation } from '@capacitor/geolocation';
 
 const InlinePetCounter = ({ label, count, onIncrement, onDecrement }: { label: string, count: number, onIncrement: () => void, onDecrement: () => void }) => (
-  <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-    <span className="font-medium text-gray-900 text-[14px]">{label}</span>
-    <div className="flex items-center bg-white rounded-md p-1 border border-gray-300">
+  <div className="flex items-center gap-1.5 shrink-0">
+    <span className="font-medium text-gray-900 text-[12px]">{label}</span>
+    <div className="flex items-center bg-white rounded flex-shrink-0 border border-gray-300 p-0.5">
       <button 
         onClick={onDecrement} 
         disabled={count === 0} 
-        className="w-5 h-5 rounded flex items-center justify-center text-[#1B2B48] bg-white disabled:opacity-40 hover:bg-gray-100 transition-colors"
+        className="w-4 h-4 rounded-sm flex items-center justify-center text-[#1B2B48] bg-white disabled:opacity-40 hover:bg-gray-100 transition-colors"
       >
-        <Minus size={14} strokeWidth={2.5} />
+        <Minus size={12} strokeWidth={2.5} />
       </button>
-      <span className="w-4 text-center font-bold text-gray-900 text-[14px]">{count}</span>
+      <span className="w-4 text-center font-bold text-gray-900 text-[12px]">{count}</span>
       <button 
         onClick={onIncrement} 
-        className="w-5 h-5 rounded flex items-center justify-center text-[#1B2B48] bg-white hover:bg-gray-100 transition-colors"
+        className="w-4 h-4 rounded-sm flex items-center justify-center text-[#1B2B48] bg-white hover:bg-gray-100 transition-colors"
       >
-        <Plus size={14} strokeWidth={2.5} />
+        <Plus size={12} strokeWidth={2.5} />
       </button>
     </div>
   </div>
@@ -166,11 +166,11 @@ export const PetParentLandingScreen = () => {
         </header>
 
         {/* Hero Section for Desktop */}
-        <div className="hidden lg:block max-w-[1400px] mx-auto px-4 pt-2 pb-6">
-          <h1 className="text-3xl lg:text-5xl font-extrabold tracking-tight mb-2 text-[#1B2B48]">
+        <div className="hidden lg:block max-w-[1400px] mx-auto px-4 pt-2 pb-5">
+          <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 text-[#1B2B48]">
             Your pet's second home.
           </h1>
-          <p className="text-base lg:text-lg font-bold text-[#1B2B48]/80 max-w-2xl">
+          <p className="text-sm lg:text-base font-semibold text-[#1B2B48]/80 max-w-2xl">
             Book trusted, verified caretakers in your neighborhood.
           </p>
         </div>
@@ -178,9 +178,9 @@ export const PetParentLandingScreen = () => {
         {/* Categories */}
         <div className="max-w-[1400px] mx-auto px-4 pb-4 pt-2 lg:pt-0 overflow-x-auto scrollbar-hide">
           <div className="flex gap-3 md:gap-4 w-max">
-            <button className="flex items-center gap-2 border border-[#1B2B48] px-4 py-2 rounded-full bg-[#1B2B48]/10 shrink-0">
-              <PawPrint size={18} />
-              <span className="font-bold text-sm md:text-base">Boarding</span>
+            <button className="flex items-center gap-2 border border-[#1B2B48] px-3 py-1.5 rounded-full bg-[#1B2B48]/10 shrink-0">
+              <PawPrint size={16} />
+              <span className="font-bold text-sm">Boarding</span>
             </button>
           </div>
         </div>
@@ -188,33 +188,33 @@ export const PetParentLandingScreen = () => {
 
       {/* Main Content Area */}
       <main className="w-full flex-1">
-        {/* Search Box - Grid Layout on Desktop */}
-        <div className="px-4 -mt-4 lg:-mt-5 relative z-20 max-w-[1400px] mx-auto">
-          <div className="bg-[#1B2B48] p-1.5 md:p-2 rounded-xl shadow-xl grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-12 gap-1.5">
+        {/* Search Box - 2 Row Grid Layout on Desktop */}
+        <div className="px-4 -mt-4 lg:-mt-5 relative z-20 max-w-4xl mx-auto lg:mr-auto lg:ml-4 xl:mx-auto">
+          <div className="bg-[#1B2B48] p-1.5 md:p-2 rounded-xl shadow-xl grid grid-cols-1 md:grid-cols-12 gap-1.5">
             
             {/* Location */}
-            <div className="bg-white rounded-sm p-3 md:p-3 xl:col-span-4 flex items-center gap-2 md:gap-3 relative">
-              <Search className="text-gray-500 shrink-0" size={20} />
+            <div className="bg-white rounded-md p-2 md:p-2.5 md:col-span-7 flex items-center gap-2 relative">
+              <Search className="text-gray-500 shrink-0" size={16} />
               <input 
                 type="text" 
                 placeholder="Where do you need a caretaker?" 
-                className="w-full outline-none text-gray-900 font-bold text-[14px] sm:text-[15px] bg-transparent placeholder:text-gray-500 min-w-0 pr-24 sm:pr-28"
+                className="w-full outline-none text-gray-900 font-bold text-[13px] sm:text-[14px] bg-transparent placeholder:text-gray-500 min-w-0 pr-24 sm:pr-24"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
               <button 
                 onClick={getCurrentLocation}
-                className="absolute right-2 px-2 py-1.5 hover:bg-gray-200 rounded-md text-[#1B2B48] transition-colors shrink-0 flex items-center gap-1.5 bg-gray-100 border border-gray-200 shadow-sm"
+                className="absolute right-1.5 px-2 py-1 hover:bg-gray-200 rounded-md text-[#1B2B48] transition-colors shrink-0 flex items-center gap-1.5 bg-gray-100 border border-gray-200 shadow-sm"
                 title="Use current location"
               >
-                <MapPin size={14} className="sm:w-4 sm:h-4" />
-                <span className="text-[11px] sm:text-xs font-bold whitespace-nowrap">Locate Me</span>
+                <MapPin size={12} className="sm:w-3 sm:h-3" />
+                <span className="text-[10px] sm:text-[11px] font-bold whitespace-nowrap">Locate Me</span>
               </button>
             </div>
 
             {/* Dates */}
-            <div className="bg-white rounded-sm p-3 md:p-3 xl:col-span-4 flex items-center">
-              <Calendar className="text-gray-500 shrink-0 hidden sm:block mr-3" size={20} />
+            <div className="bg-white rounded-md p-2 md:p-2.5 md:col-span-5 flex items-center">
+              <Calendar className="text-gray-500 shrink-0 hidden sm:block mr-2" size={16} />
               
               <div 
                 className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
@@ -225,10 +225,10 @@ export const PetParentLandingScreen = () => {
                   }
                 }}
               >
-                <span className="text-[10px] sm:text-[11px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">From</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">From</span>
                 <input 
                   type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] font-bold text-gray-900" 
+                  className="w-full outline-none bg-transparent cursor-pointer text-[11px] sm:text-[13px] font-bold text-gray-900" 
                   value={dropoffDate} 
                   onChange={(e) => setDropoffDate(e.target.value)} 
                   onClick={(e) => {
@@ -239,7 +239,7 @@ export const PetParentLandingScreen = () => {
                 />
               </div>
               
-              <div className="w-[1px] h-6 bg-gray-200 mx-1 sm:mx-3 shrink-0"></div>
+              <div className="w-[1px] h-5 bg-gray-200 mx-1.5 sm:mx-2 shrink-0"></div>
               
               <div 
                 className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
@@ -250,10 +250,10 @@ export const PetParentLandingScreen = () => {
                   }
                 }}
               >
-                <span className="text-[10px] sm:text-[11px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">To</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">To</span>
                 <input 
                   type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] font-bold text-gray-900" 
+                  className="w-full outline-none bg-transparent cursor-pointer text-[11px] sm:text-[13px] font-bold text-gray-900" 
                   value={pickupDate} 
                   onChange={(e) => setPickupDate(e.target.value)} 
                   onClick={(e) => {
@@ -266,7 +266,7 @@ export const PetParentLandingScreen = () => {
             </div>
 
             {/* Pets - Inline directly in the bar */}
-            <div className="bg-white rounded-sm p-3 md:p-3 xl:col-span-3 flex flex-row items-center justify-between gap-2 overflow-x-auto scrollbar-hide">
+            <div className="bg-white rounded-md p-2 md:p-2.5 md:col-span-9 flex flex-row items-center justify-start gap-3 sm:gap-4 overflow-x-auto scrollbar-hide">
               <InlinePetCounter label="Dog" count={pets.dog} onIncrement={() => updatePetCount('dog', true)} onDecrement={() => updatePetCount('dog', false)} />
               <InlinePetCounter label="Cat" count={pets.cat} onIncrement={() => updatePetCount('cat', true)} onDecrement={() => updatePetCount('cat', false)} />
               <InlinePetCounter label="Bird" count={pets.bird} onIncrement={() => updatePetCount('bird', true)} onDecrement={() => updatePetCount('bird', false)} />
@@ -276,7 +276,7 @@ export const PetParentLandingScreen = () => {
             <button 
               onClick={handleSearch}
               disabled={totalPets === 0 || !location}
-              className="bg-[#1B2B48] border-2 border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-3 md:p-3 xl:col-span-1 rounded-sm text-base md:text-lg font-bold transition-colors w-full h-full flex items-center justify-center"
+              className="bg-[#1B2B48] border border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-2 md:p-2.5 md:col-span-3 rounded-md text-sm md:text-base font-bold transition-colors w-full h-full flex items-center justify-center tracking-wide"
             >
               Search
             </button>
