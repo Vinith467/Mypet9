@@ -7,22 +7,22 @@ import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Geolocation } from '@capacitor/geolocation';
 
 const InlinePetCounter = ({ label, count, onIncrement, onDecrement }: { label: string, count: number, onIncrement: () => void, onDecrement: () => void }) => (
-  <div className="flex items-center gap-1.5 shrink-0">
-    <span className="font-medium text-gray-900 text-[12px]">{label}</span>
-    <div className="flex items-center bg-white rounded flex-shrink-0 border border-gray-300 p-0.5">
+  <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+    <span className="font-medium text-gray-900 text-[14px] md:text-[12px]">{label}</span>
+    <div className="flex items-center bg-white rounded-md md:rounded flex-shrink-0 border border-gray-300 p-1 md:p-0.5">
       <button 
         onClick={onDecrement} 
         disabled={count === 0} 
-        className="w-4 h-4 rounded-sm flex items-center justify-center text-[#1B2B48] bg-white disabled:opacity-40 hover:bg-gray-100 transition-colors"
+        className="w-5 h-5 md:w-4 md:h-4 rounded md:rounded-sm flex items-center justify-center text-[#1B2B48] bg-white disabled:opacity-40 hover:bg-gray-100 transition-colors"
       >
-        <Minus size={12} strokeWidth={2.5} />
+        <Minus className="w-[14px] h-[14px] md:w-[12px] md:h-[12px]" strokeWidth={2.5} />
       </button>
-      <span className="w-4 text-center font-bold text-gray-900 text-[12px]">{count}</span>
+      <span className="w-4 text-center font-bold text-gray-900 text-[14px] md:text-[12px]">{count}</span>
       <button 
         onClick={onIncrement} 
-        className="w-4 h-4 rounded-sm flex items-center justify-center text-[#1B2B48] bg-white hover:bg-gray-100 transition-colors"
+        className="w-5 h-5 md:w-4 md:h-4 rounded md:rounded-sm flex items-center justify-center text-[#1B2B48] bg-white hover:bg-gray-100 transition-colors"
       >
-        <Plus size={12} strokeWidth={2.5} />
+        <Plus className="w-[14px] h-[14px] md:w-[12px] md:h-[12px]" strokeWidth={2.5} />
       </button>
     </div>
   </div>
