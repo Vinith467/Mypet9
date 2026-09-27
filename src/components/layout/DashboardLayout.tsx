@@ -1,27 +1,34 @@
 import { type ReactNode } from 'react';
 import { Navigation } from './Navigation';
+import { useAuth } from '../../contexts/AuthContext';
 
 export const DashboardLayout = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
+
   return (
     <div className="flex h-screen w-full bg-[#F8F9FA] text-[#1B2B48] overflow-hidden">
       
       {/* Desktop Sidebar Navigation */}
-      <div className="hidden lg:flex w-64 h-full border-r border-[#1B2B48]/5 bg-[#F8F9FA]">
-        <Navigation />
-      </div>
+      {user && (
+        <div className="hidden lg:flex w-64 h-full border-r border-[#1B2B48]/5 bg-[#F8F9FA]">
+          <Navigation />
+        </div>
+      )}
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-        <main className="flex-1 overflow-y-auto scrollbar-hide pb-24 lg:pb-8">
+        <main className={`flex-1 overflow-y-auto scrollbar-hide ${user ? 'pb-24 lg:pb-8' : ''}`}>
           <div className="w-full h-full lg:px-8">
             {children}
           </div>
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50">
-          <Navigation />
-        </div>
+        {user && (
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50">
+            <Navigation />
+          </div>
+        )}
       </div>
       
     </div>
