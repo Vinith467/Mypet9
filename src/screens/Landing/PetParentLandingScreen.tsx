@@ -166,11 +166,11 @@ export const PetParentLandingScreen = () => {
         </header>
 
         {/* Hero Section for Desktop */}
-        <div className="hidden lg:block max-w-[1400px] mx-auto px-4 pt-4 pb-8">
-          <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight mb-4 text-[#1B2B48]">
+        <div className="hidden lg:block max-w-[1400px] mx-auto px-4 pt-2 pb-6">
+          <h1 className="text-3xl lg:text-5xl font-extrabold tracking-tight mb-2 text-[#1B2B48]">
             Your pet's second home.
           </h1>
-          <p className="text-lg lg:text-xl font-bold text-[#1B2B48]/80 max-w-2xl">
+          <p className="text-base lg:text-lg font-bold text-[#1B2B48]/80 max-w-2xl">
             Book trusted, verified caretakers in your neighborhood.
           </p>
         </div>
@@ -188,12 +188,12 @@ export const PetParentLandingScreen = () => {
 
       {/* Main Content Area */}
       <main className="w-full flex-1">
-        {/* Search Box - Booking.com Layout with Dark Blue Border */}
-        <div className="px-4 -mt-4 lg:-mt-6 relative z-20 max-w-[1400px] mx-auto">
-          <div className="bg-[#1B2B48] p-1.5 md:p-2 rounded-xl shadow-xl flex flex-col lg:flex-row flex-wrap gap-1.5">
+        {/* Search Box - Grid Layout on Desktop */}
+        <div className="px-4 -mt-4 lg:-mt-5 relative z-20 max-w-[1400px] mx-auto">
+          <div className="bg-[#1B2B48] p-1.5 md:p-2 rounded-xl shadow-xl grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-12 gap-1.5">
             
             {/* Location */}
-            <div className="bg-white rounded-sm p-2 md:p-2.5 flex items-center gap-2 md:gap-3 flex-[1.5] relative min-w-[200px]">
+            <div className="bg-white rounded-sm p-3 md:p-3 xl:col-span-4 flex items-center gap-2 md:gap-3 relative">
               <Search className="text-gray-500 shrink-0" size={20} />
               <input 
                 type="text" 
@@ -213,7 +213,7 @@ export const PetParentLandingScreen = () => {
             </div>
 
             {/* Dates */}
-            <div className="bg-white rounded-sm p-3 md:p-2 md:p-2.5 flex items-center flex-[1.2] min-w-[200px]">
+            <div className="bg-white rounded-sm p-3 md:p-3 xl:col-span-4 flex items-center">
               <Calendar className="text-gray-500 shrink-0 hidden sm:block mr-3" size={20} />
               
               <div 
@@ -266,7 +266,7 @@ export const PetParentLandingScreen = () => {
             </div>
 
             {/* Pets - Inline directly in the bar */}
-            <div className="bg-white rounded-sm p-3 md:p-2 md:p-2.5 flex flex-row items-center justify-between gap-2 sm:gap-3 lg:gap-4 xl:shrink-0 overflow-x-auto scrollbar-hide">
+            <div className="bg-white rounded-sm p-3 md:p-3 xl:col-span-3 flex flex-row items-center justify-between gap-2 overflow-x-auto scrollbar-hide">
               <InlinePetCounter label="Dog" count={pets.dog} onIncrement={() => updatePetCount('dog', true)} onDecrement={() => updatePetCount('dog', false)} />
               <InlinePetCounter label="Cat" count={pets.cat} onIncrement={() => updatePetCount('cat', true)} onDecrement={() => updatePetCount('cat', false)} />
               <InlinePetCounter label="Bird" count={pets.bird} onIncrement={() => updatePetCount('bird', true)} onDecrement={() => updatePetCount('bird', false)} />
@@ -276,7 +276,7 @@ export const PetParentLandingScreen = () => {
             <button 
               onClick={handleSearch}
               disabled={totalPets === 0 || !location}
-              className="bg-[#1B2B48] border-2 border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-2 md:p-2.5 lg:px-6 xl:px-8 rounded-sm text-base md:text-lg font-bold transition-colors shrink-0"
+              className="bg-[#1B2B48] border-2 border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-3 md:p-3 xl:col-span-1 rounded-sm text-base md:text-lg font-bold transition-colors w-full h-full flex items-center justify-center"
             >
               Search
             </button>
