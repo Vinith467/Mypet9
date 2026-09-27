@@ -141,20 +141,28 @@ export const PetParentLandingScreen = () => {
           </div>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+          <div className="flex items-center shrink-0">
             {user ? (
-              <button onClick={() => navigate('/home')} className="font-bold text-sm md:text-base flex items-center gap-2 bg-[#1B2B48] text-white px-4 py-2 rounded-full hover:bg-[#1B2B48]/90 transition-colors">
-                <LayoutDashboard size={18} />
-                <span>Dashboard</span>
+              <button 
+                onClick={() => navigate('/profile')}
+                className="w-10 h-10 rounded-full border-2 border-[#1B2B48] overflow-hidden flex items-center justify-center bg-white shrink-0 shadow-sm"
+              >
+                {user.photoURL ? (
+                  <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-[#1B2B48] font-bold text-lg">
+                    {(user.displayName || user.email || 'U')[0].toUpperCase()}
+                  </span>
+                )}
               </button>
             ) : (
-              <>
-                <button onClick={handleGoogleSignIn} className="font-bold flex items-center gap-1.5 md:gap-2 text-sm md:text-base hover:text-[#1B2B48]/80 transition-colors">
-                  <img src="https://www.google.com/favicon.ico" alt="G" className="w-4 h-4 bg-white rounded-full p-0.5" />
-                  <span className="hidden sm:inline">Sign in</span>
-                </button>
-                <Menu className="w-5 h-5 md:w-6 md:h-6 ml-1 md:ml-2" />
-              </>
+              <button 
+                onClick={handleGoogleSignIn} 
+                className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                title="Sign in with Google"
+              >
+                <img src="https://www.google.com/favicon.ico" alt="G" className="w-5 h-5" />
+              </button>
             )}
           </div>
         </header>

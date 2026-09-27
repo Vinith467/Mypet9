@@ -42,7 +42,7 @@ const AuthScreen = () => {
     try {
       setLoading(true);
       await signInWithGoogle();
-      const returnTo = location.state?.returnTo || '/home';
+      const returnTo = location.state?.returnTo || '/';
       navigate(returnTo, { state: location.state?.searchState });
     } catch (error: any) {
       console.error(error);

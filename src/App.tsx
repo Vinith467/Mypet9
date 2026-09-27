@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { PetParentLandingScreen } from './screens/Landing/PetParentLandingScreen';
 import AuthScreen from './screens/Auth/AuthScreen';
-import { HomeScreen } from './screens/Home/HomeScreen';
 import { SelectPetScreen } from './screens/Pets/SelectPetScreen';
 import { ChooseServiceScreen } from './screens/Booking/ChooseServiceScreen';
 import { BoardingDetailsScreen } from './screens/Booking/BoardingDetailsScreen';
@@ -45,7 +44,6 @@ function App() {
           <Routes>
             <Route path="/" element={<PetParentLandingScreen />} />
             <Route path="/auth" element={<AuthScreen />} />
-            <Route path="/home" element={<HomeScreen />} />
             <Route path="/select-pet" element={<SelectPetScreen />} />
             <Route path="/choose-service" element={<ChooseServiceScreen />} />
             <Route path="/search-boarding" element={<BoardingSearchScreen />} />
