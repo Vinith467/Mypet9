@@ -13,16 +13,16 @@ const InlinePetCounter = ({ label, count, onIncrement, onDecrement }: { label: s
       <button 
         onClick={onDecrement} 
         disabled={count === 0} 
-        className="w-6 h-6 rounded flex items-center justify-center text-[#1B2B48] bg-white disabled:opacity-40 hover:bg-gray-100 transition-colors"
+        className="w-5 h-5 rounded flex items-center justify-center text-[#1B2B48] bg-white disabled:opacity-40 hover:bg-gray-100 transition-colors"
       >
-        <Minus size={16} strokeWidth={2.5} />
+        <Minus size={14} strokeWidth={2.5} />
       </button>
       <span className="w-4 text-center font-bold text-gray-900 text-[14px]">{count}</span>
       <button 
         onClick={onIncrement} 
-        className="w-6 h-6 rounded flex items-center justify-center text-[#1B2B48] bg-white hover:bg-gray-100 transition-colors"
+        className="w-5 h-5 rounded flex items-center justify-center text-[#1B2B48] bg-white hover:bg-gray-100 transition-colors"
       >
-        <Plus size={16} strokeWidth={2.5} />
+        <Plus size={14} strokeWidth={2.5} />
       </button>
     </div>
   </div>
@@ -137,7 +137,7 @@ export const PetParentLandingScreen = () => {
         {/* MyPet9 Style Header & Navigation (Yellow Theme) */}
       <div className="bg-[#FBBF24] text-[#1B2B48]">
         {/* Top Header */}
-        <header className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between lg:justify-end lg:py-6">
+        <header className="max-w-[1400px] mx-auto px-4 py-4 flex items-center justify-between lg:justify-end lg:py-6">
           {/* Logo - Hidden on large screens because it's in the sidebar */}
           <div className="flex lg:hidden items-center gap-2 cursor-pointer shrink-0" onClick={() => navigate('/')}>
             <div className="w-8 h-8 md:w-10 md:h-10 bg-[#1B2B48] rounded-full flex items-center justify-center">
@@ -166,7 +166,7 @@ export const PetParentLandingScreen = () => {
         </header>
 
         {/* Hero Section for Desktop */}
-        <div className="hidden lg:block max-w-6xl mx-auto px-4 pt-8 pb-16">
+        <div className="hidden lg:block max-w-[1400px] mx-auto px-4 pt-4 pb-8">
           <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight mb-4 text-[#1B2B48]">
             Your pet's second home.
           </h1>
@@ -176,7 +176,7 @@ export const PetParentLandingScreen = () => {
         </div>
 
         {/* Categories */}
-        <div className="max-w-6xl mx-auto px-4 pb-6 pt-2 lg:pt-0 overflow-x-auto scrollbar-hide">
+        <div className="max-w-[1400px] mx-auto px-4 pb-4 pt-2 lg:pt-0 overflow-x-auto scrollbar-hide">
           <div className="flex gap-3 md:gap-4 w-max">
             <button className="flex items-center gap-2 border border-[#1B2B48] px-4 py-2 rounded-full bg-[#1B2B48]/10 shrink-0">
               <PawPrint size={18} />
@@ -189,16 +189,16 @@ export const PetParentLandingScreen = () => {
       {/* Main Content Area */}
       <main className="w-full flex-1">
         {/* Search Box - Booking.com Layout with Dark Blue Border */}
-        <div className="px-4 -mt-4 lg:-mt-8 relative z-20 max-w-6xl mx-auto">
-          <div className="bg-[#1B2B48] p-1.5 md:p-2 rounded-xl shadow-xl flex flex-col xl:flex-row gap-1.5">
+        <div className="px-4 -mt-4 lg:-mt-6 relative z-20 max-w-[1400px] mx-auto">
+          <div className="bg-[#1B2B48] p-1.5 md:p-2 rounded-xl shadow-xl flex flex-col lg:flex-row flex-wrap gap-1.5">
             
             {/* Location */}
-            <div className="bg-white rounded-sm p-3.5 flex items-center gap-2 md:gap-3 flex-1 relative">
+            <div className="bg-white rounded-sm p-2 md:p-2.5 flex items-center gap-2 md:gap-3 flex-[1.5] relative min-w-[200px]">
               <Search className="text-gray-500 shrink-0" size={20} />
               <input 
                 type="text" 
                 placeholder="Where do you need a caretaker?" 
-                className="w-full outline-none text-gray-900 font-bold text-[15px] sm:text-base md:text-lg bg-transparent placeholder:text-gray-500 min-w-0 pr-24 sm:pr-28"
+                className="w-full outline-none text-gray-900 font-bold text-[14px] sm:text-[15px] bg-transparent placeholder:text-gray-500 min-w-0 pr-24 sm:pr-28"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
@@ -213,7 +213,7 @@ export const PetParentLandingScreen = () => {
             </div>
 
             {/* Dates */}
-            <div className="bg-white rounded-sm p-3 md:p-3.5 flex items-center flex-1">
+            <div className="bg-white rounded-sm p-3 md:p-2 md:p-2.5 flex items-center flex-[1.2] min-w-[200px]">
               <Calendar className="text-gray-500 shrink-0 hidden sm:block mr-3" size={20} />
               
               <div 
@@ -228,7 +228,7 @@ export const PetParentLandingScreen = () => {
                 <span className="text-[10px] sm:text-[11px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">From</span>
                 <input 
                   type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] md:text-base font-bold text-gray-900" 
+                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] font-bold text-gray-900" 
                   value={dropoffDate} 
                   onChange={(e) => setDropoffDate(e.target.value)} 
                   onClick={(e) => {
@@ -253,7 +253,7 @@ export const PetParentLandingScreen = () => {
                 <span className="text-[10px] sm:text-[11px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">To</span>
                 <input 
                   type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] md:text-base font-bold text-gray-900" 
+                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] font-bold text-gray-900" 
                   value={pickupDate} 
                   onChange={(e) => setPickupDate(e.target.value)} 
                   onClick={(e) => {
@@ -266,7 +266,7 @@ export const PetParentLandingScreen = () => {
             </div>
 
             {/* Pets - Inline directly in the bar */}
-            <div className="bg-white rounded-sm p-3 md:p-3.5 flex flex-row items-center justify-between gap-2 sm:gap-3 lg:gap-4 xl:shrink-0 overflow-x-auto scrollbar-hide">
+            <div className="bg-white rounded-sm p-3 md:p-2 md:p-2.5 flex flex-row items-center justify-between gap-2 sm:gap-3 lg:gap-4 xl:shrink-0 overflow-x-auto scrollbar-hide">
               <InlinePetCounter label="Dog" count={pets.dog} onIncrement={() => updatePetCount('dog', true)} onDecrement={() => updatePetCount('dog', false)} />
               <InlinePetCounter label="Cat" count={pets.cat} onIncrement={() => updatePetCount('cat', true)} onDecrement={() => updatePetCount('cat', false)} />
               <InlinePetCounter label="Bird" count={pets.bird} onIncrement={() => updatePetCount('bird', true)} onDecrement={() => updatePetCount('bird', false)} />
@@ -276,7 +276,7 @@ export const PetParentLandingScreen = () => {
             <button 
               onClick={handleSearch}
               disabled={totalPets === 0 || !location}
-              className="bg-[#1B2B48] border-2 border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-3.5 xl:px-10 rounded-sm text-lg md:text-xl font-bold transition-colors shrink-0"
+              className="bg-[#1B2B48] border-2 border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-2 md:p-2.5 lg:px-6 xl:px-8 rounded-sm text-base md:text-lg font-bold transition-colors shrink-0"
             >
               Search
             </button>
@@ -284,7 +284,7 @@ export const PetParentLandingScreen = () => {
         </div>
 
         {/* Offers / Continue Search */}
-        <div className="max-w-6xl mx-auto px-4 py-8 mt-4">
+        <div className="max-w-[1400px] mx-auto px-4 py-8 mt-4">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">Continue your search</h2>
           
           <div className="flex flex-col gap-6 md:gap-8">

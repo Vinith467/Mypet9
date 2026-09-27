@@ -10,7 +10,7 @@ export const DashboardLayout = ({ children }: { children: ReactNode }) => {
       
       {/* Desktop Sidebar Navigation */}
       {user && (
-        <div className="hidden lg:flex w-64 h-full border-r border-[#1B2B48]/5 bg-[#F8F9FA]">
+        <div className="hidden lg:flex w-[200px] h-full border-r border-[#1B2B48]/5 bg-[#F8F9FA]">
           <Navigation />
         </div>
       )}
@@ -18,7 +18,7 @@ export const DashboardLayout = ({ children }: { children: ReactNode }) => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
         <main className={`flex-1 overflow-y-auto scrollbar-hide ${user ? 'pb-24 lg:pb-8' : ''}`}>
-          <div className="w-full h-full lg:px-8">
+          <div className="w-full h-full">
             {children}
           </div>
         </main>

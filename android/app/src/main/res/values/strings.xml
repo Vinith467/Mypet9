@@ -4,4 +4,5 @@
     <string name="title_activity_main">MyPet9</string>
     <string name="package_name">com.mypet9.app</string>
     <string name="custom_url_scheme">com.mypet9.app</string>
+    <string name="server_client_id">1055677962449-sim20phcl0fogf605eicu89c22klkpc1.apps.googleusercontent.com</string>
 </resources>
