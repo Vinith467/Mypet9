@@ -96,7 +96,7 @@ export const BookingProgressScreen = () => {
   };
 
   return (
-    <div className="w-full flex flex-col min-h-screen bg-[#FAFAFA] pb-32">
+    <div className="w-full flex flex-col min-h-[100dvh] bg-white pb-20">
       
       {/* Header */}
       <div className="bg-white sticky top-0 z-30 pt-4 pb-3 px-4 flex items-center justify-between border-b border-gray-100 shadow-sm">
@@ -112,18 +112,16 @@ export const BookingProgressScreen = () => {
         </button>
       </div>
 
-      <div className="px-4 py-4 space-y-4 max-w-2xl mx-auto w-full">
+      <div className="px-4 py-4 max-w-5xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
         
-        {/* Combined Details Card */}
-        <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col overflow-hidden">
-          
-          {/* Host Details Section */}
-          <div className="p-4 sm:p-5">
+        {/* Left Column (Host & Timeline) */}
+        <div className="flex flex-col space-y-2">
+          <div className="py-2">
             <div className="flex gap-4">
               <img 
                 src={booking.caretakerImage || `https://ui-avatars.com/api/?name=${booking.caretakerName}&background=E8F5E9&color=174F38`}
                 alt={booking.caretakerName}
-                className="w-[90px] h-[100px] rounded-[16px] object-cover shrink-0 bg-gray-100"
+                className="w-[70px] h-[80px] rounded-[12px] object-cover shrink-0 bg-gray-100"
               />
             <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
               <div className="flex items-center gap-1.5 min-w-0 mb-1.5">
@@ -166,26 +164,27 @@ export const BookingProgressScreen = () => {
               </div>
             </div>
           </div>
+          </div>
           
           {/* Primary Action */}
-          <div className="mt-5 px-4 pb-2">
+          <div className="mt-3 pb-2">
             <button 
               onClick={() => navigate(`/chat/${id}`)}
-              className="w-full flex items-center justify-center gap-2.5 bg-[#FFF9EC] hover:bg-[#F3E8CC] text-[#111111] py-3.5 rounded-[12px] font-extrabold text-[15px] transition-colors border border-[#F3E8CC]"
+              className="w-full flex items-center justify-center gap-2.5 bg-[#FFF9EC] hover:bg-[#F3E8CC] text-[#111111] py-2.5 rounded-[12px] font-extrabold text-[14px] transition-colors border border-[#F3E8CC]"
             >
-              <MessageSquare size={20} className="text-[#111111]" />
+              <MessageSquare size={18} className="text-[#111111]" />
               Message Caretaker
             </button>
           </div>
-          </div>
 
-          <div className="h-px bg-gray-50 mx-4"></div>
+
+          <div className="h-px bg-gray-100 my-1"></div>
 
           {booking.isExtended && (
             <>
               {/* Stay Timeline Section */}
-              <div className="p-4 sm:p-5 bg-[#FFF9EC]">
-                <div className="flex items-center gap-2 mb-5">
+              <div className="py-2 bg-white">
+                <div className="flex items-center gap-2 mb-3">
                   <div className="w-8 h-8 rounded-full border border-[#71b6af] bg-white flex items-center justify-center shrink-0">
                     <svg className="w-4 h-4 text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                   </div>
@@ -244,13 +243,12 @@ export const BookingProgressScreen = () => {
                   </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-50 mx-4"></div>
+              <div className="h-px bg-gray-100 my-1"></div>
             </>
           )}
-
           {/* Stay Details Section */}
-          <div className="p-4 sm:p-5">
-            <div className="flex items-center justify-between mb-4">
+          <div className="py-2">
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0 border border-[#F3E8CC]">
                 <Calendar size={16} className="text-[#111111]" />
@@ -260,7 +258,7 @@ export const BookingProgressScreen = () => {
               </h3>
             </div>
           </div>
-          <div className="flex items-start justify-between bg-[#FAFAFA] rounded-[16px] p-3 sm:p-4 border border-gray-100/50">
+          <div className="flex items-start justify-between bg-[#FAFAFA] rounded-[14px] p-3 border border-gray-100/50">
             <div className="flex flex-col flex-1">
               <span className="text-[11px] font-medium text-[#666666] mb-1">Check-in</span>
               <span className="text-[14px] font-extrabold text-[#111111] mb-0.5">{formatDate(booking.dropoffDate)}</span>
@@ -280,12 +278,14 @@ export const BookingProgressScreen = () => {
             </div>
           </div>
           </div>
+        </div>
 
-          <div className="h-px bg-gray-50 mx-4"></div>
+        {/* Right Column (Pets & Price) */}
+        <div className="flex flex-col space-y-2">
 
           {/* Pet Details Section */}
-          <div className="p-4 sm:p-5">
-            <div className="flex items-center justify-between mb-4">
+          <div className="py-2">
+            <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0 border border-[#F3E8CC]">
                 <svg className="w-4 h-4 text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 14c0 4.418 7.163 8 16 8s16-3.582 16-8-7.163-8-16-8-16 3.582-16 8z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"></path></svg>
@@ -294,11 +294,11 @@ export const BookingProgressScreen = () => {
             </div>
           </div>
           
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x scrollbar-hide">
+          <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 snap-x scrollbar-hide">
             {(booking.selectedPets || [booking]).map((pet: any, i: number) => (
-              <div key={pet.id || i} className="min-w-[240px] max-w-[260px] snap-center bg-white border border-gray-100 rounded-[16px] p-3 flex flex-col shadow-sm">
-                <div className="flex items-center space-x-3 mb-3">
-                  <img src={pet.image || pet.petImage || "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=200"} alt={pet.name || pet.petName} className="w-[48px] h-[48px] rounded-[12px] object-cover" />
+              <div key={pet.id || i} className="min-w-[200px] max-w-[220px] snap-center bg-white border border-gray-100 rounded-[12px] p-2 flex flex-col shadow-sm">
+                <div className="flex items-center space-x-2 mb-2">
+                  <img src={pet.image || pet.petImage || "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=200"} alt={pet.name || pet.petName} className="w-[40px] h-[40px] rounded-[10px] object-cover" />
                   <div className="flex flex-col min-w-0">
                     <span className="text-[14px] font-extrabold text-[#111111] truncate">{pet.name || pet.petName}</span>
                     <span className="text-[11px] font-medium text-[#666666] truncate">{pet.breed || pet.petBreed}</span>
@@ -321,11 +321,10 @@ export const BookingProgressScreen = () => {
             ))}
           </div>
         </div>
-        </div>
 
         {/* Price Details Card */}
-        <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col">
-          <div className="p-4 sm:p-5">
+        <div className="flex flex-col border-gray-100 pt-2">
+          <div className="py-2">
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0 border border-[#F3E8CC]">
                 <svg className="w-4 h-4 text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
@@ -414,28 +413,29 @@ export const BookingProgressScreen = () => {
             <span className="text-[16px] font-extrabold text-[#111111]">Total Amount</span>
             <span className="text-[18px] font-extrabold text-[#111111]">₹{booking.totalAmount?.toLocaleString('en-IN')}</span>
           </div>
+          </div>
         </div>
-
+        
       </div>
 
       {/* Fixed Bottom Actions */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 p-4 pb-safe-bottom shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
-        <div className="max-w-2xl mx-auto w-full flex flex-row gap-3">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 p-3 pb-safe-bottom">
+        <div className="max-w-2xl mx-auto w-full flex flex-row gap-3 px-1">
           <button 
             onClick={() => navigate(`/extend-stay/${booking.id}`, { state: { booking } })}
             disabled={isProcessing || booking.status === 'cancelled' || booking.status === 'completed'}
-            className="flex-1 h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 transition-colors disabled:opacity-50"
+            className="flex-1 h-[46px] bg-[#007672] hover:bg-[#00605c] text-white text-[15px] font-extrabold rounded-[12px] flex items-center justify-center space-x-2 transition-colors disabled:opacity-50 shadow-sm"
           >
-            <Calendar size={20} />
+            <Calendar size={18} />
             <span>Extend Stay</span>
           </button>
           {isPayLater && (
             <button 
               onClick={() => navigate('/payment', { state: { bookingId: booking.id, amount: booking.totalAmount } })}
               disabled={isProcessing || booking.status === 'cancelled' || booking.status === 'completed'}
-              className="flex-1 h-[54px] bg-[#111111] hover:bg-gray-800 text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 transition-colors disabled:opacity-50"
+              className="flex-1 h-[46px] bg-[#111111] hover:bg-gray-800 text-white text-[15px] font-extrabold rounded-[12px] flex items-center justify-center space-x-2 transition-colors disabled:opacity-50 shadow-sm"
             >
-              <CreditCard size={20} />
+              <CreditCard size={18} />
               <span>Pay Now</span>
             </button>
           )}

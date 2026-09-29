@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MapPin, Calendar, Search, PawPrint, Plus, Minus, ChevronDown, Heart } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
 import { TopNavbar } from '../../components/layout/TopNavbar';
 import { OfflineBookingSection } from '../../components/landing/OfflineBookingSection';
 import { Navigation } from '../../components/layout/Navigation';
@@ -48,6 +49,37 @@ export const PetParentLandingScreen = () => {
   });
 
   const totalPets = pets.dog + pets.cat + pets.bird + pets.other;
+
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isSearchingLocation, setIsSearchingLocation] = useState(false);
+  const [selectedFromSuggestion, setSelectedFromSuggestion] = useState(false);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const fetchSuggestions = async () => {
+      if (selectedFromSuggestion) {
+        setSelectedFromSuggestion(false);
+        return;
+      }
+      if (!location || location.length < 3 || location === 'Locating...') {
+        setSuggestions([]);
+        return;
+      }
+      setIsSearchingLocation(true);
+      try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&limit=5&addressdetails=1`);
+        const data = await response.json();
+        setSuggestions(data);
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+      } finally {
+        setIsSearchingLocation(false);
+      }
+    };
+    timeoutId = setTimeout(fetchSuggestions, 500);
+    return () => clearTimeout(timeoutId);
+  }, [location, selectedFromSuggestion]);
 
   const handleSearch = () => {
     if (totalPets === 0) {
@@ -95,22 +127,42 @@ export const PetParentLandingScreen = () => {
     try {
       setLocation('Locating...');
       
-      const permissions = await Geolocation.checkPermissions();
-      if (permissions.location !== 'granted') {
-        const requested = await Geolocation.requestPermissions();
-        if (requested.location !== 'granted') {
-          setLocation('');
-          return;
-        }
-      }
+      let latitude: number;
+      let longitude: number;
 
-      const position = await Geolocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
-      });
+      if (Capacitor.isNativePlatform()) {
+        const permissions = await Geolocation.checkPermissions();
+        if (permissions.location !== 'granted') {
+          const requested = await Geolocation.requestPermissions();
+          if (requested.location !== 'granted') {
+            setLocation('');
+            return;
+          }
+        }
+        const position = await Geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0
+        });
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+      } else {
+        // Web fallback
+        const pos: any = await new Promise((resolve, reject) => {
+          if (!navigator.geolocation) {
+            reject(new Error('Geolocation is not supported by this browser.'));
+          } else {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              enableHighAccuracy: true,
+              timeout: 15000,
+              maximumAge: 0
+            });
+          }
+        });
+        latitude = pos.coords.latitude;
+        longitude = pos.coords.longitude;
+      }
       
-      const { latitude, longitude } = position.coords;
       const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`);
       const data = await response.json();
       
@@ -168,21 +220,54 @@ export const PetParentLandingScreen = () => {
               </div>
               
               {/* Location Input */}
-              <div className="relative border border-gray-200 rounded-xl p-2 md:p-2.5 flex items-center mb-3 bg-white shadow-sm">
-                <Search className="text-[#007672] w-4 h-4 mr-2 shrink-0" strokeWidth={2.5} />
-                <input 
-                  type="text" 
-                  placeholder="Select area" 
-                  className="w-full outline-none text-[14px] font-bold text-gray-900 placeholder:text-gray-400 bg-transparent" 
-                  value={location} 
-                  onChange={(e) => setLocation(e.target.value)} 
-                />
-                <button 
-                  onClick={getCurrentLocation} 
-                  className="absolute right-1.5 px-2.5 py-1 bg-gray-50 rounded-lg text-[11px] font-bold text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap border border-gray-100"
-                >
-                  Use Current Location
-                </button>
+              <div className="relative mb-3 z-30">
+                <div className="relative border border-gray-200 rounded-xl p-2 md:p-2.5 flex items-center bg-white shadow-sm">
+                  <Search className="text-[#007672] w-4 h-4 mr-2 shrink-0" strokeWidth={2.5} />
+                  <input 
+                    type="text" 
+                    placeholder="Select area" 
+                    className="w-full outline-none text-[14px] font-bold text-gray-900 placeholder:text-gray-400 bg-transparent pr-28" 
+                    value={location} 
+                    onChange={(e) => {
+                      setLocation(e.target.value);
+                      setShowSuggestions(true);
+                    }}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  />
+                  <button 
+                    onClick={getCurrentLocation} 
+                    className="absolute right-1.5 px-2.5 py-1.5 bg-gray-50 rounded-lg text-[10px] md:text-[11px] font-bold text-[#007672] hover:bg-[#E0F4F2] hover:text-[#00605c] transition-colors whitespace-nowrap border border-[#007672]/20"
+                  >
+                    Use Current Location
+                  </button>
+                </div>
+                
+                {/* Autocomplete Suggestions */}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden max-h-60 overflow-y-auto">
+                    {suggestions.map((sug, idx) => (
+                      <div 
+                        key={idx}
+                        className="px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-0 cursor-pointer flex items-start gap-3"
+                        onClick={() => {
+                          const area = sug.address?.neighbourhood || sug.address?.suburb || sug.address?.village || sug.address?.city_district || sug.address?.residential || sug.address?.road || '';
+                          const district = sug.address?.city || sug.address?.town || sug.address?.state_district || sug.address?.county || '';
+                          const finalLoc = (area && district && area !== district) ? `${area}, ${district}` : (district || area || sug.display_name.split(',').slice(0, 2).join(', '));
+                          setSelectedFromSuggestion(true);
+                          setLocation(finalLoc);
+                          setShowSuggestions(false);
+                        }}
+                      >
+                        <MapPin className="text-[#007672] w-4 h-4 shrink-0 mt-0.5" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[13px] font-bold text-gray-900 truncate">{sug.name || sug.display_name.split(',')[0]}</p>
+                          <p className="text-[11px] text-gray-500 truncate">{sug.display_name}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Dates Grid */}

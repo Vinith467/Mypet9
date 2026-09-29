@@ -39,6 +39,7 @@ import { AdminSupport } from './screens/Admin/AdminSupport';
 import { PetParentOnboardingScreen } from './screens/Onboarding/PetParentOnboardingScreen';
 import { PetHomestayPartnerFormScreen } from './screens/Onboarding/PetHomestayPartnerFormScreen';
 import { OnboardingHistoryScreen } from './screens/Onboarding/OnboardingHistoryScreen';
+import { OnboardingAnalyticsScreen } from './screens/Onboarding/OnboardingAnalyticsScreen';
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
             <Route path="/join/parent" element={<PetParentOnboardingScreen />} />
             <Route path="/join/partner" element={<PetHomestayPartnerFormScreen />} />
             <Route path="/join/history" element={<OnboardingHistoryScreen />} />
+            <Route path="/join/analytics" element={<OnboardingAnalyticsScreen />} />
 
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>

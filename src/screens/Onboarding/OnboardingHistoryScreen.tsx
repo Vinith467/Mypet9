@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../config/firebase';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { ArrowLeft, User, Phone, Mail, MapPin, X } from 'lucide-react';
+import { ArrowLeft, User, Phone, Mail, MapPin, X, BarChart3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -36,11 +36,20 @@ export const OnboardingHistoryScreen = () => {
     <div className="min-h-screen bg-[#111B21] text-[#E9EDEF] flex flex-col font-sans">
       
       {/* Header (WhatsApp Dark Mode Style) */}
-      <div className="bg-[#202C33] px-4 py-3 flex items-center gap-4 sticky top-0 z-30 shadow-md">
-        <button onClick={() => navigate(-1)} className="text-[#AEBAC1] hover:text-white transition-colors">
-          <ArrowLeft size={24} />
+      <div className="bg-[#202C33] px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md">
+        <div className="flex items-center gap-4">
+          <button onClick={() => navigate(-1)} className="text-[#AEBAC1] hover:text-white transition-colors">
+            <ArrowLeft size={24} />
+          </button>
+          <h1 className="text-[19px] font-semibold">Saved Leads</h1>
+        </div>
+        <button 
+          onClick={() => navigate('/join/analytics')}
+          className="text-[#AEBAC1] hover:text-[#00A884] transition-colors"
+          title="View Analytics"
+        >
+          <BarChart3 size={24} />
         </button>
-        <h1 className="text-[19px] font-semibold">Saved Leads</h1>
       </div>
 
       {/* Tabs */}

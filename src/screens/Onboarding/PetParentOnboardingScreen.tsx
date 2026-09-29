@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { db } from '../../config/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { ArrowLeft, CheckCircle2, ChevronRight, ClipboardList, RefreshCcw } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ChevronRight, ClipboardList, RefreshCcw, BarChart3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const PetParentOnboardingScreen = () => {
@@ -179,6 +179,13 @@ export const PetParentOnboardingScreen = () => {
               title="View History"
             >
               <ClipboardList size={20} />
+            </button>
+            <button 
+              onClick={() => navigate('/join/analytics')}
+              className="w-10 h-10 bg-[#E8F3F3] rounded-full flex items-center justify-center text-[#007672] hover:bg-[#d1e8e8] transition-colors shadow-sm shrink-0"
+              title="View Analytics"
+            >
+              <BarChart3 size={20} />
             </button>
           </div>
         </div>
