@@ -104,7 +104,7 @@ export const MessagesListScreen = () => {
       const chats = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      } as any)).filter((b: any) => b.status === 'accepted' || b.status === 'ongoing');
+      } as any)).filter((b: any) => b.status === 'ongoing');
       
       chats.sort((a: any, b: any) => {
         const aTime = a.createdAt?.toMillis?.() || 0;

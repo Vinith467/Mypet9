@@ -324,10 +324,10 @@ export const BoardingSearchScreen = () => {
               <Player
                 autoplay
                 loop
-                src="/animation/Cute Pappy.json"
-                style={{ height: '180px', width: '180px', marginBottom: '8px' }}
+                src="/loader/new.json"
+                style={{ height: '300px', width: '300px' }}
               />
-              <div className="w-full max-w-[200px] mb-5">
+              <div className="w-full max-w-[200px] mb-5 -mt-24">
                 <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden shadow-inner">
                   <motion.div 
                     initial={{ width: "0%" }}

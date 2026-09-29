@@ -219,8 +219,8 @@ export const CaretakerProfileScreen = () => {
                       { icon: User, label: provider.experience ? `${provider.experience}+ Yrs\nExperience` : '3+ Yrs\nExperience', id: 'Experience' }
                     ].filter(f => f.id === 'Experience' || (provider.services && provider.services.includes(f.id))).map((feature, idx) => (
                       <div key={idx} className="flex flex-col items-center">
-                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2">
-                          <feature.icon size={22} className="text-[#8B5A2B] lg:w-6 lg:h-6" strokeWidth={1.5} />
+                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#F4F9F9] rounded-full flex items-center justify-center mb-2">
+                          <feature.icon size={22} className="text-[#007672] lg:w-6 lg:h-6" strokeWidth={1.5} />
                         </div>
                         <span className="text-[10px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                           {feature.label}
@@ -239,8 +239,8 @@ export const CaretakerProfileScreen = () => {
                       { icon: PawPrint, label: 'Pet Care\nUpdates', id: 'Pet Care Updates' },
                     ].filter(f => !provider.facilities || provider.facilities.includes(f.id) || f.id === 'Verified Partner').map((facility, idx, arr) => (
                       <div key={idx} className={`flex flex-col items-center shrink-0 px-0.5 relative ${arr.length > 4 ? 'w-1/5' : 'w-1/4'}`}>
-                        <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2">
-                          <facility.icon size={16} className="text-[#8B5A2B]" strokeWidth={2} />
+                        <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#F4F9F9] rounded-full flex items-center justify-center mb-2">
+                          <facility.icon size={16} className="text-[#007672]" strokeWidth={2} />
                         </div>
                         <span className="text-[8px] lg:text-[10px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                           {facility.label}
@@ -278,8 +278,8 @@ export const CaretakerProfileScreen = () => {
                         { icon: Star, label: 'AC\nRoom' },
                       ].map((facility, idx) => (
                         <div key={idx} className="flex flex-col items-center flex-1 px-0.5">
-                          <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 hover:scale-105 transition-transform">
-                            <facility.icon size={16} className="text-[#8B5A2B] lg:w-5 lg:h-5" strokeWidth={2} />
+                          <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#F4F9F9] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 hover:scale-105 transition-transform">
+                            <facility.icon size={16} className="text-[#007672] lg:w-5 lg:h-5" strokeWidth={2} />
                           </div>
                           <span className="text-[8px] lg:text-[9px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                             {facility.label}

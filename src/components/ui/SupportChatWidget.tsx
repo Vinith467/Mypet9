@@ -75,8 +75,8 @@ export const SupportChatWidget = () => {
 
   if (!user || userData?.type === 'admin') return null; // Admins have their own interface
   
-  // Hide on caretaker booking details page so it doesn't overlap with the chat interface
-  if (location.pathname.includes('/caretaker/bookings/')) return null;
+  // Hide on certain pages
+  if (location.pathname.includes('/caretaker/bookings/') || location.pathname.includes('/join/')) return null;
 
   return (
     <>

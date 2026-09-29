@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { PetParentLandingScreen } from './screens/Landing/PetParentLandingScreen';
+import { DirectlyReachUsScreen } from './screens/Landing/DirectlyReachUsScreen';
 import AuthScreen from './screens/Auth/AuthScreen';
 import { SelectPetScreen } from './screens/Pets/SelectPetScreen';
 import { ChooseServiceScreen } from './screens/Booking/ChooseServiceScreen';
@@ -35,6 +36,9 @@ import { AdminUsers } from './screens/Admin/AdminUsers';
 import { AdminBookings } from './screens/Admin/AdminBookings';
 import { AdminSettings } from './screens/Admin/AdminSettings';
 import { AdminSupport } from './screens/Admin/AdminSupport';
+import { PetParentOnboardingScreen } from './screens/Onboarding/PetParentOnboardingScreen';
+import { PetHomestayPartnerFormScreen } from './screens/Onboarding/PetHomestayPartnerFormScreen';
+import { OnboardingHistoryScreen } from './screens/Onboarding/OnboardingHistoryScreen';
 
 function App() {
   return (
@@ -43,6 +47,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<PetParentLandingScreen />} />
+            <Route path="/directly-reach-us" element={<DirectlyReachUsScreen />} />
             <Route path="/auth" element={<AuthScreen />} />
             <Route path="/select-pet" element={<SelectPetScreen />} />
             <Route path="/choose-service" element={<ChooseServiceScreen />} />
@@ -63,6 +68,11 @@ function App() {
             <Route path="/edit-pet/:id" element={<EditPetScreen />} />
             <Route path="/saved-caretakers" element={<SavedCaretakersScreen />} />
           
+            {/* Onboarding / Field Collection Routes */}
+            <Route path="/join/parent" element={<PetParentOnboardingScreen />} />
+            <Route path="/join/partner" element={<PetHomestayPartnerFormScreen />} />
+            <Route path="/join/history" element={<OnboardingHistoryScreen />} />
+
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminOverview />} />

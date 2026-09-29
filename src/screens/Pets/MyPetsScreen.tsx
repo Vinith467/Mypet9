@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plus, PawPrint, MoreHorizontal, ShieldCheck, Home, Heart, Calendar, ArrowRight, Star, Check } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { useAuth } from '../../contexts/AuthContext';
-import { collection, query, getDocs } from 'firebase/firestore';
+import { collection, query, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 export interface Pet {
@@ -26,6 +26,7 @@ export const MyPetsScreen = () => {
   const { user } = useAuth();
   const [pets, setPets] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPets = async () => {
@@ -44,6 +45,19 @@ export const MyPetsScreen = () => {
     fetchPets();
   }, [user]);
 
+  const handleDeletePet = async (petId: string) => {
+    if (!user) return;
+    if (window.confirm("Are you sure you want to delete this pet?")) {
+      try {
+        await deleteDoc(doc(db, 'users', user.uid, 'pets', petId));
+        setPets(pets.filter(p => p.id !== petId));
+        setOpenDropdownId(null);
+      } catch (error) {
+        console.error("Error deleting pet:", error);
+      }
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="w-full flex flex-col min-h-screen bg-[#FAF9F5]">
@@ -53,8 +67,8 @@ export const MyPetsScreen = () => {
           <img src="/pet-herosection.png" alt="Your Pets, Our Priority" className="w-full h-auto object-cover" />
         </div>
 
-        <div className="max-w-7xl mx-auto w-full px-4 lg:px-8 mt-4 mb-6">
-          <div className="flex flex-col lg:grid lg:grid-cols-[1fr,280px] gap-6 xl:gap-8 lg:items-start">
+        <div className="max-w-7xl mx-auto w-full px-4 lg:px-8 mt-4 mb-2">
+          <div className="flex flex-col lg:grid lg:grid-cols-[1fr,280px] gap-6 xl:gap-8 items-stretch">
             
             {/* Left Column: Pets List */}
             <div className="w-full">
@@ -94,7 +108,11 @@ export const MyPetsScreen = () => {
                   
                   {/* Map through Pets */}
                   {pets.map((pet) => (
-                    <div key={pet.id} className="bg-white rounded-[20px] overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col group relative">
+                    <div 
+                      key={pet.id} 
+                      onClick={() => navigate(`/edit-pet/${pet.id}`)}
+                      className="bg-white rounded-[20px] overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col group relative cursor-pointer hover:border-[#007672]/30 hover:shadow-[0_8px_30px_rgb(0,118,114,0.12)] transition-all"
+                    >
                       
                       {/* Pet Image Header */}
                       <div className="h-[130px] w-full relative">
@@ -103,9 +121,40 @@ export const MyPetsScreen = () => {
                           alt={pet.name} 
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         />
-                        <button className="absolute top-2 right-2 w-7 h-7 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-gray-900 shadow-sm z-10 transition-colors">
-                          <MoreHorizontal size={16} />
-                        </button>
+                        <div className="absolute top-2 right-2 z-30">
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenDropdownId(openDropdownId === pet.id ? null : pet.id);
+                            }}
+                            className="w-7 h-7 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-gray-900 shadow-sm transition-colors"
+                          >
+                            <MoreHorizontal size={16} />
+                          </button>
+
+                          {openDropdownId === pet.id && (
+                            <div className="absolute right-0 mt-2 w-32 bg-white rounded-[12px] shadow-lg border border-gray-100 py-1 z-40">
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/edit-pet/${pet.id}`);
+                                }}
+                                className="w-full text-left px-4 py-2 text-[13px] font-bold text-[#1B2B48] hover:bg-gray-50 transition-colors"
+                              >
+                                Edit
+                              </button>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeletePet(pet.id);
+                                }}
+                                className="w-full text-left px-4 py-2 text-[13px] font-bold text-red-500 hover:bg-red-50 transition-colors"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
                       {/* Pet Info Content */}
@@ -182,13 +231,13 @@ export const MyPetsScreen = () => {
             </div>
 
             {/* Right Column: Sidebar */}
-            <div className="w-full flex flex-col space-y-4 lg:mt-0">
+            <div className="w-full flex flex-col lg:mt-0 h-full">
               
               {/* Why Choose Block */}
-              <div className="bg-[#f2f9f8] rounded-[20px] p-4 lg:p-5 border border-[#007672]/10">
-                <h3 className="text-[15px] font-extrabold text-[#1B2B48] mb-4">Why Choose Mypet9?</h3>
+              <div className="bg-[#f2f9f8] rounded-[20px] p-4 lg:p-6 border border-[#007672]/10 h-full flex flex-col">
+                <h3 className="text-[16px] font-extrabold text-[#1B2B48] mb-6">Why Choose Mypet9?</h3>
                 
-                <div className="flex flex-col space-y-4">
+                <div className="flex flex-col justify-between flex-1 space-y-5">
                   
                   <div className="flex gap-3">
                     <div className="w-8 h-8 rounded-full border-2 border-[#007672]/20 bg-white flex items-center justify-center shrink-0">
@@ -233,37 +282,12 @@ export const MyPetsScreen = () => {
                 </div>
               </div>
 
-              {/* Testimonial Block */}
-              <div className="bg-white rounded-[20px] p-4 border border-gray-100 shadow-sm relative overflow-hidden">
-                <div className="absolute top-3 right-3 text-[#007672]/20">
-                  <PawPrint size={18} />
-                  <Heart size={10} className="absolute -bottom-1 -right-1" />
-                </div>
-                
-                <div className="flex gap-3">
-                  <img src="/husky_avatar.jpg" alt="Reviewer" className="w-10 h-10 rounded-full object-cover shrink-0 border border-gray-100 shadow-sm" />
-                  <div>
-                    <p className="text-[11px] font-medium text-[#1B2B48] italic leading-snug mb-2 pr-2">
-                      "Mypet9 made our vacation worry-free. Our dog felt right at home!"
-                    </p>
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-[10px] font-extrabold text-[#465E87]">- Priya S.</span>
-                      <div className="flex items-center gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} size={8} className="text-[#F2C94C] fill-[#F2C94C]" />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
         
         {/* Bottom Banner */}
-        <div className="w-full mt-auto">
+        <div className="w-full mt-1 pb-6">
           <img src="/pet-bottom-section.png" alt="More Than Just Boarding" className="w-full h-auto object-cover max-w-7xl mx-auto rounded-[20px] md:px-4" />
         </div>
 

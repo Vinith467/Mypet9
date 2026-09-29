@@ -23,7 +23,7 @@ export const OfflineBookingSection = () => {
   const [isLocating, setIsLocating] = useState(false);
   
   const [petName, setPetName] = useState('');
-  const [petType, setPetType] = useState('Dog');
+  const [petType, setPetType] = useState('');
   const [breedSelect, setBreedSelect] = useState('');
   const [customBreed, setCustomBreed] = useState('');
   const [petCount, setPetCount] = useState(1);
@@ -32,9 +32,9 @@ export const OfflineBookingSection = () => {
   const [preferredLocation, setPreferredLocation] = useState('');
   
   const [petAge, setPetAge] = useState('');
-  const [petGender, setPetGender] = useState('Male');
-  const [vaccination, setVaccination] = useState('Fully Vaccinated');
-  const [medical, setMedical] = useState('No');
+  const [petGender, setPetGender] = useState('');
+  const [vaccination, setVaccination] = useState('');
+  const [medical, setMedical] = useState('');
   const [specialInstructions, setSpecialInstructions] = useState('');
   
   const [services, setServices] = useState({
@@ -42,7 +42,7 @@ export const OfflineBookingSection = () => {
     grooming: false,
     training: false,
     vaccination: false,
-    none: true
+    none: false
   });
 
   // UI State
@@ -92,7 +92,7 @@ export const OfflineBookingSection = () => {
   };
 
   const handleSubmit = async () => {
-    if (!fullName || !mobileNumber || !location || !petName || !checkInDate || !checkOutDate) {
+    if (!fullName || !mobileNumber || !location || !petName || !petType || !checkInDate || !checkOutDate) {
       setError('Please fill in all mandatory fields (*)');
       return;
     }
@@ -164,7 +164,7 @@ export const OfflineBookingSection = () => {
       </div>
 
       <div className="bg-white overflow-hidden relative border-t border-gray-100 z-10 w-full">
-        <div className="relative w-full min-h-[400px] flex flex-col md:flex-row bg-[#F4F9F9]">
+        <div className="relative w-full min-h-[400px] hidden md:flex flex-col md:flex-row bg-[#F4F9F9]">
           <div className="w-full md:w-[45%] relative z-20 pt-10 md:pt-16 pb-8 px-6 md:px-12 flex flex-col justify-center bg-gradient-to-r from-white via-white to-transparent">
             <div className="flex items-center gap-2 mb-6">
               <span className="text-[#007672] text-3xl font-black">🐾</span>
@@ -205,20 +205,20 @@ export const OfflineBookingSection = () => {
           </div>
         </div>
 
-        <div className="bg-white py-8 px-6 border-b border-gray-100 flex items-center justify-center gap-4 relative z-20">
-           <div className="flex items-center gap-2">
-             <div className="w-7 h-7 rounded-full bg-[#007672] text-white flex items-center justify-center font-bold text-sm">1</div>
-             <span className="font-bold text-[#007672] text-sm">Your Details</span>
+        <div className="bg-white py-6 md:py-8 px-4 md:px-6 border-b border-gray-100 flex items-start md:items-center justify-between md:justify-center gap-2 md:gap-4 relative z-20 max-w-full overflow-hidden">
+           <div className="flex flex-col md:flex-row items-center gap-1.5 md:gap-2 w-[30%] md:w-auto text-center md:text-left">
+             <div className="w-7 h-7 shrink-0 rounded-full bg-[#007672] text-white flex items-center justify-center font-bold text-sm">1</div>
+             <span className="font-bold text-[#007672] text-[10px] md:text-sm leading-tight">Your Details</span>
            </div>
-           <div className="w-16 h-[2px] bg-[#007672]"></div>
-           <div className="flex items-center gap-2">
-             <div className="w-7 h-7 rounded-full bg-[#007672] text-white flex items-center justify-center font-bold text-sm">2</div>
-             <span className="font-bold text-[#0B2533] text-sm">Pet & Boarding Details</span>
+           <div className="w-8 md:w-16 h-[2px] bg-[#007672] shrink-0 mt-3.5 md:mt-0"></div>
+           <div className="flex flex-col md:flex-row items-center gap-1.5 md:gap-2 w-[30%] md:w-auto text-center md:text-left">
+             <div className="w-7 h-7 shrink-0 rounded-full bg-[#007672] text-white flex items-center justify-center font-bold text-sm">2</div>
+             <span className="font-bold text-[#0B2533] text-[10px] md:text-sm leading-tight">Pet & Boarding Details</span>
            </div>
-           <div className="w-16 h-[2px] bg-gray-300"></div>
-           <div className="flex items-center gap-2 opacity-50">
-             <div className="w-7 h-7 rounded-full bg-gray-400 text-white flex items-center justify-center font-bold text-sm">3</div>
-             <span className="font-bold text-gray-500 text-sm">Review & Submit</span>
+           <div className="w-8 md:w-16 h-[2px] bg-gray-300 shrink-0 mt-3.5 md:mt-0"></div>
+           <div className="flex flex-col md:flex-row items-center gap-1.5 md:gap-2 w-[30%] md:w-auto text-center md:text-left opacity-50">
+             <div className="w-7 h-7 shrink-0 rounded-full bg-gray-400 text-white flex items-center justify-center font-bold text-sm">3</div>
+             <span className="font-bold text-gray-500 text-[10px] md:text-sm leading-tight">Review & Submit</span>
            </div>
         </div>
 

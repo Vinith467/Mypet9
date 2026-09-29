@@ -15,7 +15,6 @@ export const AddPetScreen = () => {
   const { user } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
@@ -24,6 +23,7 @@ export const AddPetScreen = () => {
 
   const [formData, setFormData] = useState({
     name: '',
+    species: 'Dog',
     breed: '',
     customBreed: '',
     age: '',
@@ -50,25 +50,17 @@ export const AddPetScreen = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleNext = () => {
-    if (!formData.name) {
-      setError('Please enter pet name');
-      return;
-    }
-    setError('');
-    setStep(2);
-  };
-
   const handleBack = () => {
-    if (step === 2) {
-      setStep(1);
-    } else {
-      navigate(-1);
-    }
+    navigate(-1);
   };
 
   const handleSubmit = async () => {
     if (!user) return;
+    
+    if (!formData.name) {
+      setError('Please enter pet name');
+      return;
+    }
     
     setLoading(true);
     setError('');
@@ -83,7 +75,7 @@ export const AddPetScreen = () => {
       await addDoc(collection(db, 'users', user.uid, 'pets'), {
         ...formData,
         breed: finalBreed,
-        type: 'Dog', // Defaulting to Dog as per mockups, could be dynamic
+        type: formData.species || 'Dog',
         image: downloadUrl,
         createdAt: new Date().toISOString()
       });
@@ -111,369 +103,323 @@ export const AddPetScreen = () => {
         <button onClick={handleBack} className="w-10 h-10 flex items-center justify-center -ml-2">
           <ArrowLeft size={24} className="text-[#1B2B48]" />
         </button>
-        
-        <div className="flex-1 flex flex-col items-center">
-          <div className="flex items-center space-x-1 mb-1">
-            <div className={`h-1.5 w-12 rounded-full ${step >= 1 ? 'bg-[#71b6af]' : 'bg-gray-100'}`} />
-            <div className={`h-1.5 w-12 rounded-full ${step >= 2 ? 'bg-[#71b6af]' : 'bg-gray-100'}`} />
-          </div>
-        </div>
-
-        <div className="text-[12px] font-bold text-[#465E87] w-12 text-right">
-          Step {step} of 2
+        <div className="flex-1 text-center pr-8 text-[15px] font-extrabold text-[#1B2B48]">
+          Add Pet
         </div>
       </div>
 
-      <div className="px-6 mt-4 relative">
-        {step === 1 ? (
-          <>
-            <div className="relative mb-8">
-              <div className="w-[65%]">
-                <h1 className="text-[28px] font-extrabold text-[#1B2B48] leading-tight mb-2" style={{ fontFamily: 'serif' }}>
-                  Tell us about<br/>your pet
-                </h1>
-                <p className="text-[14px] font-medium text-[#465E87] leading-relaxed pr-2">
-                  A few simple details to help us find the best care for your pet.
-                </p>
-              </div>
-              <div className="absolute top-0 right-0 w-[120px] h-[120px] bg-[#FFF9EC] rounded-full overflow-hidden flex items-end justify-center -mt-4 -mr-4">
-                <img src={mediumDogImg} className="w-[90%] h-[90%] object-cover rounded-full shadow-inner mb-2" alt="Dog" />
-              </div>
-            </div>
+      <div className="relative w-full overflow-hidden bg-[#F0F9F9]">
+        <div className="max-w-4xl mx-auto w-full relative h-[180px] md:h-[220px]">
+          {/* Banner Image */}
+          <img 
+            src="/pet-application.png" 
+            alt="Pet Application Banner" 
+            className="absolute right-0 top-0 h-full w-full object-cover object-right pointer-events-none"
+          />
+          {/* Text Content */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-4 lg:left-0 z-10 max-w-[60%]">
+            <h1 className="text-[26px] md:text-[36px] font-extrabold text-[#1B2B48] leading-tight mb-2" style={{ fontFamily: 'serif' }}>
+              Tell us about your pet
+            </h1>
+            <p className="text-[13px] md:text-[15px] font-medium text-[#465E87]">
+              A few simple details to help us find the best care.
+            </p>
+          </div>
+        </div>
+      </div>
 
-            <div className="space-y-5">
-              {/* Pet Name */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-2">1. Pet Name</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <PawPrint size={18} className="text-gray-400" />
-                  </div>
-                  <input 
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => updateForm('name', e.target.value)}
-                    placeholder="Enter your pet's name"
-                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none transition-all shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                  />
+      <div className="px-4 lg:px-6 relative pb-20 mt-6 z-20">
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-4 max-w-4xl mx-auto">
+          
+          {/* Pet Photo */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-4 xl:col-span-5 border border-dashed border-[#71b6af] bg-[#E8F3F3]/30 rounded-[12px] p-2.5 flex items-center justify-between">
+              <div className="flex items-center gap-3 relative z-10">
+                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileSelect} />
+                <div 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-12 h-12 rounded-full bg-white flex items-center justify-center cursor-pointer overflow-hidden shadow-sm border border-gray-200 shrink-0"
+                >
+                  {previewUrl ? (
+                    <img src={previewUrl} className="w-full h-full object-cover" alt="Preview" />
+                  ) : (
+                    <Camera size={18} className="text-[#007672]" />
+                  )}
+                </div>
+                <div>
+                  <h4 className="text-[13px] font-extrabold text-[#1B2B48] mb-0.5">Upload a photo of your pet</h4>
+                  <p className="text-[11px] font-medium text-[#465E87] hidden sm:block">A clear, recent photo helps sitters get to know your pet better.</p>
                 </div>
               </div>
-
-              {/* Pet Photo */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-2">2. Pet Photo</label>
-                <div className="border border-dashed border-gray-200 rounded-[20px] p-6 flex flex-col items-center bg-gray-50/30">
-                  <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileSelect} />
-                  <div 
+              <div className="flex items-center gap-4 relative z-10">
+                <div className="flex flex-col items-end mr-2 md:mr-6">
+                  <button 
+                    type="button"
+                    className="px-4 py-1.5 border border-[#007672] bg-white rounded-full text-[12px] font-bold text-[#007672] shadow-sm hover:bg-[#007672] hover:text-white transition-colors whitespace-nowrap mb-1"
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-16 h-16 rounded-full bg-[#FFF9EC] flex items-center justify-center mb-3 cursor-pointer overflow-hidden border-2 border-white shadow-sm"
                   >
-                    {previewUrl ? (
-                      <img src={previewUrl} className="w-full h-full object-cover" alt="Preview" />
-                    ) : (
-                      <Camera size={24} className="text-[#8B5A2B]" />
-                    )}
-                  </div>
-                  <h4 className="text-[14px] font-extrabold text-[#1B2B48] mb-1">Upload a photo</h4>
-                  <p className="text-[12px] font-medium text-[#465E87] text-center max-w-[200px]">
-                    A clear photo helps sitters get to know your pet better
-                  </p>
-                </div>
-              </div>
-
-              {/* Breed */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-2">3. Breed</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <PawPrint size={18} className="text-gray-400" />
-                  </div>
-                  <select 
-                    value={formData.breed}
-                    onChange={(e) => updateForm('breed', e.target.value)}
-                    className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
-                  >
-                    <option value="" disabled>Select breed</option>
-                    <option value="Golden Retriever">Golden Retriever</option>
-                    <option value="Labrador">Labrador</option>
-                    <option value="German Shepherd">German Shepherd</option>
-                    <option value="Pug">Pug</option>
-                    <option value="Beagle">Beagle</option>
-                    <option value="Indie">Indie</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                    <ChevronDown size={18} className="text-gray-400" />
-                  </div>
-                </div>
-                {formData.breed === 'Other' && (
-                  <div className="mt-3 relative animate-in fade-in slide-in-from-top-2 duration-200">
-                    <input 
-                      type="text"
-                      value={formData.customBreed}
-                      onChange={(e) => updateForm('customBreed', e.target.value)}
-                      placeholder="Please specify your pet's breed"
-                      className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Age */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-2">4. Age</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Calendar size={18} className="text-gray-400" />
-                  </div>
-                  <select 
-                    value={formData.age}
-                    onChange={(e) => updateForm('age', e.target.value)}
-                    className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
-                  >
-                    <option value="" disabled>Select age</option>
-                    <option value="Puppy (0-1 yrs)">Puppy (0-1 yrs)</option>
-                    <option value="Young (1-3 yrs)">Young (1-3 yrs)</option>
-                    <option value="Adult (3-8 yrs)">Adult (3-8 yrs)</option>
-                    <option value="Senior (8+ yrs)">Senior (8+ yrs)</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                    <ChevronDown size={18} className="text-gray-400" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Gender */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-2">5. Gender</label>
-                <div className="flex gap-3">
-                  <button onClick={() => updateForm('gender', 'Male')} className={`flex-1 flex items-center justify-center py-3.5 rounded-[16px] border font-bold text-[14px] transition-colors ${formData.gender === 'Male' ? 'bg-[#F4F7FF] border-[#3B82F6] text-[#3B82F6]' : 'bg-gray-50 border-gray-200 text-[#465E87]'}`}>
-                    <span className="mr-2 text-xl font-normal leading-none text-[#3B82F6] mt-[-2px]">♂</span> Male
+                    Choose File
                   </button>
-                  <button onClick={() => updateForm('gender', 'Female')} className={`flex-1 flex items-center justify-center py-3.5 rounded-[16px] border font-bold text-[14px] transition-colors ${formData.gender === 'Female' ? 'bg-[#FFF0F5] border-[#EC4899] text-[#EC4899]' : 'bg-gray-50 border-gray-200 text-[#465E87]'}`}>
-                    <span className="mr-2 text-xl font-normal leading-none text-[#EC4899] mt-[-2px]">♀</span> Female
-                  </button>
+                  <span className="text-[9px] text-[#465E87] font-medium">JPG, PNG (Max 5 MB)</span>
                 </div>
               </div>
+          </div>
 
-              {/* Weight */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-2">6. Weight</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Weight size={18} className="text-gray-400" />
-                  </div>
-                  <input 
-                    type="number"
-                    value={formData.weight}
-                    onChange={(e) => updateForm('weight', e.target.value)}
-                    placeholder="Enter weight"
-                    className="w-full pl-11 pr-12 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                    <span className="text-[#465E87] font-bold text-[14px]">kg</span>
-                  </div>
-                </div>
+          {/* 1. Pet Name */}
+          <div className="col-span-1 xl:col-span-1">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">1. Pet Name <span className="text-red-500">*</span></label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <PawPrint size={14} className="text-[#007672]" />
+              </div>
+              <input 
+                type="text"
+                value={formData.name}
+                onChange={(e) => updateForm('name', e.target.value)}
+                placeholder="Pet's name"
+                className="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-[10px] text-[12px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
+              />
+            </div>
+          </div>
+
+          {/* 2. Species */}
+          <div className="col-span-1 xl:col-span-1">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">2. Species <span className="text-red-500">*</span></label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <PawPrint size={14} className="text-[#007672]" />
+              </div>
+              <select 
+                value={formData.species}
+                onChange={(e) => updateForm('species', e.target.value)}
+                className="w-full pl-9 pr-7 py-2 bg-white border border-gray-200 rounded-[10px] text-[12px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm text-[#1B2B48]"
+              >
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Bird">Bird</option>
+                <option value="Other">Other</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none">
+                <ChevronDown size={14} className="text-gray-400" />
               </div>
             </div>
-            
-            {error && <p className="text-red-500 text-sm mt-4 font-medium text-center">{error}</p>}
-            
-            <div className="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom mt-10">
-              <Button onClick={handleNext} className="w-full h-14 bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-lg shadow-[#71b6af]/20">
-                <span>Next</span>
-                <ArrowLeft size={18} className="rotate-180" />
-              </Button>
+          </div>
+
+          {/* 3. Breed */}
+          <div className="col-span-2 md:col-span-1 lg:col-span-2 xl:col-span-1">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">3. Breed <span className="text-red-500">*</span></label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <PawPrint size={14} className="text-[#007672]" />
+              </div>
+              <input 
+                type="text"
+                value={formData.breed}
+                onChange={(e) => updateForm('breed', e.target.value)}
+                placeholder="e.g. Golden Retriever"
+                className="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-[10px] text-[12px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
+              />
             </div>
-          </>
-        ) : (
-          <>
-            <div className="relative mb-8">
-              <div className="w-[65%]">
-                <h1 className="text-[28px] font-extrabold text-[#1B2B48] leading-tight mb-2" style={{ fontFamily: 'serif' }}>
-                  A few more details
-                </h1>
-                <p className="text-[14px] font-medium text-[#465E87] leading-relaxed pr-2">
-                  This helps us ensure a safe and comfortable stay for your pet.
-                </p>
+          </div>
+
+          {/* 4. Age */}
+          <div className="col-span-1 xl:col-span-1">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">4. Age <span className="text-red-500">*</span></label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Calendar size={14} className="text-[#007672]" />
               </div>
-              <div className="absolute top-0 right-0 w-[120px] h-[120px] bg-[#FFF9EC] rounded-full overflow-hidden flex items-end justify-center -mt-4 -mr-4">
-                <img src={largeDogImg} className="w-[90%] h-[90%] object-cover rounded-full shadow-inner mb-2" alt="Dog" />
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              
-              {/* Vaccination */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-3">7. Is your pet vaccinated?</label>
-                <div className="flex gap-3 mt-2">
-                  <label className={`flex-1 flex flex-col items-center justify-center py-5 rounded-[16px] border transition-colors cursor-pointer ${formData.vaccinated === true ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mb-2 transition-colors ${formData.vaccinated === true ? 'border-[#007672]' : 'border-gray-300'}`}>
-                      {formData.vaccinated === true && <div className="w-3 h-3 rounded-full bg-[#007672]" />}
-                    </div>
-                    <input 
-                      type="radio" 
-                      name="vaccinated"
-                      checked={formData.vaccinated === true} 
-                      onChange={() => updateForm('vaccinated', true)} 
-                      className="hidden"
-                    />
-                    <span className="text-[#10B981] flex items-center justify-center p-1 bg-[#10B981]/10 rounded-full mt-1">
-                      <Check size={20} className="stroke-[3]" />
-                    </span>
-                  </label>
-                  <label className={`flex-1 flex flex-col items-center justify-center py-5 rounded-[16px] border transition-colors cursor-pointer ${formData.vaccinated === false ? 'bg-[#FFF0F5] border-[#EC4899] shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mb-2 transition-colors ${formData.vaccinated === false ? 'border-[#EC4899]' : 'border-gray-300'}`}>
-                      {formData.vaccinated === false && <div className="w-3 h-3 rounded-full bg-[#EC4899]" />}
-                    </div>
-                    <input 
-                      type="radio" 
-                      name="vaccinated"
-                      checked={formData.vaccinated === false} 
-                      onChange={() => updateForm('vaccinated', false)} 
-                      className="hidden"
-                    />
-                    <span className="text-[#EF4444] flex items-center justify-center p-1 bg-[#EF4444]/10 rounded-full mt-1">
-                      <X size={20} className="stroke-[3]" />
-                    </span>
-                  </label>
-                </div>
-
-                {formData.vaccinated === true && (
-                  <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <label className="block text-[13px] font-bold text-[#465E87] mb-2">When was the last vaccination?</label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="relative">
-                        <select 
-                          value={formData.vaccinationMonth}
-                          onChange={(e) => updateForm('vaccinationMonth', e.target.value)}
-                          className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
-                        >
-                          <option value="" disabled>Month</option>
-                          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(m => (
-                            <option key={m} value={m}>{m}</option>
-                          ))}
-                        </select>
-                        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                          <ChevronDown size={16} className="text-gray-400" />
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <select 
-                          value={formData.vaccinationYear}
-                          onChange={(e) => updateForm('vaccinationYear', e.target.value)}
-                          className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
-                        >
-                          <option value="" disabled>Year</option>
-                          {Array.from({length: 15}, (_, i) => new Date().getFullYear() - i).map(y => (
-                            <option key={y} value={y}>{y}</option>
-                          ))}
-                        </select>
-                        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                          <ChevronDown size={16} className="text-gray-400" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Medical Conditions */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-3">8. Does your pet have any medical conditions or allergies?</label>
-                <div className="flex gap-3 mt-2">
-                  <label className={`flex-1 flex flex-col items-center justify-center py-5 rounded-[16px] border transition-colors cursor-pointer ${formData.medicalConditions === true ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mb-2 transition-colors ${formData.medicalConditions === true ? 'border-[#007672]' : 'border-gray-300'}`}>
-                      {formData.medicalConditions === true && <div className="w-3 h-3 rounded-full bg-[#007672]" />}
-                    </div>
-                    <input 
-                      type="radio" 
-                      name="medicalConditions"
-                      checked={formData.medicalConditions === true} 
-                      onChange={() => updateForm('medicalConditions', true)} 
-                      className="hidden"
-                    />
-                    <span className="text-[#10B981] flex items-center justify-center p-1 bg-[#10B981]/10 rounded-full mt-1">
-                      <Check size={20} className="stroke-[3]" />
-                    </span>
-                  </label>
-                  <label className={`flex-1 flex flex-col items-center justify-center py-5 rounded-[16px] border transition-colors cursor-pointer ${formData.medicalConditions === false ? 'bg-[#FFF0F5] border-[#EC4899] shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mb-2 transition-colors ${formData.medicalConditions === false ? 'border-[#EC4899]' : 'border-gray-300'}`}>
-                      {formData.medicalConditions === false && <div className="w-3 h-3 rounded-full bg-[#EC4899]" />}
-                    </div>
-                    <input 
-                      type="radio" 
-                      name="medicalConditions"
-                      checked={formData.medicalConditions === false} 
-                      onChange={() => updateForm('medicalConditions', false)} 
-                      className="hidden"
-                    />
-                    <span className="text-[#EF4444] flex items-center justify-center p-1 bg-[#EF4444]/10 rounded-full mt-1">
-                      <X size={20} className="stroke-[3]" />
-                    </span>
-                  </label>
-                </div>
-
-                {formData.medicalConditions === true && (
-                  <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <input 
-                      type="text"
-                      value={formData.medicalConditionDetails}
-                      onChange={(e) => updateForm('medicalConditionDetails', e.target.value)}
-                      placeholder="Please describe the condition or allergy"
-                      className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Behavior */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-3">9. How is your pet with other pets?</label>
-                <div className="flex gap-2">
-                  <button onClick={() => updateForm('behavior', 'Friendly')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Friendly' ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-100'}`}>
-                    <PawPrint size={24} className="text-[#10B981] mb-2" fill="currentColor" />
-                    <span className="font-extrabold text-[12px] text-[#1B2B48]">Friendly</span>
-                  </button>
-                  <button onClick={() => updateForm('behavior', 'Neutral')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Neutral' ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-100'}`}>
-                    <PawPrint size={24} className="text-[#00605c] mb-2" fill="currentColor" />
-                    <span className="font-extrabold text-[12px] text-[#1B2B48]">Neutral</span>
-                  </button>
-                  <button onClick={() => updateForm('behavior', 'Not comfortable')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Not comfortable' ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-100'}`}>
-                    <PawPrint size={24} className="text-[#EF4444] mb-2" fill="currentColor" />
-                    <span className="font-extrabold text-[12px] text-[#1B2B48] text-center leading-tight">Not<br/>comfortable</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Special Instructions */}
-              <div>
-                <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-2">10. Any special instructions we should know about?</label>
-                <div className="relative">
-                  <textarea 
-                    value={formData.specialInstructions}
-                    onChange={(e) => updateForm('specialInstructions', e.target.value)}
-                    placeholder="Eg. food preference, favourite activities, anything they love or dislike, etc."
-                    className="w-full p-4 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] h-32 resize-none"
-                    maxLength={300}
-                  />
-                  <div className="absolute bottom-4 right-4 text-[10px] font-bold text-gray-400">
-                    {formData.specialInstructions.length}/300
-                  </div>
-                </div>
+              <select 
+                value={formData.age}
+                onChange={(e) => updateForm('age', e.target.value)}
+                className="w-full pl-9 pr-7 py-2 bg-white border border-gray-200 rounded-[10px] text-[12px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm text-[#1B2B48]"
+              >
+                <option value="" disabled>Select age</option>
+                <option value="Puppy (0-1 yrs)">Puppy (0-1 yrs)</option>
+                <option value="Young (1-3 yrs)">Young (1-3 yrs)</option>
+                <option value="Adult (3-8 yrs)">Adult (3-8 yrs)</option>
+                <option value="Senior (8+ yrs)">Senior (8+ yrs)</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none">
+                <ChevronDown size={14} className="text-gray-400" />
               </div>
             </div>
-            
-            {error && <p className="text-red-500 text-sm mt-4 font-medium text-center">{error}</p>}
-            
-            <div className="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom mt-10">
-              <Button onClick={handleSubmit} loading={loading} className="w-full h-14 bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-lg shadow-[#71b6af]/20">
-                <span>Save Pet Details</span>
-              </Button>
+          </div>
+
+          {/* 5. Gender */}
+          <div className="col-span-1 xl:col-span-1">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">5. Gender <span className="text-red-500">*</span></label>
+            <div className="flex gap-1.5">
+              <button onClick={() => updateForm('gender', 'Male')} className={`flex-1 flex items-center justify-center py-2 rounded-[10px] border font-bold text-[12px] transition-colors shadow-sm ${formData.gender === 'Male' ? 'bg-[#F4F7FF] border-[#3B82F6] text-[#3B82F6]' : 'bg-white border-gray-200 text-[#465E87]'}`}>
+                <span className="mr-1 text-sm leading-none mt-[-1px]">♂</span> Male
+              </button>
+              <button onClick={() => updateForm('gender', 'Female')} className={`flex-1 flex items-center justify-center py-2 rounded-[10px] border font-bold text-[12px] transition-colors shadow-sm ${formData.gender === 'Female' ? 'bg-[#FFF0F5] border-[#EC4899] text-[#EC4899]' : 'bg-white border-gray-200 text-[#465E87]'}`}>
+                <span className="mr-1 text-sm leading-none mt-[-1px]">♀</span> Female
+              </button>
+              <button onClick={() => updateForm('gender', 'Other')} className={`flex-1 flex items-center justify-center py-2 rounded-[10px] border font-bold text-[12px] transition-colors shadow-sm ${formData.gender === 'Other' ? 'bg-[#F3F4F6] border-gray-500 text-gray-700' : 'bg-white border-gray-200 text-[#465E87]'}`}>
+                <PawPrint size={12} className="mr-1" /> Other
+              </button>
             </div>
-          </>
-        )}
+          </div>
+
+          {/* 6. Weight */}
+          <div className="col-span-1 xl:col-span-1 relative">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">6. Weight (kg) <span className="text-red-500">*</span></label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Weight size={14} className="text-[#007672]" />
+              </div>
+              <input 
+                type="number"
+                value={formData.weight}
+                onChange={(e) => updateForm('weight', e.target.value)}
+                placeholder="Weight"
+                className="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-[10px] text-[12px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
+              />
+            </div>
+          </div>
+
+          {/* 7. Vaccinated */}
+          <div className="col-span-1 xl:col-span-1">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">7. Vaccinated? <span className="text-red-500">*</span></label>
+            <div className="flex gap-1.5">
+              <label className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] border transition-colors cursor-pointer ${formData.vaccinated === true ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-200'}`}>
+                <input 
+                  type="radio" 
+                  name="vaccinated"
+                  checked={formData.vaccinated === true} 
+                  onChange={() => updateForm('vaccinated', true)} 
+                  className="hidden"
+                />
+                <Check size={12} className={formData.vaccinated === true ? 'text-[#10B981] stroke-[3]' : 'text-gray-300'} />
+                <span className="text-[12px] font-bold text-[#1B2B48]">Yes</span>
+              </label>
+              <label className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] border transition-colors cursor-pointer ${formData.vaccinated === false ? 'bg-[#FFF0F5] border-[#EC4899] shadow-sm' : 'bg-white border-gray-200'}`}>
+                <input 
+                  type="radio" 
+                  name="vaccinated"
+                  checked={formData.vaccinated === false} 
+                  onChange={() => updateForm('vaccinated', false)} 
+                  className="hidden"
+                />
+                <X size={12} className={formData.vaccinated === false ? 'text-[#EF4444] stroke-[3]' : 'text-gray-300'} />
+                <span className="text-[12px] font-bold text-[#1B2B48]">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* 8. Medical */}
+          <div className="col-span-1 lg:col-span-2 xl:col-span-1">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">8. Medical conditions? <span className="text-red-500">*</span></label>
+            <div className="flex gap-1.5">
+              <label className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] border transition-colors cursor-pointer ${formData.medicalConditions === true ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-200'}`}>
+                <input 
+                  type="radio" 
+                  name="medicalConditions"
+                  checked={formData.medicalConditions === true} 
+                  onChange={() => updateForm('medicalConditions', true)} 
+                  className="hidden"
+                />
+                <Check size={12} className={formData.medicalConditions === true ? 'text-[#10B981] stroke-[3]' : 'text-gray-300'} />
+                <span className="text-[12px] font-bold text-[#1B2B48]">Yes</span>
+              </label>
+              <label className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] border transition-colors cursor-pointer ${formData.medicalConditions === false ? 'bg-[#FFF0F5] border-[#EC4899] shadow-sm' : 'bg-white border-gray-200'}`}>
+                <input 
+                  type="radio" 
+                  name="medicalConditions"
+                  checked={formData.medicalConditions === false} 
+                  onChange={() => updateForm('medicalConditions', false)} 
+                  className="hidden"
+                />
+                <X size={12} className={formData.medicalConditions === false ? 'text-[#EF4444] stroke-[3]' : 'text-gray-300'} />
+                <span className="text-[12px] font-bold text-[#1B2B48]">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Conditional inputs */}
+          {formData.vaccinated === true && (
+            <div className="col-span-2 md:col-span-3 lg:col-span-4 xl:col-span-5 grid grid-cols-2 gap-3 p-3 bg-gray-50 rounded-[10px] animate-in fade-in zoom-in-95 duration-200">
+              <div>
+                <label className="block text-[11px] font-bold text-[#465E87] mb-1">Vaccination Month</label>
+                <select 
+                  value={formData.vaccinationMonth}
+                  onChange={(e) => updateForm('vaccinationMonth', e.target.value)}
+                  className="w-full px-2.5 py-1.5 bg-white border border-gray-200 rounded-[8px] text-[12px] font-medium outline-none"
+                >
+                  <option value="" disabled>Month</option>
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(m => <option key={m} value={m}>{m}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-[#465E87] mb-1">Vaccination Year</label>
+                <select 
+                  value={formData.vaccinationYear}
+                  onChange={(e) => updateForm('vaccinationYear', e.target.value)}
+                  className="w-full px-2.5 py-1.5 bg-white border border-gray-200 rounded-[8px] text-[12px] font-medium outline-none"
+                >
+                  <option value="" disabled>Year</option>
+                  {Array.from({length: 15}, (_, i) => new Date().getFullYear() - i).map(y => <option key={y} value={y}>{y}</option>)}
+                </select>
+              </div>
+            </div>
+          )}
+
+          {formData.medicalConditions === true && (
+            <div className="col-span-2 md:col-span-3 lg:col-span-4 xl:col-span-5 p-3 bg-gray-50 rounded-[10px] animate-in fade-in zoom-in-95 duration-200">
+              <label className="block text-[11px] font-bold text-[#465E87] mb-1">Condition Details</label>
+              <input 
+                type="text"
+                value={formData.medicalConditionDetails}
+                onChange={(e) => updateForm('medicalConditionDetails', e.target.value)}
+                placeholder="Describe condition or allergy"
+                className="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-[8px] text-[12px] font-medium outline-none"
+              />
+            </div>
+          )}
+
+          {/* 9. Behavior */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-2 xl:col-span-2">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">9. Behavior with other pets? <span className="text-red-500">*</span></label>
+            <div className="flex gap-1.5">
+              <button onClick={() => updateForm('behavior', 'Friendly')} className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] border transition-colors ${formData.behavior === 'Friendly' ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-200'}`}>
+                <PawPrint size={14} className="text-[#10B981]" fill="currentColor" />
+                <span className="font-extrabold text-[11px] text-[#1B2B48]">Friendly</span>
+              </button>
+              <button onClick={() => updateForm('behavior', 'Neutral')} className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] border transition-colors ${formData.behavior === 'Neutral' ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-200'}`}>
+                <PawPrint size={14} className="text-[#00605c]" fill="currentColor" />
+                <span className="font-extrabold text-[11px] text-[#1B2B48]">Neutral</span>
+              </button>
+              <button onClick={() => updateForm('behavior', 'Not comfortable')} className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] border transition-colors ${formData.behavior === 'Not comfortable' ? 'bg-[#FFF0F5] border-[#EF4444] shadow-sm' : 'bg-white border-gray-200'}`}>
+                <PawPrint size={14} className="text-[#EF4444]" fill="currentColor" />
+                <span className="font-extrabold text-[11px] text-[#1B2B48]">Not comfortable</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 10. Special Instructions */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-2 xl:col-span-3">
+            <label className="block text-[12px] font-extrabold text-[#1B2B48] mb-1.5">10. Special instructions?</label>
+            <div className="relative">
+              <textarea 
+                value={formData.specialInstructions}
+                onChange={(e) => updateForm('specialInstructions', e.target.value)}
+                placeholder="Food preference, etc."
+                className="w-full p-2.5 bg-white border border-gray-200 rounded-[10px] text-[12px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm h-[38px] resize-none overflow-hidden"
+                maxLength={300}
+              />
+            </div>
+          </div>
+
+        </div>
+        
+        {error && <p className="text-red-500 text-sm mt-3 font-medium text-center">{error}</p>}
+        
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom">
+          <Button onClick={handleSubmit} loading={loading} className="w-full max-w-6xl mx-auto h-12 bg-[#007672] hover:bg-[#00605c] text-white text-[15px] font-extrabold rounded-[12px] flex items-center justify-center space-x-2 shadow-lg shadow-[#71b6af]/20">
+            <span>Save Pet Details</span>
+          </Button>
+        </div>
       </div>
     </div>
   );

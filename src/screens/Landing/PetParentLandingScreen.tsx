@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Geolocation } from '@capacitor/geolocation';
 import { TopNavbar } from '../../components/layout/TopNavbar';
 import { OfflineBookingSection } from '../../components/landing/OfflineBookingSection';
+import { Navigation } from '../../components/layout/Navigation';
 
 const InlinePetCounter = ({ label, count, onIncrement, onDecrement, iconUrl }: { label: string, count: number, onIncrement: () => void, onDecrement: () => void, iconUrl?: string }) => (
   <div className="flex items-center gap-1 md:gap-1.5 shrink-0">
@@ -134,7 +135,7 @@ export const PetParentLandingScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans overflow-x-hidden relative">
+    <div className={`min-h-screen bg-white flex flex-col font-sans overflow-x-hidden relative ${user ? 'pb-20 md:pb-0' : ''}`}>
       
       {/* Shared Top Navbar */}
       <TopNavbar currentLocationStr={location} />
@@ -271,6 +272,14 @@ export const PetParentLandingScreen = () => {
                 Find Homestays
               </button>
 
+              {/* Directly Reach Us Button (Mobile Only) */}
+              <button 
+                onClick={() => navigate('/directly-reach-us')}
+                className="md:hidden w-full bg-transparent border-2 border-[#71b6af] text-[#71b6af] font-extrabold text-[15px] py-3.5 rounded-lg flex items-center justify-center transition-colors mt-3"
+              >
+                Directly Reach Us
+              </button>
+
             </div>
           </div>
           
@@ -318,11 +327,28 @@ export const PetParentLandingScreen = () => {
         </div>
       </section>
 
-      {/* Offline Booking Section */}
-      <OfflineBookingSection />
+      {/* Additional Mobile Images (4-8) */}
+      {[4, 5, 6, 7, 8].map((num) => (
+        <section key={num} className="w-full px-4 py-3 bg-white block md:hidden" style={{ perspective: '1200px' }}>
+          <div 
+            className="w-full rounded-[24px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
+            style={{
+              transform: 'rotateX(2deg)',
+              boxShadow: '0 20px 60px -15px rgba(0,118,114,0.25), 0 8px 20px -8px rgba(0,118,114,0.15), 0 -2px 6px 0px rgba(0,118,114,0.04), inset 0 -3px 0 0 rgba(0,118,114,0.3)',
+            }}
+          >
+            <img src={`/mobile ui/${num}.jpeg`} alt={`Section ${num}`} className="w-full h-auto block" />
+          </div>
+        </section>
+      ))}
 
+
+      {/* Offline Booking Section */}
+      <div className="hidden md:block">
+        <OfflineBookingSection />
+      </div>
       {/* Why Homestay vs Boarding Section */}
-      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+      <section className="hidden md:block w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
         <div 
           className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
           style={{
@@ -338,7 +364,7 @@ export const PetParentLandingScreen = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+      <section className="hidden md:block w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
         <div 
           className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
           style={{
@@ -351,7 +377,7 @@ export const PetParentLandingScreen = () => {
       </section>
 
       {/* Exclusive Care Plan Section */}
-      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+      <section className="hidden md:block w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
         <div 
           className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
           style={{
@@ -363,7 +389,7 @@ export const PetParentLandingScreen = () => {
         </div>
       </section>
       {/* Available Cities Section */}
-      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+      <section className="hidden md:block w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
         <div 
           className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
           style={{
@@ -375,6 +401,12 @@ export const PetParentLandingScreen = () => {
         </div>
       </section>
 
+      {/* Mobile Bottom Navigation (Authenticated Only) */}
+      {user && (
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+          <Navigation />
+        </div>
+      )}
     </div>
   );
 };
