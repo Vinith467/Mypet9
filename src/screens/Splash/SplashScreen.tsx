@@ -129,7 +129,7 @@ const SplashScreen = () => {
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`transition-all duration-300 rounded-full h-2 ${
-                  index === currentSlide ? 'w-8 bg-[#FBBF24]' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  index === currentSlide ? 'w-8 bg-[#007672]' : 'w-2 bg-gray-300 hover:bg-gray-400'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -158,7 +158,7 @@ const SplashScreen = () => {
 
                   {/* Desktop Next Button */}
                   <div className="hidden lg:flex w-full max-w-sm">
-                    <Button fullWidth onClick={handleNext} className="bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] font-bold shadow-xl shadow-[#FBBF24]/20 border-none">
+                    <Button fullWidth onClick={handleNext} className="bg-[#007672] hover:bg-[#00605c] text-white font-bold shadow-xl shadow-[#007672]/20 border-none">
                       Next
                     </Button>
                   </div>
@@ -166,7 +166,7 @@ const SplashScreen = () => {
                   {/* Mobile Side Arrows / Next Button */}
                   <button 
                     onClick={handleNext}
-                    className="lg:hidden w-12 h-12 rounded-full flex items-center justify-center bg-[#FBBF24] shadow-md text-[#1B2B48] active:bg-[#F59E0B]"
+                    className="lg:hidden w-12 h-12 rounded-full flex items-center justify-center bg-[#007672] shadow-md text-[#1B2B48] active:bg-[#00605c]"
                   >
                     <ChevronRight size={24} />
                   </button>
@@ -188,7 +188,7 @@ const SplashScreen = () => {
                   </Button>
                   <Button 
                     fullWidth 
-                    className="bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] font-bold shadow-xl shadow-[#FBBF24]/20 border-none"
+                    className="bg-[#007672] hover:bg-[#00605c] text-white font-bold shadow-xl shadow-[#007672]/20 border-none"
                     onClick={() => navigate('/auth', { state: { mode: 'signup' } })}
                   >
                     Sign Up

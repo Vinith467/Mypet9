@@ -30,7 +30,7 @@ export const AdminLayout = () => {
       <aside className="hidden md:flex flex-col w-[260px] bg-[#1B2B48] text-white shrink-0">
         {/* Logo */}
         <div className="flex items-center space-x-3 px-6 py-6 border-b border-white/10">
-          <div className="bg-[#174F38] p-2 rounded-xl">
+          <div className="bg-[#007672] p-2 rounded-xl">
             <PawPrint size={22} className="text-white" />
           </div>
           <div>
@@ -99,7 +99,7 @@ export const AdminLayout = () => {
             end={item.end}
             className={({ isActive }) =>
               `flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold transition-colors ${
-                isActive ? 'text-[#174F38]' : 'text-gray-400'
+                isActive ? 'text-[#007672]' : 'text-gray-400'
               }`
             }
           >

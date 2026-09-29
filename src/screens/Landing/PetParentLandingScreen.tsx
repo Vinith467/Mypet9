@@ -1,28 +1,29 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Calendar, Users, Search, Target, PawPrint, Plus, Minus, X, Menu, Bell, LayoutDashboard } from 'lucide-react';
+import { MapPin, Calendar, Search, PawPrint, Plus, Minus, ChevronDown, Heart } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Geolocation } from '@capacitor/geolocation';
+import { TopNavbar } from '../../components/layout/TopNavbar';
+import { OfflineBookingSection } from '../../components/landing/OfflineBookingSection';
 
-const InlinePetCounter = ({ label, count, onIncrement, onDecrement }: { label: string, count: number, onIncrement: () => void, onDecrement: () => void }) => (
-  <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-    <span className="font-medium text-gray-900 text-[14px] md:text-[12px]">{label}</span>
-    <div className="flex items-center bg-white rounded-md md:rounded flex-shrink-0 border border-gray-300 p-1 md:p-0.5">
+const InlinePetCounter = ({ label, count, onIncrement, onDecrement, iconUrl }: { label: string, count: number, onIncrement: () => void, onDecrement: () => void, iconUrl?: string }) => (
+  <div className="flex items-center gap-1 md:gap-1.5 shrink-0">
+    {iconUrl && <img src={iconUrl} alt={label} className="w-4 h-4 md:w-7 md:h-7 object-cover rounded-full shadow-sm" />}
+    <span className="font-bold text-gray-900 text-[11px] md:text-[14px]">{label}</span>
+    <div className="flex items-center bg-white flex-shrink-0">
       <button 
         onClick={onDecrement} 
         disabled={count === 0} 
-        className="w-5 h-5 md:w-4 md:h-4 rounded md:rounded-sm flex items-center justify-center text-[#1B2B48] bg-white disabled:opacity-40 hover:bg-gray-100 transition-colors"
+        className="w-4 h-4 md:w-5 md:h-5 flex items-center justify-center text-[#007672] disabled:opacity-40 hover:bg-gray-100 transition-colors rounded"
       >
-        <Minus className="w-[14px] h-[14px] md:w-[12px] md:h-[12px]" strokeWidth={2.5} />
+        <Minus className="w-2.5 h-2.5 md:w-3 md:h-3" strokeWidth={3} />
       </button>
-      <span className="w-4 text-center font-bold text-gray-900 text-[14px] md:text-[12px]">{count}</span>
+      <span className="w-4 md:w-5 text-center font-extrabold text-gray-900 text-[11px] md:text-[13px]">{count}</span>
       <button 
         onClick={onIncrement} 
-        className="w-5 h-5 md:w-4 md:h-4 rounded md:rounded-sm flex items-center justify-center text-[#1B2B48] bg-white hover:bg-gray-100 transition-colors"
+        className="w-4 h-4 md:w-5 md:h-5 flex items-center justify-center text-[#007672] hover:bg-gray-100 transition-colors rounded"
       >
-        <Plus className="w-[14px] h-[14px] md:w-[12px] md:h-[12px]" strokeWidth={2.5} />
+        <Plus className="w-2.5 h-2.5 md:w-3 md:h-3" strokeWidth={3} />
       </button>
     </div>
   </div>
@@ -48,6 +49,15 @@ export const PetParentLandingScreen = () => {
   const totalPets = pets.dog + pets.cat + pets.bird + pets.other;
 
   const handleSearch = () => {
+    if (totalPets === 0) {
+      alert("Please select at least one pet.");
+      return;
+    }
+    if (!location) {
+      alert("Please enter a location.");
+      return;
+    }
+
     const searchData = {
       location,
       dropoffDate,
@@ -123,213 +133,248 @@ export const PetParentLandingScreen = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await signInWithGoogle();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
-    <DashboardLayout>
-      <div className="min-h-screen bg-gray-50 flex flex-col font-sans overflow-x-hidden">
-        {/* MyPet9 Style Header & Navigation (Yellow Theme) */}
-      <div className="bg-[#FBBF24] text-[#1B2B48]">
-        {/* Top Header */}
-        <header className="max-w-[1400px] mx-auto px-4 py-4 flex items-center justify-between lg:justify-end lg:py-6">
-          {/* Logo - Hidden on large screens because it's in the sidebar */}
-          <div className="flex lg:hidden items-center gap-2 cursor-pointer shrink-0" onClick={() => navigate('/')}>
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-[#1B2B48] rounded-full flex items-center justify-center">
-              <PawPrint className="text-[#FBBF24]" size={20} />
-            </div>
-            <span className="text-xl md:text-2xl font-bold tracking-tight">MyPet9</span>
-          </div>
+    <div className="min-h-screen bg-white flex flex-col font-sans overflow-x-hidden relative">
+      
+      {/* Shared Top Navbar */}
+      <TopNavbar currentLocationStr={location} />
 
-          {/* Right Actions */}
-          <div className="flex items-center shrink-0">
-            {user && (
-              <button 
-                onClick={() => navigate('/profile')}
-                className="w-10 h-10 rounded-full border-2 border-[#1B2B48] overflow-hidden flex items-center justify-center bg-white shrink-0 shadow-sm"
-              >
-                {user.photoURL ? (
-                  <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-[#1B2B48] font-bold text-lg">
-                    {(user.displayName || user.email || 'U')[0].toUpperCase()}
-                  </span>
-                )}
-              </button>
-            )}
-          </div>
-        </header>
+      {/* Main Hero & Search Section */}
+      <main className="w-full relative pt-2 md:pt-2">
+        
+        {/* Background Decorative Blob for Mobile */}
+        <div className="md:hidden absolute bottom-0 left-0 right-0 h-[60vh] bg-[#E0F4F2]/80 rounded-t-[120px] -z-10 skew-y-3 translate-y-20" />
 
-        {/* Hero Section for Desktop */}
-        <div className="hidden lg:block max-w-[1400px] mx-auto px-4 pt-2 pb-5">
-          <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 text-[#1B2B48]">
-            Your pet's second home.
-          </h1>
-          <p className="text-sm lg:text-base font-semibold text-[#1B2B48]/80 max-w-2xl">
-            Book trusted, verified caretakers in your neighborhood.
-          </p>
-        </div>
-
-        {/* Categories */}
-        <div className="max-w-[1400px] mx-auto px-4 pb-4 pt-2 lg:pt-0 overflow-x-auto scrollbar-hide">
-          <div className="flex gap-3 md:gap-4 w-max">
-            <button className="flex items-center gap-2 border border-[#1B2B48] px-3 py-1.5 rounded-full bg-[#1B2B48]/10 shrink-0">
-              <PawPrint size={16} />
-              <span className="font-bold text-sm">Boarding</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content Area */}
-      <main className="w-full flex-1">
-        {/* Search Box - 2 Row Grid Layout on Desktop */}
-        <div className="px-4 -mt-4 lg:-mt-5 relative z-20 max-w-4xl mx-auto lg:mr-auto lg:ml-4 xl:mx-auto">
-          <div className="bg-[#1B2B48] p-1.5 md:p-2 rounded-xl shadow-xl grid grid-cols-1 md:grid-cols-12 gap-1.5">
-            
-            {/* Location */}
-            <div className="bg-white rounded-md p-2 md:p-2.5 md:col-span-7 flex items-center gap-2 relative">
-              <Search className="text-gray-500 shrink-0 w-5 h-5 md:w-4 md:h-4" />
-              <input 
-                type="text" 
-                placeholder="Where do you need a caretaker?" 
-                className="w-full outline-none text-gray-900 font-bold text-[14px] sm:text-[15px] md:text-[13px] lg:text-[14px] bg-transparent placeholder:text-gray-500 min-w-0 pr-24 sm:pr-28 md:pr-24"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-              <button 
-                onClick={getCurrentLocation}
-                className="absolute right-2 md:right-1.5 px-2 py-1.5 md:py-1 hover:bg-gray-200 rounded-md text-[#1B2B48] transition-colors shrink-0 flex items-center gap-1.5 bg-gray-100 border border-gray-200 shadow-sm"
-                title="Use current location"
-              >
-                <MapPin className="w-[14px] h-[14px] sm:w-4 sm:h-4 md:w-3 md:h-3" />
-                <span className="text-[11px] sm:text-xs md:text-[10px] lg:text-[11px] font-bold whitespace-nowrap">Locate Me</span>
-              </button>
-            </div>
-
-            {/* Dates */}
-            <div className="bg-white rounded-sm md:rounded-md p-3 md:p-2.5 md:col-span-5 flex items-center">
-              <Calendar className="text-gray-500 shrink-0 hidden sm:block mr-3 md:mr-2 w-5 h-5 md:w-4 md:h-4" />
-              
-              <div 
-                className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
-                onClick={(e) => {
-                  const input = e.currentTarget.querySelector('input');
-                  if (input && 'showPicker' in input) {
-                    try { input.showPicker(); } catch (err) {}
-                  }
-                }}
-              >
-                <span className="text-[10px] sm:text-[11px] md:text-[9px] lg:text-[10px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">From</span>
-                <input 
-                  type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] md:text-[11px] lg:text-[13px] font-bold text-gray-900" 
-                  value={dropoffDate} 
-                  onChange={(e) => setDropoffDate(e.target.value)} 
-                  onClick={(e) => {
-                    if ('showPicker' in HTMLInputElement.prototype) {
-                      try { (e.target as HTMLInputElement).showPicker(); } catch (err) {}
-                    }
-                  }}
-                />
-              </div>
-              
-              <div className="w-[1px] h-6 md:h-5 bg-gray-200 mx-1 sm:mx-3 md:mx-1.5 lg:mx-2 shrink-0"></div>
-              
-              <div 
-                className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
-                onClick={(e) => {
-                  const input = e.currentTarget.querySelector('input');
-                  if (input && 'showPicker' in input) {
-                    try { input.showPicker(); } catch (err) {}
-                  }
-                }}
-              >
-                <span className="text-[10px] sm:text-[11px] md:text-[9px] lg:text-[10px] text-gray-500 font-bold uppercase tracking-wider shrink-0 mt-0.5 pointer-events-none">To</span>
-                <input 
-                  type="date" 
-                  className="w-full outline-none bg-transparent cursor-pointer text-[12px] sm:text-[14px] md:text-[11px] lg:text-[13px] font-bold text-gray-900" 
-                  value={pickupDate} 
-                  onChange={(e) => setPickupDate(e.target.value)} 
-                  onClick={(e) => {
-                    if ('showPicker' in HTMLInputElement.prototype) {
-                      try { (e.target as HTMLInputElement).showPicker(); } catch (err) {}
-                    }
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Pets - Inline directly in the bar */}
-            <div className="bg-white rounded-sm md:rounded-md p-3 md:p-2.5 md:col-span-9 flex flex-row items-center justify-between md:justify-start gap-2 sm:gap-3 md:gap-4 overflow-x-auto scrollbar-hide">
-              <InlinePetCounter label="Dog" count={pets.dog} onIncrement={() => updatePetCount('dog', true)} onDecrement={() => updatePetCount('dog', false)} />
-              <InlinePetCounter label="Cat" count={pets.cat} onIncrement={() => updatePetCount('cat', true)} onDecrement={() => updatePetCount('cat', false)} />
-              <InlinePetCounter label="Bird" count={pets.bird} onIncrement={() => updatePetCount('bird', true)} onDecrement={() => updatePetCount('bird', false)} />
-            </div>
-
-            {/* Search Button */}
-            <button 
-              onClick={handleSearch}
-              disabled={totalPets === 0 || !location}
-              className="bg-[#1B2B48] border-2 md:border border-[#FBBF24] hover:bg-[#121c2e] disabled:opacity-70 text-[#FBBF24] p-2 md:p-2.5 md:col-span-3 rounded-sm md:rounded-md text-base md:text-sm lg:text-base font-bold transition-colors w-full h-full flex items-center justify-center tracking-wide shrink-0 md:shrink"
-            >
-              Search
-            </button>
-          </div>
-        </div>
-
-        {/* Offers / Continue Search */}
-        <div className="max-w-[1400px] mx-auto px-4 py-8 mt-4">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">Continue your search</h2>
+        <div className="w-full px-2 md:px-12 flex flex-col md:flex-row items-stretch justify-between relative z-10 gap-0 md:gap-6 lg:gap-8">
           
-          <div className="flex flex-col gap-6 md:gap-8">
-            {/* Banner with background image for "Deals for [Location]" */}
-            <div className="relative rounded-2xl overflow-hidden min-h-[180px] md:min-h-[220px] flex items-end p-5 md:p-6 shadow-md border border-gray-200">
-              <img src="/home-banner.png" alt="Banner" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-              <div className="relative z-10 text-white">
-                <h3 className="font-bold text-xl md:text-2xl mb-1">Find caretakers near you</h3>
-                <p className="text-white/90 font-medium text-sm md:text-base">Trusted, verified caretakers for your furry family members.</p>
+          {/* Desktop Text (Hidden on mobile) */}
+          <div className="hidden md:flex flex-col justify-center w-full md:w-[22%] lg:w-[22%] xl:w-[20%] z-10 shrink-0">
+             <h1 className="text-[42px] lg:text-[54px] leading-[1.0] font-extrabold text-[#1c1c1c] mb-4">
+               A second<br/>home for<br/>your pet.
+             </h1>
+             <p className="text-gray-700 font-medium text-[17px] leading-snug max-w-[200px]">
+               Trusted homestays.<br/>Comfortable homes.<br/>Happier pets.
+             </p>
+          </div>
+          
+          {/* Search Card Container */}
+          <div className="w-full md:w-[50%] lg:w-[50%] xl:w-[48%] z-20 order-first md:order-none relative shrink-0 flex items-center">
+            <div className="bg-white rounded-[24px] p-4 md:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-[#007672]/10 w-full">
+              
+              <div className="flex items-center gap-2 mb-3">
+                <MapPin className="text-[#007672]" size={18} strokeWidth={2.5} />
+                <h2 className="font-extrabold text-gray-900 text-[15px]">Where's your pet staying?</h2>
               </div>
-            </div>
+              
+              {/* Location Input */}
+              <div className="relative border border-gray-200 rounded-xl p-2 md:p-2.5 flex items-center mb-3 bg-white shadow-sm">
+                <Search className="text-[#007672] w-4 h-4 mr-2 shrink-0" strokeWidth={2.5} />
+                <input 
+                  type="text" 
+                  placeholder="Select area" 
+                  className="w-full outline-none text-[14px] font-bold text-gray-900 placeholder:text-gray-400 bg-transparent" 
+                  value={location} 
+                  onChange={(e) => setLocation(e.target.value)} 
+                />
+                <button 
+                  onClick={getCurrentLocation} 
+                  className="absolute right-1.5 px-2.5 py-1 bg-gray-50 rounded-lg text-[11px] font-bold text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap border border-gray-100"
+                >
+                  Use Current Location
+                </button>
+              </div>
 
-            <div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">Offers</h2>
-              {/* Offers Cards */}
-              <div className="flex flex-col md:flex-row gap-4">
-                {!user && (
-                  <div className="flex-1 border border-gray-200 bg-white rounded-2xl p-5 md:p-6 flex flex-col justify-between shadow-sm min-h-[140px] md:min-h-[160px]">
-                    <div>
-                      <h3 className="font-bold text-lg mb-1">New to MyPet9?</h3>
-                      <p className="text-sm text-gray-600 mb-4">Get 10% off your first boarding booking when you sign up with Google.</p>
+              {/* Dates Grid */}
+              <div className="flex border border-gray-200 rounded-xl mb-3 overflow-hidden bg-white shadow-sm">
+                <div className="flex-1 p-2 md:p-2.5 flex items-center justify-between border-r border-gray-200 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="text-[#007672] w-5 h-5" strokeWidth={2} />
+                    <div className="flex flex-col cursor-pointer relative" onClick={(e) => {
+                      const input = e.currentTarget.querySelector('input');
+                      if (input && 'showPicker' in input) {
+                        try { input.showPicker(); } catch (err) {}
+                      }
+                    }}>
+                      <span className="text-[10px] font-extrabold text-gray-900">Check in</span>
+                      <input 
+                        type="date" 
+                        className="text-[12px] text-gray-500 font-medium outline-none w-24 bg-transparent cursor-pointer" 
+                        value={dropoffDate} 
+                        onChange={e => setDropoffDate(e.target.value)} 
+                      />
                     </div>
-                    <button 
-                      onClick={handleGoogleSignIn}
-                      className="bg-[#1B2B48] text-white w-full sm:w-max px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#121c2e] transition-colors"
-                    >
-                      Sign in with Google
-                    </button>
                   </div>
-                )}
+                  <ChevronDown className="text-gray-400 w-3 h-3 shrink-0 hidden sm:block" />
+                </div>
                 
-                <div className="flex-1 border border-gray-200 bg-white rounded-2xl p-5 md:p-6 flex flex-col justify-between shadow-sm min-h-[140px] md:min-h-[160px]">
-                  <div>
-                    <h3 className="font-bold text-lg mb-1">Peace of mind</h3>
-                    <p className="text-sm text-gray-600 mb-4">All caretakers are strictly verified. Daily photo updates included!</p>
+                <div className="flex-1 p-2 md:p-2.5 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="text-[#007672] w-5 h-5" strokeWidth={2} />
+                    <div className="flex flex-col cursor-pointer relative" onClick={(e) => {
+                      const input = e.currentTarget.querySelector('input');
+                      if (input && 'showPicker' in input) {
+                        try { input.showPicker(); } catch (err) {}
+                      }
+                    }}>
+                      <span className="text-[10px] font-extrabold text-gray-900">Check out</span>
+                      <input 
+                        type="date" 
+                        className="text-[12px] text-gray-500 font-medium outline-none w-24 bg-transparent cursor-pointer" 
+                        value={pickupDate} 
+                        onChange={e => setPickupDate(e.target.value)} 
+                      />
+                    </div>
                   </div>
+                  <ChevronDown className="text-gray-400 w-3 h-3 shrink-0 hidden sm:block" />
                 </div>
               </div>
+
+              {/* Pets Selector */}
+              <div className="mb-4">
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <PawPrint className="text-[#007672]" size={16} strokeWidth={2.5} />
+                  <span className="font-extrabold text-gray-900 text-[14px]">Your pets</span>
+                </div>
+                <div className="flex border border-gray-200 rounded-xl p-1.5 md:p-2 justify-between items-center gap-1 md:gap-2 bg-white shadow-sm w-full">
+                  <InlinePetCounter 
+                    label="Dog" 
+                    count={pets.dog} 
+                    iconUrl="/husky_avatar.jpg" 
+                    onIncrement={() => updatePetCount('dog', true)} 
+                    onDecrement={() => updatePetCount('dog', false)} 
+                  />
+                  <div className="w-[1px] h-6 bg-gray-200 shrink-0" />
+                  <InlinePetCounter 
+                    label="Cat" 
+                    count={pets.cat} 
+                    iconUrl="/persian_cat_avatar.jpg" 
+                    onIncrement={() => updatePetCount('cat', true)} 
+                    onDecrement={() => updatePetCount('cat', false)} 
+                  />
+                  <div className="w-[1px] h-6 bg-gray-200 shrink-0 hidden sm:block" />
+                  <InlinePetCounter 
+                    label="Bird" 
+                    count={pets.bird} 
+                    iconUrl="/parrot_avatar.jpg" 
+                    onIncrement={() => updatePetCount('bird', true)} 
+                    onDecrement={() => updatePetCount('bird', false)} 
+                  />
+                </div>
+              </div>
+
+              {/* Find Homestays Button */}
+              <button 
+                onClick={handleSearch} 
+                className="w-full bg-[#71b6af] hover:bg-[#5fa39d] text-white font-extrabold text-[15px] py-3.5 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#71b6af]/30"
+              >
+                <Search className="w-4 h-4" strokeWidth={3} />
+                Find Homestays
+              </button>
+
             </div>
           </div>
+          
+
+          
+          {/* Hero Image Area */}
+          <div className="w-[calc(100%+16px)] -mx-2 md:mx-0 md:w-[28%] lg:w-[28%] xl:w-[32%] z-0 order-last relative shrink-0 flex items-center justify-end overflow-hidden">
+             {/* Desktop Image */}
+             <img 
+               src="/desktop-hero-pets.png" 
+               alt="Happy pets" 
+               className="hidden md:block w-full h-full object-contain object-right drop-shadow-xl" 
+               onError={(e) => {
+                 (e.target as HTMLImageElement).src = 'https://placehold.co/600x800/e0f4f2/007672?text=Pets+Image';
+               }}
+             />
+             
+             {/* Mobile Image */}
+             <img 
+               src="/mobile-hero-pets.png" 
+               alt="Happy pets" 
+               className="md:hidden w-full h-auto object-cover object-top relative z-10 drop-shadow-xl" 
+               onError={(e) => {
+                 (e.target as HTMLImageElement).src = 'https://placehold.co/600x800/e0f4f2/007672?text=Pets+Image';
+               }}
+             />
+          </div>
+
         </div>
       </main>
+
+      {/* How It Works Section */}
+      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+        <div 
+          className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
+          style={{
+            transform: 'rotateX(2deg)',
+            boxShadow: '0 20px 60px -15px rgba(0,118,114,0.25), 0 8px 20px -8px rgba(0,118,114,0.15), 0 -2px 6px 0px rgba(0,118,114,0.04), inset 0 -3px 0 0 rgba(0,118,114,0.3)',
+          }}
+        >
+          {/* Desktop Image */}
+          <img src="/how-it-works.png" alt="How It Works" className="w-full h-auto hidden md:block" />
+          {/* Mobile Image */}
+          <img src="/mobile-how-it-works.jpeg" alt="How It Works" className="w-full h-auto block md:hidden" />
+        </div>
+      </section>
+
+      {/* Offline Booking Section */}
+      <OfflineBookingSection />
+
+      {/* Why Homestay vs Boarding Section */}
+      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+        <div 
+          className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
+          style={{
+            transform: 'rotateX(2deg)',
+            boxShadow: '0 20px 60px -15px rgba(0,0,0,0.2), 0 8px 20px -8px rgba(0,0,0,0.12), 0 -2px 6px 0px rgba(0,0,0,0.03), inset 0 -3px 0 0 rgba(0,118,114,0.25)',
+          }}
+        >
+          {/* Desktop Image */}
+          <img src="/why-homestay.png" alt="Why Homestay and Not Boarding" className="w-full h-auto hidden md:block" />
+          {/* Mobile Image */}
+          <img src="/next-section.png" alt="Why Homestay and Not Boarding" className="w-full h-auto block md:hidden" />
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+        <div 
+          className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
+          style={{
+            transform: 'rotateX(2deg)',
+            boxShadow: '0 20px 60px -15px rgba(0,118,114,0.25), 0 8px 20px -8px rgba(0,118,114,0.15), 0 -2px 6px 0px rgba(0,118,114,0.04), inset 0 -3px 0 0 rgba(0,118,114,0.3)',
+          }}
+        >
+          <img src="/whychoose-mypet9.png" alt="Why Choose MyPet9" className="w-full h-auto block" />
+        </div>
+      </section>
+
+      {/* Exclusive Care Plan Section */}
+      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+        <div 
+          className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
+          style={{
+            transform: 'rotateX(2deg)',
+            boxShadow: '0 20px 60px -15px rgba(0,0,0,0.2), 0 8px 20px -8px rgba(0,0,0,0.12), 0 -2px 6px 0px rgba(0,0,0,0.03), inset 0 -3px 0 0 rgba(0,118,114,0.25)',
+          }}
+        >
+          <img src="/care-plan.png" alt="Exclusive Care Plan" className="w-full h-auto block" />
+        </div>
+      </section>
+      {/* Available Cities Section */}
+      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+        <div 
+          className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
+          style={{
+            transform: 'rotateX(2deg)',
+            boxShadow: '0 20px 60px -15px rgba(0,118,114,0.25), 0 8px 20px -8px rgba(0,118,114,0.15), 0 -2px 6px 0px rgba(0,118,114,0.04), inset 0 -3px 0 0 rgba(0,118,114,0.3)',
+          }}
+        >
+          <img src="/available-cities.png" alt="Available Major Cities" className="w-full h-auto block" />
+        </div>
+      </section>
+
     </div>
-    </DashboardLayout>
   );
 };
-

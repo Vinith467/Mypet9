@@ -113,7 +113,7 @@ export const BoardingDetailsScreen = () => {
               onClick={() => navigate(-1)} 
               className="p-1.5 rounded-full hover:bg-[#1B2B48]/5 transition-colors"
             >
-              <ArrowLeft size={24} className="text-[#174f38]" />
+              <ArrowLeft size={24} className="text-[#007672]" />
             </button>
             <h1 className="text-2xl lg:text-3xl font-extrabold text-[#1B2B48] tracking-tight">
               Boarding Details
@@ -124,7 +124,7 @@ export const BoardingDetailsScreen = () => {
             
             {/* Location Block */}
             <div className="flex items-center bg-white p-4 rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-gray-100 focus-within:border-petoo-primary/30 transition-colors">
-              <div className="mr-4 text-[#174f38]">
+              <div className="mr-4 text-[#007672]">
                 <MapPin size={24} strokeWidth={2} />
               </div>
               <div className="flex flex-col flex-1">
@@ -157,7 +157,7 @@ export const BoardingDetailsScreen = () => {
               className="flex items-center bg-white p-4 rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-gray-100 hover:border-petoo-primary/30 transition-colors cursor-pointer"
               onClick={() => setActivePicker('dropoff')}
             >
-              <div className="mr-4 text-[#174f38]">
+              <div className="mr-4 text-[#007672]">
                 <CalendarDays size={24} strokeWidth={2} />
               </div>
               <div className="flex flex-col flex-1">
@@ -180,7 +180,7 @@ export const BoardingDetailsScreen = () => {
               className="flex items-center bg-white p-4 rounded-[20px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-gray-100 hover:border-petoo-primary/30 transition-colors cursor-pointer"
               onClick={() => setActivePicker('pickup')}
             >
-              <div className="mr-4 text-[#174f38]">
+              <div className="mr-4 text-[#007672]">
                 <CalendarDays size={24} strokeWidth={2} />
               </div>
               <div className="flex flex-col flex-1">

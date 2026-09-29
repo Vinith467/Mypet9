@@ -87,7 +87,7 @@ export const SupportChatWidget = () => {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 20, opacity: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-24 lg:bottom-6 right-0 z-50 bg-[#FBBF24] text-[#1B2B48] py-3 pl-2 pr-1 rounded-l-xl shadow-lg border border-r-0 border-yellow-500/30 hover:bg-[#F59E0B] transition-colors flex items-center"
+            className="fixed bottom-24 lg:bottom-6 right-0 z-50 bg-[#007672] text-white py-3 pl-2 pr-1 rounded-l-xl shadow-lg border border-r-0 border-[#007672]/30 hover:bg-[#00605c] transition-colors flex items-center"
             title="Open Support Chat"
           >
             <ChevronLeft size={20} className="-ml-1" />
@@ -108,7 +108,7 @@ export const SupportChatWidget = () => {
             <div className="bg-[#1B2B48] p-4 flex items-center justify-between text-white">
               <div className="flex items-center space-x-3">
                 <div className="bg-white/10 p-2 rounded-full">
-                  <PawPrint size={20} className="text-[#FBBF24]" />
+                  <PawPrint size={20} className="text-[#007672]" />
                 </div>
                 <div>
                   <h3 className="font-bold text-sm">MyPet9 Support</h3>
@@ -137,7 +137,7 @@ export const SupportChatWidget = () => {
                   <div key={msg.id} className={`flex w-full ${isMine ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-[13px] shadow-sm leading-relaxed ${
                       isMine 
-                        ? 'bg-[#FBBF24] text-[#1B2B48] rounded-tr-sm font-medium' 
+                        ? 'bg-[#007672] text-white rounded-tr-sm font-medium' 
                         : 'bg-white border border-gray-100 text-gray-800 rounded-tl-sm'
                     }`}>
                       {msg.text}
@@ -155,12 +155,12 @@ export const SupportChatWidget = () => {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2.5 text-[13px] focus:outline-none focus:border-[#FBBF24] focus:bg-white focus:ring-1 focus:ring-[#FBBF24] transition-all"
+                className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2.5 text-[13px] focus:outline-none focus:border-[#007672] focus:bg-white focus:ring-1 focus:ring-[#007672] transition-all"
               />
               <button 
                 type="submit"
                 disabled={!newMessage.trim()}
-                className="bg-[#1B2B48] text-[#FBBF24] p-2.5 rounded-full disabled:opacity-50 disabled:text-white/50 hover:bg-[#2A4065] transition-colors shadow-sm"
+                className="bg-[#1B2B48] text-[#007672] p-2.5 rounded-full disabled:opacity-50 disabled:text-white/50 hover:bg-[#2A4065] transition-colors shadow-sm"
               >
                 <Send size={18} className="ml-0.5" />
               </button>

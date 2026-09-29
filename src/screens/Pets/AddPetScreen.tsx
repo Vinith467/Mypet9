@@ -33,7 +33,9 @@ export const AddPetScreen = () => {
     medicalConditions: null as boolean | null,
     medicalConditionDetails: '',
     behavior: '',
-    specialInstructions: ''
+    specialInstructions: '',
+    vaccinationMonth: '',
+    vaccinationYear: ''
   });
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,8 +114,8 @@ export const AddPetScreen = () => {
         
         <div className="flex-1 flex flex-col items-center">
           <div className="flex items-center space-x-1 mb-1">
-            <div className={`h-1.5 w-12 rounded-full ${step >= 1 ? 'bg-[#FDD835]' : 'bg-gray-100'}`} />
-            <div className={`h-1.5 w-12 rounded-full ${step >= 2 ? 'bg-[#FDD835]' : 'bg-gray-100'}`} />
+            <div className={`h-1.5 w-12 rounded-full ${step >= 1 ? 'bg-[#71b6af]' : 'bg-gray-100'}`} />
+            <div className={`h-1.5 w-12 rounded-full ${step >= 2 ? 'bg-[#71b6af]' : 'bg-gray-100'}`} />
           </div>
         </div>
 
@@ -152,7 +154,7 @@ export const AddPetScreen = () => {
                     value={formData.name}
                     onChange={(e) => updateForm('name', e.target.value)}
                     placeholder="Enter your pet's name"
-                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#FDD835] focus:ring-1 focus:ring-[#FDD835] outline-none transition-all shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
+                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none transition-all shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
                   />
                 </div>
               </div>
@@ -189,7 +191,7 @@ export const AddPetScreen = () => {
                   <select 
                     value={formData.breed}
                     onChange={(e) => updateForm('breed', e.target.value)}
-                    className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium appearance-none focus:border-[#FDD835] focus:ring-1 focus:ring-[#FDD835] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
+                    className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
                   >
                     <option value="" disabled>Select breed</option>
                     <option value="Golden Retriever">Golden Retriever</option>
@@ -211,7 +213,7 @@ export const AddPetScreen = () => {
                       value={formData.customBreed}
                       onChange={(e) => updateForm('customBreed', e.target.value)}
                       placeholder="Please specify your pet's breed"
-                      className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#FDD835] focus:ring-1 focus:ring-[#FDD835] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
+                      className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
                     />
                   </div>
                 )}
@@ -227,7 +229,7 @@ export const AddPetScreen = () => {
                   <select 
                     value={formData.age}
                     onChange={(e) => updateForm('age', e.target.value)}
-                    className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium appearance-none focus:border-[#FDD835] focus:ring-1 focus:ring-[#FDD835] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
+                    className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
                   >
                     <option value="" disabled>Select age</option>
                     <option value="Puppy (0-1 yrs)">Puppy (0-1 yrs)</option>
@@ -266,7 +268,7 @@ export const AddPetScreen = () => {
                     value={formData.weight}
                     onChange={(e) => updateForm('weight', e.target.value)}
                     placeholder="Enter weight"
-                    className="w-full pl-11 pr-12 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#FDD835] focus:ring-1 focus:ring-[#FDD835] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
+                    className="w-full pl-11 pr-12 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[15px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
                   />
                   <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                     <span className="text-[#465E87] font-bold text-[14px]">kg</span>
@@ -278,7 +280,7 @@ export const AddPetScreen = () => {
             {error && <p className="text-red-500 text-sm mt-4 font-medium text-center">{error}</p>}
             
             <div className="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom mt-10">
-              <Button onClick={handleNext} className="w-full h-14 bg-[#FDD835] hover:bg-[#FBBF24] text-[#1B2B48] text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-lg shadow-[#FDD835]/20">
+              <Button onClick={handleNext} className="w-full h-14 bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-lg shadow-[#71b6af]/20">
                 <span>Next</span>
                 <ArrowLeft size={18} className="rotate-180" />
               </Button>
@@ -306,9 +308,9 @@ export const AddPetScreen = () => {
               <div>
                 <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-3">7. Is your pet vaccinated?</label>
                 <div className="flex gap-3 mt-2">
-                  <label className={`flex-1 flex flex-col items-center justify-center py-5 rounded-[16px] border transition-colors cursor-pointer ${formData.vaccinated === true ? 'bg-[#FFF9EC] border-[#FBBF24] shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mb-2 transition-colors ${formData.vaccinated === true ? 'border-[#FBBF24]' : 'border-gray-300'}`}>
-                      {formData.vaccinated === true && <div className="w-3 h-3 rounded-full bg-[#FBBF24]" />}
+                  <label className={`flex-1 flex flex-col items-center justify-center py-5 rounded-[16px] border transition-colors cursor-pointer ${formData.vaccinated === true ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mb-2 transition-colors ${formData.vaccinated === true ? 'border-[#007672]' : 'border-gray-300'}`}>
+                      {formData.vaccinated === true && <div className="w-3 h-3 rounded-full bg-[#007672]" />}
                     </div>
                     <input 
                       type="radio" 
@@ -337,15 +339,53 @@ export const AddPetScreen = () => {
                     </span>
                   </label>
                 </div>
+
+                {formData.vaccinated === true && (
+                  <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <label className="block text-[13px] font-bold text-[#465E87] mb-2">When was the last vaccination?</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="relative">
+                        <select 
+                          value={formData.vaccinationMonth}
+                          onChange={(e) => updateForm('vaccinationMonth', e.target.value)}
+                          className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
+                        >
+                          <option value="" disabled>Month</option>
+                          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(m => (
+                            <option key={m} value={m}>{m}</option>
+                          ))}
+                        </select>
+                        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                          <ChevronDown size={16} className="text-gray-400" />
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <select 
+                          value={formData.vaccinationYear}
+                          onChange={(e) => updateForm('vaccinationYear', e.target.value)}
+                          className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[#1B2B48]"
+                        >
+                          <option value="" disabled>Year</option>
+                          {Array.from({length: 15}, (_, i) => new Date().getFullYear() - i).map(y => (
+                            <option key={y} value={y}>{y}</option>
+                          ))}
+                        </select>
+                        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                          <ChevronDown size={16} className="text-gray-400" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Medical Conditions */}
               <div>
                 <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-3">8. Does your pet have any medical conditions or allergies?</label>
                 <div className="flex gap-3 mt-2">
-                  <label className={`flex-1 flex flex-col items-center justify-center py-5 rounded-[16px] border transition-colors cursor-pointer ${formData.medicalConditions === true ? 'bg-[#FFF9EC] border-[#FBBF24] shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mb-2 transition-colors ${formData.medicalConditions === true ? 'border-[#FBBF24]' : 'border-gray-300'}`}>
-                      {formData.medicalConditions === true && <div className="w-3 h-3 rounded-full bg-[#FBBF24]" />}
+                  <label className={`flex-1 flex flex-col items-center justify-center py-5 rounded-[16px] border transition-colors cursor-pointer ${formData.medicalConditions === true ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mb-2 transition-colors ${formData.medicalConditions === true ? 'border-[#007672]' : 'border-gray-300'}`}>
+                      {formData.medicalConditions === true && <div className="w-3 h-3 rounded-full bg-[#007672]" />}
                     </div>
                     <input 
                       type="radio" 
@@ -382,7 +422,7 @@ export const AddPetScreen = () => {
                       value={formData.medicalConditionDetails}
                       onChange={(e) => updateForm('medicalConditionDetails', e.target.value)}
                       placeholder="Please describe the condition or allergy"
-                      className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium focus:border-[#FDD835] focus:ring-1 focus:ring-[#FDD835] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
+                      className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
                     />
                   </div>
                 )}
@@ -392,15 +432,15 @@ export const AddPetScreen = () => {
               <div>
                 <label className="block text-[14px] font-extrabold text-[#1B2B48] mb-3">9. How is your pet with other pets?</label>
                 <div className="flex gap-2">
-                  <button onClick={() => updateForm('behavior', 'Friendly')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Friendly' ? 'bg-[#FFF9EC] border-[#FBBF24] shadow-sm' : 'bg-white border-gray-100'}`}>
+                  <button onClick={() => updateForm('behavior', 'Friendly')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Friendly' ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-100'}`}>
                     <PawPrint size={24} className="text-[#10B981] mb-2" fill="currentColor" />
                     <span className="font-extrabold text-[12px] text-[#1B2B48]">Friendly</span>
                   </button>
-                  <button onClick={() => updateForm('behavior', 'Neutral')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Neutral' ? 'bg-[#FFF9EC] border-[#FBBF24] shadow-sm' : 'bg-white border-gray-100'}`}>
-                    <PawPrint size={24} className="text-[#F59E0B] mb-2" fill="currentColor" />
+                  <button onClick={() => updateForm('behavior', 'Neutral')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Neutral' ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-100'}`}>
+                    <PawPrint size={24} className="text-[#00605c] mb-2" fill="currentColor" />
                     <span className="font-extrabold text-[12px] text-[#1B2B48]">Neutral</span>
                   </button>
-                  <button onClick={() => updateForm('behavior', 'Not comfortable')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Not comfortable' ? 'bg-[#FFF9EC] border-[#FBBF24] shadow-sm' : 'bg-white border-gray-100'}`}>
+                  <button onClick={() => updateForm('behavior', 'Not comfortable')} className={`flex-1 flex flex-col items-center justify-center py-4 rounded-[16px] border transition-colors ${formData.behavior === 'Not comfortable' ? 'bg-[#FFF9EC] border-[#007672] shadow-sm' : 'bg-white border-gray-100'}`}>
                     <PawPrint size={24} className="text-[#EF4444] mb-2" fill="currentColor" />
                     <span className="font-extrabold text-[12px] text-[#1B2B48] text-center leading-tight">Not<br/>comfortable</span>
                   </button>
@@ -415,7 +455,7 @@ export const AddPetScreen = () => {
                     value={formData.specialInstructions}
                     onChange={(e) => updateForm('specialInstructions', e.target.value)}
                     placeholder="Eg. food preference, favourite activities, anything they love or dislike, etc."
-                    className="w-full p-4 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium focus:border-[#FDD835] focus:ring-1 focus:ring-[#FDD835] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] h-32 resize-none"
+                    className="w-full p-4 bg-white border border-gray-200 rounded-[16px] text-[14px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-[0_2px_10px_rgba(0,0,0,0.02)] h-32 resize-none"
                     maxLength={300}
                   />
                   <div className="absolute bottom-4 right-4 text-[10px] font-bold text-gray-400">
@@ -428,7 +468,7 @@ export const AddPetScreen = () => {
             {error && <p className="text-red-500 text-sm mt-4 font-medium text-center">{error}</p>}
             
             <div className="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom mt-10">
-              <Button onClick={handleSubmit} loading={loading} className="w-full h-14 bg-[#FDD835] hover:bg-[#FBBF24] text-[#1B2B48] text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-lg shadow-[#FDD835]/20">
+              <Button onClick={handleSubmit} loading={loading} className="w-full h-14 bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-lg shadow-[#71b6af]/20">
                 <span>Save Pet Details</span>
               </Button>
             </div>

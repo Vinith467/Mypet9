@@ -198,7 +198,7 @@ const AuthScreen = () => {
   return (
     <div className="flex flex-col min-h-screen bg-white w-full font-sans">
       {/* Header */}
-      <div className="bg-[#FBBF24] text-[#1B2B48] flex items-center justify-between px-4 py-4 sticky top-0 z-50">
+      <div className="bg-[#007672] text-white flex items-center justify-between px-4 py-4 sticky top-0 z-50">
         <button onClick={() => step === 'initial' ? navigate(-1) : setStep('initial')} className="p-2 -ml-2 rounded-full hover:bg-[#1B2B48]/10 transition-colors">
           <X size={24} strokeWidth={2.5} />
         </button>

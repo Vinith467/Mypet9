@@ -99,7 +99,7 @@ export const AdminOverview = () => {
             <h2 className="font-extrabold text-[#1B2B48] text-sm">Recent Applications</h2>
             <button 
               onClick={() => navigate('/admin/applications')}
-              className="flex items-center space-x-1 text-xs font-bold text-[#174F38] hover:underline"
+              className="flex items-center space-x-1 text-xs font-bold text-[#007672] hover:underline"
             >
               <span>View All</span>
               <ArrowRight size={12} />
@@ -115,7 +115,7 @@ export const AdminOverview = () => {
                     {app.photos && app.photos[0] ? (
                       <img src={app.photos[0]} alt={app.firstName} className="w-9 h-9 rounded-full object-cover shrink-0 border border-gray-100" />
                     ) : (
-                      <div className="w-9 h-9 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-sm shrink-0">
+                      <div className="w-9 h-9 bg-[#007672]/10 rounded-full flex items-center justify-center text-[#007672] font-extrabold text-sm shrink-0">
                         {app.firstName?.charAt(0)?.toUpperCase()}
                       </div>
                     )}
@@ -143,7 +143,7 @@ export const AdminOverview = () => {
             <h2 className="font-extrabold text-[#1B2B48] text-sm">Recent Users</h2>
             <button 
               onClick={() => navigate('/admin/users')}
-              className="flex items-center space-x-1 text-xs font-bold text-[#174F38] hover:underline"
+              className="flex items-center space-x-1 text-xs font-bold text-[#007672] hover:underline"
             >
               <span>View All</span>
               <ArrowRight size={12} />

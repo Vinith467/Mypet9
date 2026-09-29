@@ -129,8 +129,8 @@ export const BookingProgressScreen = () => {
               <div className="flex items-center gap-1.5 min-w-0 mb-1.5">
                 <h3 className="text-[17px] font-extrabold text-[#111111] truncate">{booking.caretakerName}</h3>
                 <div className="flex items-center space-x-1 px-1.5 py-0.5 bg-[#E8F5E9] rounded-full shrink-0">
-                  <svg className="w-2.5 h-2.5 text-[#174F38]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
-                  <span className="text-[9px] font-bold text-[#174F38]">Verified Host</span>
+                  <svg className="w-2.5 h-2.5 text-[#007672]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                  <span className="text-[9px] font-bold text-[#007672]">Verified Host</span>
                 </div>
               </div>
               
@@ -186,7 +186,7 @@ export const BookingProgressScreen = () => {
               {/* Stay Timeline Section */}
               <div className="p-4 sm:p-5 bg-[#FFF9EC]">
                 <div className="flex items-center gap-2 mb-5">
-                  <div className="w-8 h-8 rounded-full border border-[#FDD835] bg-white flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-full border border-[#71b6af] bg-white flex items-center justify-center shrink-0">
                     <svg className="w-4 h-4 text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                   </div>
                   <h3 className="text-[16px] font-extrabold text-[#111111]">Stay Timeline</h3>
@@ -226,7 +226,7 @@ export const BookingProgressScreen = () => {
                     <div className="bg-white rounded-[16px] p-3.5 flex-1 flex items-start gap-3 shadow-sm border border-gray-100 pb-4">
                       <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 border border-gray-100 relative">
                         <Calendar size={16} className="text-[#111111]" />
-                        <div className="absolute -bottom-1 -right-1 bg-[#FDD835] rounded-full p-0.5 border border-white">
+                        <div className="absolute -bottom-1 -right-1 bg-[#71b6af] rounded-full p-0.5 border border-white">
                           <svg className="w-2.5 h-2.5 text-[#111111]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4"></path></svg>
                         </div>
                       </div>
@@ -424,7 +424,7 @@ export const BookingProgressScreen = () => {
           <button 
             onClick={() => navigate(`/extend-stay/${booking.id}`, { state: { booking } })}
             disabled={isProcessing || booking.status === 'cancelled' || booking.status === 'completed'}
-            className="flex-1 h-[54px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 transition-colors disabled:opacity-50"
+            className="flex-1 h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 transition-colors disabled:opacity-50"
           >
             <Calendar size={20} />
             <span>Extend Stay</span>

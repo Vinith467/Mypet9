@@ -53,13 +53,13 @@ export const AdminUsers = () => {
               onClick={() => setFilter(tab.key)}
               className={`flex-1 flex items-center justify-center space-x-2 py-4 text-sm font-bold transition-all border-b-2 ${
                 filter === tab.key
-                  ? 'border-[#174F38] text-[#174F38] bg-gray-50/50'
+                  ? 'border-[#007672] text-[#007672] bg-gray-50/50'
                   : 'border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-50/30'
               }`}
             >
               <span>{tab.label}</span>
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-                filter === tab.key ? 'bg-[#174F38]/10 text-[#174F38]' : 'bg-gray-100 text-gray-400'
+                filter === tab.key ? 'bg-[#007672]/10 text-[#007672]' : 'bg-gray-100 text-gray-400'
               }`}>
                 {tab.count}
               </span>
@@ -76,7 +76,7 @@ export const AdminUsers = () => {
               placeholder="Search by name or email..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#174F38]/20 focus:border-[#174F38]/30 font-medium placeholder:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#007672]/20 focus:border-[#007672]/30 font-medium placeholder:text-gray-400"
             />
           </div>
         </div>

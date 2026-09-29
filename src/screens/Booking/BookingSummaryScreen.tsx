@@ -123,11 +123,14 @@ export const BookingSummaryScreen = () => {
         </div>
 
         {/* Content Container */}
-        <div className="py-4 px-4 max-w-2xl mx-auto w-full pb-32">
-          <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col">
+        <div className="py-4 px-4 lg:max-w-7xl max-w-2xl mx-auto w-full pb-32 lg:pb-8">
+          <div className="flex flex-col lg:grid lg:grid-cols-[1.5fr,1fr] lg:gap-10 lg:items-start">
+            
+            {/* Left Column (Desktop) */}
+            <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col mb-6 lg:mb-0">
             
             {/* Host Card */}
-            <div className="px-3 py-4 sm:p-4">
+            <div className="px-3 py-4 sm:p-6">
               <div className="flex gap-3 sm:gap-4">
               <div className="w-[88px] h-[88px] sm:w-[100px] sm:h-[100px] rounded-[16px] overflow-hidden shrink-0 mt-1">
                 <img 
@@ -157,7 +160,7 @@ export const BookingSummaryScreen = () => {
                 </div>
                 
                 <div className="flex items-center space-x-1.5 mb-3">
-                  <Star size={12} className="fill-[#FBBF24] text-[#FBBF24]" />
+                  <Star size={12} className="fill-[#007672] text-[#007672]" />
                   <span className="text-[13px] font-extrabold text-[#111111]">{Number(provider?.rating || 4.9).toFixed(1)}</span>
                   <span className="text-[12px] font-medium text-[#666666]">({provider?.reviews || 96} reviews)</span>
                 </div>
@@ -172,7 +175,7 @@ export const BookingSummaryScreen = () => {
                     <span className="truncate">Has a garden</span>
                   </div>
                   <div className="flex items-center space-x-1.5">
-                    <PawPrint size={10} className="text-[#FBBF24] fill-[#FBBF24]" />
+                    <PawPrint size={10} className="text-[#007672] fill-[#007672]" />
                     <span className="truncate">Only 2 pets at a time</span>
                   </div>
                   <div className="flex items-center space-x-1.5">
@@ -184,6 +187,7 @@ export const BookingSummaryScreen = () => {
                 <div className="flex items-center space-x-1.5 mt-2.5 text-[11px] font-medium text-[#666666]">
                   <MapPin size={12} className="text-[#111111]" />
                   <span>{provider?.distanceStr || ''}{provider?.distanceStr && provider?.locationStr ? ' • ' : ''}{provider?.locationStr?.split(',')[0] || ''}</span>
+                </div>
                 </div>
               </div>
             </div>
@@ -288,9 +292,13 @@ export const BookingSummaryScreen = () => {
               )}
             </div>
           </div>
+          </div> {/* End Left Column */}
 
+          {/* Right Column (Desktop) */}
+          <div className="flex flex-col space-y-6 w-full">
+            <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col">
           {/* Price Details */}
-            <div className="px-3 py-4 sm:p-5 mb-4">
+            <div className="px-3 py-4 sm:p-6 mb-2">
               <div className="flex items-center space-x-3 mb-5">
               <div className="w-[36px] h-[36px] rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
                 <Wallet size={18} className="text-[#111111]" />
@@ -327,10 +335,9 @@ export const BookingSummaryScreen = () => {
               </div>
             </div>
           </div>
-        </div>
 
         {/* Secure Payment */}
-          <div className="bg-[#E8F5E9] rounded-[16px] p-4 flex items-start space-x-3 mx-1 mb-8">
+          <div className="bg-[#E8F5E9] rounded-[16px] p-4 flex items-start space-x-3 mx-1 mb-2">
             <div className="bg-[#2E7D32] rounded-full p-1.5 shrink-0 mt-0.5">
               <ShieldCheck size={14} className="text-white" />
             </div>
@@ -339,11 +346,33 @@ export const BookingSummaryScreen = () => {
               <span className="text-[11px] font-medium text-[#2E7D32]/80 leading-tight">Your payment is safe and only released after the stay is completed.</span>
             </div>
           </div>
+
+          {/* Desktop Payment Buttons */}
+          <div className="hidden lg:flex flex-col space-y-3 w-full mt-2">
+            <Button 
+              onClick={() => handleConfirmBooking('pay_later')}
+              disabled={isBooking}
+              className="w-full h-[54px] bg-white border-2 border-[#1B2B48] text-[#1B2B48] hover:bg-gray-50 text-[16px] font-extrabold rounded-full flex items-center justify-center transition-colors shadow-sm disabled:opacity-50"
+            >
+              <span>{isBooking ? 'Processing...' : 'Pay After Service'}</span>
+            </Button>
+            <Button 
+              onClick={() => handleConfirmBooking('pay_now')}
+              disabled={isBooking}
+              className="w-full h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[18px] font-extrabold rounded-full flex items-center justify-center space-x-2 shadow-[0_4px_14px_rgba(253,216,53,0.4)] disabled:opacity-50"
+            >
+              <span>{isBooking ? 'Processing...' : `Pay ₹${finalTotal.toLocaleString('en-IN')} Now`}</span>
+              <ArrowLeft size={20} className="rotate-180" />
+            </Button>
+          </div>
+
+          </div> {/* End Right Column */}
+          </div> {/* End Content Grid */}
         </div>
       </div>
 
-      {/* Bottom Fixed Banner & Button */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#FAFAFA] pt-2 pb-safe-bottom">
+      {/* Bottom Fixed Banner & Button (Mobile Only) */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#FAFAFA] pt-2 pb-safe-bottom lg:hidden">
         <div className="max-w-2xl mx-auto w-full px-4 pb-4 flex flex-col space-y-3">
           <Button 
             onClick={() => handleConfirmBooking('pay_later')}
@@ -355,7 +384,7 @@ export const BookingSummaryScreen = () => {
           <Button 
             onClick={() => handleConfirmBooking('pay_now')}
             disabled={isBooking}
-            className="w-full h-[54px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[18px] font-extrabold rounded-full flex items-center justify-center space-x-2 shadow-[0_4px_14px_rgba(253,216,53,0.4)] disabled:opacity-50"
+            className="w-full h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[18px] font-extrabold rounded-full flex items-center justify-center space-x-2 shadow-[0_4px_14px_rgba(253,216,53,0.4)] disabled:opacity-50"
           >
             <span>{isBooking ? 'Processing...' : `Pay ₹${finalTotal.toLocaleString('en-IN')} Now`}</span>
             <ArrowLeft size={20} className="rotate-180" />

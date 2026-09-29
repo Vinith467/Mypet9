@@ -269,8 +269,8 @@ export const BoardingSearchScreen = () => {
       <div className="w-full h-full flex flex-col bg-[#F8F9FA] relative">
         
         {/* Header section: Edge-to-edge on mobile, rounded banner on desktop */}
-        <div className="sticky top-0 lg:static z-40 bg-[#FDD835] lg:bg-transparent shadow-sm lg:shadow-none pt-6 pb-4 px-4 lg:pt-8 lg:px-8">
-          <div className="w-full lg:bg-[#FDD835] lg:rounded-[32px] lg:px-10 lg:py-8 lg:shadow-md lg:mx-auto">
+        <div className="sticky top-0 lg:static z-40 bg-[#71b6af] lg:bg-transparent shadow-sm lg:shadow-none pt-6 pb-4 px-4 lg:pt-8 lg:px-8">
+          <div className="w-full lg:bg-[#71b6af] lg:rounded-[32px] lg:px-10 lg:py-8 lg:shadow-md lg:mx-auto">
             <div className="flex items-center justify-between mb-4 lg:mb-6">
               
               <div className="flex items-center lg:space-x-4 w-full lg:w-auto justify-between lg:justify-start">
@@ -333,7 +333,7 @@ export const BoardingSearchScreen = () => {
                     initial={{ width: "0%" }}
                     animate={{ width: "100%" }}
                     transition={{ duration: 2.0, ease: "linear" }}
-                    className="h-full bg-[#FBBF24] rounded-full shadow-[0_0_10px_rgba(251,191,36,0.5)]"
+                    className="h-full bg-[#007672] rounded-full shadow-[0_0_10px_rgba(251,191,36,0.5)]"
                   />
                 </div>
               </div>
@@ -394,7 +394,7 @@ export const BoardingSearchScreen = () => {
                         </div>
                         
                         <div className="flex items-center space-x-1 mb-1">
-                          <Star size={12} className="fill-[#FBBF24] text-[#FBBF24]" />
+                          <Star size={12} className="fill-[#007672] text-[#007672]" />
                           <span className="text-[13px] sm:text-[14px] font-extrabold text-[#1B2B48]">{caretaker.rating.toFixed(1)}</span>
                           <span className="text-[12px] sm:text-[13px] font-medium text-[#465E87]">({caretaker.reviews} reviews)</span>
                         </div>
@@ -420,7 +420,7 @@ export const BoardingSearchScreen = () => {
                       
                       {/* Pick up & drop */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#007672]/10 rounded-full flex items-center justify-center mb-1 shadow-sm">
                           <Car size={13} className="text-[#8B5A2B]" />
                         </div>
                         <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Pickup & Drop<br/>Service</span>
@@ -428,7 +428,7 @@ export const BoardingSearchScreen = () => {
 
                       {/* Vaccination */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#007672]/10 rounded-full flex items-center justify-center mb-1 shadow-sm">
                           <Syringe size={13} className="text-[#8B5A2B]" />
                         </div>
                         <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Vaccination<br/>Assistance</span>
@@ -436,7 +436,7 @@ export const BoardingSearchScreen = () => {
 
                       {/* Grooming */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#007672]/10 rounded-full flex items-center justify-center mb-1 shadow-sm">
                           <Scissors size={13} className="text-[#8B5A2B]" />
                         </div>
                         <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Grooming<br/>Available</span>
@@ -444,7 +444,7 @@ export const BoardingSearchScreen = () => {
 
                       {/* Experience */}
                       <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-1 shadow-sm">
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#007672]/10 rounded-full flex items-center justify-center mb-1 shadow-sm">
                           <User size={13} className="text-[#8B5A2B]" />
                         </div>
                         <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>

@@ -102,7 +102,7 @@ export const MyBookingsScreen = () => {
     <DashboardLayout>
       <div className="w-full flex flex-col min-h-full bg-[#F8F9FA] pb-24 lg:pb-12 pt-8 lg:pt-12 px-5">
         
-        <div className="max-w-2xl mx-auto w-full">
+        <div className="max-w-2xl lg:max-w-5xl mx-auto w-full">
           {/* Header */}
           <div className="flex items-center mb-6">
             <button 
@@ -120,7 +120,7 @@ export const MyBookingsScreen = () => {
               onClick={() => setActiveTab('ongoing')}
               className={`flex-1 py-2.5 rounded-full text-[13px] sm:text-[14px] font-bold transition-colors ${
                 activeTab === 'ongoing' 
-                  ? 'bg-[#FDD835] text-[#111111] shadow-sm' 
+                  ? 'bg-[#71b6af] text-[#111111] shadow-sm' 
                   : 'text-[#465E87] hover:bg-gray-50'
               }`}
             >
@@ -130,7 +130,7 @@ export const MyBookingsScreen = () => {
               onClick={() => setActiveTab('past')}
               className={`flex-1 py-2.5 rounded-full text-[13px] sm:text-[14px] font-bold transition-colors ${
                 activeTab === 'past' 
-                  ? 'bg-[#FDD835] text-[#111111] shadow-sm' 
+                  ? 'bg-[#71b6af] text-[#111111] shadow-sm' 
                   : 'text-[#465E87] hover:bg-gray-50'
               }`}
             >
@@ -140,7 +140,7 @@ export const MyBookingsScreen = () => {
               onClick={() => setActiveTab('cancelled')}
               className={`flex-1 py-2.5 rounded-full text-[13px] sm:text-[14px] font-bold transition-colors ${
                 activeTab === 'cancelled' 
-                  ? 'bg-[#FDD835] text-[#111111] shadow-sm' 
+                  ? 'bg-[#71b6af] text-[#111111] shadow-sm' 
                   : 'text-[#465E87] hover:bg-gray-50'
               }`}
             >
@@ -167,7 +167,7 @@ export const MyBookingsScreen = () => {
               {activeTab === 'ongoing' && (
                 <button 
                   onClick={() => navigate('/')}
-                  className="mt-6 bg-[#FDD835] text-[#111111] px-6 py-3 rounded-full font-bold text-[15px] shadow-sm hover:bg-[#FBBF24] transition-colors"
+                  className="mt-6 bg-[#71b6af] text-[#111111] px-6 py-3 rounded-full font-bold text-[15px] shadow-sm hover:bg-[#007672] transition-colors"
                 >
                   Book a Stay
                 </button>
@@ -175,7 +175,7 @@ export const MyBookingsScreen = () => {
             </div>
           ) : (
             /* Booking Cards */
-            <div className="space-y-4">
+            <div className="space-y-5 w-full">
               {displayedBookings.map((booking, index) => {
                 const petNames = booking.selectedPets ? booking.selectedPets.map((p: any) => p.name).join(', ') : booking.petName;
                 const petCount = booking.selectedPets ? booking.selectedPets.length : 1;
@@ -202,8 +202,8 @@ export const MyBookingsScreen = () => {
                           <div className="flex items-center gap-1.5 min-w-0">
                             <h3 className="text-[17px] font-extrabold text-[#111111] truncate">{booking.caretakerName}</h3>
                             <div className="flex items-center space-x-1 px-1.5 py-0.5 bg-[#E8F5E9] rounded-full shrink-0">
-                              <svg className="w-2.5 h-2.5 text-[#174F38]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
-                              <span className="text-[9px] font-bold text-[#174F38]">Verified Host</span>
+                              <svg className="w-2.5 h-2.5 text-[#007672]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                              <span className="text-[9px] font-bold text-[#007672]">Verified Host</span>
                             </div>
                           </div>
                           {activeTab === 'ongoing' && (
@@ -255,17 +255,17 @@ export const MyBookingsScreen = () => {
                     
                     {/* Action Buttons */}
                     {activeTab === 'ongoing' && (
-                      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+                      <div className="flex items-center lg:justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
                         <button 
                           onClick={() => navigate(`/extend-stay/${booking.id}`, { state: { booking } })}
-                          className="flex-1 h-[42px] bg-white border border-[#FDD835] text-[#111111] hover:bg-gray-50 text-[14px] font-extrabold rounded-full flex items-center justify-center space-x-2 transition-colors"
+                          className="flex-1 lg:flex-none lg:w-44 h-[42px] bg-white border border-[#71b6af] text-[#111111] hover:bg-gray-50 text-[14px] font-extrabold rounded-full flex items-center justify-center space-x-2 transition-colors"
                         >
                           <Calendar size={16} />
                           <span>Extend Stay</span>
                         </button>
                         <button 
                           onClick={() => navigate(`/booking-progress/${booking.id}`, { state: { booking } })}
-                          className="flex-1 h-[42px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[14px] font-extrabold rounded-full flex items-center justify-center transition-colors shadow-sm"
+                          className="flex-1 lg:flex-none lg:w-44 h-[42px] bg-[#007672] hover:bg-[#00605c] text-white text-[14px] font-extrabold rounded-full flex items-center justify-center transition-colors shadow-sm"
                         >
                           <span>View Details</span>
                         </button>

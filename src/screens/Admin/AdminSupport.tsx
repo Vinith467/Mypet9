@@ -116,7 +116,7 @@ export const AdminSupport = () => {
               placeholder="Search users..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#FBBF24]/50 focus:border-[#FBBF24] transition-all"
+              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#007672]/50 focus:border-[#007672] transition-all"
             />
           </div>
         </div>
@@ -149,7 +149,7 @@ export const AdminSupport = () => {
                   <p className="text-xs text-gray-500 truncate">{chat.lastMessage}</p>
                 </div>
                 {chat.unreadAdmin > 0 && (
-                  <div className="shrink-0 w-5 h-5 rounded-full bg-[#FBBF24] flex items-center justify-center text-[10px] font-bold text-[#1B2B48]">
+                  <div className="shrink-0 w-5 h-5 rounded-full bg-[#007672] flex items-center justify-center text-[10px] font-bold text-[#1B2B48]">
                     {chat.unreadAdmin}
                   </div>
                 )}
@@ -172,8 +172,8 @@ export const AdminSupport = () => {
                 >
                   <Search size={20} />
                 </button>
-                <div className="w-10 h-10 rounded-full bg-[#FBBF24]/20 flex items-center justify-center">
-                  <User size={20} className="text-[#FBBF24]" />
+                <div className="w-10 h-10 rounded-full bg-[#007672]/20 flex items-center justify-center">
+                  <User size={20} className="text-[#007672]" />
                 </div>
                 <div>
                   <h3 className="font-bold text-[#1B2B48]">{activeChat.userName || 'Unknown User'}</h3>
@@ -215,12 +215,12 @@ export const AdminSupport = () => {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a reply to the user..."
-                  className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-5 py-3 text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#FBBF24]/50 focus:border-[#FBBF24] transition-all"
+                  className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-5 py-3 text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#007672]/50 focus:border-[#007672] transition-all"
                 />
                 <button 
                   type="submit"
                   disabled={!newMessage.trim()}
-                  className="bg-[#FBBF24] text-[#1B2B48] p-3 rounded-full disabled:opacity-50 disabled:grayscale hover:bg-[#F59E0B] transition-colors shadow-sm"
+                  className="bg-[#007672] text-white p-3 rounded-full disabled:opacity-50 disabled:grayscale hover:bg-[#00605c] transition-colors shadow-sm"
                 >
                   <Send size={20} className="ml-1" />
                 </button>

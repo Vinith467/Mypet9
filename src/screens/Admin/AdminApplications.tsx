@@ -97,14 +97,14 @@ export const AdminApplications = () => {
               onClick={() => setFilter(tab.key)}
               className={`flex-1 flex items-center justify-center space-x-2 py-4 text-sm font-bold transition-all border-b-2 ${
                 filter === tab.key
-                  ? `border-[#174F38] text-[#174F38] bg-gray-50/50`
+                  ? `border-[#007672] text-[#007672] bg-gray-50/50`
                   : 'border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-50/30'
               }`}
             >
               <tab.icon size={16} />
               <span>{tab.label}</span>
               <span className={`ml-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-                filter === tab.key ? 'bg-[#174F38]/10 text-[#174F38]' : 'bg-gray-100 text-gray-400'
+                filter === tab.key ? 'bg-[#007672]/10 text-[#007672]' : 'bg-gray-100 text-gray-400'
               }`}>
                 {counts[tab.key]}
               </span>
@@ -121,7 +121,7 @@ export const AdminApplications = () => {
               placeholder="Search by name, phone, or email..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#174F38]/20 focus:border-[#174F38]/30 font-medium placeholder:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#007672]/20 focus:border-[#007672]/30 font-medium placeholder:text-gray-400"
             />
           </div>
         </div>
@@ -142,7 +142,7 @@ export const AdminApplications = () => {
                   {app.photos && app.photos[0] ? (
                     <img src={app.photos[0]} alt={app.firstName} className="w-10 h-10 rounded-full object-cover shrink-0 border border-gray-100" />
                   ) : (
-                    <div className="w-10 h-10 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-sm shrink-0">
+                    <div className="w-10 h-10 bg-[#007672]/10 rounded-full flex items-center justify-center text-[#007672] font-extrabold text-sm shrink-0">
                       {app.firstName?.charAt(0)?.toUpperCase()}
                     </div>
                   )}
@@ -157,7 +157,7 @@ export const AdminApplications = () => {
                       <button onClick={(e) => { e.stopPropagation(); updateStatus(app.id, app.uid, 'rejected'); }} className="px-3 py-1.5 rounded-lg text-xs font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-colors">
                         Reject
                       </button>
-                      <button onClick={(e) => { e.stopPropagation(); updateStatus(app.id, app.uid, 'approved'); }} className="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#174F38] hover:bg-[#113a29] transition-colors">
+                      <button onClick={(e) => { e.stopPropagation(); updateStatus(app.id, app.uid, 'approved'); }} className="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#007672] hover:bg-[#00605c] transition-colors">
                         Approve
                       </button>
                     </div>
@@ -199,7 +199,7 @@ export const AdminApplications = () => {
                   {selectedApp.photos && selectedApp.photos[0] ? (
                     <img src={selectedApp.photos[0]} alt={selectedApp.firstName} className="w-14 h-14 rounded-full object-cover shrink-0 border border-gray-200" />
                   ) : (
-                    <div className="w-14 h-14 bg-[#174F38]/10 rounded-full flex items-center justify-center text-[#174F38] font-extrabold text-xl">
+                    <div className="w-14 h-14 bg-[#007672]/10 rounded-full flex items-center justify-center text-[#007672] font-extrabold text-xl">
                       {selectedApp.firstName?.charAt(0)?.toUpperCase()}
                     </div>
                   )}
@@ -244,7 +244,7 @@ export const AdminApplications = () => {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Accepted Pets</p>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(selectedApp.acceptedPets).filter(([_, v]) => v).map(([k]) => (
-                        <span key={k} className="px-3 py-1 bg-[#174F38]/10 text-[#174F38] text-xs font-bold rounded-full">{k.charAt(0).toUpperCase() + k.slice(1)}</span>
+                        <span key={k} className="px-3 py-1 bg-[#007672]/10 text-[#007672] text-xs font-bold rounded-full">{k.charAt(0).toUpperCase() + k.slice(1)}</span>
                       ))}
                     </div>
                   </div>
@@ -266,7 +266,7 @@ export const AdminApplications = () => {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">KYC Documents</p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {Object.entries(selectedApp.kyc).map(([key, url]: any) => url && typeof url === 'string' && url.startsWith('http') ? (
-                        <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="block w-full aspect-square rounded-xl overflow-hidden border border-gray-100 hover:border-[#174F38] transition-colors relative group">
+                        <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="block w-full aspect-square rounded-xl overflow-hidden border border-gray-100 hover:border-[#007672] transition-colors relative group">
                           <img src={url} alt={key} className="w-full h-full object-cover" />
                           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <span className="text-white text-[10px] font-bold uppercase tracking-wider">{key}</span>
@@ -282,7 +282,7 @@ export const AdminApplications = () => {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Additional Photos</p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {selectedApp.photos.map((url: string, index: number) => (
-                        <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="block w-full aspect-square rounded-xl overflow-hidden border border-gray-100 hover:border-[#174F38] transition-colors relative group">
+                        <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="block w-full aspect-square rounded-xl overflow-hidden border border-gray-100 hover:border-[#007672] transition-colors relative group">
                           <img src={url} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
                           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <span className="text-white text-[10px] font-bold uppercase tracking-wider">Photo {index + 1}</span>
@@ -304,7 +304,7 @@ export const AdminApplications = () => {
                   </button>
                   <button
                     onClick={() => updateStatus(selectedApp.id, selectedApp.uid, 'approved')}
-                    className="flex-1 py-3 rounded-xl text-sm font-bold text-white bg-[#174F38] hover:bg-[#113a29] transition-colors shadow-sm"
+                    className="flex-1 py-3 rounded-xl text-sm font-bold text-white bg-[#007672] hover:bg-[#00605c] transition-colors shadow-sm"
                   >
                     Approve Partner
                   </button>

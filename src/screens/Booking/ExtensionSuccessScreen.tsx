@@ -55,9 +55,9 @@ export const ExtensionSuccessScreen = () => {
         {/* Confetti Particles (Background) */}
         <div className="absolute inset-0 pointer-events-none opacity-80 z-0">
           <div className="absolute top-[20%] left-[25%] w-[3px] h-[10px] bg-green-400 rotate-45"></div>
-          <div className="absolute top-[15%] left-[35%] w-[12px] h-[3px] bg-yellow-400 -rotate-45"></div>
+          <div className="absolute top-[15%] left-[35%] w-[12px] h-[3px] bg-[#007672] -rotate-45"></div>
           <div className="absolute top-[25%] right-[35%] w-[3px] h-[12px] bg-green-500 rotate-12"></div>
-          <div className="absolute top-[40%] right-[30%] w-[10px] h-[3px] bg-yellow-400 -rotate-12"></div>
+          <div className="absolute top-[40%] right-[30%] w-[10px] h-[3px] bg-[#007672] -rotate-12"></div>
         </div>
 
         {/* Main Icon */}
@@ -66,9 +66,9 @@ export const ExtensionSuccessScreen = () => {
           <div className="w-[72px] h-[72px] rounded-full bg-[#10B981] flex items-center justify-center relative shadow-sm">
             <Check size={40} className="text-white stroke-[4]" />
             <div className="absolute -bottom-1 -right-4 w-[42px] h-[42px] rounded-full bg-white flex items-center justify-center shadow-sm">
-               <div className="w-[34px] h-[34px] rounded-full bg-[#FFF9EC] border border-[#FDD835]/30 flex items-center justify-center relative">
+               <div className="w-[34px] h-[34px] rounded-full bg-[#FFF9EC] border border-[#71b6af]/30 flex items-center justify-center relative">
                  <Calendar size={18} className="text-[#111111]" strokeWidth={2.5} />
-                 <div className="absolute -bottom-1 -right-1 w-[14px] h-[14px] rounded-full bg-[#FDD835] flex items-center justify-center">
+                 <div className="absolute -bottom-1 -right-1 w-[14px] h-[14px] rounded-full bg-[#71b6af] flex items-center justify-center">
                    <Check size={10} className="text-[#111111] stroke-[4]" />
                  </div>
                </div>
@@ -208,7 +208,7 @@ export const ExtensionSuccessScreen = () => {
         <div className="max-w-2xl mx-auto w-full flex flex-col gap-3">
           <button 
             onClick={() => navigate(`/booking-progress/${booking.id}`)}
-            className="w-full h-[54px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[16px] font-extrabold rounded-[16px] flex items-center justify-center transition-colors"
+            className="w-full h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center transition-colors"
           >
             <span>View Booking</span>
           </button>

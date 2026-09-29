@@ -76,7 +76,7 @@ export const SelectPetScreen = () => {
   if (loading) {
     return (
       <div className="flex-1 min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FBBF24]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#007672]"></div>
       </div>
     );
   }
@@ -114,14 +114,14 @@ export const SelectPetScreen = () => {
                 onClick={() => togglePetSelection(pet.id)}
                 className={`relative flex flex-row p-4 rounded-[20px] transition-all cursor-pointer border ${
                   isSelected 
-                    ? 'border-[#FBBF24] bg-[#FFF9EC] shadow-[0_4px_15px_rgba(251,191,36,0.15)]' 
+                    ? 'border-[#007672] bg-[#FFF9EC] shadow-[0_4px_15px_rgba(251,191,36,0.15)]' 
                     : 'border-gray-100 bg-white shadow-[0_4px_15px_rgba(0,0,0,0.03)]'
                 }`}
               >
                 {/* Check Mark for Selected State */}
                 {isSelected && (
                   <div className="absolute -top-2 -right-2 bg-white rounded-full p-0.5 shadow-sm z-10 animate-in zoom-in duration-200">
-                    <CheckCircle2 size={24} className="text-white fill-[#FBBF24]" />
+                    <CheckCircle2 size={24} className="text-white fill-[#007672]" />
                   </div>
                 )}
 
@@ -163,7 +163,7 @@ export const SelectPetScreen = () => {
           onClick={() => navigate('/add-pet', { state: { returnTo: '/select-pet', provider, bookingData } })}
           className="mt-6 border-2 border-dashed border-gray-200 rounded-[20px] p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
         >
-          <div className="w-12 h-12 bg-[#FDD835] rounded-full flex items-center justify-center mb-3">
+          <div className="w-12 h-12 bg-[#71b6af] rounded-full flex items-center justify-center mb-3">
             <Plus size={24} className="text-[#1B2B48]" strokeWidth={2.5} />
           </div>
           <h4 className="text-[15px] font-extrabold text-[#1B2B48] mb-1">Add Another Pet</h4>
@@ -176,7 +176,7 @@ export const SelectPetScreen = () => {
         <Button 
           onClick={handleNext}
           disabled={selectedPetIds.length === 0}
-          className="w-full h-14 bg-[#FDD835] hover:bg-[#FBBF24] text-[#1B2B48] text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2"
+          className="w-full h-14 bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2"
         >
           <span>Continue</span>
           <ArrowLeft size={18} className="rotate-180" />

@@ -361,7 +361,7 @@ export const GlobalRequestModal = ({ isOpen, onClose, request: propRequest }: Gl
                       <img src={req.petParent?.image || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100"} alt="Parent" className="w-9 h-9 rounded-full object-cover ml-0.5 shadow-sm" />
                       <div className="flex flex-col ml-2">
                         <span className="text-[#5C1C1D] font-extrabold text-[14px] mb-0.5">Pet Parent<br/>{req.petParent?.name || 'Rohan Mehta'}</span>
-                        <div className="flex items-center text-[#F59E0B] text-[11px] font-bold">
+                        <div className="flex items-center text-[#00605c] text-[11px] font-bold">
                           <Star size={10} fill="currentColor" className="mr-1" />
                           <span>{req.petParent?.rating || 4.8} <span className="text-[#3A5D74] font-medium">({req.petParent?.reviews || 12} reviews)</span></span>
                         </div>

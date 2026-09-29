@@ -53,7 +53,7 @@ export const CaretakerProfileScreen = () => {
       <div className="min-h-full bg-[#FAFAFA] pb-[100px] lg:pb-12 w-full relative">
         
         {/* DESKTOP BREADCRUMB (hidden on mobile) */}
-        <div className="hidden lg:flex max-w-5xl mx-auto px-6 py-6 items-center space-x-3 sticky top-0 bg-[#FAFAFA]/90 backdrop-blur-md z-30">
+        <div className="hidden lg:flex max-w-7xl mx-auto px-6 py-6 items-center space-x-3 sticky top-0 bg-[#FAFAFA]/90 backdrop-blur-md z-30">
            <button 
              onClick={() => navigate(-1)}
              className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#1B2B48] hover:bg-gray-50 shadow-sm transition-colors"
@@ -63,7 +63,7 @@ export const CaretakerProfileScreen = () => {
            <span className="text-[18px] font-extrabold text-[#1B2B48]">Caretaker Profile</span>
         </div>
 
-        <div className="lg:max-w-5xl lg:mx-auto lg:bg-white lg:shadow-sm lg:border lg:border-gray-200 lg:rounded-[24px] lg:p-6">
+        <div className="lg:max-w-7xl lg:mx-auto lg:bg-white lg:shadow-sm lg:border lg:border-gray-200 lg:rounded-[24px] lg:p-6 lg:mb-8">
           
           <div className="lg:grid lg:grid-cols-[1fr,360px] lg:gap-10">
             
@@ -158,7 +158,7 @@ export const CaretakerProfileScreen = () => {
                         setActiveMediaIndex(idx);
                         setIsVideoPlaying(false);
                       }}
-                      className={`relative w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] rounded-[10px] lg:rounded-[16px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${idx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[3px] border-[#FBBF24] scale-95 shadow-md' : 'opacity-90 hover:opacity-100 border border-gray-100'}`}
+                      className={`relative w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] rounded-[10px] lg:rounded-[16px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${idx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[3px] border-[#007672] scale-95 shadow-md' : 'opacity-90 hover:opacity-100 border border-gray-100'}`}
                     >
                       <img src={img} alt="" className="w-full h-full object-cover" />
                       {idx === Math.min(allImages.length - 1, 4) && allImages.length > 5 && (
@@ -185,7 +185,7 @@ export const CaretakerProfileScreen = () => {
                   
                   {/* RATING & LOCATION */}
                   <div className="flex items-center space-x-1.5 mb-5 lg:mb-6">
-                    <Star size={14} className="fill-[#FBBF24] text-[#FBBF24] lg:w-4 lg:h-4" />
+                    <Star size={14} className="fill-[#007672] text-[#007672] lg:w-4 lg:h-4" />
                     <span className="text-[14px] lg:text-[15px] font-extrabold text-[#1B2B48]">{provider.rating}</span>
                     <span className="text-[13px] lg:text-[14px] font-medium text-[#465E87]">({provider.reviews} reviews)</span>
                     <span className="text-[#465E87]/60 font-medium px-0.5">•</span>
@@ -203,7 +203,7 @@ export const CaretakerProfileScreen = () => {
                     </div>
                     <Button 
                       onClick={handleBookNow}
-                      className="px-6 py-3 text-[14px] font-extrabold rounded-[12px] bg-[#FBBF24] hover:bg-[#F59E0B] text-[#1B2B48] flex items-center space-x-1"
+                      className="px-6 py-3 text-[14px] font-extrabold rounded-[12px] bg-[#007672] hover:bg-[#00605c] text-white flex items-center space-x-1"
                     >
                       <span className="pr-1">Continue</span>
                       <ChevronRight size={16} strokeWidth={2.5} />
@@ -259,7 +259,7 @@ export const CaretakerProfileScreen = () => {
                     <p className="text-[13px] leading-relaxed text-[#465E87] font-medium pr-2">
                       {provider.bio || `A loving home away from home! Your pet will enjoy spacious indoor and outdoor spaces, daily walks, playtime and lots of cuddles.`}
                     </p>
-                    <button className="text-[#FBBF24] text-[13px] font-extrabold mt-1.5 flex items-center hover:opacity-80">
+                    <button className="text-[#007672] text-[13px] font-extrabold mt-1.5 flex items-center hover:opacity-80">
                       Read more <ChevronDown size={14} className="ml-0.5" strokeWidth={3} />
                     </button>
                   </div>
@@ -322,7 +322,7 @@ export const CaretakerProfileScreen = () => {
                           <div className="flex items-center space-x-2 mb-0.5 lg:mb-1">
                             <h3 className="text-[15px] lg:text-[16px] font-extrabold text-[#1B2B48]">{provider.name}</h3>
                             <div className="flex items-center space-x-0.5">
-                              <Star size={12} className="fill-[#FBBF24] text-[#FBBF24]" />
+                              <Star size={12} className="fill-[#007672] text-[#007672]" />
                               <span className="text-[12px] lg:text-[13px] font-extrabold text-[#1B2B48]">{provider.rating}</span>
                               <span className="text-[10px] lg:text-[12px] font-medium text-[#465E87]">({provider.reviews} reviews)</span>
                             </div>
@@ -350,7 +350,7 @@ export const CaretakerProfileScreen = () => {
                   <p className="text-[13px] leading-relaxed text-[#465E87] font-medium">
                     {provider.bio || `A loving home away from home! Your pet will enjoy spacious indoor and outdoor spaces, daily walks, playtime and lots of cuddles.`}
                   </p>
-                  <button className="text-[#FBBF24] text-[13px] font-extrabold mt-1.5 flex items-center hover:opacity-80">
+                  <button className="text-[#007672] text-[13px] font-extrabold mt-1.5 flex items-center hover:opacity-80">
                     Read more <ChevronRight size={14} className="ml-0.5 rotate-90" />
                   </button>
                 </div>

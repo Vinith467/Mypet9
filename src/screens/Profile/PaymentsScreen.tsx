@@ -101,7 +101,7 @@ export const PaymentsScreen = () => {
             className="flex flex-col space-y-6"
           >
             {/* Wallet Card */}
-            <div className="bg-gradient-to-br from-[#174F38] to-[#2B845D] rounded-[24px] p-6 text-white shadow-lg shadow-petoo-primary/20 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#007672] to-[#2B845D] rounded-[24px] p-6 text-white shadow-lg shadow-petoo-primary/20 relative overflow-hidden">
               <div className="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
               <div className="absolute -left-8 -bottom-8 w-24 h-24 bg-white/10 rounded-full blur-xl" />
               
@@ -115,7 +115,7 @@ export const PaymentsScreen = () => {
                 </div>
                 
                 <div className="flex space-x-3">
-                  <button className="flex-1 bg-white text-[#174F38] py-3 rounded-xl font-bold text-[15px] flex items-center justify-center space-x-2 hover:bg-gray-50 transition-colors">
+                  <button className="flex-1 bg-white text-[#007672] py-3 rounded-xl font-bold text-[15px] flex items-center justify-center space-x-2 hover:bg-gray-50 transition-colors">
                     <Plus size={18} />
                     <span>Add Money</span>
                   </button>

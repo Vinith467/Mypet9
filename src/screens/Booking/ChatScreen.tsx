@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, MoreVertical, Plus, Camera, Mic, Smile, Send, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
@@ -6,9 +6,10 @@ import { db, storage } from '../../config/firebase';
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
-export const ChatScreen = () => {
+export const ChatScreen = ({ embeddedChatId }: { embeddedChatId?: string }) => {
   const navigate = useNavigate();
-  const { id } = useParams(); // bookingId
+  const params = useParams();
+  const id = embeddedChatId || params.id; // bookingId
   const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -166,19 +167,46 @@ export const ChatScreen = () => {
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const formatDateSeparator = (timestamp: any) => {
+    if (!timestamp) return 'Today';
+    const d = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    if (d.toDateString() === today.toDateString()) {
+      return 'Today';
+    } else if (d.toDateString() === yesterday.toDateString()) {
+      return 'Yesterday';
+    } else {
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+  };
+
+  const isNewDay = (currentMsg: any, previousMsg: any) => {
+    if (!previousMsg) return true;
+    if (!currentMsg.createdAt || !previousMsg.createdAt) return false;
+    
+    const current = currentMsg.createdAt.toDate ? currentMsg.createdAt.toDate() : new Date(currentMsg.createdAt);
+    const prev = previousMsg.createdAt.toDate ? previousMsg.createdAt.toDate() : new Date(previousMsg.createdAt);
+    
+    return current.toDateString() !== prev.toDateString();
+  };
+
   const caretakerName = bookingDetails?.caretakerName || 'Caretaker';
   const caretakerImage = bookingDetails?.caretakerImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(caretakerName)}&background=E5E7EB&color=1B2B48`;
 
   return (
     <>
-      <div className="w-full h-[100dvh] lg:h-screen flex flex-col bg-[#F8F9FA]">
+      <div className="w-full h-full flex flex-col bg-[#F8F9FA] overflow-hidden">
         
         {/* Header */}
-        <div className="bg-white border-b border-gray-100 flex items-center justify-between px-4 py-4 lg:py-6 shadow-sm z-10 shrink-0">
+        <div className="bg-white border-b border-gray-100 flex items-center justify-between px-4 py-4 lg:py-4 shadow-sm z-10 shrink-0">
           <div className="flex items-center">
             <button 
               onClick={() => navigate(-1)}
-              className="w-10 h-10 mr-2 rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center text-[#1B2B48]"
+              className="lg:hidden w-10 h-10 mr-2 rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center text-[#1B2B48]"
             >
               <ArrowLeft size={24} />
             </button>
@@ -196,7 +224,7 @@ export const ChatScreen = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-[17px] font-extrabold text-[#1B2B48]">{caretakerName}</span>
-              <span className="text-[13px] font-medium text-[#174F38]">Pet Care Executive</span>
+              <span className="text-[13px] font-medium text-[#007672]">Pet Care Executive</span>
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -208,26 +236,30 @@ export const ChatScreen = () => {
 
         {/* Chat Area */}
         <div className="flex-1 overflow-y-auto px-4 py-6" style={{ backgroundImage: 'radial-gradient(#e5e7eb 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
-          <div className="flex justify-center mb-8">
-            <div className="bg-white px-4 py-1.5 rounded-full shadow-sm text-[12px] text-[#465E87] font-bold border border-gray-100">
-              Today
-            </div>
-          </div>
           
           <div className="flex flex-col space-y-4 max-w-3xl mx-auto w-full">
             {messages.length === 0 ? (
               <p className="text-center text-sm text-gray-400 mt-4">No messages yet. Send a message to start the conversation!</p>
             ) : (
-              messages.map((msg) => {
+              messages.map((msg, index) => {
                 const isMe = !msg.isCaretaker;
                 const hasMedia = !!msg.mediaUrl;
+                const showDateSeparator = isNewDay(msg, messages[index - 1]);
 
                 return (
-                  <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
+                  <Fragment key={msg.id}>
+                    {showDateSeparator && (
+                      <div className="flex justify-center my-4">
+                        <div className="bg-white px-4 py-1.5 rounded-full shadow-sm text-[12px] text-[#465E87] font-bold border border-gray-100">
+                          {formatDateSeparator(msg.createdAt)}
+                        </div>
+                      </div>
+                    )}
+                    <div className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                     <div 
                       className={`max-w-[85%] sm:max-w-[70%] rounded-[20px] px-5 py-3 shadow-sm relative group
                         ${isMe 
-                          ? 'bg-[#174F38] text-white rounded-tr-sm' 
+                          ? 'bg-[#007672] text-white rounded-tr-sm' 
                           : 'bg-white text-[#1B2B48] border border-gray-100 rounded-tl-sm'
                         }
                       `}
@@ -257,13 +289,14 @@ export const ChatScreen = () => {
                         )}
                       </div>
                     </div>
-                  </div>
+                    </div>
+                  </Fragment>
                 );
               })
             )}
             {uploading && (
               <div className="flex justify-end">
-                <div className="bg-[#174F38] text-white rounded-[20px] rounded-tr-sm px-5 py-3 shadow-sm flex items-center gap-2">
+                <div className="bg-[#007672] text-white rounded-[20px] rounded-tr-sm px-5 py-3 shadow-sm flex items-center gap-2">
                   <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
                   <span className="text-[13px] font-medium">Sending...</span>
                 </div>
@@ -293,7 +326,7 @@ export const ChatScreen = () => {
               <Plus size={24} />
             </button>
             
-            <div className={`flex-1 bg-gray-50 rounded-[24px] min-h-[48px] flex items-end py-1.5 px-2 border transition-all ${isRecording ? 'border-red-300 bg-red-50' : 'border-gray-100 focus-within:border-[#174F38]/30 focus-within:bg-white focus-within:shadow-sm'}`}>
+            <div className={`flex-1 bg-gray-50 rounded-[24px] min-h-[48px] flex items-end py-1.5 px-2 border transition-all ${isRecording ? 'border-red-300 bg-red-50' : 'border-gray-100 focus-within:border-[#007672]/30 focus-within:bg-white focus-within:shadow-sm'}`}>
               <button className="p-2 text-gray-400 hover:text-gray-600 rounded-full transition-colors hidden sm:block">
                 <Smile size={22} />
               </button>
@@ -332,7 +365,7 @@ export const ChatScreen = () => {
             {message.trim() && !isRecording ? (
               <button 
                 onClick={handleSendText}
-                className="w-12 h-12 rounded-full bg-[#174F38] text-white flex items-center justify-center flex-shrink-0 hover:bg-[#174F38]/90 transition-all shadow-[0_4px_12px_rgba(23,79,56,0.3)] hover:scale-105"
+                className="w-12 h-12 rounded-full bg-[#007672] text-white flex items-center justify-center flex-shrink-0 hover:bg-[#007672]/90 transition-all shadow-[0_4px_12px_rgba(23,79,56,0.3)] hover:scale-105"
               >
                 <Send size={20} className="ml-1" />
               </button>
@@ -342,7 +375,7 @@ export const ChatScreen = () => {
                 className={`w-12 h-12 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
                   isRecording 
                   ? 'bg-red-500 border-red-600 text-white animate-bounce' 
-                  : 'bg-gray-50 border-gray-100 text-[#174F38] hover:bg-gray-100'
+                  : 'bg-gray-50 border-gray-100 text-[#007672] hover:bg-gray-100'
                 }`}
               >
                 {isRecording ? <X size={22} /> : <Mic size={22} />}

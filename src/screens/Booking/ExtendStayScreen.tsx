@@ -125,8 +125,8 @@ export const ExtendStayScreen = () => {
               <div className="flex items-center gap-1.5 min-w-0 mb-1.5">
                 <h3 className="text-[17px] font-extrabold text-[#111111] truncate">{booking.caretakerName}</h3>
                 <div className="flex items-center space-x-1 px-1.5 py-0.5 bg-[#E8F5E9] rounded-full shrink-0">
-                  <svg className="w-2.5 h-2.5 text-[#174F38]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
-                  <span className="text-[9px] font-bold text-[#174F38]">Verified Host</span>
+                  <svg className="w-2.5 h-2.5 text-[#007672]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                  <span className="text-[9px] font-bold text-[#007672]">Verified Host</span>
                 </div>
               </div>
               
@@ -252,7 +252,7 @@ export const ExtendStayScreen = () => {
           <button 
             onClick={handleConfirmExtension}
             disabled={isProcessing}
-            className="w-full h-[54px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-sm transition-colors disabled:opacity-50"
+            className="w-full h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-sm transition-colors disabled:opacity-50"
           >
             <span>Confirm Extension</span>
             <ArrowRight size={20} />

@@ -63,23 +63,23 @@ export const BookingConfirmedScreen = () => {
         {/* Confetti Particles (Background) */}
         <div className="absolute inset-0 pointer-events-none opacity-80 z-0">
           <div className="absolute top-[20%] left-[25%] w-[3px] h-[10px] bg-green-400 rotate-45"></div>
-          <div className="absolute top-[15%] left-[35%] w-[12px] h-[3px] bg-yellow-400 -rotate-45"></div>
-          <div className="absolute top-[35%] left-[30%] text-[#174F38] opacity-70"><PawPrint size={14}/></div>
+          <div className="absolute top-[15%] left-[35%] w-[12px] h-[3px] bg-[#007672] -rotate-45"></div>
+          <div className="absolute top-[35%] left-[30%] text-[#007672] opacity-70"><PawPrint size={14}/></div>
           <div className="absolute top-[25%] right-[35%] w-[3px] h-[12px] bg-green-500 rotate-12"></div>
-          <div className="absolute top-[40%] right-[30%] w-[10px] h-[3px] bg-yellow-400 -rotate-12"></div>
-          <div className="absolute top-[18%] right-[25%] text-yellow-500 opacity-80"><PawPrint size={14}/></div>
+          <div className="absolute top-[40%] right-[30%] w-[10px] h-[3px] bg-[#007672] -rotate-12"></div>
+          <div className="absolute top-[18%] right-[25%] text-[#007672] opacity-80"><PawPrint size={14}/></div>
         </div>
 
         {/* Main Icon */}
         <div className="relative z-10 w-24 h-24 rounded-full flex items-center justify-center mb-5 mt-2 mx-auto">
           {isPayNow ? (
-            <div className="w-20 h-20 rounded-full bg-[#174F38] flex items-center justify-center shadow-[0_8px_16px_rgba(23,79,56,0.2)]">
+            <div className="w-20 h-20 rounded-full bg-[#007672] flex items-center justify-center shadow-[0_8px_16px_rgba(23,79,56,0.2)]">
               <Check size={44} className="text-white stroke-[4]" />
             </div>
           ) : (
-            <div className="w-20 h-20 rounded-full bg-[#FFF9EC] border-2 border-[#FDD835]/30 flex items-center justify-center relative">
+            <div className="w-20 h-20 rounded-full bg-[#FFF9EC] border-2 border-[#71b6af]/30 flex items-center justify-center relative">
               <Calendar size={40} className="text-[#111111]" strokeWidth={2} />
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#FDD835] flex items-center justify-center border-2 border-white shadow-sm">
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#71b6af] flex items-center justify-center border-2 border-white shadow-sm">
                 <Check size={18} className="text-[#111111] stroke-[4]" />
               </div>
             </div>
@@ -99,13 +99,13 @@ export const BookingConfirmedScreen = () => {
         
         {/* Pay Later Warning Banner */}
         {!isPayNow && (
-          <div className="bg-[#FFF9EC] rounded-[12px] p-4 flex items-center gap-3 border border-[#FDD835]/20 shadow-sm">
-            <div className="w-10 h-10 rounded-full bg-[#FDD835] flex items-center justify-center shrink-0">
+          <div className="bg-[#FFF9EC] rounded-[12px] p-4 flex items-center gap-3 border border-[#71b6af]/20 shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-[#71b6af] flex items-center justify-center shrink-0">
               <Clock size={20} className="text-[#111111]" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[14px] font-extrabold text-[#111111]">
-                You will pay ₹{finalTotal.toLocaleString('en-IN')} after the stay is completed.
+                You have to pay ₹{finalTotal.toLocaleString('en-IN')} after the stay is completed.
               </p>
               <p className="text-[13px] font-medium text-[#465E87] mt-0.5">
                 No payment has been taken now.
@@ -133,13 +133,13 @@ export const BookingConfirmedScreen = () => {
                     {provider?.name || 'Priya S.'}
                   </h3>
                   <div className="flex items-center space-x-1 px-1.5 py-0.5 bg-[#E8F5E9] rounded-full shrink-0">
-                    <BadgeCheck size={12} className="text-[#174F38]" />
-                    <span className="text-[10px] font-bold text-[#174F38]">Verified Host</span>
+                    <BadgeCheck size={12} className="text-[#007672]" />
+                    <span className="text-[10px] font-bold text-[#007672]">Verified Host</span>
                   </div>
                 </div>
               </div>
               <div className="flex items-center space-x-1 mb-2.5">
-                <Star size={14} className="text-[#FDD835] fill-[#FDD835]" />
+                <Star size={14} className="text-[#71b6af] fill-[#71b6af]" />
                 <span className="text-[13px] font-extrabold text-[#1B2B48]">{provider?.rating || '4.9'}</span>
                 <span className="text-[13px] font-medium text-[#465E87]">({provider?.reviews || 96} reviews)</span>
               </div>
@@ -150,7 +150,7 @@ export const BookingConfirmedScreen = () => {
                   <span className="text-[11px] font-medium text-[#465E87] truncate">Independent house</span>
                 </div>
                 <div className="flex items-center space-x-1.5 min-w-0">
-                  <TreePine size={12} className="text-[#174F38] shrink-0" />
+                  <TreePine size={12} className="text-[#007672] shrink-0" />
                   <span className="text-[11px] font-medium text-[#465E87] truncate">Has a garden</span>
                 </div>
                 <div className="flex items-center space-x-1.5 min-w-0">
@@ -282,8 +282,8 @@ export const BookingConfirmedScreen = () => {
               <div className="flex justify-between items-center">
                 <span className="text-[13px] font-medium text-[#465E87]">Payment Status</span>
                 <div className="flex items-center space-x-1">
-                  <CheckCircle2 size={14} className="text-[#174F38]" />
-                  <span className="text-[13px] font-extrabold text-[#174F38]">Paid Successfully</span>
+                  <CheckCircle2 size={14} className="text-[#007672]" />
+                  <span className="text-[13px] font-extrabold text-[#007672]">Paid Successfully</span>
                 </div>
               </div>
             </div>
@@ -297,7 +297,7 @@ export const BookingConfirmedScreen = () => {
         <div className="max-w-2xl mx-auto w-full px-4 pb-4 flex flex-col space-y-3">
           <Button 
             onClick={() => navigate('/bookings')}
-            className="w-full h-[54px] bg-[#FDD835] hover:bg-[#FBBF24] text-[#111111] text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-sm"
+            className="w-full h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-sm"
           >
             <span>View Booking Details</span>
             <ArrowRight size={20} />

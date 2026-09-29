@@ -19,14 +19,14 @@ export const CaretakerNavigation = () => {
       
       {/* Desktop Logo */}
       <div className="hidden lg:flex items-center space-x-3 mb-12 px-6 cursor-pointer group" onClick={() => navigate('/caretaker/dashboard')}>
-        <div className="bg-[#FBBF24] rounded-2xl p-2.5 shadow-lg shadow-[#FBBF24]/20 group-hover:scale-105 transition-transform">
+        <div className="bg-[#007672] rounded-2xl p-2.5 shadow-lg shadow-[#007672]/20 group-hover:scale-105 transition-transform">
           <PawPrint size={24} className="text-[#1B2B48]" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-2xl font-extrabold text-[#1B2B48] tracking-tight leading-none" style={{ fontFamily: 'serif' }}>
             Mypet9
           </h2>
-          <span className="text-xs font-bold text-[#F59E0B] tracking-widest uppercase mt-0.5">Partner</span>
+          <span className="text-xs font-bold text-[#00605c] tracking-widest uppercase mt-0.5">Partner</span>
         </div>
       </div>
 

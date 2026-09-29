@@ -55,7 +55,7 @@ export const AdminDashboard = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8 bg-white p-6 rounded-2xl shadow-sm">
           <div className="flex items-center space-x-3">
-            <div className="bg-[#174F38] p-3 rounded-xl">
+            <div className="bg-[#007672] p-3 rounded-xl">
               <PawPrint className="text-white" size={28} />
             </div>
             <div>
@@ -74,7 +74,7 @@ export const AdminDashboard = () => {
                 onClick={() => setFilter(tab as any)}
                 className={`flex-1 py-4 text-sm font-bold uppercase tracking-wider transition-colors ${
                   filter === tab 
-                    ? 'border-b-2 border-[#174F38] text-[#174F38] bg-gray-50' 
+                    ? 'border-b-2 border-[#007672] text-[#007672] bg-gray-50' 
                     : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
                 }`}
               >
@@ -99,7 +99,7 @@ export const AdminDashboard = () => {
                       <div className="flex items-center space-x-3 mb-2">
                         <h3 className="font-extrabold text-lg text-[#1B2B48]">{app.fullName}</h3>
                         <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                          app.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                          app.status === 'pending' ? 'bg-[#007672]/10 text-yellow-700' :
                           app.status === 'approved' ? 'bg-green-100 text-green-700' :
                           'bg-red-100 text-red-700'
                         }`}>
@@ -125,7 +125,7 @@ export const AdminDashboard = () => {
                         </Button>
                         <Button 
                           onClick={() => updateStatus(app.id, 'approved')}
-                          className="bg-[#174F38] hover:bg-[#113a29] shadow-lg shadow-[#174F38]/20"
+                          className="bg-[#007672] hover:bg-[#00605c] shadow-lg shadow-[#007672]/20"
                         >
                           Approve Partner
                         </Button>
