@@ -98,44 +98,50 @@ export const AddPetScreen = () => {
   };
 
   return (
-    <div className="flex-1 min-h-screen bg-[#F4F9F9] relative pb-8 font-sans">
+    <div className="flex-1 min-h-screen bg-[#F4F9F9] relative pb-24 lg:pb-8 font-sans">
       
       {/* Top Navbar */}
       <TopNavbar />
 
-      <div className="mx-4 lg:mx-12 xl:mx-20 relative pb-12 mt-8 z-20">
+      {/* Back Button (Fixed in the gap) */}
+      <button 
+        onClick={handleBack} 
+        className="fixed top-[72px] md:top-[80px] left-4 lg:left-12 xl:left-20 z-50 flex items-center justify-center w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-md text-[#1B2B48] hover:bg-white transition-all cursor-pointer hover:scale-105"
+        title="Go Back"
+      >
+        <ArrowLeft size={20} />
+      </button>
+
+      <div className="mx-4 lg:mx-12 xl:mx-20 relative pb-12 mt-10 z-20">
         <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-[#E8F3F3] w-full overflow-hidden mx-auto max-w-[1400px]">
           
-          {/* Card Header Banner (Now inside the card) */}
+          {/* Card Header Banner */}
           <div className="relative w-full overflow-hidden bg-[#F0F9F9] border-b border-gray-100">
-            <div className="w-full relative h-[160px] md:h-[200px] lg:h-[220px]">
+            <div className="w-full relative h-[120px] md:h-[200px] lg:h-[220px]">
+              {/* Back Button was here */}
+              
               {/* Banner Image */}
               <img 
                 src="/pet-application.png" 
                 alt="Pet Application Banner" 
-                className="absolute right-0 top-0 h-full w-full object-contain object-right pointer-events-none"
+                className="absolute inset-0 h-full w-full object-cover md:object-cover pointer-events-none"
               />
-              {/* Text Content */}
-              <div className="absolute top-1/2 -translate-y-1/2 left-4 lg:left-8 z-10 max-w-[70%] md:max-w-[50%] flex flex-col items-start justify-center">
-                <button 
-                  onClick={handleBack} 
-                  className="flex items-center gap-2 text-[#007672] bg-white/60 backdrop-blur-md px-3.5 py-1.5 rounded-full mb-3 hover:bg-white hover:shadow-md transition-all shadow-sm border border-white/40"
-                >
-                  <ArrowLeft size={16} strokeWidth={2.5} />
-                  <span className="font-bold text-[13px]">Back</span>
-                </button>
-                <h1 className="text-[28px] md:text-[38px] lg:text-[42px] font-extrabold text-[#003B39] leading-[1.1] mb-2 tracking-tight" style={{ fontFamily: 'serif' }}>
-                  Tell us about<br />your pet
-                </h1>
-                <p className="text-[13px] md:text-[15px] font-medium text-[#465E87] max-w-[280px] md:max-w-[340px] leading-relaxed hidden sm:block">
-                  We just need a few simple details to help us find the perfect care for your furry friend.
-                </p>
-              </div>
             </div>
           </div>
 
-          {/* Form Grid */}
+          {/* Form Content Area */}
           <div className="p-5 md:p-8">
+            {/* Header Text (Moved below image) */}
+            <div className="mb-6 flex flex-col items-start">
+                <h1 className="text-[28px] md:text-[38px] lg:text-[42px] font-extrabold text-[#003B39] leading-[1.2] mb-1.5 tracking-tight" style={{ fontFamily: 'serif' }}>
+                  Tell us about your pet
+                </h1>
+                <p className="text-[13px] md:text-[15px] font-medium text-[#465E87] leading-relaxed hidden sm:block">
+                  We just need a few simple details to help us find the perfect care for your furry friend.
+                </p>
+            </div>
+
+            {/* Form Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 w-full items-start">
           
           {/* Pet Photo */}
@@ -402,10 +408,10 @@ export const AddPetScreen = () => {
                 value={formData.specialInstructions}
                 onChange={(e) => updateForm('specialInstructions', e.target.value)}
                 placeholder="Food preference, feeding routine, allergies, behavior notes, etc."
-                className="w-full pl-10 pr-12 py-3 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm h-[44px] resize-none overflow-hidden"
+                className="w-full pl-10 pr-12 py-3 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm min-h-[90px] resize-none"
                 maxLength={500}
               />
-              <div className="absolute inset-y-0 right-0 pr-3 pb-1 flex items-end pointer-events-none">
+              <div className="absolute bottom-2 right-3 flex items-end pointer-events-none">
                 <span className="text-[10px] font-medium text-[#8A9BAE]">{formData.specialInstructions.length}/500</span>
               </div>
             </div>

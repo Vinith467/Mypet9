@@ -80,100 +80,107 @@ export const EditProfileScreen = () => {
 
   return (
     <DashboardLayout>
-      <div className="w-full flex flex-col min-h-full bg-[#FAF9F5] pb-24 lg:pb-12 pt-6 lg:pt-10 px-5">
-        <div className="max-w-xl mx-auto w-full">
+      <div className="w-full flex flex-col min-h-full bg-[#FAF9F5] pb-10 pt-4 lg:pt-6 px-5">
+        <div className="max-w-3xl mx-auto w-full">
           
-          {/* Header */}
-          <div className="flex items-center mb-8">
-            <button 
-              onClick={() => navigate(-1)}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-100 hover:bg-gray-50 transition-colors mr-3 shadow-sm"
-            >
-              <ArrowLeft className="text-[#1B2B48]" size={20} />
-            </button>
-            <h1 className="text-[24px] font-extrabold text-[#1B2B48]">
-              Edit Profile
-            </h1>
-          </div>
-
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col space-y-8"
+            className="bg-white rounded-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden"
           >
-            {/* Avatar Uploader */}
-            <div className="flex flex-col items-center justify-center">
-              <input 
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                accept="image/*,.heic,.heif"
-                onChange={handleFileSelect}
-              />
-              <div 
-                className="relative group cursor-pointer"
-                onClick={() => fileInputRef.current?.click()}
+            {/* Header */}
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center bg-gray-50/50">
+              <button 
+                onClick={() => navigate(-1)}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors mr-4"
               >
-                <img 
-                  src={displayPhotoUrl} 
-                  alt="Profile" 
-                  className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md bg-gray-100"
+                <ArrowLeft className="text-[#1B2B48]" size={20} />
+              </button>
+              <h1 className="text-[20px] md:text-[22px] font-extrabold text-[#1B2B48]">
+                Edit Profile
+              </h1>
+            </div>
+
+            <div className="p-5 md:p-8 flex flex-col md:flex-row gap-6 md:gap-10">
+              
+              {/* Left Column - Photo */}
+              <div className="flex flex-col items-center md:w-1/3">
+                <input 
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept="image/*,.heic,.heif"
+                  onChange={handleFileSelect}
                 />
-                <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Camera className="text-white" size={24} />
+                <div 
+                  className="relative group cursor-pointer"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <img 
+                    src={displayPhotoUrl} 
+                    alt="Profile" 
+                    className="w-28 h-28 md:w-32 md:h-32 rounded-full object-cover border-[4px] border-white shadow-md bg-gray-100"
+                  />
+                  <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Camera className="text-white" size={24} />
+                  </div>
+                </div>
+                <button 
+                  className="text-petoo-primary text-[14px] font-bold mt-4 bg-petoo-primary/10 px-5 py-2.5 rounded-full hover:bg-petoo-primary/20 transition-colors w-full text-center max-w-[160px]"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Change Photo
+                </button>
+              </div>
+
+              {/* Right Column - Form */}
+              <div className="flex-1 flex flex-col space-y-4">
+                {message && (
+                  <div className={`p-3 rounded-xl text-[14px] font-bold text-center mb-2 ${message.includes('successfully') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`}>
+                    {message}
+                  </div>
+                )}
+                
+                <div className="space-y-4">
+                  <Input 
+                    placeholder="Full Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    leftIcon={<User size={18} />}
+                  />
+                  <Input 
+                    placeholder="Email Address"
+                    value={user?.email || ''}
+                    readOnly
+                    disabled
+                    leftIcon={<Mail size={18} />}
+                  />
+                  <Input 
+                    placeholder="Phone Number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    leftIcon={<Phone size={18} />}
+                  />
+                  <Input 
+                    placeholder="Emergency Contact (Optional)"
+                    value={emergencyContact}
+                    onChange={(e) => setEmergencyContact(e.target.value)}
+                    leftIcon={<HeartPulse size={18} />}
+                  />
+                </div>
+
+                <div className="pt-4 md:pt-6 mt-auto">
+                  <Button 
+                    fullWidth 
+                    size="lg"
+                    onClick={handleSave}
+                    disabled={loading}
+                  >
+                    {loading ? 'Saving...' : 'Save Changes'}
+                  </Button>
                 </div>
               </div>
-              <span 
-                className="text-[#465E87] text-[13px] font-medium mt-3 cursor-pointer hover:underline"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Tap to change photo
-              </span>
             </div>
-
-            {message && (
-              <div className={`p-3 rounded-xl text-[14px] font-bold text-center ${message.includes('successfully') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`}>
-                {message}
-              </div>
-            )}
-
-            {/* Form */}
-            <div className="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100 space-y-4">
-              <Input 
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                leftIcon={<User size={18} />}
-              />
-              <Input 
-                placeholder="Email Address"
-                value={user?.email || ''}
-                readOnly
-                disabled
-                leftIcon={<Mail size={18} />}
-              />
-              <Input 
-                placeholder="Phone Number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                leftIcon={<Phone size={18} />}
-              />
-              <Input 
-                placeholder="Emergency Contact (Optional)"
-                value={emergencyContact}
-                onChange={(e) => setEmergencyContact(e.target.value)}
-                leftIcon={<HeartPulse size={18} />}
-              />
-            </div>
-
-            <Button 
-              fullWidth 
-              size="lg"
-              onClick={handleSave}
-              disabled={loading}
-            >
-              {loading ? 'Saving...' : 'Save Changes'}
-            </Button>
 
           </motion.div>
         </div>

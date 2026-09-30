@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, PawPrint, MoreHorizontal, ShieldCheck, Home, Heart, Calendar, ArrowRight, Star, Check } from 'lucide-react';
+import { Plus, PawPrint, MoreHorizontal, ShieldCheck, Home, Heart, Calendar, ArrowRight, Star, Check, Edit2, Camera, CheckCircle2, MoreVertical } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { useAuth } from '../../contexts/AuthContext';
 import { collection, query, getDocs, deleteDoc, doc } from 'firebase/firestore';
@@ -64,7 +64,10 @@ export const MyPetsScreen = () => {
         
         {/* Top Banner */}
         <div className="w-full">
-          <img src="/pet-herosection.png" alt="Your Pets, Our Priority" className="w-full h-auto object-cover" />
+          {/* Desktop Image */}
+          <img src="/pet-herosection.png" alt="Your Pets, Our Priority" className="w-full h-auto object-cover hidden md:block" />
+          {/* Mobile Image */}
+          <img src="/mobile ui/petadd.png" alt="Happy Pets Happier Lives" className="w-full h-auto object-cover block md:hidden" />
         </div>
 
         <div className="max-w-7xl mx-auto w-full px-4 lg:px-8 mt-4 mb-2">
@@ -111,17 +114,22 @@ export const MyPetsScreen = () => {
                     <div 
                       key={pet.id} 
                       onClick={() => navigate(`/edit-pet/${pet.id}`)}
-                      className="bg-white rounded-[20px] overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col group relative cursor-pointer hover:border-[#007672]/30 hover:shadow-[0_8px_30px_rgb(0,118,114,0.12)] transition-all"
+                      className="bg-white rounded-[24px] shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-row md:flex-col p-3 md:p-0 group relative cursor-pointer hover:border-[#007672]/30 hover:shadow-[0_8px_30px_rgb(0,118,114,0.12)] transition-all h-[150px] md:h-auto"
                     >
-                      
                       {/* Pet Image Header */}
-                      <div className="h-[130px] w-full relative">
+                      <div className="w-[120px] h-full md:w-full md:h-[130px] shrink-0 relative rounded-[16px] md:rounded-none md:rounded-t-[24px] overflow-hidden">
                         <img 
                           src={pet.image || 'https://placehold.co/600x400/e0f4f2/007672?text=Pet'} 
                           alt={pet.name} 
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         />
-                        <div className="absolute top-2 right-2 z-30">
+                        {/* Camera icon in bottom right (Mobile only) */}
+                        <div className="absolute bottom-2 right-2 bg-white rounded-full p-1.5 shadow-sm md:hidden">
+                           <Camera size={12} className="text-[#1B2B48]" strokeWidth={2.5} />
+                        </div>
+                        
+                        {/* 3 dots menu (Desktop only) */}
+                        <div className="absolute top-2 right-2 z-30 hidden md:block">
                           <button 
                             onClick={(e) => {
                               e.stopPropagation();
@@ -158,41 +166,89 @@ export const MyPetsScreen = () => {
                       </div>
 
                       {/* Pet Info Content */}
-                      <div className="p-3.5 flex flex-col flex-1 bg-white relative z-20">
-                        <div className="flex items-center gap-2 mb-3">
-                          <h3 className="text-[16px] font-extrabold text-[#1B2B48]">{pet.name}</h3>
-                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${pet.type?.toLowerCase() === 'cat' ? 'bg-[#fff0f5] text-[#d63384]' : 'bg-[#e0f4f2] text-[#007672]'}`}>
-                            {pet.type || 'Pet'}
-                          </span>
-                        </div>
+                      <div className="pl-3 md:pl-0 md:p-3.5 flex flex-col flex-1 bg-white relative z-20 justify-between py-1 md:py-0">
+                        <div>
+                          <div className="flex items-center justify-between mb-1.5 md:mb-3">
+                            <div className="flex items-center gap-1.5 flex-1 min-w-0 pr-2">
+                              <h3 className="text-[16px] font-extrabold text-[#1B2B48] truncate">{pet.name}</h3>
+                              <Edit2 size={12} className="text-gray-400 shrink-0 hidden md:block" />
+                              <span className={`px-2 py-0.5 rounded-[8px] text-[10px] font-bold uppercase tracking-wide shrink-0 ${pet.type?.toLowerCase() === 'cat' ? 'bg-[#fff0f5] text-[#d63384]' : 'bg-[#e0f4f2] text-[#007672]'}`}>
+                                {pet.type || 'Pet'}
+                              </span>
+                            </div>
+                            
+                            {/* 3 dots menu (Mobile only) */}
+                            <div className="relative md:hidden shrink-0 z-30 -mr-1">
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenDropdownId(openDropdownId === pet.id ? null : pet.id);
+                                }}
+                                className="w-6 h-6 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors"
+                              >
+                                <MoreVertical size={14} />
+                              </button>
+                              {openDropdownId === pet.id && (
+                                <div className="absolute right-0 mt-2 w-32 bg-white rounded-[12px] shadow-lg border border-gray-100 py-1 z-40">
+                                  <button 
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      navigate(`/edit-pet/${pet.id}`);
+                                    }}
+                                    className="w-full text-left px-4 py-2 text-[13px] font-bold text-[#1B2B48] hover:bg-gray-50 transition-colors"
+                                  >
+                                    Edit
+                                  </button>
+                                  <button 
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeletePet(pet.id);
+                                    }}
+                                    className="w-full text-left px-4 py-2 text-[13px] font-bold text-red-500 hover:bg-red-50 transition-colors"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
 
-                        <div className="flex items-center justify-between text-[#465E87] mb-4 px-0.5">
-                          <div className="flex items-center gap-1">
-                            <span className="text-[12px] font-bold">{pet.gender?.toLowerCase() === 'female' ? '♀' : '♂'}</span>
-                            <span className="text-[11px] font-medium">{pet.gender || 'Male'}</span>
+                          <div className="flex items-center gap-2.5 md:justify-between text-[#465E87] mb-2.5 md:mb-4">
+                            <div className="flex items-center gap-1">
+                              <span className="text-[13px] font-bold text-[#007672] leading-none">{pet.gender?.toLowerCase() === 'female' ? '♀' : '♂'}</span>
+                              <span className="text-[11px] font-medium leading-none">{pet.gender || 'Male'}</span>
+                            </div>
+                            <div className="flex items-center gap-1 min-w-0">
+                              <Calendar size={12} className="text-[#007672] shrink-0" />
+                              <span className="text-[11px] font-medium truncate leading-none">{pet.age}</span>
+                            </div>
+                            <div className="flex items-center gap-1 shrink-0">
+                              <PawPrint size={12} className="text-[#007672] shrink-0" />
+                              <span className="text-[11px] font-medium leading-none">{parseInt(pet.weight) < 10 ? 'Small' : parseInt(pet.weight) < 25 ? 'Medium' : 'Large'}</span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1 min-w-0">
-                            <Calendar size={12} className="text-[#007672] shrink-0" />
-                            <span className="text-[11px] font-medium truncate">{pet.age}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <PawPrint size={12} className="text-[#007672] shrink-0" />
-                            <span className="text-[11px] font-medium">{parseInt(pet.weight) < 10 ? 'Small' : parseInt(pet.weight) < 25 ? 'Medium' : 'Large'}</span>
-                          </div>
+                          
+                          {pet.vaccinated && (
+                            <div className="flex items-center justify-between md:justify-center bg-[#f0f8f8] text-[#007672] py-1 md:py-1.5 px-3 md:px-0 rounded-[10px] md:rounded-lg mb-2.5 md:mb-4">
+                              <div className="flex items-center gap-1.5 justify-center md:w-full">
+                                <ShieldCheck size={14} className="fill-[#007672] text-white hidden md:block" />
+                                <CheckCircle2 size={12} className="text-[#007672] block md:hidden" />
+                                <span className="text-[10px] font-bold tracking-wide md:uppercase">
+                                  Vaccinated
+                                </span>
+                                <Check size={12} className="stroke-[3] hidden md:block" />
+                              </div>
+                              <ArrowRight size={14} className="block md:hidden" />
+                            </div>
+                          )}
                         </div>
-
-                        {pet.vaccinated && (
-                          <div className="flex items-center justify-center gap-1.5 bg-[#f0f8f8] text-[#007672] py-1.5 rounded-lg mb-4 mt-[-6px]">
-                            <Check size={12} className="stroke-[3]" />
-                            <span className="text-[10px] font-bold uppercase tracking-wider">
-                              Vaccinated {pet.vaccinationMonth && pet.vaccinationYear ? `• ${pet.vaccinationMonth} ${pet.vaccinationYear}` : ''}
-                            </span>
-                          </div>
-                        )}
 
                         <button 
-                          onClick={() => navigate(`/edit-pet/${pet.id}`)}
-                          className="w-full mt-auto py-1.5 rounded-full border-2 border-[#007672]/20 text-[#007672] font-extrabold text-[12px] hover:bg-[#007672] hover:text-white transition-all flex items-center justify-center gap-1.5 group/btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/edit-pet/${pet.id}`);
+                          }}
+                          className="w-full mt-auto py-1.5 rounded-full border border-[#007672]/30 text-[#007672] font-extrabold text-[12px] hover:bg-[#007672] hover:text-white transition-all flex items-center justify-center gap-1.5 group/btn bg-white"
                         >
                           View Details 
                           <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
@@ -287,7 +343,7 @@ export const MyPetsScreen = () => {
         </div>
         
         {/* Bottom Banner */}
-        <div className="w-full mt-1 pb-6">
+        <div className="w-full mt-1 pb-24 md:pb-6">
           <img src="/pet-bottom-section.png" alt="More Than Just Boarding" className="w-full h-auto object-cover max-w-7xl mx-auto rounded-[20px] md:px-4" />
         </div>
 

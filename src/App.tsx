@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { PetParentLandingScreen } from './screens/Landing/PetParentLandingScreen';
 import { DirectlyReachUsScreen } from './screens/Landing/DirectlyReachUsScreen';
+import { BookFreePlaytimeScreen } from './screens/Landing/BookFreePlaytimeScreen';
+import { ComingSoonScreen } from './screens/Landing/ComingSoonScreen';
 import AuthScreen from './screens/Auth/AuthScreen';
 import { SelectPetScreen } from './screens/Pets/SelectPetScreen';
 import { ChooseServiceScreen } from './screens/Booking/ChooseServiceScreen';
@@ -31,6 +33,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { SupportChatWidget } from './components/ui/SupportChatWidget';
 import { AdminLayout } from './screens/Admin/AdminLayout';
 import { AdminOverview } from './screens/Admin/AdminOverview';
+import { AdminWaitlist } from './screens/Admin/AdminWaitlist';
 import { AdminApplications } from './screens/Admin/AdminApplications';
 import { AdminUsers } from './screens/Admin/AdminUsers';
 import { AdminBookings } from './screens/Admin/AdminBookings';
@@ -49,6 +52,8 @@ function App() {
           <Routes>
             <Route path="/" element={<PetParentLandingScreen />} />
             <Route path="/directly-reach-us" element={<DirectlyReachUsScreen />} />
+            <Route path="/book-free-playtime" element={<BookFreePlaytimeScreen />} />
+            <Route path="/coming-soon" element={<ComingSoonScreen />} />
             <Route path="/auth" element={<AuthScreen />} />
             <Route path="/select-pet" element={<SelectPetScreen />} />
             <Route path="/choose-service" element={<ChooseServiceScreen />} />
@@ -82,6 +87,7 @@ function App() {
               <Route path="users" element={<AdminUsers />} />
               <Route path="bookings" element={<AdminBookings />} />
               <Route path="support" element={<AdminSupport />} />
+              <Route path="waitlist" element={<AdminWaitlist />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 

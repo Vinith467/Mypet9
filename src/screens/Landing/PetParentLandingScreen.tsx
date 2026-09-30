@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Calendar, Search, PawPrint, Plus, Minus, ChevronDown, Heart } from 'lucide-react';
+import { MapPin, Calendar, Search, PawPrint, Plus, Minus, ChevronDown, Heart, Headset } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Geolocation } from '@capacitor/geolocation';
 import { Capacitor } from '@capacitor/core';
@@ -82,36 +82,17 @@ export const PetParentLandingScreen = () => {
   }, [location, selectedFromSuggestion]);
 
   const handleSearch = () => {
-    if (totalPets === 0) {
-      alert("Please select at least one pet.");
-      return;
-    }
-    if (!location) {
-      alert("Please enter a location.");
-      return;
-    }
-
-    const searchData = {
-      location,
-      dropoffDate,
-      pickupDate,
-      pets,
-      otherPetName: ''
-    };
-
     if (!user) {
       navigate('/auth', { 
         state: { 
-          returnTo: '/search-boarding',
-          searchState: searchData
+          returnTo: '/coming-soon'
         } 
       });
       return;
     }
-
-    navigate('/search-boarding', {
-      state: { ...searchData, isNewSearch: true }
-    });
+    
+    // Navigate to Coming Soon screen instead of searching since caretakers aren't available yet
+    navigate('/coming-soon');
   };
 
   const updatePetCount = (type: keyof typeof pets, increment: boolean) => {
@@ -357,12 +338,22 @@ export const PetParentLandingScreen = () => {
                 Find Homestays
               </button>
 
-              {/* Directly Reach Us Button (Mobile Only) */}
+              {/* Directly Reach Us Button */}
               <button 
                 onClick={() => navigate('/directly-reach-us')}
-                className="md:hidden w-full bg-transparent border-2 border-[#71b6af] text-[#71b6af] font-extrabold text-[15px] py-3.5 rounded-lg flex items-center justify-center transition-colors mt-3"
+                className="w-full bg-[#004d49] hover:bg-[#003b38] text-white active:scale-[0.99] font-extrabold text-[15px] py-3.5 rounded-lg flex items-center justify-center gap-2 transition-all mt-3 shadow-sm hover:shadow-md"
               >
-                Directly Reach Us
+                <Headset className="w-5 h-5" strokeWidth={2.5} />
+                <span>Directly Reach Us</span>
+              </button>
+
+              {/* Book Free Playtime Button */}
+              <button 
+                onClick={() => navigate('/book-free-playtime')}
+                className="w-full bg-[#71b6af] hover:bg-[#5fa39d] text-white font-extrabold text-[15px] py-3.5 rounded-lg flex items-center justify-center gap-2 transition-colors mt-3 shadow-lg shadow-[#71b6af]/30"
+              >
+                <PawPrint className="w-4 h-4" strokeWidth={3} />
+                Book Free Playtime
               </button>
 
             </div>
@@ -422,7 +413,7 @@ export const PetParentLandingScreen = () => {
               boxShadow: '0 20px 60px -15px rgba(0,118,114,0.25), 0 8px 20px -8px rgba(0,118,114,0.15), 0 -2px 6px 0px rgba(0,118,114,0.04), inset 0 -3px 0 0 rgba(0,118,114,0.3)',
             }}
           >
-            <img src={`/mobile ui/${num}.jpeg`} alt={`Section ${num}`} className="w-full h-auto block" />
+            <img src={`/mobile ui/${num}.${num === 8 ? 'png' : 'jpeg'}`} alt={`Section ${num}`} className="w-full h-auto block" />
           </div>
         </section>
       ))}

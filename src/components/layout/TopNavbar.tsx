@@ -19,16 +19,17 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden flex items-center p-4 bg-white border-b border-gray-100 sticky top-0 z-50">
-         <PawPrint className="text-gray-900 w-6 h-6 mr-2" />
-         <span className="font-extrabold text-2xl tracking-tight text-gray-900">mypet9</span>
+      <div className="md:hidden flex items-center p-4 bg-white border-b border-gray-100 fixed top-0 left-0 w-full z-50">
+         <PawPrint className="text-[#007672] w-6 h-6 mr-2" strokeWidth={2.5} />
+         <span className="font-extrabold text-[22px] tracking-tight text-[#1B2B48]">mypet9</span>
       </div>
+      <div className="md:hidden h-[60px] w-full shrink-0" />
 
       {/* Desktop Top Bar */}
-      <header className="hidden md:flex items-center justify-between px-8 py-4 bg-white w-full border-b border-gray-100 z-50 sticky top-0 shadow-sm">
+      <header className="hidden md:flex items-center justify-between px-8 py-4 bg-white w-full border-b border-gray-100 z-50 fixed top-0 left-0 shadow-sm">
         <div className="flex items-center gap-2 cursor-pointer shrink-0" onClick={() => navigate('/')}>
-           <PawPrint className="text-[#007672] w-8 h-8" />
-           <span className="font-extrabold text-2xl tracking-tight text-[#1B2B48] font-serif">Mypet9</span>
+           <PawPrint className="text-[#007672] w-8 h-8" strokeWidth={2.5} />
+           <span className="font-extrabold text-[24px] tracking-tight text-[#1B2B48]">mypet9</span>
         </div>
         
         {/* Navigation Links */}
@@ -88,6 +89,7 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
           )}
         </div>
       </header>
+      <div className="hidden md:block h-[73px] w-full shrink-0" />
     </>
   );
 };

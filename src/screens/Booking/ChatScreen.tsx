@@ -199,7 +199,7 @@ export const ChatScreen = ({ embeddedChatId }: { embeddedChatId?: string }) => {
 
   return (
     <>
-      <div className="w-full h-full flex flex-col bg-[#F8F9FA] overflow-hidden">
+      <div className="w-full h-[100dvh] lg:h-full flex flex-col bg-[#F8F9FA] overflow-hidden">
         
         {/* Header */}
         <div className="bg-white border-b border-gray-100 flex items-center justify-between px-4 py-4 lg:py-4 shadow-sm z-10 shrink-0">

@@ -143,7 +143,7 @@ export const EditPetScreen = () => {
 
   return (
     <DashboardLayout>
-      <div className="w-full flex flex-col min-h-[calc(100vh-64px)] bg-[#E8F3F3] lg:flex-row relative items-center justify-center p-2 lg:p-4 overflow-hidden z-0">
+      <div className="w-full flex flex-col min-h-[calc(100vh-64px)] bg-[#E8F3F3] lg:flex-row relative items-center justify-center p-2 lg:p-4 pb-24 lg:pb-4 overflow-hidden z-0">
         
         {/* Wavy Background Graphic for Entire Page */}
         <div className="absolute inset-0 pointer-events-none z-[-1] overflow-hidden">
@@ -155,35 +155,38 @@ export const EditPetScreen = () => {
            <PawPrint size={50} className="absolute bottom-20 left-10 text-[#007672]/10 -rotate-12" />
         </div>
 
-        {/* The Main White Card Container */}
-        <div className="w-full max-w-[1350px] bg-white rounded-[32px] md:rounded-[48px] shadow-xl flex flex-col lg:flex-row overflow-visible relative z-10 border border-white">
-            
-            {/* Desktop Delete Button (Top Right of Card) */}
-            <button 
-              type="button" 
-              onClick={handleDelete}
-              className="hidden lg:flex absolute top-6 right-6 text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50 z-20"
-              title="Delete Pet"
-            >
-              <Trash2 size={20} />
-            </button>
+        {/* Content Wrapper */}
+        <div className="w-full max-w-[1350px] flex flex-col items-start relative z-10 pt-10 lg:pt-8">
+          
+          {/* Back Button (Fixed in the gap) */}
+          <button 
+            type="button"
+            onClick={() => navigate(-1)}
+            className="fixed top-[72px] md:top-[80px] left-4 lg:left-8 xl:left-auto xl:ml-2 z-50 flex items-center justify-center w-10 h-10 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full shadow-md text-[#1B2B48] hover:bg-white transition-all cursor-pointer hover:scale-105"
+            title="Go Back"
+          >
+            <ArrowLeft size={20} />
+          </button>
 
-            {/* Left Section - Hero Area */}
-            <div className="w-full lg:w-[42%] xl:w-[40%] relative overflow-hidden bg-white rounded-t-[32px] lg:rounded-tr-none lg:rounded-l-[48px] min-h-[400px] lg:min-h-full shrink-0">
+          {/* The Main White Card Container */}
+          <div className="w-full bg-white rounded-[32px] md:rounded-[48px] shadow-xl flex flex-col lg:flex-row overflow-visible relative border border-white">
               
-              {/* Back Button */}
+              {/* Desktop Delete Button (Top Right of Card) */}
               <button 
-                type="button"
-                onClick={() => navigate(-1)}
-                className="absolute top-6 left-6 z-30 flex items-center justify-center w-10 h-10 bg-white/80 backdrop-blur-sm border border-white rounded-full shadow-sm text-[#1B2B48] hover:bg-white transition-all cursor-pointer hover:scale-105"
-                title="Go Back"
+                type="button" 
+                onClick={handleDelete}
+                className="hidden lg:flex absolute top-6 right-6 text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50 z-20"
+                title="Delete Pet"
               >
-                <ArrowLeft size={20} />
+                <Trash2 size={20} />
               </button>
+
+              {/* Left Section - Hero Area */}
+              <div className="w-full lg:w-[42%] xl:w-[40%] relative overflow-hidden bg-white rounded-t-[32px] lg:rounded-tr-none lg:rounded-l-[48px] min-h-[400px] lg:min-h-full shrink-0">
 
               {/* All-in-one Image covering the entire left panel */}
               <img 
-                src="/petdetailspage.png" 
+                src="/mobile ui/edit-pet.png" 
                 alt="Update Pet Details" 
                 className="absolute inset-0 w-full h-full object-cover object-top pointer-events-none"
               />
@@ -512,6 +515,7 @@ export const EditPetScreen = () => {
                 </Button>
               </form>
             </div>
+          </div>
         </div>
       </div>
     </DashboardLayout>

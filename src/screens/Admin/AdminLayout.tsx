@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, ClipboardList, Users, CalendarCheck, 
-  Settings, PawPrint, LogOut, ChevronLeft, MessageSquare
+  Settings, PawPrint, LogOut, ChevronLeft, MessageSquare, Bell
 } from 'lucide-react';
 import { auth } from '../../config/firebase';
 import { signOut } from 'firebase/auth';
@@ -13,6 +13,7 @@ const navItems = [
   { to: '/admin/users', icon: Users, label: 'Users' },
   { to: '/admin/bookings', icon: CalendarCheck, label: 'Bookings' },
   { to: '/admin/support', icon: MessageSquare, label: 'Support Chats' },
+  { to: '/admin/waitlist', icon: Bell, label: 'Waitlist' },
   { to: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
 
