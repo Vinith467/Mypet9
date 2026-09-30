@@ -12,6 +12,7 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
   const { user } = useAuth();
 
   const isActive = (path: string) => {
+    if (path === '/pets' && location.pathname.startsWith('/add-pet')) return true;
     return location.pathname.startsWith(path) || (location.pathname === '/' && path === '/home');
   };
 
@@ -24,7 +25,7 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
       </div>
 
       {/* Desktop Top Bar */}
-      <header className="hidden md:flex items-center justify-between px-8 py-4 bg-white w-full border-b border-gray-100 z-50">
+      <header className="hidden md:flex items-center justify-between px-8 py-4 bg-white w-full border-b border-gray-100 z-50 sticky top-0 shadow-sm">
         <div className="flex items-center gap-2 cursor-pointer shrink-0" onClick={() => navigate('/')}>
            <PawPrint className="text-[#007672] w-8 h-8" />
            <span className="font-extrabold text-2xl tracking-tight text-[#1B2B48] font-serif">Mypet9</span>

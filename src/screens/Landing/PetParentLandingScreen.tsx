@@ -56,7 +56,7 @@ export const PetParentLandingScreen = () => {
   const [selectedFromSuggestion, setSelectedFromSuggestion] = useState(false);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
     const fetchSuggestions = async () => {
       if (selectedFromSuggestion) {
         setSelectedFromSuggestion(false);

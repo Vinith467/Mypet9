@@ -9,6 +9,8 @@ import { uploadImageToCloudinary } from '../../utils/cloudinary';
 import mediumDogImg from '../../assets/images/medium_dog.jpg';
 import largeDogImg from '../../assets/images/large_dog.jpg';
 
+import { TopNavbar } from '../../components/layout/TopNavbar';
+
 export const AddPetScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -96,66 +98,64 @@ export const AddPetScreen = () => {
   };
 
   return (
-    <div className="flex-1 min-h-screen bg-white relative pb-28">
+    <div className="flex-1 min-h-screen bg-[#F4F9F9] relative pb-8 font-sans">
       
-      <div className="relative w-full overflow-hidden bg-[#F0F9F9]">
-        <div className="max-w-6xl mx-auto w-full relative h-[180px] md:h-[220px]">
-          {/* Banner Image */}
-          <img 
-            src="/pet-application.png" 
-            alt="Pet Application Banner" 
-            className="absolute right-0 top-0 h-full w-full object-cover object-right pointer-events-none"
-          />
-          {/* Text Content */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-4 lg:left-8 z-10 max-w-[60%] flex flex-col items-start justify-center">
-            <button onClick={handleBack} className="flex items-center gap-2 text-[#1B2B48] mb-3 hover:opacity-80 transition-opacity -ml-1">
-              <ArrowLeft size={20} strokeWidth={2.5} />
-              <span className="font-extrabold text-[15px]">Add Pet</span>
-            </button>
-            <h1 className="text-[26px] md:text-[36px] font-extrabold text-[#1B2B48] leading-tight mb-2" style={{ fontFamily: 'serif' }}>
-              Tell us about your pet
-            </h1>
-            <p className="text-[13px] md:text-[15px] font-medium text-[#465E87]">
-              A few simple details to help us find the best care.
-            </p>
+      {/* Top Navbar */}
+      <TopNavbar />
+
+      <div className="mx-4 lg:mx-12 xl:mx-20 relative pb-12 mt-8 z-20">
+        <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-[#E8F3F3] w-full overflow-hidden mx-auto max-w-[1400px]">
+          
+          {/* Card Header Banner (Now inside the card) */}
+          <div className="relative w-full overflow-hidden bg-[#F0F9F9] border-b border-gray-100">
+            <div className="w-full relative h-[160px] md:h-[200px] lg:h-[220px]">
+              {/* Banner Image */}
+              <img 
+                src="/pet-application.png" 
+                alt="Pet Application Banner" 
+                className="absolute right-0 top-0 h-full w-full object-contain object-right pointer-events-none"
+              />
+              {/* Text Content */}
+              <div className="absolute top-1/2 -translate-y-1/2 left-4 lg:left-8 z-10 max-w-[70%] md:max-w-[50%] flex flex-col items-start justify-center">
+                <button 
+                  onClick={handleBack} 
+                  className="flex items-center gap-2 text-[#007672] bg-white/60 backdrop-blur-md px-3.5 py-1.5 rounded-full mb-3 hover:bg-white hover:shadow-md transition-all shadow-sm border border-white/40"
+                >
+                  <ArrowLeft size={16} strokeWidth={2.5} />
+                  <span className="font-bold text-[13px]">Back</span>
+                </button>
+                <h1 className="text-[28px] md:text-[38px] lg:text-[42px] font-extrabold text-[#003B39] leading-[1.1] mb-2 tracking-tight" style={{ fontFamily: 'serif' }}>
+                  Tell us about<br />your pet
+                </h1>
+                <p className="text-[13px] md:text-[15px] font-medium text-[#465E87] max-w-[280px] md:max-w-[340px] leading-relaxed hidden sm:block">
+                  We just need a few simple details to help us find the perfect care for your furry friend.
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="px-4 lg:px-6 relative pb-20 mt-6 z-20">
-
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-6 max-w-6xl mx-auto">
+          {/* Form Grid */}
+          <div className="p-5 md:p-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 w-full items-start">
           
           {/* Pet Photo */}
-          <div className="col-span-2 md:col-span-3 xl:col-span-4 border border-dashed border-[#71b6af] bg-[#E8F3F3]/30 rounded-[12px] p-3 flex items-center justify-between">
-              <div className="flex items-center gap-4 relative z-10">
-                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileSelect} />
-                <div 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-12 h-12 rounded-full bg-white flex items-center justify-center cursor-pointer overflow-hidden shadow-sm border border-gray-200 shrink-0"
-                >
-                  {previewUrl ? (
-                    <img src={previewUrl} className="w-full h-full object-cover" alt="Preview" />
-                  ) : (
-                    <Camera size={18} className="text-[#007672]" />
-                  )}
-                </div>
-                <div>
-                  <h4 className="text-[13px] font-extrabold text-[#1B2B48] mb-0.5">Upload a photo of your pet</h4>
-                  <p className="text-[11px] font-medium text-[#465E87] hidden sm:block">A clear, recent photo helps sitters get to know your pet better.</p>
-                </div>
+          <div 
+            onClick={() => fileInputRef.current?.click()}
+            className="col-span-2 md:col-span-1 xl:col-span-1 border border-dashed border-[#71b6af] bg-[#E8F3F3]/30 hover:bg-[#E8F3F3]/60 transition-colors rounded-[12px] p-3 flex flex-col items-center justify-center text-center gap-1.5 cursor-pointer h-full"
+          >
+              <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileSelect} />
+              
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden shadow-sm border border-[#71b6af]/50 shrink-0">
+                {previewUrl ? (
+                  <img src={previewUrl} className="w-full h-full object-cover" alt="Preview" />
+                ) : (
+                  <Camera size={18} className="text-[#007672]" />
+                )}
               </div>
-              <div className="flex items-center gap-4 relative z-10">
-                <div className="flex flex-col items-end mr-2 md:mr-6">
-                  <button 
-                    type="button"
-                    className="px-4 py-1.5 border border-[#007672] bg-white rounded-full text-[12px] font-bold text-[#007672] shadow-sm hover:bg-[#007672] hover:text-white transition-colors whitespace-nowrap mb-1"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    Choose File
-                  </button>
-                  <span className="text-[9px] text-[#465E87] font-medium">JPG, PNG (Max 5 MB)</span>
-                </div>
+              
+              <div>
+                <h4 className="text-[12px] font-extrabold text-[#1B2B48]">Upload a photo</h4>
+                <p className="text-[9px] font-medium text-[#465E87] leading-tight px-1 mt-0.5">JPG, PNG (Max 5 MB)</p>
               </div>
           </div>
 
@@ -171,7 +171,7 @@ export const AddPetScreen = () => {
                 value={formData.name}
                 onChange={(e) => updateForm('name', e.target.value)}
                 placeholder="Enter your pet's name"
-                className="w-full pl-10 pr-3 py-2.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
+                className="w-full pl-10 pr-3 py-1.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
               />
             </div>
           </div>
@@ -186,7 +186,7 @@ export const AddPetScreen = () => {
               <select 
                 value={formData.species}
                 onChange={(e) => updateForm('species', e.target.value)}
-                className="w-full pl-10 pr-7 py-2.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm text-[#1B2B48]"
+                className="w-full pl-10 pr-7 py-1.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm text-[#1B2B48]"
               >
                 <option value="Dog">Dog</option>
                 <option value="Cat">Cat</option>
@@ -211,7 +211,7 @@ export const AddPetScreen = () => {
                 value={formData.breed}
                 onChange={(e) => updateForm('breed', e.target.value)}
                 placeholder="e.g. Golden Retriever"
-                className="w-full pl-10 pr-3 py-2.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
+                className="w-full pl-10 pr-3 py-1.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
               />
             </div>
           </div>
@@ -226,7 +226,7 @@ export const AddPetScreen = () => {
               <select 
                 value={formData.age}
                 onChange={(e) => updateForm('age', e.target.value)}
-                className="w-full pl-10 pr-7 py-2.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm text-[#1B2B48]"
+                className="w-full pl-10 pr-7 py-1.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium appearance-none focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm text-[#1B2B48]"
               >
                 <option value="" disabled>Select age</option>
                 <option value="Puppy (0-1 yrs)">Puppy (0-1 yrs)</option>
@@ -244,14 +244,11 @@ export const AddPetScreen = () => {
           <div className="col-span-1">
             <label className="block text-[13px] font-extrabold text-[#1B2B48] mb-2">5. Gender <span className="text-red-500">*</span></label>
             <div className="flex gap-2">
-              <button onClick={() => updateForm('gender', 'Male')} className={`flex-1 flex items-center justify-center py-2.5 rounded-[10px] border font-bold text-[13px] transition-colors shadow-sm ${formData.gender === 'Male' ? 'bg-[#F4F7FF] border-[#3B82F6] text-[#3B82F6]' : 'bg-white border-gray-200 text-[#465E87]'}`}>
+              <button onClick={() => updateForm('gender', 'Male')} className={`flex-1 flex items-center justify-center py-1.5 rounded-[10px] border font-bold text-[13px] transition-colors shadow-sm ${formData.gender === 'Male' ? 'bg-[#F4F7FF] border-[#3B82F6] text-[#3B82F6]' : 'bg-white border-gray-200 text-[#465E87]'}`}>
                 <span className="mr-1.5 text-sm leading-none mt-[-1px]">♂</span> Male
               </button>
-              <button onClick={() => updateForm('gender', 'Female')} className={`flex-1 flex items-center justify-center py-2.5 rounded-[10px] border font-bold text-[13px] transition-colors shadow-sm ${formData.gender === 'Female' ? 'bg-[#FFF0F5] border-[#EC4899] text-[#EC4899]' : 'bg-white border-gray-200 text-[#465E87]'}`}>
+              <button onClick={() => updateForm('gender', 'Female')} className={`flex-1 flex items-center justify-center py-1.5 rounded-[10px] border font-bold text-[13px] transition-colors shadow-sm ${formData.gender === 'Female' ? 'bg-[#FFF0F5] border-[#EC4899] text-[#EC4899]' : 'bg-white border-gray-200 text-[#465E87]'}`}>
                 <span className="mr-1.5 text-sm leading-none mt-[-1px]">♀</span> Female
-              </button>
-              <button onClick={() => updateForm('gender', 'Other')} className={`flex-1 flex items-center justify-center py-2.5 rounded-[10px] border font-bold text-[13px] transition-colors shadow-sm ${formData.gender === 'Other' ? 'bg-[#F3F4F6] border-gray-500 text-gray-700' : 'bg-white border-gray-200 text-[#465E87]'}`}>
-                <PawPrint size={14} className="mr-1.5" /> Other
               </button>
             </div>
           </div>
@@ -268,7 +265,7 @@ export const AddPetScreen = () => {
                 value={formData.weight}
                 onChange={(e) => updateForm('weight', e.target.value)}
                 placeholder="Enter weight"
-                className="w-full pl-10 pr-9 py-2.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
+                className="w-full pl-10 pr-9 py-1.5 bg-white border border-gray-200 rounded-[10px] text-[13px] font-medium focus:border-[#71b6af] focus:ring-1 focus:ring-[#71b6af] outline-none shadow-sm"
               />
               <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
                 <span className="text-[13px] font-extrabold text-[#1B2B48]">kg</span>
@@ -336,7 +333,7 @@ export const AddPetScreen = () => {
 
           {/* Conditional inputs */}
           {formData.vaccinated === true && (
-            <div className="col-span-2 md:col-span-3 xl:col-span-4 grid grid-cols-2 gap-3 p-3 bg-gray-50 rounded-[10px] animate-in fade-in zoom-in-95 duration-200">
+            <div className="col-span-1 grid grid-cols-2 gap-3 p-3 bg-gray-50 rounded-[10px] animate-in fade-in zoom-in-95 duration-200">
               <div>
                 <label className="block text-[11px] font-bold text-[#465E87] mb-1">Vaccination Month</label>
                 <select 
@@ -363,7 +360,7 @@ export const AddPetScreen = () => {
           )}
 
           {formData.medicalConditions === true && (
-            <div className="col-span-2 md:col-span-3 xl:col-span-4 p-3 bg-gray-50 rounded-[10px] animate-in fade-in zoom-in-95 duration-200">
+            <div className="col-span-1 p-3 bg-gray-50 rounded-[10px] animate-in fade-in zoom-in-95 duration-200">
               <label className="block text-[11px] font-bold text-[#465E87] mb-1">Condition Details</label>
               <input 
                 type="text"
@@ -376,26 +373,26 @@ export const AddPetScreen = () => {
           )}
 
           {/* 9. Behavior */}
-          <div className="col-span-2">
+          <div className="col-span-2 md:col-span-1">
             <label className="block text-[13px] font-extrabold text-[#1B2B48] mb-2">9. Behavior with other pets? <span className="text-red-500">*</span></label>
-            <div className="flex gap-2">
-              <button onClick={() => updateForm('behavior', 'Friendly')} className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[10px] border transition-colors shadow-sm ${formData.behavior === 'Friendly' ? 'bg-[#E8F5E9] border-[#10B981]' : 'bg-white border-gray-200'}`}>
-                <PawPrint size={14} className="text-[#10B981]" fill="currentColor" />
-                <span className="font-extrabold text-[11px] text-[#1B2B48]">Friendly</span>
+            <div className="flex gap-2 lg:gap-4">
+              <button onClick={() => updateForm('behavior', 'Friendly')} className={`w-[90px] h-[90px] flex flex-col items-center justify-center gap-2 rounded-[16px] border transition-all ${formData.behavior === 'Friendly' ? 'bg-[#E8F5E9] border-[#10B981] shadow-md scale-105' : 'bg-white border-gray-200 hover:border-gray-300 shadow-sm'}`}>
+                <PawPrint size={22} className={formData.behavior === 'Friendly' ? 'text-[#10B981]' : 'text-gray-300'} fill="currentColor" />
+                <span className={`font-extrabold text-[11px] ${formData.behavior === 'Friendly' ? 'text-[#1B2B48]' : 'text-[#465E87]'}`}>Friendly</span>
               </button>
-              <button onClick={() => updateForm('behavior', 'Neutral')} className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[10px] border transition-colors shadow-sm ${formData.behavior === 'Neutral' ? 'bg-[#F3F4F6] border-gray-500' : 'bg-white border-gray-200'}`}>
-                <PawPrint size={14} className="text-[#00605c]" fill="currentColor" />
-                <span className="font-extrabold text-[11px] text-[#1B2B48]">Neutral</span>
+              <button onClick={() => updateForm('behavior', 'Neutral')} className={`w-[90px] h-[90px] flex flex-col items-center justify-center gap-2 rounded-[16px] border transition-all ${formData.behavior === 'Neutral' ? 'bg-[#F0F9F9] border-[#007672] shadow-md scale-105' : 'bg-white border-gray-200 hover:border-gray-300 shadow-sm'}`}>
+                <PawPrint size={22} className={formData.behavior === 'Neutral' ? 'text-[#007672]' : 'text-gray-300'} fill="currentColor" />
+                <span className={`font-extrabold text-[11px] ${formData.behavior === 'Neutral' ? 'text-[#1B2B48]' : 'text-[#465E87]'}`}>Neutral</span>
               </button>
-              <button onClick={() => updateForm('behavior', 'Not comfortable')} className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[10px] border transition-colors shadow-sm ${formData.behavior === 'Not comfortable' ? 'bg-[#FFF0F5] border-[#EF4444]' : 'bg-white border-gray-200'}`}>
-                <PawPrint size={14} className="text-[#EF4444]" fill="currentColor" />
-                <span className="font-extrabold text-[11px] text-[#1B2B48]">Not comfortable</span>
+              <button onClick={() => updateForm('behavior', 'Not comfortable')} className={`w-[90px] h-[90px] flex flex-col items-center justify-center gap-1.5 rounded-[16px] border transition-all ${formData.behavior === 'Not comfortable' ? 'bg-[#FFF0F5] border-[#EF4444] shadow-md scale-105' : 'bg-white border-gray-200 hover:border-gray-300 shadow-sm px-1 text-center'}`}>
+                <PawPrint size={22} className={formData.behavior === 'Not comfortable' ? 'text-[#EF4444]' : 'text-gray-300'} fill="currentColor" />
+                <span className={`font-extrabold text-[10px] leading-tight ${formData.behavior === 'Not comfortable' ? 'text-[#1B2B48]' : 'text-[#465E87]'}`}>Not comfortable</span>
               </button>
             </div>
           </div>
 
           {/* 10. Special Instructions */}
-          <div className="col-span-2">
+          <div className="col-span-2 md:col-span-2">
             <label className="block text-[13px] font-extrabold text-[#1B2B48] mb-2">10. Special instructions <span className="text-[#8A9BAE] font-medium">(optional)</span></label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 pt-3.5 flex items-start pointer-events-none">
@@ -413,16 +410,17 @@ export const AddPetScreen = () => {
               </div>
             </div>
           </div>
-
-        </div>
-        
-        {error && <p className="text-red-500 text-sm mt-3 font-medium text-center">{error}</p>}
-        
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom">
-          <Button onClick={handleSubmit} loading={loading} className="w-full max-w-6xl mx-auto h-12 bg-[#007672] hover:bg-[#00605c] text-white text-[15px] font-extrabold rounded-[12px] flex items-center justify-center space-x-2 shadow-lg shadow-[#71b6af]/20">
-            <span>Save Pet Details</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          </Button>
+            </div>
+            
+            {error && <p className="text-red-500 text-sm mt-3 font-medium text-center">{error}</p>}
+            
+            <div className="mt-8 flex justify-end">
+              <Button onClick={handleSubmit} loading={loading} className="w-full md:w-[300px] h-[48px] bg-[#007672] hover:bg-[#00605c] text-white text-[15px] font-extrabold rounded-[12px] flex items-center justify-center space-x-2 shadow-lg shadow-[#71b6af]/20">
+                <span>Save Pet Details</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

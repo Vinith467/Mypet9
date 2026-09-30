@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, MapPin, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Clock, PawPrint } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../config/firebase';
@@ -100,19 +100,48 @@ export const MyBookingsScreen = () => {
 
   return (
     <DashboardLayout>
-      <div className="w-full flex flex-col min-h-full bg-[#F8F9FA] pb-24 lg:pb-12 pt-8 lg:pt-12 px-5">
+      <div className="w-full flex flex-col min-h-full bg-[#F8F9FA] pb-24 lg:pb-12">
         
-        <div className="max-w-2xl lg:max-w-5xl mx-auto w-full">
-          {/* Header */}
-          <div className="flex items-center mb-6">
-            <button 
-              onClick={() => navigate(-1)}
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors mr-3 lg:hidden"
-            >
-              <ArrowLeft className="text-[#1B2B48]" size={24} />
-            </button>
-            <h1 className="text-[22px] font-extrabold text-[#1B2B48]">My Bookings</h1>
+        {/* Full-width Hero Banner */}
+        <div className="w-full bg-[#F2FAFD] relative overflow-hidden border-b border-[#E8F3F3] h-[140px] md:h-[160px]">
+          {/* Banner Image - Placed here so it hits the absolute right edge of the window */}
+          <img 
+            src="/pet-application.png" 
+            alt="Pets" 
+            className="absolute right-0 bottom-0 h-full object-contain object-right pointer-events-none z-0"
+          />
+
+          <div className="max-w-5xl mx-auto relative h-full flex items-center px-5 lg:px-0 z-10">
+            {/* Paw Prints Background Vectors */}
+            <div className="absolute top-4 left-[30%] opacity-20">
+              <PawPrint size={32} className="text-[#71b6af]" fill="currentColor" />
+            </div>
+            <div className="absolute bottom-6 left-[45%] opacity-20 transform -rotate-12">
+              <PawPrint size={24} className="text-[#71b6af]" fill="currentColor" />
+            </div>
+            <div className="absolute top-8 right-[20%] lg:right-[40%] opacity-20 transform rotate-12">
+              <PawPrint size={40} className="text-[#71b6af]" fill="currentColor" />
+            </div>
+            
+            {/* Banner Text */}
+            <div className="z-10 relative pt-2">
+              <div className="flex items-center mb-1 lg:hidden">
+                <button 
+                  onClick={() => navigate(-1)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#E8F3F3] transition-colors mr-2 -ml-2"
+                >
+                  <ArrowLeft className="text-[#003B39]" size={20} />
+                </button>
+              </div>
+              <h1 className="text-[28px] md:text-[36px] font-extrabold text-[#003B39] mb-1 font-serif tracking-tight">My Bookings</h1>
+              <p className="text-[13px] md:text-[15px] font-medium text-[#465E87] max-w-[280px] md:max-w-[400px]">
+                Stay updated on all your pet care bookings.
+              </p>
+            </div>
           </div>
+        </div>
+
+        <div className="max-w-2xl lg:max-w-5xl mx-auto w-full px-5 mt-6 md:mt-8">
 
           {/* Tabs */}
           <div className="flex bg-white rounded-full p-1 shadow-sm border border-gray-100 mb-6">
