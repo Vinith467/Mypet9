@@ -90,7 +90,7 @@ export const BookFreePlaytimeScreen = () => {
       <div className="relative w-full lg:w-1/2 lg:min-h-screen lg:h-screen lg:sticky lg:top-0 lg:overflow-hidden flex flex-col bg-white">
         
         {/* Top Nav (Mobile Only) */}
-        <div className="lg:hidden fixed top-0 left-0 w-full px-4 py-3 flex items-center z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100/50">
+        <div className="lg:hidden fixed top-0 left-0 w-full px-4 py-3 flex items-center z-50 bg-transparent">
           <button 
             onClick={() => navigate(-1)}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors border border-gray-100"

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Heart, Share2, Star, MapPin, Play, Image as ImageIcon, ChevronRight, ChevronDown, ShieldCheck, Home, CheckCircle, Clock, PawPrint, Thermometer, Dog, Cat, User, X, Car, Syringe, Scissors, Search } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, Star, MapPin, Play, Image as ImageIcon, ChevronRight, ChevronDown, ShieldCheck, Home, CheckCircle, Clock, PawPrint, Thermometer, Dog, Cat, User, X, Car, Syringe, Scissors, Search, MessageCircle, Phone } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
@@ -21,6 +21,7 @@ export const CaretakerProfileScreen = () => {
 
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
 
   if (!provider) {
     return (
@@ -52,26 +53,15 @@ export const CaretakerProfileScreen = () => {
     <DashboardLayout>
       <div className="min-h-full bg-[#FAFAFA] pb-[100px] lg:pb-12 w-full relative">
         
-        {/* DESKTOP BREADCRUMB (hidden on mobile) */}
-        <div className="hidden lg:flex max-w-7xl mx-auto px-6 py-6 items-center space-x-3 sticky top-0 bg-[#FAFAFA]/90 backdrop-blur-md z-30">
-           <button 
-             onClick={() => navigate(-1)}
-             className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#1B2B48] hover:bg-gray-50 shadow-sm transition-colors"
-           >
-             <ArrowLeft size={20} />
-           </button>
-           <span className="text-[18px] font-extrabold text-[#1B2B48]">Caretaker Profile</span>
-        </div>
-
-        <div className="lg:max-w-7xl lg:mx-auto lg:bg-white lg:shadow-sm lg:border lg:border-gray-200 lg:rounded-[24px] lg:p-6 lg:mb-8">
+        <div className="lg:max-w-7xl lg:mx-auto lg:bg-white lg:shadow-sm lg:border lg:border-gray-200 lg:rounded-[24px] lg:p-6 lg:mb-4">
           
-          <div className="lg:grid lg:grid-cols-[1fr,360px] lg:gap-10">
+          <div className="lg:grid lg:grid-cols-[320px,1fr,300px] xl:grid-cols-[360px,1fr,320px] lg:gap-6 xl:gap-8">
             
-            {/* LEFT COLUMN: Main Info */}
+            {/* COLUMN 1: Images */}
             <div className="flex flex-col">
               
               {/* TOP IMAGE HEADER */}
-              <div className="relative w-full h-[280px] lg:h-[400px] bg-black lg:rounded-[20px] overflow-hidden">
+              <div className="relative w-full h-[280px] lg:h-[300px] xl:h-[320px] bg-black lg:rounded-[20px] overflow-hidden">
                 {isVideoPlaying && hasVideo ? (
                   <video 
                     src={provider.videos[0]} 
@@ -83,38 +73,25 @@ export const CaretakerProfileScreen = () => {
                   <img src={allImages[activeMediaIndex]} alt={provider.name} className="w-full h-full object-cover transition-opacity duration-300" />
                 )}
                 
-                {/* Mobile Top Actions (Hidden on Desktop) */}
-                <div className="lg:hidden absolute top-0 w-full p-4 flex justify-between items-center z-10 pt-safe-top">
+                {/* Image Top Actions (Visible on Mobile & Desktop) */}
+                <div className="absolute top-0 w-full p-4 flex justify-between items-center z-10 pt-safe-top">
                   <button 
                     onClick={() => navigate(-1)}
-                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1B2B48] shadow-md hover:bg-gray-50 transition-colors"
+                    className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#1B2B48] shadow-sm hover:bg-white transition-colors"
                   >
                     <ArrowLeft size={20} />
                   </button>
                   <div className="flex space-x-3">
                     <button 
                       onClick={() => toggleSaved(provider)}
-                      className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1B2B48] shadow-md hover:bg-gray-50 transition-colors"
+                      className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#1B2B48] shadow-sm hover:bg-white transition-colors"
                     >
                       <Heart size={20} className={isProviderSaved ? "fill-red-500 text-red-500" : ""} />
                     </button>
-                    <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1B2B48] shadow-md hover:bg-gray-50 transition-colors">
+                    <button className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#1B2B48] shadow-sm hover:bg-white transition-colors">
                       <Share2 size={20} />
                     </button>
                   </div>
-                </div>
-
-                {/* Desktop Top Actions (Hidden on Mobile) */}
-                <div className="hidden lg:flex absolute top-4 right-4 space-x-3 z-10">
-                  <button 
-                    onClick={() => toggleSaved(provider)}
-                    className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#1B2B48] shadow-sm hover:bg-white transition-colors"
-                  >
-                    <Heart size={20} className={isProviderSaved ? "fill-red-500 text-red-500" : ""} />
-                  </button>
-                  <button className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#1B2B48] shadow-sm hover:bg-white transition-colors">
-                    <Share2 size={20} />
-                  </button>
                 </div>
 
                 {/* Bottom Pills */}
@@ -148,30 +125,63 @@ export const CaretakerProfileScreen = () => {
                 )}
               </div>
 
-              <div className="bg-white rounded-t-[24px] -mt-5 lg:mt-0 relative z-20 pt-6 lg:pt-8">
+              <div className="bg-white rounded-t-[24px] -mt-5 lg:mt-0 relative z-20 pt-4 lg:pt-5">
                 {/* THUMBNAILS ROW */}
-                <div className="flex gap-2 lg:gap-3 overflow-x-auto scrollbar-hide px-5 lg:px-0 pb-5">
-                  {allImages.map((img: string, idx: number) => (
-                    <div 
-                      key={idx} 
-                      onClick={() => {
-                        setActiveMediaIndex(idx);
-                        setIsVideoPlaying(false);
-                      }}
-                      className={`relative w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] rounded-[10px] lg:rounded-[16px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${idx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[3px] border-[#007672] scale-95 shadow-md' : 'opacity-90 hover:opacity-100 border border-gray-100'}`}
-                    >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
-                      {idx === Math.min(allImages.length - 1, 4) && allImages.length > 5 && (
-                        <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white">
-                          <span className="text-[14px] font-bold">+{allImages.length - 5}</span>
-                          <span className="text-[9px] font-medium">More</span>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                <div className="flex items-center gap-2 lg:gap-3 px-5 lg:px-0 pb-3">
+                  <button 
+                    onClick={() => setThumbnailStartIndex(Math.max(0, thumbnailStartIndex - 1))}
+                    disabled={thumbnailStartIndex === 0}
+                    className={`hidden lg:flex w-8 h-8 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center shrink-0 hover:bg-gray-50 z-10 -ml-4 ${thumbnailStartIndex === 0 ? 'opacity-30 cursor-not-allowed' : ''}`}
+                  >
+                    <ChevronDown size={18} className="rotate-90 text-[#465E87]" />
+                  </button>
+                  
+                  <div className="flex flex-1 gap-2 lg:gap-3 overflow-x-auto scrollbar-hide justify-between">
+                    {allImages.slice(thumbnailStartIndex, thumbnailStartIndex + 4).map((img: string, i: number) => {
+                      const actualIdx = thumbnailStartIndex + i;
+                      const isLastVisible = i === 3;
+                      const remainingCount = allImages.length - (thumbnailStartIndex + 4);
 
-                <div className="px-5 lg:px-0">
+                      return (
+                        <div 
+                          key={actualIdx} 
+                          onClick={() => {
+                            if (isLastVisible && remainingCount > 0) {
+                              setThumbnailStartIndex(Math.min(allImages.length - 4, thumbnailStartIndex + 1));
+                            } else {
+                              setActiveMediaIndex(actualIdx);
+                              setIsVideoPlaying(false);
+                            }
+                          }}
+                          className={`relative w-[60px] h-[60px] lg:flex-1 lg:h-[80px] rounded-[10px] lg:rounded-[12px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${actualIdx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[3px] border-[#007672] scale-[0.98] shadow-md' : 'opacity-90 hover:opacity-100 border border-gray-100'}`}
+                        >
+                          <img src={img} alt="" className="w-full h-full object-cover" />
+                          {isLastVisible && remainingCount > 0 && (
+                            <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white">
+                              <span className="text-[14px] font-bold">+{remainingCount}</span>
+                              <span className="text-[9px] font-medium">More</span>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <button 
+                    onClick={() => setThumbnailStartIndex(Math.min(allImages.length - 4, thumbnailStartIndex + 1))}
+                    disabled={thumbnailStartIndex >= allImages.length - 4}
+                    className={`hidden lg:flex w-8 h-8 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center shrink-0 hover:bg-gray-50 z-10 -mr-4 ${thumbnailStartIndex >= allImages.length - 4 ? 'opacity-30 cursor-not-allowed' : ''}`}
+                  >
+                    <ChevronDown size={18} className="-rotate-90 text-[#465E87]" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* COLUMN 2: Profile Details */}
+            <div className="flex flex-col px-5 lg:px-0 lg:pt-2">
+              <div className="flex flex-col h-full">
+                <div>
                   {/* TITLE & VERIFIED */}
                   <div className="flex items-center flex-wrap gap-2 mb-1">
                     <h1 className="text-[24px] lg:text-[26px] font-extrabold text-[#1B2B48] leading-tight">
@@ -184,7 +194,7 @@ export const CaretakerProfileScreen = () => {
                   </div>
                   
                   {/* RATING & LOCATION */}
-                  <div className="flex items-center space-x-1.5 mb-5 lg:mb-6">
+                  <div className="flex items-center space-x-1.5 mb-4 lg:mb-4">
                     <Star size={14} className="fill-[#007672] text-[#007672] lg:w-4 lg:h-4" />
                     <span className="text-[14px] lg:text-[15px] font-extrabold text-[#1B2B48]">{provider.rating}</span>
                     <span className="text-[13px] lg:text-[14px] font-medium text-[#465E87]">({provider.reviews} reviews)</span>
@@ -211,18 +221,18 @@ export const CaretakerProfileScreen = () => {
                   </div>
 
                   {/* SERVICE FEATURES (Top Row) */}
-                  <div className="flex justify-between items-start mb-6 lg:mb-8 px-2">
+                  <div className="flex justify-between items-stretch mb-3 lg:gap-2">
                     {[
                       { icon: Car, label: 'Pickup & Drop\nService', id: 'Pickup & Drop Service' },
                       { icon: Syringe, label: 'Vaccination\nAssistance', id: 'Vaccination Assistance' },
                       { icon: Scissors, label: 'Grooming\nAvailable', id: 'Grooming Available' },
                       { icon: User, label: provider.experience ? `${provider.experience}+ Yrs\nExperience` : '3+ Yrs\nExperience', id: 'Experience' }
-                    ].filter(f => f.id === 'Experience' || (provider.services && provider.services.includes(f.id))).map((feature, idx) => (
-                      <div key={idx} className="flex flex-col items-center">
-                        <div className="w-11 h-11 lg:w-12 lg:h-12 bg-[#F4F9F9] rounded-full flex items-center justify-center mb-2">
-                          <feature.icon size={22} className="text-[#007672] lg:w-6 lg:h-6" strokeWidth={1.5} />
+                    ].map((feature, idx) => (
+                      <div key={idx} className="flex flex-col items-center lg:justify-center lg:bg-[#E6F4F1] lg:rounded-[12px] lg:p-2.5 lg:flex-1 lg:mx-0 mx-1">
+                        <div className="w-9 h-9 lg:w-auto lg:h-auto lg:bg-transparent bg-[#F4F9F9] rounded-full flex items-center justify-center mb-1 lg:mb-1.5">
+                          <feature.icon size={18} className="text-[#007672] lg:w-4 lg:h-4" strokeWidth={1.5} />
                         </div>
-                        <span className="text-[10px] lg:text-[11px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
+                        <span className="text-[9px] lg:text-[10px] font-bold text-[#465E87] lg:text-[#007672] leading-tight text-center whitespace-pre-line">
                           {feature.label}
                         </span>
                       </div>
@@ -230,19 +240,19 @@ export const CaretakerProfileScreen = () => {
                   </div>
 
                   {/* TRUST & SAFETY GRID (Clean White background) */}
-                  <div className="rounded-[16px] p-4 lg:p-6 mb-6 lg:mb-8 border border-gray-100 flex flex-wrap justify-between gap-y-4 shadow-sm">
+                  <div className="rounded-[12px] p-2.5 lg:p-3 mb-4 border border-gray-100 flex flex-nowrap justify-between shadow-sm">
                     {[
                       { icon: ShieldCheck, label: 'Verified\nPartner', id: 'Verified Partner' },
                       { icon: Home, label: 'Home\nVerified', id: 'Home Verified' },
                       { icon: CheckCircle, label: 'Background\nChecked', id: 'Background Checked' },
                       { icon: Clock, label: '24/7\nSupervision', id: '24/7 Supervision' },
                       { icon: PawPrint, label: 'Pet Care\nUpdates', id: 'Pet Care Updates' },
-                    ].filter(f => !provider.facilities || provider.facilities.includes(f.id) || f.id === 'Verified Partner').map((facility, idx, arr) => (
-                      <div key={idx} className={`flex flex-col items-center shrink-0 px-0.5 relative ${arr.length > 4 ? 'w-1/5' : 'w-1/4'}`}>
-                        <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#F4F9F9] rounded-full flex items-center justify-center mb-2">
-                          <facility.icon size={16} className="text-[#007672]" strokeWidth={2} />
+                    ].map((facility, idx, arr) => (
+                      <div key={idx} className="flex flex-col items-center shrink-0 px-0.5 flex-1 relative">
+                        <div className="w-8 h-8 lg:w-8 lg:h-8 bg-[#F4F9F9] rounded-full flex items-center justify-center mb-1">
+                          <facility.icon size={14} className="text-[#007672]" strokeWidth={2} />
                         </div>
-                        <span className="text-[8px] lg:text-[10px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
+                        <span className="text-[7.5px] lg:text-[9px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                           {facility.label}
                         </span>
                         {/* Divider for all except last */}
@@ -265,9 +275,9 @@ export const CaretakerProfileScreen = () => {
                   </div>
 
                   {/* WHAT YOUR PET WILL ENJOY */}
-                  <div className="mb-6 lg:mb-8 border-b border-gray-100 pb-6 lg:pb-8">
-                    <h2 className="text-[18px] lg:text-[20px] font-extrabold text-[#1B2B48] mb-4 lg:mb-5">What your pet will enjoy</h2>
-                    <div className="flex justify-between items-start w-full">
+                  <div className="mb-3 border-b border-gray-100 pb-3">
+                    <h2 className="text-[14px] lg:text-[15px] font-extrabold text-[#1B2B48] mb-2">What your pet will enjoy</h2>
+                    <div className="flex justify-between items-start w-full flex-nowrap overflow-x-hidden">
                       {[
                         { icon: Home, label: 'Indoor\nSpace' },
                         { icon: MapPin, label: 'Outdoor\nPlay Area' }, 
@@ -278,10 +288,10 @@ export const CaretakerProfileScreen = () => {
                         { icon: Star, label: 'AC\nRoom' },
                       ].map((facility, idx) => (
                         <div key={idx} className="flex flex-col items-center flex-1 px-0.5">
-                          <div className="w-9 h-9 lg:w-10 lg:h-10 bg-[#F4F9F9] rounded-full flex items-center justify-center mb-1.5 lg:mb-2 hover:scale-105 transition-transform">
-                            <facility.icon size={16} className="text-[#007672] lg:w-5 lg:h-5" strokeWidth={2} />
+                          <div className="w-8 h-8 lg:w-9 lg:h-9 bg-[#F4F9F9] lg:bg-[#E6F4F1] rounded-full flex items-center justify-center mb-1 hover:scale-105 transition-transform shrink-0">
+                            <facility.icon size={14} className="text-[#007672] lg:w-4 lg:h-4" strokeWidth={2} />
                           </div>
-                          <span className="text-[8px] lg:text-[9px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
+                          <span className="text-[7px] lg:text-[8px] font-semibold text-[#465E87] leading-tight text-center whitespace-pre-line">
                             {facility.label}
                           </span>
                         </div>
@@ -290,9 +300,9 @@ export const CaretakerProfileScreen = () => {
                   </div>
 
                   {/* SUITABLE FOR */}
-                  <div className="mb-6 lg:mb-8 border-b border-gray-100 pb-6 lg:pb-8">
-                    <h2 className="text-[18px] lg:text-[20px] font-extrabold text-[#1B2B48] mb-4 lg:mb-5">Suitable for</h2>
-                    <div className="flex overflow-x-auto scrollbar-hide space-x-4">
+                  <div className="mb-2">
+                    <h2 className="text-[14px] lg:text-[15px] font-extrabold text-[#1B2B48] mb-2">Suitable for</h2>
+                    <div className="flex overflow-x-hidden justify-between w-full">
                       {[
                         { img: smallDogImg, label: 'Small Dogs' },
                         { img: mediumDogImg, label: 'Medium Dogs' },
@@ -300,11 +310,11 @@ export const CaretakerProfileScreen = () => {
                         { img: catImg, label: 'Cats' },
                         { img: multiplePetsImg, label: 'Multiple Pets' },
                       ].map((item, idx) => (
-                        <div key={idx} className="flex flex-col items-center shrink-0">
-                          <div className="w-14 h-14 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-2 overflow-hidden border border-[#FBECCB]/50 shadow-sm">
+                        <div key={idx} className="flex flex-col items-center flex-1 px-1">
+                          <div className="w-10 h-10 lg:w-12 lg:h-12 bg-[#FFF9EC] rounded-full flex items-center justify-center mb-1 overflow-hidden border border-[#FBECCB]/50 shadow-sm">
                             <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
                           </div>
-                          <span className="text-[11px] font-semibold text-[#465E87] leading-tight text-center">
+                          <span className="text-[9.5px] lg:text-[10px] font-semibold text-[#465E87] leading-tight text-center">
                             {item.label}
                           </span>
                         </div>
@@ -312,26 +322,42 @@ export const CaretakerProfileScreen = () => {
                     </div>
                   </div>
 
-                  {/* YOUR HOST */}
-                  <div className="mb-4 lg:mb-0">
-                    <h2 className="text-[18px] lg:text-[20px] font-extrabold text-[#1B2B48] mb-3 lg:mb-4">Your Host</h2>
-                    <div className="flex items-center justify-between bg-white rounded-xl py-2 lg:p-4 lg:border lg:border-gray-100 lg:shadow-sm">
-                      <div className="flex items-center space-x-3 lg:space-x-4">
-                        <img src={mainImage} alt={provider.name} className="w-14 h-14 lg:w-14 lg:h-14 rounded-full object-cover border border-gray-100" />
-                        <div>
-                          <div className="flex items-center space-x-2 mb-0.5 lg:mb-1">
-                            <h3 className="text-[15px] lg:text-[16px] font-extrabold text-[#1B2B48]">{provider.name}</h3>
-                            <div className="flex items-center space-x-0.5">
-                              <Star size={12} className="fill-[#007672] text-[#007672]" />
-                              <span className="text-[12px] lg:text-[13px] font-extrabold text-[#1B2B48]">{provider.rating}</span>
-                              <span className="text-[10px] lg:text-[12px] font-medium text-[#465E87]">({provider.reviews} reviews)</span>
+                  {/* MOBILE CONTACT MYPET9 (Hidden on Desktop) */}
+                  <div className="mb-2 lg:hidden">
+                    <div className="bg-white border border-gray-100 rounded-[16px] p-5 shadow-sm relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#FFF5D1] to-transparent rounded-bl-full -z-0 opacity-80 pointer-events-none"></div>
+                      <PawPrint size={28} className="absolute top-3 right-3 text-[#FBECCB] rotate-12 -z-0 pointer-events-none" fill="currentColor" />
+                      
+                      <h2 className="text-[16px] font-extrabold text-[#1B2B48] mb-4 relative z-10">Contact MyPet9</h2>
+                      
+                      <div className="relative z-10 flex flex-col space-y-4">
+                        {/* Call us */}
+                        <div className="flex items-start space-x-2.5">
+                          <div className="w-8 h-8 rounded-full bg-[#FFCA28] flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                            <Phone size={14} className="text-white" fill="currentColor" />
+                          </div>
+                          <div>
+                            <h3 className="text-[13px] font-extrabold text-[#1B2B48] mb-0.5">Call us:</h3>
+                            <div className="text-[11.5px] font-bold text-[#465E87] leading-[1.6]">
+                              <p>+91 72920 80750 | +91 62351 92242</p>
+                              <p>| +91 91104 21467 | +91 81973 83426</p>
                             </div>
                           </div>
-                          <p className="text-[12px] lg:text-[13px] font-medium text-[#465E87]">Pet lover for {provider.experience || '5+'}+ years</p>
-                          <p className="text-[11px] lg:text-[12px] font-medium text-blue-600 mt-0.5">Usually responds within 10 minutes</p>
+                        </div>
+                        
+                        <div className="w-full h-[1px] bg-gray-100"></div>
+                        
+                        {/* WhatsApp */}
+                        <div className="flex items-center space-x-2.5">
+                          <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center shrink-0 shadow-sm">
+                            <MessageCircle size={16} className="text-white" fill="currentColor" />
+                          </div>
+                          <div>
+                            <h3 className="text-[13px] font-extrabold text-[#1B2B48] mb-0.5">WhatsApp:</h3>
+                            <p className="text-[11.5px] font-bold text-[#465E87]">+91 72920 45219</p>
+                          </div>
                         </div>
                       </div>
-                      <ChevronRight size={20} className="text-gray-400 lg:w-5 lg:h-5" />
                     </div>
                   </div>
 
@@ -342,44 +368,89 @@ export const CaretakerProfileScreen = () => {
 
             {/* RIGHT COLUMN: Desktop Sticky Sidebar (Hidden on Mobile) */}
             <div className="hidden lg:block relative">
-              <div className="sticky top-28 flex flex-col space-y-5">
+              <div className="sticky top-24 flex flex-col space-y-3">
                 
                 {/* Desktop About Me Card */}
-                <div className="bg-white border border-gray-200 rounded-[16px] p-5 shadow-sm">
-                  <h2 className="text-[16px] font-extrabold text-[#1B2B48] mb-2">About this stay</h2>
-                  <p className="text-[13px] leading-relaxed text-[#465E87] font-medium">
-                    {provider.bio || `A loving home away from home! Your pet will enjoy spacious indoor and outdoor spaces, daily walks, playtime and lots of cuddles.`}
-                  </p>
-                  <button className="text-[#007672] text-[13px] font-extrabold mt-1.5 flex items-center hover:opacity-80">
-                    Read more <ChevronRight size={14} className="ml-0.5 rotate-90" />
-                  </button>
+                <div className="bg-white border border-gray-200 rounded-[16px] p-4 shadow-sm relative overflow-hidden">
+                  <PawPrint size={60} className="absolute -top-4 -right-4 text-[#E6F4F1] opacity-70 rotate-12 pointer-events-none" fill="currentColor" />
+                  <div className="relative z-10">
+                    <h2 className="text-[14px] font-extrabold text-[#1B2B48] mb-1.5">About this stay</h2>
+                    <p className="text-[11px] leading-[1.6] text-[#465E87] font-medium pr-2">
+                      {provider.bio || `A loving home away from home! Your pet will enjoy spacious indoor and outdoor spaces, daily walks, playtime and lots of cuddles.`}
+                    </p>
+                    <button className="text-[#007672] text-[11px] font-extrabold mt-1 flex items-center hover:opacity-80">
+                      Read more <ChevronDown size={12} className="ml-0.5" strokeWidth={2.5} />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Desktop Booking Card */}
-                <div className="bg-white border border-gray-200 rounded-[16px] p-5 shadow-xl shadow-gray-200/50">
-                  <div className="flex items-baseline space-x-1 mb-5 border-b border-gray-100 pb-5">
-                    <span className="text-[32px] font-extrabold text-[#1B2B48] leading-none">₹{provider.price}</span>
-                    <span className="text-[14px] font-medium text-[#465E87]">per night</span>
-                  </div>
-
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center text-[#465E87]">
-                      <CheckCircle size={16} className="text-[#2E7D32] mr-2" />
-                      <span className="font-medium text-[13px]">Free cancellation for 48 hours</span>
+                <div className="bg-white border border-gray-200 rounded-[16px] p-4 shadow-xl shadow-gray-200/50 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-[#FFF5D1] to-transparent rounded-bl-full -z-0 opacity-80 pointer-events-none"></div>
+                  <PawPrint size={32} className="absolute top-3 right-3 text-[#FBECCB] rotate-12 -z-0 pointer-events-none" fill="currentColor" />
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-baseline space-x-1 mb-4 border-b border-gray-100 pb-4">
+                      <span className="text-[28px] font-extrabold text-[#1B2B48] leading-none">₹{provider.price}</span>
+                      <span className="text-[13px] font-medium text-[#465E87]">per night</span>
                     </div>
-                    <div className="flex items-center text-[#465E87]">
-                      <ShieldCheck size={16} className="text-[#2E7D32] mr-2" />
-                      <span className="font-medium text-[13px]">Premium Pet Protection included</span>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center text-[#465E87]">
+                        <CheckCircle size={14} className="text-[#2E7D32] mr-2" />
+                        <span className="font-medium text-[12px]">Free cancellation for 48 hours</span>
+                      </div>
+                      <div className="flex items-center text-[#465E87]">
+                        <ShieldCheck size={14} className="text-[#2E7D32] mr-2" />
+                        <span className="font-medium text-[12px]">Premium Pet Protection included</span>
+                      </div>
+                    </div>
+
+                    <Button 
+                      onClick={handleBookNow}
+                      className="w-full py-3 text-[14px] font-extrabold rounded-[12px] bg-[#007672] hover:bg-[#00605c] shadow-lg shadow-[#007672]/20 hover:scale-[1.02] transition-all flex justify-center items-center space-x-2"
+                    >
+                      <span>Continue</span>
+                      <ArrowLeft size={16} className="rotate-180" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Desktop Contact MyPet9 Card */}
+                <div className="bg-white border border-gray-200 rounded-[16px] p-4 shadow-sm relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#FFF5D1] to-transparent rounded-bl-full -z-0 opacity-80 pointer-events-none"></div>
+                  <PawPrint size={28} className="absolute top-3 right-3 text-[#FBECCB] rotate-12 -z-0 pointer-events-none" fill="currentColor" />
+                  
+                  <h2 className="text-[14px] font-extrabold text-[#1B2B48] mb-3 relative z-10">Contact MyPet9</h2>
+                  
+                  <div className="relative z-10 flex flex-col space-y-3">
+                    {/* Call us */}
+                    <div className="flex items-start space-x-2.5">
+                      <div className="w-8 h-8 rounded-full bg-[#FFCA28] flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <Phone size={14} className="text-white" fill="currentColor" />
+                      </div>
+                      <div>
+                        <h3 className="text-[13px] font-extrabold text-[#1B2B48] mb-0.5">Call us:</h3>
+                        <div className="text-[11.5px] font-bold text-[#465E87] leading-[1.6]">
+                          <p>+91 72920 80750 | +91 62351 92242</p>
+                          <p>| +91 91104 21467 | +91 81973 83426</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="w-full h-[1px] bg-gray-100"></div>
+                    
+                    {/* WhatsApp */}
+                    <div className="flex items-center space-x-2.5">
+                      <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center shrink-0 shadow-sm">
+                        <MessageCircle size={16} className="text-white" fill="currentColor" />
+                      </div>
+                      <div>
+                        <h3 className="text-[13px] font-extrabold text-[#1B2B48] mb-0.5">WhatsApp:</h3>
+                        <p className="text-[11.5px] font-bold text-[#465E87]">+91 72920 45219</p>
+                      </div>
                     </div>
                   </div>
-
-                  <Button 
-                    onClick={handleBookNow}
-                    className="w-full py-3 text-[15px] font-extrabold rounded-[12px] shadow-lg shadow-petoo-primary/20 hover:scale-[1.02] transition-transform flex justify-center items-center space-x-2"
-                  >
-                    <span>Continue</span>
-                    <ChevronRight size={18} />
-                  </Button>
                 </div>
 
               </div>

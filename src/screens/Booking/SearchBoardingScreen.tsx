@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, Star, MapPin, Heart, Search, BadgeCheck, Car, Syringe, Scissors, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Star, MapPin, Heart, Search, BadgeCheck, Car, Syringe, Scissors, User, Calendar, Moon, PawPrint, ArrowLeft, Shield, Filter, List, X, Building, Home } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
@@ -64,6 +64,20 @@ export const BoardingSearchScreen = () => {
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [sortBy, setSortBy] = useState<'distance' | 'price' | 'rating'>('distance');
 
+  // Filter & UI State
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  
+  const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({
+    experience: [],
+    homeType: [],
+    petSize: [],
+    rating: [],
+    facilities: []
+  });
+  
+  const [likedCaretakers, setLikedCaretakers] = useState<string[]>([]);
+
   // Get user's current location for distance calculation
   useEffect(() => {
     if (navigator.geolocation) {
@@ -96,7 +110,12 @@ export const BoardingSearchScreen = () => {
         snapshot.forEach((doc) => {
           const data = doc.data();
           
-          const loc = data.locationSettings;
+          const loc = data.locationSettings || { 
+            latitude: data.location?.lat || data.latitude, 
+            longitude: data.location?.lng || data.longitude,
+            city: data.locationStr?.split(',').pop()?.trim() || data.address || '',
+            address: data.address || data.locationStr || ''
+          };
           if (!loc?.latitude || !loc?.longitude) return;
           
           let dist = calculateDistance(
@@ -115,16 +134,16 @@ export const BoardingSearchScreen = () => {
           }
 
           const priceData = data.priceSettings;
-          let price = 800; // default
+          let price = data.price || 800;
           if (priceData?.dog?.price) {
             price = parseInt(priceData.dog.price) || 800;
           }
 
-          const mediaPhotos = data.media?.photos?.map((p: any) => p.url) || [];
+          const mediaPhotos = data.media?.photos?.map((p: any) => p.url) || data.images || [];
           
           const basicFacilities = data.facilitySettings?.basic 
             ? Object.entries(data.facilitySettings.basic).filter(([_, v]) => v === true).map(([k]) => k)
-            : [];
+            : (data.facilities || []);
 
           const userName = data.name || data.ownerName || 'Caretaker';
           const userPhoto = data.photo || mediaPhotos[0] || `https://ui-avatars.com/api/?name=${userName}&background=FBBF24&color=1B2B48`;
@@ -145,13 +164,13 @@ export const BoardingSearchScreen = () => {
             distance: dist,
             distanceStr: formatDistance(dist),
             locationStr: loc.city ? `${loc.address || loc.landmark || ''}, ${loc.city}`.replace(/^,\s*/, '') : 'Location set',
-            services: data.services ? 
-              Object.entries(data.services).filter(([_, v]) => v !== false).map(([k]) => {
+            services: data.services 
+              ? (Array.isArray(data.services) ? data.services : Object.entries(data.services).filter(([_, v]) => v !== false).map(([k]) => {
                 if (k === 'homeStay') return 'Home Stay';
                 if (k === 'boarding') return 'Boarding';
                 if (k === 'grooming') return 'Grooming';
                 return k;
-              }) : ['Home Stay'],
+              })) : ['Home Stay'],
             images: mediaPhotos.length > 0 ? mediaPhotos : [userPhoto],
             facilities: basicFacilities,
             latitude: loc.latitude,
@@ -208,6 +227,38 @@ export const BoardingSearchScreen = () => {
     }
   }
 
+  // Apply Advanced Filters
+  if (activeFilters.experience.length > 0 && !activeFilters.experience.includes('Any')) {
+    filteredCaretakers = filteredCaretakers.filter(c => {
+      const exp = c.experience || 0;
+      if (activeFilters.experience.includes('5+ years') && exp >= 5) return true;
+      if (activeFilters.experience.includes('3+ years') && exp >= 3) return true;
+      if (activeFilters.experience.includes('1+ years') && exp >= 1) return true;
+      return false;
+    });
+  }
+
+  if (activeFilters.rating.length > 0) {
+    filteredCaretakers = filteredCaretakers.filter(c => {
+      if (activeFilters.rating.includes('4.5 & above') && c.rating >= 4.5) return true;
+      if (activeFilters.rating.includes('4.0 & above') && c.rating >= 4.0) return true;
+      if (activeFilters.rating.includes('3.5 & above') && c.rating >= 3.5) return true;
+      if (activeFilters.rating.includes('3.0 & above') && c.rating >= 3.0) return true;
+      return false;
+    });
+  }
+
+  if (activeFilters.facilities.length > 0) {
+    filteredCaretakers = filteredCaretakers.filter(c => {
+      // Map UI labels to backend fields if necessary, or do substring match
+      // For now, doing a simple inclusion check across services and facilities
+      const combined = [...(c.services || []), ...(c.facilities || [])].map(s => s.toLowerCase());
+      return activeFilters.facilities.every(filterFac => {
+        return combined.some(item => item.includes(filterFac.toLowerCase().replace(' available', '')));
+      });
+    });
+  }
+
   const handleViewProfile = (caretaker: CaretakerResult) => {
     navigate('/caretaker-profile', {
       state: {
@@ -241,6 +292,171 @@ export const BoardingSearchScreen = () => {
     });
   };
 
+  const toggleFilter = (category: string, value: string) => {
+    setActiveFilters(prev => {
+      const current = prev[category] || [];
+      const updated = current.includes(value) 
+        ? current.filter(v => v !== value) 
+        : [...current, value];
+      return { ...prev, [category]: updated };
+    });
+  };
+  
+  const toggleLike = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLikedCaretakers(prev => 
+      prev.includes(id) ? prev.filter(likedId => likedId !== id) : [...prev, id]
+    );
+  };
+
+  const renderFilters = () => (
+    <>
+      <div className="flex-1 overflow-y-auto p-5 custom-scrollbar flex flex-col gap-6">
+        {/* Price */}
+        <div>
+          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-4">Price <span className="font-medium text-[#465E87]">(per pet, per night)</span></h3>
+          <div className="h-1 w-full bg-gray-200 rounded-full relative mb-3">
+            <div className="absolute left-0 top-0 h-full w-[70%] bg-[#007672] rounded-full"></div>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#007672] rounded-full shadow border-2 border-white"></div>
+            <div className="absolute left-[70%] top-1/2 -translate-y-1/2 w-4 h-4 bg-[#007672] rounded-full shadow border-2 border-white"></div>
+          </div>
+          <div className="flex justify-between text-[12px] font-bold text-[#465E87]">
+            <span>₹0</span>
+            <span>₹3000+</span>
+          </div>
+        </div>
+
+        {/* Distance */}
+        <div>
+          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-4">Distance</h3>
+          <div className="h-1 w-full bg-gray-200 rounded-full relative mb-3">
+            <div className="absolute left-0 top-0 h-full w-[100%] bg-[#007672] rounded-full"></div>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#007672] rounded-full shadow border-2 border-white"></div>
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#007672] rounded-full shadow border-2 border-white"></div>
+          </div>
+          <div className="flex justify-between text-[12px] font-bold text-[#465E87]">
+            <span>0 km</span>
+            <span>20+ km</span>
+          </div>
+        </div>
+
+        {/* Experience */}
+        <div>
+          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-3">Experience (Years)</h3>
+          <div className="flex flex-col gap-2.5">
+            {['Any', '1+ years', '3+ years', '5+ years'].map(exp => {
+              const isChecked = activeFilters.experience.includes(exp) || (exp === 'Any' && activeFilters.experience.length === 0);
+              return (
+              <div key={exp} onClick={() => toggleFilter('experience', exp)} className="flex items-center gap-3 cursor-pointer group">
+                <div className={`w-4 h-4 rounded-[4px] border ${isChecked ? 'bg-[#007672] border-[#007672]' : 'border-gray-300 group-hover:border-[#007672]'} flex items-center justify-center transition-colors`}>
+                  {isChecked && <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </div>
+                <span className={`text-[14px] font-medium ${isChecked ? 'text-[#1B2B48]' : 'text-[#465E87] group-hover:text-[#1B2B48]'}`}>{exp}</span>
+              </div>
+            )})}
+          </div>
+        </div>
+
+        {/* Home Type */}
+        <div>
+          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-3">Home Type</h3>
+          <div className="flex flex-col gap-2.5">
+            {[
+              { icon: Building, label: 'Apartment' },
+              { icon: Home, label: 'Independent House' },
+              { icon: Shield, label: 'Gated Community' },
+            ].map(type => {
+              const isChecked = activeFilters.homeType.includes(type.label);
+              return (
+              <div key={type.label} onClick={() => toggleFilter('homeType', type.label)} className="flex items-center gap-3 cursor-pointer group">
+                <div className={`w-4 h-4 rounded-[4px] border ${isChecked ? 'bg-[#007672] border-[#007672]' : 'border-gray-300 group-hover:border-[#007672]'} flex items-center justify-center transition-colors`}>
+                  {isChecked && <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </div>
+                <div className="flex items-center gap-2">
+                  <type.icon size={14} className="text-[#007672]" />
+                  <span className={`text-[14px] font-medium ${isChecked ? 'text-[#1B2B48]' : 'text-[#465E87] group-hover:text-[#1B2B48]'}`}>{type.label}</span>
+                </div>
+              </div>
+            )})}
+          </div>
+        </div>
+
+        {/* Pet Size */}
+        <div>
+          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-3">Pet Size</h3>
+          <div className="flex flex-col gap-2.5">
+            {['Small (0-10 kg)', 'Medium (10-25 kg)', 'Large (25+ kg)'].map(size => {
+              const isChecked = activeFilters.petSize.includes(size);
+              return (
+              <div key={size} onClick={() => toggleFilter('petSize', size)} className="flex items-center gap-3 cursor-pointer group">
+                <div className={`w-4 h-4 rounded-[4px] border ${isChecked ? 'bg-[#007672] border-[#007672]' : 'border-gray-300 group-hover:border-[#007672]'} flex items-center justify-center transition-colors`}>
+                  {isChecked && <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </div>
+                <span className={`text-[14px] font-medium ${isChecked ? 'text-[#1B2B48]' : 'text-[#465E87] group-hover:text-[#1B2B48]'}`}>{size}</span>
+              </div>
+            )})}
+          </div>
+        </div>
+
+        {/* Rating */}
+        <div>
+          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-3">Rating</h3>
+          <div className="flex flex-col gap-2.5">
+            {['4.5 & above', '4.0 & above', '3.5 & above', '3.0 & above'].map(rating => {
+              const isChecked = activeFilters.rating.includes(rating);
+              return (
+              <div key={rating} onClick={() => toggleFilter('rating', rating)} className="flex items-center gap-3 cursor-pointer group">
+                <div className={`w-4 h-4 rounded-[4px] border ${isChecked ? 'bg-[#007672] border-[#007672]' : 'border-gray-300 group-hover:border-[#007672]'} flex items-center justify-center transition-colors`}>
+                  {isChecked && <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Star size={14} className="fill-[#FBC02D] text-[#FBC02D]" />
+                  <span className={`text-[14px] font-medium ${isChecked ? 'text-[#1B2B48]' : 'text-[#465E87] group-hover:text-[#1B2B48]'}`}>{rating}</span>
+                </div>
+              </div>
+            )})}
+          </div>
+        </div>
+
+        {/* Facilities */}
+        <div>
+          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-3">Facilities</h3>
+          <div className="flex flex-col gap-2.5">
+            {[
+              { icon: Car, label: 'Pickup & Drop' },
+              { icon: Syringe, label: 'Vaccination Assistance' },
+              { icon: Scissors, label: 'Grooming Available' },
+              { icon: Shield, label: '24/7 Supervision' },
+              { icon: PawPrint, label: 'Secure Home' },
+              { icon: MapPin, label: 'Outdoor Play Area' },
+            ].map(fac => {
+              const isChecked = activeFilters.facilities.includes(fac.label);
+              return (
+              <div key={fac.label} onClick={() => toggleFilter('facilities', fac.label)} className="flex items-center gap-3 cursor-pointer group">
+                <div className={`w-4 h-4 rounded-[4px] border ${isChecked ? 'bg-[#007672] border-[#007672]' : 'border-gray-300 group-hover:border-[#007672]'} flex items-center justify-center transition-colors`}>
+                  {isChecked && <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </div>
+                <div className="flex items-center gap-2">
+                  <fac.icon size={14} className="text-[#007672]" />
+                  <span className={`text-[14px] font-medium ${isChecked ? 'text-[#1B2B48]' : 'text-[#465E87] group-hover:text-[#1B2B48]'}`}>{fac.label}</span>
+                </div>
+              </div>
+            )})}
+          </div>
+        </div>
+      </div>
+      
+      <div className="px-5 py-0 mb-4 bg-transparent mt-auto">
+        <button 
+          onClick={() => setIsFilterDrawerOpen(false)}
+          className="w-full bg-[#007672] text-white py-3 rounded-[10px] font-extrabold text-[14px] hover:bg-[#005f5b] transition-colors shadow-sm"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </>
+  );
+
   // Derived state for Header
   const city = searchLocation.split(',')[0].trim() || 'Location';
   
@@ -268,56 +484,140 @@ export const BoardingSearchScreen = () => {
     <DashboardLayout>
       <div className="w-full h-full flex flex-col bg-[#F8F9FA] relative">
         
-        {/* Header section: Edge-to-edge on mobile, rounded banner on desktop */}
-        <div className="sticky top-0 lg:static z-40 bg-[#71b6af] lg:bg-transparent shadow-sm lg:shadow-none pt-6 pb-4 px-4 lg:pt-8 lg:px-8">
-          <div className="w-full lg:bg-[#71b6af] lg:rounded-[32px] lg:px-10 lg:py-8 lg:shadow-md lg:mx-auto">
-            <div className="flex items-center justify-between mb-4 lg:mb-6">
-              
-              <div className="flex items-center lg:space-x-4 w-full lg:w-auto justify-between lg:justify-start">
-                <button 
-                  onClick={() => navigate(-1)}
-                  className="w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors"
-                >
-                  <ChevronLeft className="text-[#1B2B48]" size={24} />
-                </button>
-                
-                <div className="flex-1 text-center lg:text-left px-4 lg:px-2">
-                  <h1 className="text-[18px] lg:text-[28px] font-extrabold text-[#1B2B48] tracking-tight">Boarding in {city}</h1>
-                  <p className="text-[12px] lg:text-[15px] font-bold text-[#1B2B48]/80 mt-0.5 lg:mt-1">{fullSubtitle}</p>
-                </div>
+        {/* Full-width Hero Banner - Desktop */}
+        <div className="hidden md:flex relative w-full overflow-hidden bg-[#DDF4F5] min-h-[200px] items-center shrink-0">
+          
+          {/* Background Image placed on the right */}
+          <div 
+            className="absolute inset-0 z-0 pointer-events-none" 
+            style={{ 
+              backgroundImage: "url('/Happy Pets, Happier Holidays!.png')",
+              backgroundPosition: "right center",
+              backgroundSize: "auto 100%",
+              backgroundRepeat: "no-repeat"
+            }} 
+          />
 
-                <button className="w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors lg:hidden">
-                  <Heart className="text-[#1B2B48]" size={20} />
-                </button>
-              </div>
-
-              <button className="hidden lg:flex w-12 h-12 items-center justify-center bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors">
-                <Heart className="text-[#1B2B48]" size={24} />
+          {/* Decorative Paw Prints */}
+          <PawPrint size={40} className="absolute left-1/4 -top-3 text-[#007672]/10 rotate-[25deg] pointer-events-none" />
+          <PawPrint size={48} className="absolute left-[10%] -bottom-4 text-[#007672]/10 rotate-[10deg] pointer-events-none" />
+          <PawPrint size={56} className="absolute left-[40%] bottom-6 text-[#007672]/10 rotate-[-25deg] pointer-events-none lg:block hidden" />
+          
+          {/* A gradient overlay to ensure text is readable if the image overlaps on smaller screens */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#DDF4F5] via-[#DDF4F5]/90 to-transparent z-10 w-[60%] lg:w-[45%] pointer-events-none"></div>
+          
+          <div className="relative z-20 w-full max-w-7xl mx-auto px-8 py-5 flex flex-col justify-center h-full">
+            
+            <div className="flex items-start gap-5">
+              <button 
+                onClick={() => navigate(-1)}
+                className="w-10 h-10 shrink-0 flex items-center justify-center bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors mt-1 border border-gray-100"
+              >
+                <ArrowLeft className="text-[#003B39]" size={20} />
               </button>
+              
+              <div className="flex flex-col mt-1">
+                <h1 className="text-[32px] lg:text-[36px] font-extrabold text-[#003B39] tracking-tight leading-[1.15] mb-2.5 font-serif">
+                  Find the Perfect Pet Sitter<br className="hidden lg:block" /> for a Happier, Healthier Pet
+                </h1>
+                
+                {/* Booking details */}
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[#007672] font-extrabold text-[13px] mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <Calendar size={15} strokeWidth={2.5} />
+                    <span>{state?.dropoffDate && state?.pickupDate ? `${new Date(state.dropoffDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })} - ${new Date(state.pickupDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}` : 'Flexible dates'}</span>
+                  </div>
+                  <span className="text-[#71b6af]">•</span>
+                  <div className="flex items-center gap-1.5">
+                    <Moon size={15} strokeWidth={2.5} />
+                    <span>{state?.dropoffDate && state?.pickupDate ? `${Math.ceil(Math.abs(new Date(state.pickupDate).getTime() - new Date(state.dropoffDate).getTime()) / (1000 * 60 * 60 * 24))} nights` : 'Any duration'}</span>
+                  </div>
+                  <span className="text-[#71b6af]">•</span>
+                  <div className="flex items-center gap-1.5">
+                    <PawPrint size={15} strokeWidth={2.5} />
+                    <span>{petCount}</span>
+                  </div>
+                </div>
+                
+                <p className="text-[13px] font-bold text-[#465E87]">
+                  Loving homes. Trusted sitters. Peace of mind for you.
+                </p>
+              </div>
             </div>
 
-            {/* Filter Pills */}
-            <div className="flex items-center space-x-2.5 overflow-x-auto scrollbar-hide py-1 lg:mt-4">
-              {(['Price', 'Pet Size', 'Facilities', 'Rating', 'Distance']).map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => {
-                    if(filter === 'Price') setSortBy('price');
-                    if(filter === 'Rating') setSortBy('rating');
-                    if(filter === 'Distance') setSortBy('distance');
-                  }}
-                  className="px-3 lg:px-5 py-1.5 lg:py-2.5 bg-white rounded-[10px] lg:rounded-full text-[13px] lg:text-[14px] font-bold text-[#1B2B48] shrink-0 shadow-sm flex items-center space-x-1.5 hover:bg-gray-50 transition-colors"
-                >
-                  <span>{filter}</span>
-                  <ChevronDown size={14} className="text-gray-400" />
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 
-        {/* Content Area */}
-        <div className="flex-1 relative w-full overflow-y-auto">
+        {/* Full-width Hero Banner - Mobile */}
+        <div className="flex md:hidden flex-col w-full shrink-0 bg-white">
+          <div className="relative">
+            <img 
+              src="/mobile-booking search.png" 
+              alt="Search Boarding" 
+              className="w-full h-auto object-cover" 
+            />
+            <button 
+              onClick={() => navigate(-1)}
+              className="absolute top-2 left-4 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm z-10"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="text-[#003B39]" size={18} />
+            </button>
+          </div>
+          
+          <div className="px-5 pt-3 pb-1">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-2">
+              <div className="flex items-center gap-1.5">
+                <Calendar size={14} strokeWidth={2.5} className="text-[#007672]" />
+                <span className="text-[#1B2B48] font-bold text-[12px]">{state?.dropoffDate && state?.pickupDate ? `${new Date(state.dropoffDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })} - ${new Date(state.pickupDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}` : 'Flexible dates'}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Moon size={14} strokeWidth={2.5} className="text-[#007672]" />
+                <span className="text-[#1B2B48] font-bold text-[12px]">{state?.dropoffDate && state?.pickupDate ? `${Math.ceil(Math.abs(new Date(state.pickupDate).getTime() - new Date(state.dropoffDate).getTime()) / (1000 * 60 * 60 * 24))} nights` : 'Any duration'}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <PawPrint size={14} strokeWidth={2.5} className="text-[#007672]" />
+                <span className="text-[#1B2B48] font-bold text-[12px]">{petCount}</span>
+              </div>
+            </div>
+            <p className="text-[12px] font-medium text-[#1B2B48]">
+              Loving homes. Trusted sitters. Peace of mind for you.
+            </p>
+          </div>
+          <img 
+            src="/2mobile-booking search.png" 
+            alt="Book with Confidence" 
+            className="w-full h-auto -mt-2" 
+          />
+        </div>
+
+
+
+        {/* Content Area with Split Layout for Desktop */}
+        <div className="flex-1 relative w-full bg-[#F8F9FA]">
+          <div className="w-full flex flex-row items-stretch">
+            
+            {/* Left Sidebar (Filters) - Desktop Only */}
+            <div className="hidden lg:block shrink-0 w-[260px] xl:w-[280px] bg-white border-r border-gray-200">
+              <div className="w-[260px] xl:w-[280px] bg-white flex flex-col sticky top-0" style={{ height: '100vh', maxHeight: '100vh' }}>
+                <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                  <div className="flex items-center gap-2 text-[#1B2B48]">
+                    <Filter size={20} className="text-[#007672]" />
+                    <h2 className="text-[20px] font-extrabold">Filters</h2>
+                  </div>
+                  <button 
+                    onClick={() => console.log('Clear All Filters')}
+                    className="text-[#465E87] text-[14px] font-bold hover:text-[#007672]"
+                  >
+                    Clear All
+                  </button>
+                </div>
+                {renderFilters()}
+              </div>
+            </div>
+
+            {/* Middle Column: Caretaker List */}
+            <div className="flex-1 w-full min-w-0 transition-all duration-300">
           
           {loading ? (
             <div className="flex flex-col items-center justify-center min-h-[50vh] px-8">
@@ -357,7 +657,57 @@ export const BoardingSearchScreen = () => {
               </p>
             </div>
           ) : (
-            <div className="px-3 lg:px-8 pt-4 lg:pt-6 pb-32 flex flex-col space-y-3 lg:space-y-4 max-w-5xl mx-auto w-full">
+            <div className="px-3 lg:px-6 pt-4 lg:pt-6 pb-32 flex flex-col max-w-[750px] mx-auto w-full">
+              
+              {/* List Header */}
+              <div className="flex flex-row justify-between items-center mb-6">
+                <div className="flex items-center gap-3 sm:gap-6">
+                  {/* Filter button only visible on mobile/tablet since it's permanent on desktop */}
+                  <button 
+                    onClick={() => setIsFilterDrawerOpen(true)}
+                    className="flex lg:hidden items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full font-bold text-[#1B2B48] shadow-sm hover:bg-gray-50 transition-colors"
+                  >
+                    <Filter size={16} className="text-[#007672]" />
+                    <span className="text-[13px] sm:text-[14px]">Filters</span>
+                  </button>
+                  
+                  <div className="flex items-center gap-2 relative">
+                    <span className="text-[13px] sm:text-[14px] font-semibold text-[#465E87] hidden sm:block">Sort by</span>
+                    <button 
+                      onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                      className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[13px] sm:text-[14px] font-bold text-[#1B2B48] shadow-sm hover:bg-gray-50 transition-colors"
+                    >
+                      {sortBy === 'distance' ? 'Distance' : sortBy === 'price' ? 'Lowest Price' : 'Highest Rating'} <ChevronDown size={14} className="text-[#465E87]" />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isSortDropdownOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-100 rounded-[12px] shadow-lg z-50 overflow-hidden">
+                        <button 
+                          onClick={() => { setSortBy('distance'); setIsSortDropdownOpen(false); }}
+                          className={`w-full text-left px-4 py-3 text-[13px] font-bold hover:bg-gray-50 transition-colors ${sortBy === 'distance' ? 'text-[#007672] bg-gray-50' : 'text-[#1B2B48]'}`}
+                        >
+                          Distance
+                        </button>
+                        <button 
+                          onClick={() => { setSortBy('price'); setIsSortDropdownOpen(false); }}
+                          className={`w-full text-left px-4 py-3 text-[13px] font-bold hover:bg-gray-50 transition-colors ${sortBy === 'price' ? 'text-[#007672] bg-gray-50' : 'text-[#1B2B48]'}`}
+                        >
+                          Lowest Price
+                        </button>
+                        <button 
+                          onClick={() => { setSortBy('rating'); setIsSortDropdownOpen(false); }}
+                          className={`w-full text-left px-4 py-3 text-[13px] font-bold hover:bg-gray-50 transition-colors ${sortBy === 'rating' ? 'text-[#007672] bg-gray-50' : 'text-[#1B2B48]'}`}
+                        >
+                          Highest Rating
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col space-y-4 lg:space-y-5">
               {filteredCaretakers.map((caretaker, index) => (
                 <motion.div
                   key={caretaker.id}
@@ -365,89 +715,110 @@ export const BoardingSearchScreen = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => handleViewProfile(caretaker)}
-                  className="bg-[#FFFCF5] rounded-[16px] p-3.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#FBECCB]/50 cursor-pointer flex flex-row gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 group"
+                  className="bg-white rounded-[16px] p-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-gray-100 flex flex-row gap-3 sm:gap-4 hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] transition-shadow cursor-pointer group"
                 >
-                  {/* Image (Left side) - Square-ish fixed dimensions */}
-                  <div className="w-[120px] sm:w-[140px] relative rounded-[12px] overflow-hidden shrink-0 min-h-[150px]">
-                    <img 
-                      src={caretaker.images[0]}
-                      alt={caretaker.name}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <button className="absolute top-1.5 right-1.5 w-6 h-6 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/30 transition-colors z-10">
-                      <Heart size={12} className="text-white" />
-                    </button>
+                  {/* Image Grid (Left side) */}
+                  <div className="w-[100px] sm:w-[200px] md:w-[220px] shrink-0 flex flex-col gap-1 sm:gap-1.5">
+                    <div className="w-full h-[80px] sm:h-[120px] relative rounded-tl-[12px] rounded-tr-[12px] overflow-hidden">
+                      <img 
+                        src={caretaker.images[0]}
+                        alt={caretaker.name}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <button 
+                        onClick={(e) => toggleLike(caretaker.id, e)}
+                        className="absolute top-2 sm:top-3 right-2 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform z-10"
+                      >
+                        <Heart 
+                          size={14} 
+                          className={`sm:w-4 sm:h-4 ${likedCaretakers.includes(caretaker.id) ? "fill-[#FF4B4B] text-[#FF4B4B]" : "text-[#003B39]"}`} 
+                        />
+                      </button>
+                    </div>
+                    <div className="flex flex-row gap-1 sm:gap-1.5 h-[35px] sm:h-[60px]">
+                      <div className="flex-1 relative overflow-hidden rounded-bl-[12px]">
+                        <img src={caretaker.images[1] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1 relative overflow-hidden">
+                        <img src={caretaker.images[2] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1 relative overflow-hidden rounded-br-[12px]">
+                        <img src={caretaker.images[3] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center">
+                          <span className="text-white text-[12px] sm:text-[14px] font-bold">+{caretaker.images.length > 3 ? caretaker.images.length - 3 : 2}</span>
+                          <span className="text-white text-[7px] sm:text-[9px] font-medium uppercase tracking-wider">Photos</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Details (Right side) */}
-                  <div className="flex-1 flex flex-col justify-between py-0.5 min-w-0 pr-1 relative">
+                  <div className="flex-1 flex flex-col justify-between py-1 min-w-0">
                     
                     {/* Top Section: Title & Price */}
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1 min-w-0 pr-1">
-                        <div className="flex items-center flex-wrap gap-1 mb-1">
-                          <h3 className="text-[16px] sm:text-[18px] font-extrabold text-[#1B2B48] leading-tight truncate">{caretaker.name}</h3>
-                          <div className="flex items-center space-x-0.5 bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold text-[#2E7D32] shrink-0">
-                            <BadgeCheck size={10} />
+                    <div className="flex justify-between items-start mb-1 sm:mb-2">
+                      <div className="flex-1 min-w-0 pr-1 sm:pr-4">
+                        <div className="flex items-center flex-wrap gap-1 sm:gap-2 mb-0.5 sm:mb-1">
+                          <h3 className="text-[14px] sm:text-[20px] font-bold text-[#1B2B48] leading-tight truncate">{caretaker.name}</h3>
+                          <div className="flex items-center space-x-1 bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold text-[#2E7D32] shrink-0">
+                            <BadgeCheck size={10} className="sm:w-3 sm:h-3" />
                             <span>Verified Partner</span>
                           </div>
                         </div>
                         
-                        <div className="flex items-center space-x-1 mb-1">
-                          <Star size={12} className="fill-[#007672] text-[#007672]" />
-                          <span className="text-[13px] sm:text-[14px] font-extrabold text-[#1B2B48]">{caretaker.rating.toFixed(1)}</span>
-                          <span className="text-[12px] sm:text-[13px] font-medium text-[#465E87]">({caretaker.reviews} reviews)</span>
+                        <div className="flex items-center space-x-1 sm:space-x-1.5 mb-0.5 sm:mb-1">
+                          <Star size={12} className="fill-[#FBC02D] text-[#FBC02D] sm:w-3.5 sm:h-3.5" />
+                          <span className="text-[12px] sm:text-[14px] font-bold text-[#007672]">{caretaker.rating.toFixed(1)}</span>
+                          <span className="text-[11px] sm:text-[13px] text-[#465E87]">({caretaker.reviews} reviews)</span>
                         </div>
 
-                        <div className="flex items-center space-x-1 text-[12px] sm:text-[13px] font-medium text-[#465E87] truncate">
-                          <MapPin size={12} className="text-[#465E87] shrink-0" />
-                          <span className="truncate">{caretaker.distanceStr} • {caretaker.locationStr.split(',')[0]}</span>
+                        <div className="flex items-center space-x-1 sm:space-x-1.5 text-[11px] sm:text-[13px] text-[#465E87] truncate">
+                          <MapPin size={12} className="text-[#465E87] shrink-0 sm:w-3.5 sm:h-3.5" />
+                          <span className="truncate">{caretaker.distanceStr} away</span>
                         </div>
                       </div>
 
                       {/* Price Block & Arrow */}
-                      <div className="text-right flex flex-col items-end shrink-0 pl-2">
-                        <div className="flex items-center space-x-0.5 text-[#1B2B48]">
-                          <span className="text-[18px] sm:text-[20px] font-extrabold">₹{caretaker.price}</span>
-                          <ChevronRight size={18} strokeWidth={2.5} className="mb-0.5" />
+                      <div className="text-right flex flex-col items-end shrink-0">
+                        <div className="flex items-center space-x-0.5 sm:space-x-1 text-[#1B2B48]">
+                          <span className="text-[15px] sm:text-[22px] font-bold">₹{caretaker.price}</span>
+                          <ChevronRight size={16} strokeWidth={2.5} className="text-[#1B2B48] sm:w-5 sm:h-5" />
                         </div>
-                        <span className="text-[10px] sm:text-[11px] font-medium text-[#465E87] text-right mt-0.5 leading-tight">per pet, per night</span>
+                        <span className="text-[8px] sm:text-[12px] text-[#465E87] mt-0">per pet, per night</span>
                       </div>
                     </div>
 
                     {/* Facilities Icons Row */}
-                    <div className="flex flex-row justify-between items-end mt-2 pt-2 border-t border-gray-50/50 pr-4 sm:pr-6">
+                    <div className="flex flex-row justify-between items-start sm:items-end mt-auto pt-2 sm:pt-3 border-t border-gray-100">
                       
                       {/* Pick up & drop */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#007672]/10 rounded-full flex items-center justify-center mb-1 shadow-sm">
-                          <Car size={13} className="text-[#8B5A2B]" />
-                        </div>
-                        <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Pickup & Drop<br/>Service</span>
+                      <div className="flex flex-col items-center flex-1">
+                        <Car size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">Pickup & Drop<br className="hidden sm:block"/> Service</span>
                       </div>
 
                       {/* Vaccination */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#007672]/10 rounded-full flex items-center justify-center mb-1 shadow-sm">
-                          <Syringe size={13} className="text-[#8B5A2B]" />
-                        </div>
-                        <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Vaccination<br/>Assistance</span>
+                      <div className="flex flex-col items-center flex-1">
+                        <Syringe size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">Vaccination<br className="hidden sm:block"/> Assistance</span>
                       </div>
 
                       {/* Grooming */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#007672]/10 rounded-full flex items-center justify-center mb-1 shadow-sm">
-                          <Scissors size={13} className="text-[#8B5A2B]" />
-                        </div>
-                        <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">Grooming<br/>Available</span>
+                      <div className="flex flex-col items-center flex-1">
+                        <Scissors size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">Grooming<br className="hidden sm:block"/> Available</span>
+                      </div>
+                      
+                      {/* 24/7 Supervision */}
+                      <div className="flex flex-col items-center flex-1">
+                        <Shield size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">24/7<br className="hidden sm:block"/> Supervision</span>
                       </div>
 
                       {/* Experience */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#007672]/10 rounded-full flex items-center justify-center mb-1 shadow-sm">
-                          <User size={13} className="text-[#8B5A2B]" />
-                        </div>
-                        <span className="text-[8.5px] sm:text-[10px] font-semibold text-[#465E87] leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br/>Experience</span>
+                      <div className="flex flex-col items-center flex-1">
+                        <User size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br className="hidden sm:block"/> Experience</span>
                       </div>
                       
                     </div>
@@ -455,16 +826,66 @@ export const BoardingSearchScreen = () => {
                   </div>
                 </motion.div>
               ))}
+              </div>
             </div>
           )}
 
-          {/* Floating Bottom Bar (Mobile Only) */}
-          {!loading && filteredCaretakers.length > 0 && (
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-30 flex justify-center lg:hidden">
-               <span className="text-[13px] font-extrabold text-[#1B2B48]">{filteredCaretakers.length} stays available</span>
+          </div> {/* End Left Column */}
+
+          {/* Right Column: Static Promotional Image (Desktop Only) */}
+          <div className="hidden lg:flex shrink-0 bg-[#F8F9FA] relative justify-end w-[260px] xl:w-[320px]">
+            <div className="w-[260px] xl:w-[320px]">
+              <div className="sticky top-0 w-full flex justify-end items-start pt-6 pr-4 xl:pr-8">
+                <img 
+                  src="/booking-search.png" 
+                  alt="Book with Confidence" 
+                  className="w-full max-w-[240px] xl:max-w-[280px] h-auto object-contain object-top drop-shadow-sm rounded-[16px] ml-auto"
+                />
+              </div>
             </div>
-          )}
+          </div>
+          
+          </div> {/* End Split Layout Wrapper */}
         </div>
+
+        {/* Filters Side Drawer (Mobile Overlay) */}
+        {isFilterDrawerOpen && (
+          <div className="fixed lg:hidden inset-0 z-[100] flex">
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              onClick={() => setIsFilterDrawerOpen(false)}
+            />
+            
+            {/* Drawer Content */}
+            <div className="relative w-full max-w-[320px] bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-left duration-300">
+              
+              <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                <div className="flex items-center gap-2 text-[#1B2B48]">
+                  <Filter size={20} className="text-[#007672]" />
+                  <h2 className="text-[20px] font-extrabold">Filters</h2>
+                </div>
+                <button 
+                  onClick={() => setIsFilterDrawerOpen(false)}
+                  className="text-[#465E87] text-[14px] font-bold hover:text-[#007672]"
+                >
+                  Clear All
+                </button>
+              </div>
+
+              {renderFilters()}
+
+              {/* Close Button on Mobile Overlay */}
+              <button 
+                onClick={() => setIsFilterDrawerOpen(false)}
+                className="absolute top-4 -right-12 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg text-[#1B2B48]"
+              >
+                <X size={20} />
+              </button>
+
+            </div>
+          </div>
+        )}
 
       </div>
     </DashboardLayout>

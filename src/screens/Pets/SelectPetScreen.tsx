@@ -96,7 +96,7 @@ export const SelectPetScreen = () => {
         </button>
       </div>
 
-      <div className="px-6">
+      <div className="max-w-[600px] mx-auto w-full px-6 flex-1 flex flex-col">
         <div className="mb-8 text-center">
           <h1 className="text-[22px] font-extrabold text-[#1B2B48] mb-1 tracking-tight">Your Pets</h1>
           <p className="text-[14px] text-[#465E87] font-medium">
@@ -112,10 +112,10 @@ export const SelectPetScreen = () => {
               <div 
                 key={pet.id}
                 onClick={() => togglePetSelection(pet.id)}
-                className={`relative flex flex-row p-4 rounded-[20px] transition-all cursor-pointer border ${
+                className={`relative flex flex-row p-4 rounded-[20px] transition-all duration-300 cursor-pointer border group hover:scale-[1.01] ${
                   isSelected 
-                    ? 'border-[#007672] bg-[#FFF9EC] shadow-[0_4px_15px_rgba(251,191,36,0.15)]' 
-                    : 'border-gray-100 bg-white shadow-[0_4px_15px_rgba(0,0,0,0.03)]'
+                    ? 'border-[#007672] bg-[#F0FDF4] shadow-[0_8px_30px_rgba(0,118,114,0.12)] ring-1 ring-[#007672]' 
+                    : 'border-gray-200 bg-white hover:border-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)]'
                 }`}
               >
                 {/* Check Mark for Selected State */}
@@ -161,7 +161,7 @@ export const SelectPetScreen = () => {
         {/* Add Another Pet */}
         <div 
           onClick={() => navigate('/add-pet', { state: { returnTo: '/select-pet', provider, bookingData } })}
-          className="mt-6 border-2 border-dashed border-gray-200 rounded-[20px] p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
+          className="mt-6 border-2 border-dashed border-gray-300 rounded-[20px] p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 hover:border-[#007672] transition-all duration-300 group"
         >
           <div className="w-12 h-12 bg-[#71b6af] rounded-full flex items-center justify-center mb-3">
             <Plus size={24} className="text-[#1B2B48]" strokeWidth={2.5} />
@@ -173,14 +173,16 @@ export const SelectPetScreen = () => {
 
       {/* Fixed Bottom Button */}
       <div className="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom">
-        <Button 
-          onClick={handleNext}
-          disabled={selectedPetIds.length === 0}
-          className="w-full h-14 bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2"
-        >
-          <span>Continue</span>
-          <ArrowLeft size={18} className="rotate-180" />
-        </Button>
+        <div className="max-w-[600px] mx-auto w-full">
+          <Button 
+            onClick={handleNext}
+            disabled={selectedPetIds.length === 0}
+            className="w-full h-[56px] bg-[#007672] hover:bg-[#00605c] disabled:bg-gray-300 disabled:text-gray-500 text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-[0_8px_20px_rgba(0,118,114,0.25)] disabled:shadow-none transition-all duration-300"
+          >
+            <span>Continue</span>
+            <ArrowLeft size={20} className="rotate-180" />
+          </Button>
+        </div>
       </div>
 
     </div>

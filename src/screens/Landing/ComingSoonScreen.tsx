@@ -42,7 +42,7 @@ export const ComingSoonScreen = () => {
       <div className="bg-white w-full max-w-[1100px] mx-auto rounded-none md:rounded-[2rem] shadow-none md:shadow-2xl md:border border-gray-100 overflow-hidden flex flex-col relative min-h-screen md:min-h-0 bg-white">
         
         {/* Top Nav */}
-        <div className="fixed md:absolute top-0 left-0 w-full px-4 md:px-6 py-3 flex items-center bg-white/90 backdrop-blur-md md:bg-transparent z-50 shrink-0 border-b border-gray-100 md:border-none">
+        <div className="fixed md:absolute top-0 left-0 w-full px-4 md:px-6 py-3 flex items-center bg-transparent z-50 shrink-0">
           <button 
             onClick={() => navigate(-1)}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-transparent md:bg-white/80 md:backdrop-blur-md md:shadow-sm hover:bg-gray-50 md:hover:bg-white transition-colors"

@@ -14,7 +14,7 @@ export const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-        <main className={`flex-1 overflow-y-auto scrollbar-hide ${user ? 'pb-24 md:pb-8' : ''}`}>
+        <main className={`flex-1 overflow-y-auto scrollbar-hide ${user ? 'pb-24 md:pb-0' : ''}`}>
           <div className="w-full h-full">
             {children}
           </div>
