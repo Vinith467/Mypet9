@@ -1,4 +1,4 @@
-import { useState } from 'react';
+content = """import { useState } from 'react';
 import { ArrowLeft, Home, TreePine, PawPrint, Camera, MapPin, Calendar, Moon, Wallet, Info, ShieldCheck, Heart, Edit2, BadgeCheck, Star, Pencil, Check, FileText } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
@@ -479,3 +479,7 @@ export const BookingSummaryScreen = () => {
     </>
   );
 };
+"""
+
+with open('src/screens/Booking/BookingSummaryScreen.tsx', 'w', encoding='utf-8') as f:
+    f.write(content)
