@@ -51,9 +51,9 @@ export const CaretakerProfileScreen = () => {
 
   return (
     <DashboardLayout>
-      <div className="min-h-full bg-[#FAFAFA] pb-[100px] lg:pb-12 w-full relative">
+      <div className="min-h-full bg-[#FAFAFA] pb-[100px] lg:pb-0 w-full relative">
         
-        <div className="lg:max-w-7xl lg:mx-auto lg:bg-white lg:shadow-sm lg:border lg:border-gray-200 lg:rounded-[24px] lg:p-6 lg:mb-4">
+        <div className="lg:max-w-7xl lg:mx-auto lg:bg-white lg:shadow-sm lg:border lg:border-gray-200 lg:rounded-[24px] lg:p-6 lg:mb-0 lg:min-h-full">
           
           <div className="lg:grid lg:grid-cols-[320px,1fr,300px] xl:grid-cols-[360px,1fr,320px] lg:gap-6 xl:gap-8">
             
@@ -74,14 +74,14 @@ export const CaretakerProfileScreen = () => {
                 )}
                 
                 {/* Image Top Actions (Visible on Mobile & Desktop) */}
-                <div className="absolute top-0 w-full p-4 flex justify-between items-center z-10 pt-safe-top">
+                <div className="fixed lg:absolute top-[60px] lg:top-0 left-0 right-0 p-4 flex justify-between items-center z-40 pointer-events-none">
                   <button 
                     onClick={() => navigate(-1)}
-                    className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#1B2B48] shadow-sm hover:bg-white transition-colors"
+                    className="pointer-events-auto w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#1B2B48] shadow-sm hover:bg-white transition-colors"
                   >
                     <ArrowLeft size={20} />
                   </button>
-                  <div className="flex space-x-3">
+                  <div className="flex space-x-3 pointer-events-auto">
                     <button 
                       onClick={() => toggleSaved(provider)}
                       className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#1B2B48] shadow-sm hover:bg-white transition-colors"
@@ -96,20 +96,18 @@ export const CaretakerProfileScreen = () => {
 
                 {/* Bottom Pills */}
                 {!isVideoPlaying && (
-                  <div className="absolute bottom-6 lg:bottom-8 left-4 right-4 flex justify-between z-10">
+                  <div className="absolute bottom-6 lg:bottom-4 left-4 flex space-x-2 z-10">
                     {hasVideo ? (
                       <button 
                         onClick={() => setIsVideoPlaying(true)}
-                        className="bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-5 py-1.5 lg:py-2.5 rounded-full flex items-center space-x-2 text-[11px] lg:text-[14px] font-bold shadow-sm hover:bg-black transition border border-white/10"
+                        className="bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-4 py-1.5 lg:py-2 rounded-full flex items-center space-x-2 text-[11px] lg:text-[13px] font-bold shadow-sm hover:bg-black transition border border-white/10"
                       >
-                        <Play size={12} className="fill-white lg:w-4 lg:h-4" />
+                        <Play size={12} className="fill-white" />
                         <span>Watch Video</span>
                       </button>
-                    ) : (
-                      <div />
-                    )}
-                    <button className="bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-5 py-1.5 lg:py-2.5 rounded-full flex items-center space-x-2 text-[11px] lg:text-[14px] font-bold shadow-sm border border-white/10">
-                      <ImageIcon size={12} className="lg:w-4 lg:h-4" />
+                    ) : null}
+                    <button className="bg-black/80 backdrop-blur-md text-white px-3.5 lg:px-4 py-1.5 lg:py-2 rounded-full flex items-center space-x-2 text-[11px] lg:text-[13px] font-bold shadow-sm border border-white/10">
+                      <ImageIcon size={12} />
                       <span>See Photos ({allImages.length})</span>
                     </button>
                   </div>
@@ -125,18 +123,10 @@ export const CaretakerProfileScreen = () => {
                 )}
               </div>
 
-              <div className="bg-white rounded-t-[24px] -mt-5 lg:mt-0 relative z-20 pt-4 lg:pt-5">
+              <div className="relative z-20 mt-2 lg:mt-0 pt-1">
                 {/* THUMBNAILS ROW */}
-                <div className="flex items-center gap-2 lg:gap-3 px-5 lg:px-0 pb-3">
-                  <button 
-                    onClick={() => setThumbnailStartIndex(Math.max(0, thumbnailStartIndex - 1))}
-                    disabled={thumbnailStartIndex === 0}
-                    className={`hidden lg:flex w-8 h-8 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center shrink-0 hover:bg-gray-50 z-10 -ml-4 ${thumbnailStartIndex === 0 ? 'opacity-30 cursor-not-allowed' : ''}`}
-                  >
-                    <ChevronDown size={18} className="rotate-90 text-[#465E87]" />
-                  </button>
-                  
-                  <div className="flex flex-1 gap-2 lg:gap-3 overflow-x-auto scrollbar-hide justify-between">
+                <div className="flex items-center gap-2 lg:gap-3 px-5 lg:px-0 lg:pb-0 pb-3">
+                  <div className="flex flex-1 gap-2 lg:gap-3 overflow-x-auto scrollbar-hide justify-between w-full">
                     {allImages.slice(thumbnailStartIndex, thumbnailStartIndex + 4).map((img: string, i: number) => {
                       const actualIdx = thumbnailStartIndex + i;
                       const isLastVisible = i === 3;
@@ -148,32 +138,28 @@ export const CaretakerProfileScreen = () => {
                           onClick={() => {
                             if (isLastVisible && remainingCount > 0) {
                               setThumbnailStartIndex(Math.min(allImages.length - 4, thumbnailStartIndex + 1));
+                            } else if (actualIdx === thumbnailStartIndex && thumbnailStartIndex > 0) {
+                              setThumbnailStartIndex(Math.max(0, thumbnailStartIndex - 1));
+                              setActiveMediaIndex(actualIdx);
+                              setIsVideoPlaying(false);
                             } else {
                               setActiveMediaIndex(actualIdx);
                               setIsVideoPlaying(false);
                             }
                           }}
-                          className={`relative w-[60px] h-[60px] lg:flex-1 lg:h-[80px] rounded-[10px] lg:rounded-[12px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${actualIdx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[3px] border-[#007672] scale-[0.98] shadow-md' : 'opacity-90 hover:opacity-100 border border-gray-100'}`}
+                          className={`relative flex-1 h-[65px] lg:h-[75px] rounded-[10px] lg:rounded-[12px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${actualIdx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[2.5px] border-[#007672] shadow-sm' : 'opacity-90 hover:opacity-100 border border-transparent'}`}
                         >
                           <img src={img} alt="" className="w-full h-full object-cover" />
                           {isLastVisible && remainingCount > 0 && (
                             <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white">
-                              <span className="text-[14px] font-bold">+{remainingCount}</span>
-                              <span className="text-[9px] font-medium">More</span>
+                              <span className="text-[14px] lg:text-[18px] font-bold">+{remainingCount}</span>
+                              <span className="text-[9px] lg:text-[11px] font-medium">More</span>
                             </div>
                           )}
                         </div>
                       );
                     })}
                   </div>
-
-                  <button 
-                    onClick={() => setThumbnailStartIndex(Math.min(allImages.length - 4, thumbnailStartIndex + 1))}
-                    disabled={thumbnailStartIndex >= allImages.length - 4}
-                    className={`hidden lg:flex w-8 h-8 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center shrink-0 hover:bg-gray-50 z-10 -mr-4 ${thumbnailStartIndex >= allImages.length - 4 ? 'opacity-30 cursor-not-allowed' : ''}`}
-                  >
-                    <ChevronDown size={18} className="-rotate-90 text-[#465E87]" />
-                  </button>
                 </div>
               </div>
             </div>

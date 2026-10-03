@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MoreVertical, Plus, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, MoreVertical, Plus, CheckCircle2, PawPrint, Weight } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { collection, query, getDocs } from 'firebase/firestore';
@@ -85,94 +85,148 @@ export const SelectPetScreen = () => {
   if (pets.length === 0) return null;
 
   return (
-    <div className="flex-1 min-h-screen bg-white flex flex-col relative pb-28">
-      {/* Header */}
-      <div className="px-5 pt-12 pb-4 flex items-center sticky top-0 bg-white/90 backdrop-blur-md z-30">
-        <button 
-          onClick={() => navigate(-1)}
-          className="w-10 h-10 flex items-center justify-center -ml-2"
-        >
-          <ArrowLeft size={24} className="text-[#1B2B48]" />
-        </button>
+    <div className="absolute inset-0 w-full h-full bg-[#FDFDFD] flex flex-col overflow-hidden z-0">
+      {/* Husky Background Images */}
+      <div className="absolute top-[72px] left-0 w-1/4 max-w-[350px] z-0 pointer-events-none hidden lg:block opacity-100">
+        <img src="/petselect.png" alt="Husky decoration left" className="w-full h-auto object-top" />
+      </div>
+      <div className="absolute top-[72px] right-0 w-1/4 max-w-[350px] z-0 pointer-events-none hidden lg:block opacity-100">
+        <img src="/petselect2.png" alt="Husky decoration right" className="w-full h-auto object-top" />
       </div>
 
-      <div className="max-w-[600px] mx-auto w-full px-6 flex-1 flex flex-col">
-        <div className="mb-8 text-center">
-          <h1 className="text-[22px] font-extrabold text-[#1B2B48] mb-1 tracking-tight">Your Pets</h1>
-          <p className="text-[14px] text-[#465E87] font-medium">
-            You've added {pets.length} pet{pets.length !== 1 ? 's' : ''} so far.
-          </p>
+      {/* Mobile Husky Background Image (Bottom) */}
+      <div className="absolute bottom-0 left-0 right-0 w-full z-0 pointer-events-none block lg:hidden">
+        <img src="/2Your%20Pets%20Aqua%20Wave%20Banner.png" alt="Husky decoration bottom" className="w-full h-auto object-bottom" />
+      </div>
+
+      <div className="relative z-10 w-full flex-1 flex flex-col h-full overflow-hidden">
+        {/* Mobile Top Navbar (Logo Only) */}
+        <div className="lg:hidden w-full shrink-0 flex items-center p-4 bg-white border-b border-gray-100 z-40 relative shadow-sm">
+           <PawPrint className="text-[#007672] w-6 h-6 mr-2" strokeWidth={2.5} />
+           <span className="font-extrabold text-[22px] tracking-tight text-[#1B2B48]">mypet9</span>
+        </div>
+        {/* Simple Top Navbar */}
+        <div className="w-full shrink-0 flex justify-start items-center px-5 lg:px-8 pt-4 pb-3 z-30 bg-transparent pointer-events-none">
+          <button 
+            onClick={() => navigate(-1)}
+            className="pointer-events-auto flex items-center space-x-2 text-[#1B2B48] hover:text-[#007672] font-bold transition-colors"
+          >
+            <ArrowLeft size={20} />
+            <span className="text-[16px]">Back</span>
+          </button>
         </div>
 
-        {/* Pet List */}
-        <div className="space-y-4">
-          {pets.map(pet => {
-            const isSelected = selectedPetIds.includes(pet.id);
-            return (
-              <div 
-                key={pet.id}
-                onClick={() => togglePetSelection(pet.id)}
-                className={`relative flex flex-row p-4 rounded-[20px] transition-all duration-300 cursor-pointer border group hover:scale-[1.01] ${
-                  isSelected 
-                    ? 'border-[#007672] bg-[#F0FDF4] shadow-[0_8px_30px_rgba(0,118,114,0.12)] ring-1 ring-[#007672]' 
-                    : 'border-gray-200 bg-white hover:border-gray-300 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)]'
-                }`}
-              >
-                {/* Check Mark for Selected State */}
-                {isSelected && (
-                  <div className="absolute -top-2 -right-2 bg-white rounded-full p-0.5 shadow-sm z-10 animate-in zoom-in duration-200">
-                    <CheckCircle2 size={24} className="text-white fill-[#007672]" />
-                  </div>
-                )}
+        <div className="max-w-[600px] mx-auto w-full px-6 flex flex-col shrink-0">
+          {/* Desktop Title (Hidden on Mobile) */}
+          <div className="hidden lg:block mb-8 mt-0 text-center relative z-10">
+            <div className="flex justify-center mb-2">
+              <PawPrint className="text-[#007672] fill-[#007672]" size={36} />
+            </div>
+            <h1 className="text-[32px] font-extrabold text-[#1B2B48] mb-1 tracking-tight">
+              Your <span className="text-[#007672]">Pets</span>
+            </h1>
+            <p className="text-[15px] text-[#465E87] font-medium">
+              You've added {pets.length} pet{pets.length !== 1 ? 's' : ''} so far.
+            </p>
+          </div>
 
-                {/* Pet Image */}
-                <div className="w-[72px] h-[72px] rounded-[16px] overflow-hidden shrink-0 bg-gray-100 mr-4">
-                  {pet.image ? (
-                    <img src={pet.image} alt={pet.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold text-xl">
-                      {pet.name.charAt(0)}
+          {/* Mobile Title (Image) */}
+          <div className="block lg:hidden mb-2 relative z-10 w-[calc(100%+48px)] -ml-6 flex flex-col items-center mt-[-10px]">
+             <img src="/Your%20Pets%20Aqua%20Wave%20Banner.png" alt="Your Pets" className="w-full h-auto object-contain pointer-events-none" />
+             <div className="absolute top-[80%] left-0 right-0 text-center pointer-events-none">
+               <p className="text-[14px] text-[#465E87] font-medium z-10 relative">
+                 You've added {pets.length} pet{pets.length !== 1 ? 's' : ''} so far.
+               </p>
+             </div>
+          </div>
+
+        </div>
+
+        {/* Scrollable Pet List */}
+          <div className="flex-1 overflow-y-auto w-full pb-[120px] scrollbar-hide">
+            <div className="max-w-[600px] mx-auto w-full px-6 space-y-4">
+            {pets.map(pet => {
+              const isSelected = selectedPetIds.includes(pet.id);
+              return (
+                <div 
+                  key={pet.id}
+                  onClick={() => togglePetSelection(pet.id)}
+                  className={`relative flex flex-row p-4 lg:p-5 rounded-[24px] transition-all duration-300 cursor-pointer border-[2px] bg-white ${
+                    isSelected 
+                      ? 'border-[#007672] shadow-md ring-1 ring-[#007672]' 
+                      : 'border-transparent shadow-sm hover:shadow-md'
+                  }`}
+                >
+                  {/* Check Mark for Selected State */}
+                  {isSelected && (
+                    <div className="absolute -top-2 -right-2 bg-white rounded-full p-0.5 shadow-sm z-10 animate-in zoom-in duration-200">
+                      <CheckCircle2 size={24} className="text-white fill-[#007672]" />
                     </div>
                   )}
-                </div>
 
-                {/* Details */}
-                <div className="flex-1 flex flex-col justify-center">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-[16px] font-extrabold text-[#1B2B48] leading-tight mb-1">{pet.name}</h3>
-                    <button className="text-gray-400 p-1 -mr-2" onClick={(e) => e.stopPropagation()}>
-                      <MoreVertical size={18} />
-                    </button>
+                  {/* Pet Image */}
+                  <div className="w-[80px] h-[80px] rounded-[20px] overflow-hidden shrink-0 bg-gray-100 mr-5">
+                    {pet.image ? (
+                      <img src={pet.image} alt={pet.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-[#007672] bg-[#E6F4F1] font-bold text-2xl">
+                        {pet.name.charAt(0).toUpperCase()}
+                      </div>
+                    )}
                   </div>
-                  <p className="text-[13px] font-medium text-[#465E87] mb-1">{pet.breed || pet.type || 'Breed'}</p>
-                  <div className="flex items-center text-[12px] font-semibold text-[#465E87]/70 space-x-1.5">
-                    {pet.age && <span>{pet.age}</span>}
-                    {pet.age && pet.gender && <span>•</span>}
-                    {pet.gender && <span>{pet.gender}</span>}
-                    {pet.gender && pet.weight && <span>•</span>}
-                    {pet.weight && <span>{pet.weight} {pet.weight.toString().includes('kg') ? '' : 'kg'}</span>}
+
+                  {/* Details */}
+                  <div className="flex-1 flex flex-col justify-center">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center space-x-3 mb-1">
+                        <h3 className="text-[18px] font-extrabold text-[#1B2B48] leading-tight">{pet.name}</h3>
+                        <span className="bg-[#E6F4F1] text-[#007672] px-2.5 py-0.5 rounded-full text-[11px] font-bold">Dog</span>
+                      </div>
+                      <button className="text-gray-400 hover:text-gray-600 p-1 -mr-2" onClick={(e) => e.stopPropagation()}>
+                        <MoreVertical size={20} />
+                      </button>
+                    </div>
+                    <p className="text-[14px] font-semibold text-[#465E87] mb-2">{pet.breed || pet.type || 'Breed'}</p>
+                    
+                    {/* Details Icons Row */}
+                    <div className="flex flex-wrap items-center text-[13px] font-semibold text-[#465E87] gap-x-5 gap-y-2">
+                      {pet.age && (
+                        <div className="flex items-center space-x-1.5">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#007672" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                          <span>{pet.age}</span>
+                        </div>
+                      )}
+                      {pet.gender && (
+                        <div className="flex items-center space-x-1.5">
+                          {pet.gender.toLowerCase() === 'male' ? <span className="text-[#007672] font-bold text-[16px] leading-none">♂</span> : <span className="text-[#007672] font-bold text-[16px] leading-none">♀</span>}
+                          <span>{pet.gender}</span>
+                        </div>
+                      )}
+                      {pet.weight && (
+                        <div className="flex items-center space-x-1.5">
+                          <Weight size={14} className="text-[#007672]" strokeWidth={2.5} />
+                          <span>{pet.weight} {pet.weight.toString().includes('kg') ? '' : 'kg'}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Add Another Pet */}
-        <div 
-          onClick={() => navigate('/add-pet', { state: { returnTo: '/select-pet', provider, bookingData } })}
-          className="mt-6 border-2 border-dashed border-gray-300 rounded-[20px] p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 hover:border-[#007672] transition-all duration-300 group"
-        >
-          <div className="w-12 h-12 bg-[#71b6af] rounded-full flex items-center justify-center mb-3">
-            <Plus size={24} className="text-[#1B2B48]" strokeWidth={2.5} />
+              );
+            })}
+              {/* Add New Pet Button */}
+              <button 
+                onClick={() => navigate('/add-pet', { state: { returnTo: '/select-pet', provider, bookingData } })}
+                className="w-full mt-4 flex items-center justify-center space-x-2 text-[#007672] font-bold bg-[#F0FDF4] px-5 py-4 rounded-[24px] shadow-sm border-2 border-dashed border-[#007672]/30 hover:bg-[#E6FBF0] hover:border-[#007672]/50 transition-all duration-300"
+              >
+                <Plus size={20} strokeWidth={3} />
+                <span className="text-[16px]">Add New Pet</span>
+              </button>
+            </div>
           </div>
-          <h4 className="text-[15px] font-extrabold text-[#1B2B48] mb-1">Add Another Pet</h4>
-          <p className="text-[12px] font-medium text-[#465E87]">You can add multiple pets</p>
-        </div>
       </div>
 
       {/* Fixed Bottom Button */}
-      <div className="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-white via-white to-transparent z-40 pb-safe-bottom">
+      <div className="fixed bottom-0 left-0 right-0 p-5 z-40 pb-safe-bottom">
         <div className="max-w-[600px] mx-auto w-full">
           <Button 
             onClick={handleNext}
