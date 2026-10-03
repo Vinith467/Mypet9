@@ -19,9 +19,14 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden flex items-center p-4 bg-white border-b border-gray-100 fixed top-0 left-0 w-full z-50">
-         <PawPrint className="text-[#007672] w-6 h-6 mr-2" strokeWidth={2.5} />
-         <span className="font-extrabold text-[22px] tracking-tight text-[#1B2B48]">mypet9</span>
+      <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-100 fixed top-0 left-0 w-full z-50">
+         <div className="flex items-center">
+           <PawPrint className="text-[#007672] w-6 h-6 mr-2" strokeWidth={2.5} />
+           <span className="font-extrabold text-[22px] tracking-tight text-[#1B2B48]">mypet9</span>
+         </div>
+         <button onClick={() => navigate('/inquiry')} className="text-[11px] font-bold bg-[#E6FBF0] text-[#007672] px-3 py-1.5 rounded-full border border-[#007672]/20 shadow-sm hover:bg-[#D1F4E0] transition-colors">
+           Inquiry Form
+         </button>
       </div>
       <div className="md:hidden h-[60px] w-full shrink-0" />
 
