@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
-import { ArrowLeft, Save, Clock, User, Phone, Mail, MapPin, List, FileText, Download } from 'lucide-react';
+import { ArrowLeft, Save, Clock, User, Phone, Mail, MapPin, List, FileText, Download, Camera } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../config/firebase';
 import { collection, addDoc, getDocs, orderBy, query, Timestamp } from 'firebase/firestore';
@@ -299,9 +299,9 @@ export const InquiryFormScreen = () => {
                         <span>{isLocating ? 'Locating...' : 'Capture GPS Coordinates'}</span>
                       </button>
                       <label className="flex-1 py-2.5 px-4 bg-gray-50 text-gray-700 border border-gray-200 font-bold text-sm rounded-xl hover:bg-gray-100 transition-colors cursor-pointer flex items-center justify-center space-x-2">
-                        <User size={16} /> {/* Placeholder icon for Image */}
-                        <span>{formData.locationImage ? 'Image Captured' : 'Take Photo'}</span>
-                        <input type="file" accept="image/*" capture="environment" onChange={handleImageCapture} className="hidden" />
+                        <Camera size={16} />
+                        <span>{formData.locationImage ? 'Image Added' : 'Add Photo'}</span>
+                        <input type="file" accept="image/*" onChange={handleImageCapture} className="hidden" />
                       </label>
                     </div>
                     
