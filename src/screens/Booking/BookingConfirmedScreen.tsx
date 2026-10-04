@@ -47,10 +47,10 @@ export const BookingConfirmedScreen = () => {
   const isPayNow = paymentMethod === 'pay_now';
 
   return (
-    <div className="w-full flex flex-col min-h-screen bg-[#FAFAFA] pb-40">
+    <div className="w-full flex flex-col h-[100dvh] bg-[#FAFAFA] overflow-hidden">
       
       {/* Top Banner (Icon & Confetti) */}
-      <div className="relative pt-12 pb-6 px-5 text-center flex flex-col items-center overflow-hidden">
+      <div className="relative pt-8 sm:pt-10 pb-4 sm:pb-6 px-5 text-center flex flex-col items-center overflow-hidden shrink-0">
         
         {/* Close Button */}
         <button 
@@ -71,14 +71,14 @@ export const BookingConfirmedScreen = () => {
         </div>
 
         {/* Main Icon */}
-        <div className="relative z-10 w-24 h-24 rounded-full flex items-center justify-center mb-5 mt-2 mx-auto">
+        <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mb-3 sm:mb-4 mx-auto">
           {isPayNow ? (
-            <div className="w-20 h-20 rounded-full bg-[#007672] flex items-center justify-center shadow-[0_8px_16px_rgba(23,79,56,0.2)]">
-              <Check size={44} className="text-white stroke-[4]" />
+            <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-[#007672] flex items-center justify-center shadow-[0_8px_16px_rgba(23,79,56,0.2)]">
+              <Check size={32} className="text-white stroke-[4]" />
             </div>
           ) : (
-            <div className="w-20 h-20 rounded-full bg-[#FFF9EC] border-2 border-[#71b6af]/30 flex items-center justify-center relative">
-              <Calendar size={40} className="text-[#111111]" strokeWidth={2} />
+            <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-[#FFF9EC] border-2 border-[#71b6af]/30 flex items-center justify-center relative">
+              <Calendar size={32} className="text-[#111111]" strokeWidth={2} />
               <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#71b6af] flex items-center justify-center border-2 border-white shadow-sm">
                 <Check size={18} className="text-[#111111] stroke-[4]" />
               </div>
@@ -95,7 +95,7 @@ export const BookingConfirmedScreen = () => {
       </div>
 
       {/* Content Container */}
-      <div className="py-2 space-y-3 max-w-2xl mx-auto w-full pb-32 px-4">
+      <div className="py-2 space-y-3 max-w-5xl mx-auto w-full px-4 overflow-y-auto flex-1 pb-24 lg:pb-4">
         
         {/* Pay Later Warning Banner */}
         {!isPayNow && (
@@ -115,9 +115,9 @@ export const BookingConfirmedScreen = () => {
         )}
 
         {/* Combined Details Card */}
-        <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col">
+        <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col lg:flex-row lg:divide-x divide-y lg:divide-y-0 divide-gray-100">
           {/* Host Card */}
-          <div className="p-4 sm:p-5">
+          <div className="p-4 sm:p-5 lg:flex-1">
           <div className="flex gap-4">
             <div className="w-[100px] h-[100px] rounded-[16px] overflow-hidden shrink-0 mt-1">
               <img 
@@ -174,7 +174,7 @@ export const BookingConfirmedScreen = () => {
           </div>
 
           {/* Stay Details */}
-          <div className="p-4 sm:p-5">
+          <div className="p-4 sm:p-5 lg:flex-1">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2.5">
               <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
@@ -184,21 +184,21 @@ export const BookingConfirmedScreen = () => {
             </div>
           </div>
 
-          <div className="flex items-start justify-between bg-[#FAFAFA] rounded-[12px] p-3 border border-gray-100/50">
+          <div className="flex lg:flex-col items-start justify-between lg:justify-start lg:gap-3 bg-[#FAFAFA] rounded-[12px] p-3 border border-gray-100/50">
             <div className="flex flex-col flex-1 pr-2">
               <span className="text-[11px] font-medium text-[#465E87] mb-1 uppercase tracking-wider">Check-in</span>
               <span className="text-[14px] font-extrabold text-[#111111] mb-0.5">{formatDate(dropoffDate)}</span>
               <span className="text-[11px] font-medium text-[#465E87]">{formatDayTime(dropoffDate, dropoffTime)}</span>
             </div>
             
-            <div className="flex flex-col flex-1 px-3 border-l border-gray-200">
+            <div className="flex flex-col flex-1 px-3 lg:px-0 lg:pt-3 border-l lg:border-l-0 lg:border-t border-gray-200 lg:w-full">
               <span className="text-[11px] font-medium text-[#465E87] mb-1 uppercase tracking-wider">Check-out</span>
               <span className="text-[14px] font-extrabold text-[#111111] mb-0.5">{formatDate(pickupDate)}</span>
               <span className="text-[11px] font-medium text-[#465E87]">{formatDayTime(pickupDate, pickupTime)}</span>
             </div>
             
-            <div className="flex flex-col items-center justify-center pl-3 border-l border-gray-200">
-              <span className="text-[10px] font-medium text-[#465E87] mb-1 uppercase tracking-wider text-center w-full">Total duration</span>
+            <div className="flex flex-col items-center lg:items-start justify-center pl-3 lg:pl-0 lg:pt-3 border-l lg:border-l-0 lg:border-t border-gray-200 lg:w-full">
+              <span className="text-[10px] font-medium text-[#465E87] mb-1 uppercase tracking-wider text-center lg:text-left w-full">Total duration</span>
               <div className="flex items-center space-x-1.5 mt-0.5">
                 <div className="bg-white rounded-full p-1 shadow-sm border border-gray-100">
                   <Calendar size={12} className="text-[#111111]" />
@@ -210,7 +210,7 @@ export const BookingConfirmedScreen = () => {
           </div>
 
           {/* Pet Details */}
-          <div className="p-4 sm:p-5">
+          <div className="p-4 sm:p-5 lg:flex-1">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2.5">
               <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
@@ -254,7 +254,7 @@ export const BookingConfirmedScreen = () => {
 
         {/* Payment Details (Only for Pay Now) */}
         {isPayNow && (
-          <div className="bg-white rounded-[20px] p-4 border border-gray-100 shadow-sm">
+          <div className="bg-white rounded-[20px] p-4 border border-gray-100 shadow-sm max-w-xl mx-auto w-full">
             <div className="flex items-center space-x-2.5 mb-4">
               <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
                 <div className="w-4 h-3 bg-[#111111] rounded-[3px] border border-[#111111] flex items-center justify-center">
@@ -293,11 +293,11 @@ export const BookingConfirmedScreen = () => {
       </div>
 
       {/* Bottom Action Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-[#EAEAEA] to-[#FAFAFA]/5 pt-4 pb-safe-bottom backdrop-blur-[2px]">
-        <div className="max-w-2xl mx-auto w-full px-4 pb-4 flex flex-col space-y-3">
+      <div className="fixed lg:relative bottom-0 left-0 right-0 z-40 bg-gradient-to-t lg:bg-none from-[#EAEAEA] to-[#FAFAFA]/5 pt-4 pb-safe-bottom lg:pb-6 backdrop-blur-[2px] mt-auto shrink-0">
+        <div className="max-w-5xl mx-auto w-full px-4 pb-4 flex flex-col space-y-3 items-center">
           <Button 
             onClick={() => navigate('/bookings')}
-            className="w-full h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-sm"
+            className="w-full lg:w-96 h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-sm"
           >
             <span>View Booking Details</span>
             <ArrowRight size={20} />
