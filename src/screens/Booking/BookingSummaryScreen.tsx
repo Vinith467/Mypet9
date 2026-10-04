@@ -107,8 +107,8 @@ export const BookingSummaryScreen = () => {
       <div className="w-full flex flex-col min-h-screen bg-[#F5F7F9] pb-48">
         
         {/* Header with Hero Banner */}
-        <div className="relative w-full h-[180px] lg:h-[220px] shrink-0">
-          <img src="/review hero.png" alt="Header Banner" className="absolute inset-0 w-full h-full object-cover object-[center_top]" />
+        <div className="relative w-full">
+          <img src="/review hero.png" alt="Header Banner" className="w-full h-auto block" />
           <div className="absolute inset-0 pt-6 pb-2 px-5 text-center flex flex-col justify-start z-10">
             <button 
               onClick={() => navigate(-1)} 
@@ -116,12 +116,6 @@ export const BookingSummaryScreen = () => {
             >
               <ArrowLeft size={20} className="text-[#1B2B48]" />
             </button>
-            <h1 className="text-[32px] font-extrabold text-[#1B2B48] mt-2 tracking-tight" style={{ fontFamily: 'serif' }}>
-              Review & <span className="text-[#007672]">Pay</span>
-            </h1>
-            <p className="text-[14px] font-medium text-[#465E87] mt-1 max-w-[360px] mx-auto leading-relaxed">
-              Please review your homestay, pet details and stay information before making the payment.
-            </p>
           </div>
         </div>
 
