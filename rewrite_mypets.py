@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+content = """import { useState, useEffect } from 'react';
 import { Plus, MoreVertical, PawPrint, Calendar, ArrowLeft, ArrowRight, ShieldCheck, CheckCircle2, Check, Edit2, MoreHorizontal, Camera } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { collection, query, where, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
@@ -251,3 +251,7 @@ export const MyPetsScreen = () => {
     </div>
   );
 };
+"""
+
+with open('src/screens/Pets/MyPetsScreen.tsx', 'w', encoding='utf-8') as f:
+    f.write(content)

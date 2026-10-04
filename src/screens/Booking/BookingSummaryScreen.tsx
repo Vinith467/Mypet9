@@ -302,7 +302,9 @@ export const BookingSummaryScreen = () => {
                         <div className="flex flex-col justify-center min-w-0 py-1">
                           <div className="flex items-center space-x-2 mb-1">
                             <h4 className="text-[16px] font-extrabold text-[#111111] truncate">{pet.name}</h4>
-                            <span className="px-2 py-0.5 bg-[#EAF8F8] text-[#007672] text-[10px] font-bold rounded-full">Dog</span>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide shrink-0 ${pet.type?.toLowerCase() === 'cat' ? 'bg-[#FFF0F5] text-[#D63384]' : 'bg-[#EAF8F8] text-[#007672]'}`}>
+                              {pet.type || 'Dog'}
+                            </span>
                           </div>
                           <p className="text-[13px] font-medium text-[#666666] mb-2 truncate">{pet.breed || pet.type || 'Siberian Husky'}</p>
                           <div className="flex items-center space-x-4 text-[12px] font-medium text-[#666666] truncate">
