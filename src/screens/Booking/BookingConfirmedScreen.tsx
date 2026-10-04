@@ -47,10 +47,10 @@ export const BookingConfirmedScreen = () => {
   const isPayNow = paymentMethod === 'pay_now';
 
   return (
-    <div className="w-full flex flex-col h-[100dvh] bg-[#FAFAFA] overflow-hidden">
+    <div className="w-full flex flex-col min-h-screen bg-[#FAFAFA]">
       
       {/* Top Banner (Icon & Confetti) */}
-      <div className="relative pt-8 sm:pt-10 pb-4 sm:pb-6 px-5 text-center flex flex-col items-center overflow-hidden shrink-0">
+      <div className="relative pt-8 sm:pt-6 pb-4 sm:pb-4 px-5 text-center flex flex-col items-center overflow-hidden shrink-0">
         
         {/* Close Button */}
         <button 
@@ -95,7 +95,7 @@ export const BookingConfirmedScreen = () => {
       </div>
 
       {/* Content Container */}
-      <div className="py-2 space-y-3 max-w-5xl mx-auto w-full px-4 overflow-y-auto flex-1 pb-24 lg:pb-4">
+      <div className="py-2 space-y-4 lg:max-w-[90%] 2xl:max-w-[1400px] mx-auto w-full px-4 lg:px-8 pb-24 lg:pb-10 flex-1">
         
         {/* Pay Later Warning Banner */}
         {!isPayNow && (
@@ -294,7 +294,7 @@ export const BookingConfirmedScreen = () => {
 
       {/* Bottom Action Buttons */}
       <div className="fixed lg:relative bottom-0 left-0 right-0 z-40 bg-gradient-to-t lg:bg-none from-[#EAEAEA] to-[#FAFAFA]/5 pt-4 pb-safe-bottom lg:pb-6 backdrop-blur-[2px] mt-auto shrink-0">
-        <div className="max-w-5xl mx-auto w-full px-4 pb-4 flex flex-col space-y-3 items-center">
+        <div className="lg:max-w-[90%] 2xl:max-w-[1400px] mx-auto w-full px-4 pb-4 flex flex-col space-y-3 items-center">
           <Button 
             onClick={() => navigate('/bookings')}
             className="w-full lg:w-96 h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-sm"
