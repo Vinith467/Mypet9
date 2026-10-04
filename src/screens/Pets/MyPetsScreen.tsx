@@ -5,7 +5,7 @@ import { collection, query, where, onSnapshot, doc, deleteDoc } from 'firebase/f
 import { db } from '../../config/firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import { TopNavbar } from '../../components/layout/TopNavbar';
-import { BottomNav } from '../../components/layout/BottomNav';
+import { Navigation } from '../../components/layout/Navigation';
 
 export interface Pet {
   id: string;
@@ -246,7 +246,7 @@ export const MyPetsScreen = () => {
 
       {/* Mobile Bottom Nav */}
       <div className="md:hidden">
-        <BottomNav />
+        <Navigation />
       </div>
     </div>
   );
