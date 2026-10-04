@@ -54,6 +54,48 @@ export const BookingSummaryScreen = () => {
   const gst = Math.round((baseTotal + platformFee) * 0.18);
   const finalTotal = baseTotal + platformFee + gst;
 
+const renderPhotos = (isMobile: boolean) => {
+    const images = provider?.images || (provider?.photo ? [provider.photo] : []);
+    const galleryImages = images.length > 1 ? images.slice(1) : images;
+    
+    // If we have default fallback images, let's use them if gallery is empty
+    const fallbackImages = [
+      "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=100&h=100&fit=crop",
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=100&h=100&fit=crop",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop"
+    ];
+    
+    const finalImages = galleryImages.length > 0 ? galleryImages : fallbackImages;
+    
+    const displayImages = finalImages.slice(0, 3);
+    const remainingCount = finalImages.length - 3;
+    
+    const imgClass = isMobile 
+      ? "w-[23%] aspect-square rounded-[10px] object-cover shrink-0 shadow-sm" 
+      : "w-[65px] h-[65px] rounded-[12px] object-cover shrink-0 shadow-sm";
+    
+    const boxClass = isMobile
+      ? "w-[23%] aspect-square rounded-[10px] bg-[#EAF8F8] flex flex-col items-center justify-center text-[#007672] shrink-0 cursor-pointer shadow-sm"
+      : "w-[65px] h-[65px] rounded-[12px] bg-[#EAF8F8] flex flex-col items-center justify-center text-[#007672] shrink-0 cursor-pointer shadow-sm";
+      
+    const numClass = isMobile ? "text-[14px] font-extrabold leading-none" : "text-[16px] font-extrabold leading-none";
+    const textClass = isMobile ? "text-[10px] font-bold leading-none mt-1" : "text-[11px] font-bold leading-none mt-1";
+
+    return (
+      <>
+        {displayImages.map((img, i) => (
+          <img key={i} src={img} className={imgClass} alt={`Gallery ${i}`} />
+        ))}
+        {remainingCount > 0 && (
+          <div className={boxClass}>
+            <span className={numClass}>+{remainingCount}</span>
+            <span className={textClass}>Photos</span>
+          </div>
+        )}
+      </>
+    );
+  };
+
   const handleConfirmBooking = async (paymentMethod: 'pay_now' | 'pay_later') => {
     if (!user) {
       alert("Please login first");
@@ -185,14 +227,8 @@ export const BookingSummaryScreen = () => {
 
                   {/* Right Side: Photos & Amenities */}
                   <div className="flex flex-col sm:w-[50%] sm:items-end justify-start pt-2 sm:pt-1">
-                    <div className="flex gap-2 mb-4 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
-                      <img src={provider?.images?.[1] || "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=100&h=100&fit=crop"} className="w-[65px] h-[65px] rounded-[12px] object-cover shrink-0 shadow-sm" />
-                      <img src={provider?.images?.[2] || "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=100&h=100&fit=crop"} className="w-[65px] h-[65px] rounded-[12px] object-cover shrink-0 shadow-sm" />
-                      <img src={provider?.images?.[3] || "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop"} className="w-[65px] h-[65px] rounded-[12px] object-cover shrink-0 shadow-sm" />
-                      <div className="w-[65px] h-[65px] rounded-[12px] bg-[#EAF8F8] flex flex-col items-center justify-center text-[#007672] shrink-0 cursor-pointer shadow-sm">
-                        <span className="text-[16px] font-extrabold leading-none">+5</span>
-                        <span className="text-[11px] font-bold leading-none mt-1">Photos</span>
-                      </div>
+                    <div className="flex gap-2 mb-4 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide justify-start">
+                      {renderPhotos(false)}
                     </div>
                     <div className="flex gap-2 flex-wrap sm:justify-end mt-1">
                       <div className="flex items-center space-x-1.5 bg-[#F9FBFC] px-3 py-1.5 rounded-lg border border-gray-100">
@@ -265,14 +301,8 @@ export const BookingSummaryScreen = () => {
                   </div>
 
                   {/* Right Side: Photos - Grid on Mobile */}
-                  <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide justify-between">
-                    <img src={provider?.images?.[1] || "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=100&h=100&fit=crop"} className="w-[23%] aspect-square rounded-[10px] object-cover shrink-0 shadow-sm" />
-                    <img src={provider?.images?.[2] || "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=100&h=100&fit=crop"} className="w-[23%] aspect-square rounded-[10px] object-cover shrink-0 shadow-sm" />
-                    <img src={provider?.images?.[3] || "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop"} className="w-[23%] aspect-square rounded-[10px] object-cover shrink-0 shadow-sm" />
-                    <div className="w-[23%] aspect-square rounded-[10px] bg-[#EAF8F8] flex flex-col items-center justify-center text-[#007672] shrink-0 cursor-pointer shadow-sm">
-                      <span className="text-[14px] font-extrabold leading-none">+5</span>
-                      <span className="text-[10px] font-bold leading-none mt-1">Photos</span>
-                    </div>
+                  <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide justify-start">
+                    {renderPhotos(true)}
                   </div>
                 </div>
 
