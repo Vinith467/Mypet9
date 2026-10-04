@@ -107,20 +107,20 @@ export const BookingSummaryScreen = () => {
       <div className="w-full flex flex-col min-h-screen bg-[#F8F9FA] pb-48 font-sans">
         
         {/* Header with Hero Banner */}
-        <div className="relative w-full">
-          <img src="/review hero.png" alt="Header Banner" className="w-full h-auto block" />
+        <div className="relative w-full h-[110px] sm:h-[140px] lg:h-auto overflow-hidden">
+          <img src="/review hero.png" alt="Header Banner" className="w-full h-full lg:h-auto object-cover lg:object-contain object-center block" />
           <div className="absolute inset-0 pt-6 pb-2 px-5 text-center flex flex-col justify-start z-10">
             <button 
               onClick={() => navigate(-1)} 
-              className="absolute left-6 top-6 p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors"
+              className="absolute left-3 top-3 sm:left-6 sm:top-6 p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors"
             >
-              <ArrowLeft size={20} className="text-[#1B2B48]" />
+              <ArrowLeft size={18} className="text-[#1B2B48]" />
             </button>
           </div>
         </div>
 
         {/* Content Container */}
-        <div className="px-4 lg:px-8 py-4 lg:max-w-7xl w-full mx-auto pb-32 lg:pb-8 -mt-2">
+        <div className="px-4 lg:px-8 py-4 lg:max-w-7xl w-full mx-auto pb-32 lg:pb-8">
           <div className="flex flex-col lg:grid lg:grid-cols-[1.6fr,1fr] lg:gap-6 lg:items-start">
             
             {/* Left Column (Desktop) */}
