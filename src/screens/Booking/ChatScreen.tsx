@@ -307,8 +307,8 @@ export const ChatScreen = ({ embeddedChatId }: { embeddedChatId?: string }) => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-white border-t border-gray-100 px-4 py-4 shrink-0 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
-          <div className="max-w-3xl mx-auto flex items-end space-x-3">
+        <div className="bg-white border-t border-gray-100 px-3 sm:px-4 py-3 sm:py-4 shrink-0 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.02)] w-full">
+          <div className="max-w-3xl mx-auto flex items-end space-x-2 sm:space-x-3 w-full">
             
             <input 
               type="file" 
@@ -320,7 +320,7 @@ export const ChatScreen = ({ embeddedChatId }: { embeddedChatId?: string }) => {
 
             <button 
               onClick={() => fileInputRef.current?.click()}
-              className="w-12 h-12 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-[#465E87] hover:bg-gray-100 transition-colors flex-shrink-0" 
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-[#465E87] hover:bg-gray-100 transition-colors flex-shrink-0" 
               title="Add attachment"
             >
               <Plus size={24} />
@@ -345,7 +345,7 @@ export const ChatScreen = ({ embeddedChatId }: { embeddedChatId?: string }) => {
                       handleSendText();
                     }
                   }}
-                  className="flex-1 max-h-[120px] bg-transparent resize-none outline-none px-3 py-2 text-[15px] text-[#1B2B48] placeholder-gray-400 font-medium"
+                  className="flex-1 w-full min-w-0 max-h-[120px] bg-transparent resize-none outline-none px-2 sm:px-3 py-2 text-[14px] sm:text-[15px] text-[#1B2B48] placeholder-gray-400 font-medium"
                   placeholder="Type your message..."
                   rows={1}
                 />
@@ -365,14 +365,14 @@ export const ChatScreen = ({ embeddedChatId }: { embeddedChatId?: string }) => {
             {message.trim() && !isRecording ? (
               <button 
                 onClick={handleSendText}
-                className="w-12 h-12 rounded-full bg-[#007672] text-white flex items-center justify-center flex-shrink-0 hover:bg-[#007672]/90 transition-all shadow-[0_4px_12px_rgba(23,79,56,0.3)] hover:scale-105"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#007672] text-white flex items-center justify-center flex-shrink-0 hover:bg-[#007672]/90 transition-all shadow-[0_4px_12px_rgba(23,79,56,0.3)] hover:scale-105"
               >
                 <Send size={20} className="ml-1" />
               </button>
             ) : (
               <button 
                 onClick={toggleRecording}
-                className={`w-12 h-12 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
+                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
                   isRecording 
                   ? 'bg-red-500 border-red-600 text-white animate-bounce' 
                   : 'bg-gray-50 border-gray-100 text-[#007672] hover:bg-gray-100'
