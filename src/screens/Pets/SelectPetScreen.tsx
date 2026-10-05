@@ -100,13 +100,19 @@ export const SelectPetScreen = () => {
       </div>
 
       <div className="relative z-10 w-full flex-1 flex flex-col h-full overflow-hidden">
-        {/* Mobile Top Navbar (Logo Only) */}
-        <div className="lg:hidden w-full shrink-0 flex items-center p-4 bg-white border-b border-gray-100 z-40 relative shadow-sm">
-           <PawPrint className="text-[#007672] w-6 h-6 mr-2" strokeWidth={2.5} />
+        {/* Mobile Top Navbar */}
+        <div className="lg:hidden w-full shrink-0 flex items-center p-3 bg-white border-b border-gray-100 z-40 relative shadow-sm">
+           <button 
+             onClick={() => navigate(-1)}
+             className="w-10 h-10 mr-2 rounded-full hover:bg-gray-100 transition-colors flex items-center justify-center text-[#1B2B48]"
+           >
+             <ArrowLeft size={22} />
+           </button>
+           <PawPrint className="text-[#007672] w-6 h-6 mr-1.5" strokeWidth={2.5} />
            <span className="font-extrabold text-[22px] tracking-tight text-[#1B2B48]">mypet9</span>
         </div>
-        {/* Simple Top Navbar */}
-        <div className="w-full shrink-0 flex justify-start items-center px-5 lg:px-8 pt-4 pb-3 z-30 bg-transparent pointer-events-none">
+        {/* Desktop Top Navbar */}
+        <div className="hidden lg:flex w-full shrink-0 justify-start items-center px-8 pt-4 pb-3 z-30 bg-transparent pointer-events-none">
           <button 
             onClick={() => navigate(-1)}
             className="pointer-events-auto flex items-center space-x-2 text-[#1B2B48] hover:text-[#007672] font-bold transition-colors"
