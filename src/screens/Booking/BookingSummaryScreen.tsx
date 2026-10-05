@@ -83,7 +83,7 @@ const renderPhotos = (isMobile: boolean) => {
 
     return (
       <>
-        {displayImages.map((img, i) => (
+        {displayImages.map((img: string, i: number) => (
           <img key={i} src={img} className={imgClass} alt={`Gallery ${i}`} />
         ))}
         {remainingCount > 0 && (
