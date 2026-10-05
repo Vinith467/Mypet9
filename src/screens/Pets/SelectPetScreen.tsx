@@ -94,10 +94,7 @@ export const SelectPetScreen = () => {
         <img src="/petselect2.png" alt="Husky decoration right" className="w-full h-auto object-top" />
       </div>
 
-      {/* Mobile Husky Background Image (Bottom) */}
-      <div className="absolute bottom-0 left-0 right-0 w-full z-0 pointer-events-none block lg:hidden">
-        <img src="/2Your%20Pets%20Aqua%20Wave%20Banner.png" alt="Husky decoration bottom" className="w-full h-auto object-bottom" />
-      </div>
+
 
       <div className="relative z-10 w-full flex-1 flex flex-col h-full overflow-hidden">
         {/* Mobile Top Navbar (Logo Only) */}
@@ -130,14 +127,17 @@ export const SelectPetScreen = () => {
             </p>
           </div>
 
-          {/* Mobile Title (Image) */}
-          <div className="block lg:hidden mb-2 relative z-10 w-[calc(100%+48px)] -ml-6 flex flex-col items-center mt-[-10px]">
-             <img src="/Your%20Pets%20Aqua%20Wave%20Banner.png" alt="Your Pets" className="w-full h-auto object-contain pointer-events-none" />
-             <div className="absolute top-[80%] left-0 right-0 text-center pointer-events-none">
-               <p className="text-[14px] text-[#465E87] font-medium z-10 relative">
-                 You've added {pets.length} pet{pets.length !== 1 ? 's' : ''} so far.
-               </p>
+          {/* Mobile Title (CSS) */}
+          <div className="block lg:hidden mb-6 mt-4 relative z-10 text-center">
+             <div className="flex justify-center mb-2">
+               <PawPrint className="text-[#007672] fill-[#007672]" size={36} />
              </div>
+             <h1 className="text-[32px] font-extrabold text-[#1B2B48] mb-1 tracking-tight">
+               Your <span className="text-[#007672]">Pets</span>
+             </h1>
+             <p className="text-[15px] text-[#465E87] font-medium">
+               You've added {pets.length} pet{pets.length !== 1 ? 's' : ''} so far.
+             </p>
           </div>
 
         </div>

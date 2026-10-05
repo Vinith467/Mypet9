@@ -76,7 +76,7 @@ export const SupportChatWidget = () => {
   if (!user || userData?.type === 'admin') return null; // Admins have their own interface
   
   // Hide on certain pages
-  const hiddenPaths = ['/caretaker/bookings/', '/join/', '/chat/', '/messages'];
+  const hiddenPaths = ['/caretaker/bookings/', '/join/', '/chat/', '/messages', '/select-pet'];
   if (hiddenPaths.some(path => location.pathname.includes(path))) return null;
 
   return (
