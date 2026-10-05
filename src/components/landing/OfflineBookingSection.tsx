@@ -420,7 +420,7 @@ export const OfflineBookingSection = () => {
 
                 <div className="md:col-span-3">
                   <label className="block text-xs font-bold text-[#0B2533] mb-1.5">Pet Gender</label>
-                  <div className="flex gap-4 h-[34px] items-center">
+                  <div className="flex gap-4 min-h-[34px] items-center">
                     <label className="flex items-center gap-1.5 cursor-pointer group" onClick={() => setPetGender('Male')}>
                       <div className={petGender === 'Male' ? 'text-[#007672]' : 'text-gray-300'}>
                         {petGender === 'Male' ? <CheckCircle2 size={14} strokeWidth={2.5} /> : <Circle size={14} strokeWidth={2.5} />}
@@ -438,7 +438,7 @@ export const OfflineBookingSection = () => {
 
                 <div className="md:col-span-6">
                   <label className="block text-xs font-bold text-[#0B2533] mb-1.5">Vaccination Status</label>
-                  <div className="flex flex-wrap gap-4 h-[34px] items-center">
+                  <div className="flex flex-wrap gap-4 min-h-[34px] items-center">
                     {['Fully Vaccinated', 'Partially Vaccinated', 'Not Vaccinated'].map(status => (
                       <label key={status} className="flex items-center gap-1.5 cursor-pointer group" onClick={() => setVaccination(status)}>
                         <div className={vaccination === status ? 'text-[#007672]' : 'text-gray-300'}>
@@ -454,7 +454,7 @@ export const OfflineBookingSection = () => {
               <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
                 <div className="md:col-span-4">
                   <label className="block text-xs font-bold text-[#0B2533] mb-1.5">Any Medical Conditions / Allergies?</label>
-                  <div className="flex gap-4 h-[34px] items-center">
+                  <div className="flex gap-4 min-h-[34px] items-center">
                     {['Yes', 'No'].map(status => (
                       <label key={status} className="flex items-center gap-1.5 cursor-pointer group" onClick={() => setMedical(status)}>
                         <div className={medical === status ? 'text-[#007672]' : 'text-gray-300'}>

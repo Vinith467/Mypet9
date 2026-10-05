@@ -82,17 +82,24 @@ export const PetParentLandingScreen = () => {
   }, [location, selectedFromSuggestion]);
 
   const handleSearch = () => {
+    if (!location.trim()) {
+      alert("Please enter a location to search for homestays.");
+      return;
+    }
+
     if (!user) {
       navigate('/auth', { 
         state: { 
-          returnTo: '/coming-soon'
+          returnTo: '/search-boarding'
         } 
       });
       return;
     }
     
-    // Navigate to Coming Soon screen instead of searching since caretakers aren't available yet
-    navigate('/coming-soon');
+    // Navigate to Search Boarding screen
+    navigate('/search-boarding', {
+      state: { location, dropoffDate, pickupDate, pets }
+    });
   };
 
   const updatePetCount = (type: keyof typeof pets, increment: boolean) => {
@@ -347,14 +354,7 @@ export const PetParentLandingScreen = () => {
                 <span>Directly Reach Us</span>
               </button>
 
-              {/* Book Free Playtime Button */}
-              <button 
-                onClick={() => navigate('/book-free-playtime')}
-                className="w-full bg-[#71b6af] hover:bg-[#5fa39d] text-white font-extrabold text-[15px] py-3.5 rounded-lg flex items-center justify-center gap-2 transition-colors mt-3 shadow-lg shadow-[#71b6af]/30"
-              >
-                <PawPrint className="w-4 h-4" strokeWidth={3} />
-                Book Free Playtime
-              </button>
+
 
             </div>
           </div>

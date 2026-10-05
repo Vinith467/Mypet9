@@ -7,7 +7,8 @@ import {
   Wallet, 
   Bell, 
   HelpCircle, 
-  Shield, 
+  Shield,
+  ShieldCheck, 
   LogOut,
   ChevronRight
 } from 'lucide-react';
@@ -81,7 +82,7 @@ export const ProfileScreen = () => {
               }}
             />
             <div className="flex flex-col flex-1">
-              <span className="text-[22px] font-extrabold text-[#1B2B48]">{userData?.name || 'User'}</span>
+              <span className="text-[22px] font-extrabold text-[#1B2B48]">{userData?.name || user?.displayName || 'User'}</span>
               <span className="text-[14px] font-medium text-[#465E87]">{user?.email || 'No email set'}</span>
             </div>
             <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
@@ -91,6 +92,24 @@ export const ProfileScreen = () => {
 
           {/* Menu List */}
           <div className="bg-white rounded-[24px] p-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-gray-100 mb-6">
+              {user?.email && user.email.toLowerCase().includes('vinuvinith0007') && (
+                <>
+                  <button 
+                    onClick={() => navigate('/admin')}
+                    className="w-full flex items-center justify-between py-4 px-4 hover:bg-emerald-50 transition-colors rounded-xl group"
+                  >
+                    <div className="flex items-center text-[#1B2B48]">
+                      <div className="w-8 flex justify-center">
+                        <ShieldCheck size={20} className="text-emerald-500 group-hover:text-emerald-600 transition-colors" strokeWidth={2.5} />
+                      </div>
+                      <span className="text-[15px] font-extrabold ml-3 text-emerald-600">Admin Panel</span>
+                    </div>
+                    <ChevronRight size={20} className="text-emerald-600 opacity-60" />
+                  </button>
+                  <div className="border-t border-gray-100 mx-4"></div>
+                </>
+              )}
+
               {menuItems.map((item, index) => {
                 const Icon = item.icon;
                 return (

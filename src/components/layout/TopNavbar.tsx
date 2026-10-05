@@ -24,7 +24,7 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
            <PawPrint className="text-[#007672] w-6 h-6 mr-2" strokeWidth={2.5} />
            <span className="font-extrabold text-[22px] tracking-tight text-[#1B2B48]">mypet9</span>
          </div>
-         {(user?.email === 'ojasvinanand514@gmail.com' || user?.email === 'vinuvinith0007@gmail.com') && (
+         {user?.email === 'vinuvinith0007@gmail.com' && (
            <button onClick={() => navigate('/inquiry')} className="text-[11px] font-bold bg-[#E6FBF0] text-[#007672] px-3 py-1.5 rounded-full border border-[#007672]/20 shadow-sm hover:bg-[#D1F4E0] transition-colors">
              Inquiry Form
            </button>

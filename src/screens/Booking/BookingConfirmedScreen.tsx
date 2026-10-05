@@ -47,15 +47,15 @@ export const BookingConfirmedScreen = () => {
   const isPayNow = paymentMethod === 'pay_now';
 
   return (
-    <div className="w-full flex flex-col min-h-screen bg-[#FAFAFA]">
+    <div className="w-full flex flex-col min-h-screen lg:h-screen lg:overflow-hidden bg-[#FAFAFA]">
       
       {/* Top Banner (Icon & Confetti) */}
-      <div className="relative pt-8 sm:pt-6 pb-4 sm:pb-4 px-5 text-center flex flex-col items-center overflow-hidden shrink-0">
+      <div className="relative pt-6 sm:pt-4 pb-2 sm:pb-2 px-5 text-center flex flex-col items-center overflow-hidden shrink-0">
         
         {/* Close Button */}
         <button 
           onClick={() => navigate('/home')} 
-          className="absolute right-5 top-5 p-1 rounded-full hover:bg-gray-200/50 transition-colors z-20"
+          className="absolute right-5 top-3 p-1 rounded-full hover:bg-gray-200/50 transition-colors z-20"
         >
           <X size={24} className="text-[#1B2B48]" />
         </button>
@@ -71,43 +71,43 @@ export const BookingConfirmedScreen = () => {
         </div>
 
         {/* Main Icon */}
-        <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mb-3 sm:mb-4 mx-auto">
+        <div className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mb-2 mx-auto">
           {isPayNow ? (
-            <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-[#007672] flex items-center justify-center shadow-[0_8px_16px_rgba(23,79,56,0.2)]">
-              <Check size={32} className="text-white stroke-[4]" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#007672] flex items-center justify-center shadow-[0_8px_16px_rgba(23,79,56,0.2)]">
+              <Check size={28} className="text-white stroke-[4]" />
             </div>
           ) : (
-            <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-[#FFF9EC] border-2 border-[#71b6af]/30 flex items-center justify-center relative">
-              <Calendar size={32} className="text-[#111111]" strokeWidth={2} />
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#71b6af] flex items-center justify-center border-2 border-white shadow-sm">
-                <Check size={18} className="text-[#111111] stroke-[4]" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#FFF9EC] border-2 border-[#71b6af]/30 flex items-center justify-center relative">
+              <Calendar size={28} className="text-[#111111]" strokeWidth={2} />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#71b6af] flex items-center justify-center border-2 border-white shadow-sm">
+                <Check size={14} className="text-[#111111] stroke-[4]" />
               </div>
             </div>
           )}
         </div>
 
-        <h1 className="text-[26px] font-extrabold text-[#1B2B48] tracking-tight z-10" style={{ fontFamily: 'serif' }}>
+        <h1 className="text-[22px] sm:text-[24px] font-extrabold text-[#1B2B48] tracking-tight z-10" style={{ fontFamily: 'serif' }}>
           Booking Confirmed!
         </h1>
-        <p className="text-[14px] font-medium text-[#465E87] mt-1.5 max-w-[280px] mx-auto leading-relaxed z-10">
+        <p className="text-[13px] font-medium text-[#465E87] mt-1 max-w-[280px] mx-auto leading-relaxed z-10">
           Your homestay has been successfully booked{isPayNow ? ' and payment has been completed.' : '. You have chosen to pay after the service.'}
         </p>
       </div>
 
       {/* Content Container */}
-      <div className="py-2 space-y-4 lg:max-w-[90%] 2xl:max-w-[1400px] mx-auto w-full px-4 lg:px-8 pb-24 lg:pb-10 flex-1">
+      <div className="py-2 space-y-3 lg:max-w-[95%] 2xl:max-w-[1400px] mx-auto w-full px-4 lg:px-6 pb-20 lg:pb-4 flex-1 flex flex-col min-h-0">
         
         {/* Pay Later Warning Banner */}
         {!isPayNow && (
-          <div className="bg-[#FFF9EC] rounded-[12px] p-4 flex items-center gap-3 border border-[#71b6af]/20 shadow-sm">
-            <div className="w-10 h-10 rounded-full bg-[#71b6af] flex items-center justify-center shrink-0">
-              <Clock size={20} className="text-[#111111]" />
+          <div className="bg-[#FFF9EC] rounded-[10px] p-2.5 sm:p-3 flex items-center gap-3 border border-[#71b6af]/20 shadow-sm shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#71b6af] flex items-center justify-center shrink-0">
+              <Clock size={16} className="text-[#111111]" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[14px] font-extrabold text-[#111111]">
+              <p className="text-[13px] sm:text-[14px] font-extrabold text-[#111111]">
                 You have to pay ₹{finalTotal.toLocaleString('en-IN')} after the stay is completed.
               </p>
-              <p className="text-[13px] font-medium text-[#465E87] mt-0.5">
+              <p className="text-[12px] font-medium text-[#465E87]">
                 No payment has been taken now.
               </p>
             </div>
@@ -115,11 +115,11 @@ export const BookingConfirmedScreen = () => {
         )}
 
         {/* Combined Details Card */}
-        <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col lg:flex-row lg:divide-x divide-y lg:divide-y-0 divide-gray-100">
+        <div className="bg-white rounded-[20px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col lg:flex-row lg:divide-x divide-y lg:divide-y-0 divide-gray-100 flex-1 min-h-0">
           {/* Host Card */}
-          <div className="p-4 sm:p-5 lg:flex-1">
-          <div className="flex gap-4">
-            <div className="w-[100px] h-[100px] rounded-[16px] overflow-hidden shrink-0 mt-1">
+          <div className="p-3 sm:p-4 lg:flex-1 flex flex-col justify-center">
+          <div className="flex gap-3">
+            <div className="w-[80px] h-[80px] rounded-[14px] overflow-hidden shrink-0 mt-1">
               <img 
                 src={provider?.images?.[0] || provider?.photo || 'https://images.unsplash.com/photo-1544717301-9cdcb1f5940f?auto=format&fit=crop&q=80&w=200'} 
                 alt="Host" 
@@ -127,21 +127,21 @@ export const BookingConfirmedScreen = () => {
               />
             </div>
             <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <div className="flex items-start justify-between w-full mb-1">
+              <div className="flex items-start justify-between w-full mb-0.5">
                 <div className="flex items-center gap-2 min-w-0 pr-1">
-                  <h3 className="text-[18px] font-extrabold text-[#111111] leading-tight truncate">
+                  <h3 className="text-[16px] font-extrabold text-[#111111] leading-tight truncate">
                     {provider?.name || 'Priya S.'}
                   </h3>
                   <div className="flex items-center space-x-1 px-1.5 py-0.5 bg-[#E8F5E9] rounded-full shrink-0">
                     <BadgeCheck size={12} className="text-[#007672]" />
-                    <span className="text-[10px] font-bold text-[#007672]">Verified Host</span>
+                    <span className="text-[10px] font-bold text-[#007672]">Verified</span>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-1 mb-2.5">
-                <Star size={14} className="text-[#71b6af] fill-[#71b6af]" />
-                <span className="text-[13px] font-extrabold text-[#1B2B48]">{provider?.rating || '4.9'}</span>
-                <span className="text-[13px] font-medium text-[#465E87]">({provider?.reviews || 96} reviews)</span>
+              <div className="flex items-center space-x-1 mb-1.5">
+                <Star size={12} className="text-[#71b6af] fill-[#71b6af]" />
+                <span className="text-[12px] font-extrabold text-[#1B2B48]">{provider?.rating || '4.9'}</span>
+                <span className="text-[12px] font-medium text-[#465E87]">({provider?.reviews || 96} reviews)</span>
               </div>
               
               <div className="grid grid-cols-2 gap-y-1.5 gap-x-2 w-full mt-1">
@@ -163,7 +163,7 @@ export const BookingConfirmedScreen = () => {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-1.5 mt-3 pt-2 border-t border-gray-50 min-w-0">
+              <div className="flex items-center space-x-1.5 mt-2 pt-2 border-t border-gray-50 min-w-0">
                 <MapPin size={12} className="text-[#465E87] shrink-0" />
                 <span className="text-[11px] font-medium text-[#465E87] truncate">
                   {provider?.distanceStr || ''}{provider?.distanceStr && provider?.locationStr ? ' • ' : ''}{provider?.locationStr?.split(',')[0] || ''}
@@ -174,79 +174,79 @@ export const BookingConfirmedScreen = () => {
           </div>
 
           {/* Stay Details */}
-          <div className="p-4 sm:p-5 lg:flex-1">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
-                <Calendar size={16} className="text-[#111111]" />
+          <div className="p-3 sm:p-4 lg:flex-1 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-gray-100">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center space-x-2">
+              <div className="w-7 h-7 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
+                <Calendar size={14} className="text-[#111111]" />
               </div>
-              <h3 className="text-[18px] font-extrabold text-[#111111]">Stay Details</h3>
+              <h3 className="text-[16px] font-extrabold text-[#111111]">Stay Details</h3>
             </div>
           </div>
 
-          <div className="flex lg:flex-col items-start justify-between lg:justify-start lg:gap-3 bg-[#FAFAFA] rounded-[12px] p-3 border border-gray-100/50">
+          <div className="flex lg:flex-col items-start justify-between lg:justify-start lg:gap-2 bg-[#FAFAFA] rounded-[10px] p-2.5 border border-gray-100/50 flex-1">
             <div className="flex flex-col flex-1 pr-2">
-              <span className="text-[11px] font-medium text-[#465E87] mb-1 uppercase tracking-wider">Check-in</span>
-              <span className="text-[14px] font-extrabold text-[#111111] mb-0.5">{formatDate(dropoffDate)}</span>
-              <span className="text-[11px] font-medium text-[#465E87]">{formatDayTime(dropoffDate, dropoffTime)}</span>
+              <span className="text-[10px] font-medium text-[#465E87] mb-1 uppercase tracking-wider">Check-in</span>
+              <span className="text-[13px] font-extrabold text-[#111111] mb-0.5">{formatDate(dropoffDate)}</span>
+              <span className="text-[10px] font-medium text-[#465E87]">{formatDayTime(dropoffDate, dropoffTime)}</span>
             </div>
             
-            <div className="flex flex-col flex-1 px-3 lg:px-0 lg:pt-3 border-l lg:border-l-0 lg:border-t border-gray-200 lg:w-full">
-              <span className="text-[11px] font-medium text-[#465E87] mb-1 uppercase tracking-wider">Check-out</span>
-              <span className="text-[14px] font-extrabold text-[#111111] mb-0.5">{formatDate(pickupDate)}</span>
-              <span className="text-[11px] font-medium text-[#465E87]">{formatDayTime(pickupDate, pickupTime)}</span>
+            <div className="flex flex-col flex-1 px-3 lg:px-0 lg:pt-2 border-l lg:border-l-0 lg:border-t border-gray-200 lg:w-full">
+              <span className="text-[10px] font-medium text-[#465E87] mb-1 uppercase tracking-wider">Check-out</span>
+              <span className="text-[13px] font-extrabold text-[#111111] mb-0.5">{formatDate(pickupDate)}</span>
+              <span className="text-[10px] font-medium text-[#465E87]">{formatDayTime(pickupDate, pickupTime)}</span>
             </div>
             
-            <div className="flex flex-col items-center lg:items-start justify-center pl-3 lg:pl-0 lg:pt-3 border-l lg:border-l-0 lg:border-t border-gray-200 lg:w-full">
+            <div className="flex flex-col items-center lg:items-start justify-center pl-3 lg:pl-0 lg:pt-2 border-l lg:border-l-0 lg:border-t border-gray-200 lg:w-full">
               <span className="text-[10px] font-medium text-[#465E87] mb-1 uppercase tracking-wider text-center lg:text-left w-full">Total duration</span>
               <div className="flex items-center space-x-1.5 mt-0.5">
                 <div className="bg-white rounded-full p-1 shadow-sm border border-gray-100">
-                  <Calendar size={12} className="text-[#111111]" />
+                  <Calendar size={10} className="text-[#111111]" />
                 </div>
-                <span className="text-[14px] font-extrabold text-[#111111]">{nights} nights</span>
+                <span className="text-[13px] font-extrabold text-[#111111]">{nights} nights</span>
               </div>
             </div>
           </div>
           </div>
 
           {/* Pet Details */}
-          <div className="p-4 sm:p-5 lg:flex-1">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
-                <PawPrint size={16} className="text-[#111111]" />
+          <div className="p-3 sm:p-4 lg:flex-1 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-gray-100 min-w-0">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center space-x-2">
+              <div className="w-7 h-7 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
+                <PawPrint size={14} className="text-[#111111]" />
               </div>
-              <h3 className="text-[18px] font-extrabold text-[#111111]">Pet Details ({selectedPets.length})</h3>
+              <h3 className="text-[16px] font-extrabold text-[#111111]">Pet Details ({selectedPets.length})</h3>
             </div>
           </div>
 
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x scrollbar-hide">
+          <div className="flex gap-2 overflow-x-auto pb-1 -mx-3 px-3 snap-x scrollbar-hide flex-1 items-center">
             {selectedPets.map((pet) => (
-              <div key={pet.id} className="min-w-[260px] max-w-[280px] snap-center bg-white border border-[#F3E8CC] rounded-[16px] p-3 flex flex-col shadow-sm">
-                <div className="flex items-center space-x-3 mb-3">
-                  <img src={pet.image} alt={pet.name} className="w-[52px] h-[52px] rounded-[12px] object-cover border border-gray-100 shadow-sm" />
+              <div key={pet.id} className="min-w-[220px] max-w-[240px] snap-center bg-white border border-[#F3E8CC] rounded-[12px] p-2.5 flex flex-col shadow-sm">
+                <div className="flex items-center space-x-2.5 mb-2">
+                  <img src={pet.image} alt={pet.name} className="w-[44px] h-[44px] rounded-[10px] object-cover border border-gray-100 shadow-sm" />
                   <div className="flex flex-col min-w-0">
-                    <span className="text-[15px] font-extrabold text-[#111111] truncate">{pet.name}</span>
-                    <span className="text-[12px] font-medium text-[#465E87] truncate">{pet.breed}</span>
-                    <span className="text-[11px] font-medium text-[#8A9BAE] truncate mt-0.5">
+                    <span className="text-[14px] font-extrabold text-[#111111] truncate">{pet.name}</span>
+                    <span className="text-[11px] font-medium text-[#465E87] truncate">{pet.breed}</span>
+                    <span className="text-[10px] font-medium text-[#8A9BAE] truncate mt-0.5">
                       {pet.age} yrs • {pet.gender} • {pet.weight} kg
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3 pt-2.5 border-t border-gray-50">
-                  <div className="flex items-center space-x-1.5 shrink-0">
-                    <CheckCircle2 size={14} className="text-emerald-500 fill-emerald-500/10" />
-                    <span className="text-[11px] font-medium text-[#465E87]">Vaccinated</span>
+                <div className="flex items-center justify-between pt-2 border-t border-gray-50">
+                  <div className="flex items-center space-x-1 shrink-0">
+                    <CheckCircle2 size={12} className="text-emerald-500 fill-emerald-500/10" />
+                    <span className="text-[10px] font-medium text-[#465E87]">Vaccinated</span>
                   </div>
-                  <div className="flex items-center space-x-1.5 min-w-0">
-                    <Heart size={14} className="text-[#465E87]" />
-                    <span className="text-[11px] font-medium text-[#465E87] truncate leading-tight">No medical conditions</span>
+                  <div className="flex items-center space-x-1 min-w-0">
+                    <Heart size={12} className="text-[#465E87]" />
+                    <span className="text-[10px] font-medium text-[#465E87] truncate leading-tight">No conditions</span>
                   </div>
                 </div>
               </div>
             ))}
             {selectedPets.length === 0 && (
-              <p className="text-sm text-gray-500 italic">No pets selected</p>
+              <p className="text-[12px] text-gray-500 italic">No pets selected</p>
             )}
             </div>
           </div>
@@ -254,14 +254,14 @@ export const BookingConfirmedScreen = () => {
 
         {/* Payment Details (Only for Pay Now) */}
         {isPayNow && (
-          <div className="bg-white rounded-[20px] p-4 border border-gray-100 shadow-sm max-w-xl mx-auto w-full">
-            <div className="flex items-center space-x-2.5 mb-4">
-              <div className="w-8 h-8 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
-                <div className="w-4 h-3 bg-[#111111] rounded-[3px] border border-[#111111] flex items-center justify-center">
-                   <div className="w-1.5 h-1.5 bg-[#FFF9EC] rounded-full border border-[#111111]"></div>
+          <div className="bg-white rounded-[16px] p-3 border border-gray-100 shadow-sm max-w-xl mx-auto w-full shrink-0">
+            <div className="flex items-center space-x-2 mb-2.5">
+              <div className="w-7 h-7 rounded-full bg-[#FFF9EC] flex items-center justify-center shrink-0">
+                <div className="w-3.5 h-2.5 bg-[#111111] rounded-[2px] border border-[#111111] flex items-center justify-center">
+                   <div className="w-1 h-1 bg-[#FFF9EC] rounded-full border border-[#111111]"></div>
                 </div>
               </div>
-              <h3 className="text-[18px] font-extrabold text-[#111111]">Payment Details</h3>
+              <h3 className="text-[16px] font-extrabold text-[#111111]">Payment Details</h3>
             </div>
 
             <div className="space-y-3">
@@ -293,11 +293,11 @@ export const BookingConfirmedScreen = () => {
       </div>
 
       {/* Bottom Action Buttons */}
-      <div className="fixed lg:relative bottom-0 left-0 right-0 z-40 bg-gradient-to-t lg:bg-none from-[#EAEAEA] to-[#FAFAFA]/5 pt-4 pb-safe-bottom lg:pb-6 backdrop-blur-[2px] mt-auto shrink-0">
-        <div className="lg:max-w-[90%] 2xl:max-w-[1400px] mx-auto w-full px-4 pb-4 flex flex-col space-y-3 items-center">
+      <div className="fixed lg:relative bottom-0 left-0 right-0 z-40 bg-gradient-to-t lg:bg-none from-[#EAEAEA] to-[#FAFAFA]/5 pt-2 pb-safe-bottom lg:pb-4 backdrop-blur-[2px] mt-auto shrink-0">
+        <div className="lg:max-w-[90%] 2xl:max-w-[1400px] mx-auto w-full px-4 pb-2 flex flex-col space-y-3 items-center">
           <Button 
             onClick={() => navigate('/bookings')}
-            className="w-full lg:w-96 h-[54px] bg-[#007672] hover:bg-[#00605c] text-white text-[16px] font-extrabold rounded-[16px] flex items-center justify-center space-x-2 shadow-sm"
+            className="w-full lg:w-80 h-[48px] bg-[#007672] hover:bg-[#00605c] text-white text-[15px] font-extrabold rounded-[14px] flex items-center justify-center space-x-2 shadow-sm"
           >
             <span>View Booking Details</span>
             <ArrowRight size={20} />

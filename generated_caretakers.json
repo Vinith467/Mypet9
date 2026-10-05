@@ -1,0 +1,602 @@
+[
+  {
+    "name": "Sanjay Nair",
+    "email": "sanjay.nair.btm1@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/22.jpg",
+    "location": {
+      "lat": 12.921297377028827,
+      "lng": 77.60136258041352
+    },
+    "address": "Tavarekere, BTM, Bengaluru",
+    "price": 900
+  },
+  {
+    "name": "Swati Joshi",
+    "email": "swati.joshi.btm2@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/10.jpg",
+    "location": {
+      "lat": 12.925019370064273,
+      "lng": 77.61668746749991
+    },
+    "address": "Tavarekere, BTM, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Vijay Singh",
+    "email": "vijay.singh.btm3@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/26.jpg",
+    "location": {
+      "lat": 12.916534091169744,
+      "lng": 77.61123601993826
+    },
+    "address": "Tavarekere, BTM, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Anita Patil",
+    "email": "anita.patil.btm4@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/97.jpg",
+    "location": {
+      "lat": 12.917824132146315,
+      "lng": 77.61670045084318
+    },
+    "address": "Tavarekere, BTM, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Suresh Menon",
+    "email": "suresh.menon.btm5@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/79.jpg",
+    "location": {
+      "lat": 12.915447455691439,
+      "lng": 77.61680623403477
+    },
+    "address": "Madiwala, BTM Layout, Bengaluru",
+    "price": 1000
+  },
+  {
+    "name": "Rashmi Nair",
+    "email": "rashmi.nair.btm6@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+    "location": {
+      "lat": 12.92242523802936,
+      "lng": 77.61349441078957
+    },
+    "address": "BTM 4th Phase, Bengaluru",
+    "price": 1500
+  },
+  {
+    "name": "Ashwin Bose",
+    "email": "ashwin.bose.btm7@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/76.jpg",
+    "location": {
+      "lat": 12.907873032108679,
+      "lng": 77.60185693455551
+    },
+    "address": "BTM 4th Phase, Bengaluru",
+    "price": 1200
+  },
+  {
+    "name": "Manoj Reddy",
+    "email": "manoj.reddy.btm8@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/3.jpg",
+    "location": {
+      "lat": 12.908795658693585,
+      "lng": 77.61781521086316
+    },
+    "address": "Madiwala, BTM Layout, Bengaluru",
+    "price": 1400
+  },
+  {
+    "name": "Arjun Kumar",
+    "email": "arjun.kumar.btm9@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/24.jpg",
+    "location": {
+      "lat": 12.913801808042393,
+      "lng": 77.61665535626989
+    },
+    "address": "BTM 1st Stage, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Anita Verma",
+    "email": "anita.verma.btm10@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/3.jpg",
+    "location": {
+      "lat": 12.92218420003102,
+      "lng": 77.61466188310223
+    },
+    "address": "BTM 1st Stage, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Deepa Reddy",
+    "email": "deepa.reddy.whitefield11@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/9.jpg",
+    "location": {
+      "lat": 12.959805798620646,
+      "lng": 77.74826163163156
+    },
+    "address": "Hope Farm Junction, Bengaluru",
+    "price": 1400
+  },
+  {
+    "name": "Rashmi Rao",
+    "email": "rashmi.rao.whitefield12@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/76.jpg",
+    "location": {
+      "lat": 12.976393226076109,
+      "lng": 77.74768244843061
+    },
+    "address": "Nallurhalli, Whitefield, Bengaluru",
+    "price": 600
+  },
+  {
+    "name": "Rekha Hegde",
+    "email": "rekha.hegde.whitefield13@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/29.jpg",
+    "location": {
+      "lat": 12.974815240478627,
+      "lng": 77.7409750544481
+    },
+    "address": "Kadugodi, Whitefield, Bengaluru",
+    "price": 800
+  },
+  {
+    "name": "Deepa Mukherjee",
+    "email": "deepa.mukherjee.whitefield14@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/11.jpg",
+    "location": {
+      "lat": 12.976635516453538,
+      "lng": 77.74141210277106
+    },
+    "address": "Hope Farm Junction, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Deepak Sharma",
+    "email": "deepak.sharma.whitefield15@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/67.jpg",
+    "location": {
+      "lat": 12.971942973439898,
+      "lng": 77.75224049958237
+    },
+    "address": "Hope Farm Junction, Bengaluru",
+    "price": 1500
+  },
+  {
+    "name": "Aarti Menon",
+    "email": "aarti.menon.whitefield16@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/38.jpg",
+    "location": {
+      "lat": 12.960772238136737,
+      "lng": 77.7597054255693
+    },
+    "address": "Brookefield, Whitefield, Bengaluru",
+    "price": 700
+  },
+  {
+    "name": "Nandini Reddy",
+    "email": "nandini.reddy.whitefield17@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/15.jpg",
+    "location": {
+      "lat": 12.977318112254089,
+      "lng": 77.74001959973994
+    },
+    "address": "Brookefield, Whitefield, Bengaluru",
+    "price": 800
+  },
+  {
+    "name": "Sanjay Rao",
+    "email": "sanjay.rao.whitefield18@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/11.jpg",
+    "location": {
+      "lat": 12.971893703413867,
+      "lng": 77.74591490926824
+    },
+    "address": "Hope Farm Junction, Bengaluru",
+    "price": 900
+  },
+  {
+    "name": "Anita Singh",
+    "email": "anita.singh.whitefield19@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/51.jpg",
+    "location": {
+      "lat": 12.969222936151642,
+      "lng": 77.75524716427171
+    },
+    "address": "Kadugodi, Whitefield, Bengaluru",
+    "price": 1400
+  },
+  {
+    "name": "Shilpa Banerjee",
+    "email": "shilpa.banerjee.whitefield20@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/58.jpg",
+    "location": {
+      "lat": 12.967283128257815,
+      "lng": 77.7555038690853
+    },
+    "address": "Nallurhalli, Whitefield, Bengaluru",
+    "price": 800
+  },
+  {
+    "name": "Ravi Kumar",
+    "email": "ravi.kumar.sarjapur21@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/89.jpg",
+    "location": {
+      "lat": 12.916099612589527,
+      "lng": 77.67909977543496
+    },
+    "address": "Kasavanahalli, Sarjapur Road, Bengaluru",
+    "price": 1300
+  },
+  {
+    "name": "Sunita Menon",
+    "email": "sunita.menon.sarjapur22@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/45.jpg",
+    "location": {
+      "lat": 12.916050565435317,
+      "lng": 77.66955227220343
+    },
+    "address": "Carmelaram, Sarjapur, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Siddharth Patil",
+    "email": "siddharth.patil.sarjapur23@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/14.jpg",
+    "location": {
+      "lat": 12.930098578578978,
+      "lng": 77.68091547764233
+    },
+    "address": "Kasavanahalli, Sarjapur Road, Bengaluru",
+    "price": 900
+  },
+  {
+    "name": "Rahul Desai",
+    "email": "rahul.desai.sarjapur24@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/66.jpg",
+    "location": {
+      "lat": 12.915520991767195,
+      "lng": 77.66862381361328
+    },
+    "address": "Carmelaram, Sarjapur, Bengaluru",
+    "price": 700
+  },
+  {
+    "name": "Shruti Hegde",
+    "email": "shruti.hegde.sarjapur25@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/33.jpg",
+    "location": {
+      "lat": 12.93140033369073,
+      "lng": 77.6767894582679
+    },
+    "address": "Kaikondrahalli, Bengaluru",
+    "price": 1000
+  },
+  {
+    "name": "Rajesh Rao",
+    "email": "rajesh.rao.sarjapur26@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/37.jpg",
+    "location": {
+      "lat": 12.922015014458939,
+      "lng": 77.68131336671256
+    },
+    "address": "Kasavanahalli, Sarjapur Road, Bengaluru",
+    "price": 1200
+  },
+  {
+    "name": "Gaurav Pillai",
+    "email": "gaurav.pillai.sarjapur27@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/97.jpg",
+    "location": {
+      "lat": 12.924012496732866,
+      "lng": 77.67747496784868
+    },
+    "address": "Sarjapur Road, Bengaluru",
+    "price": 1500
+  },
+  {
+    "name": "Anita Deshpande",
+    "email": "anita.deshpande.sarjapur28@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/88.jpg",
+    "location": {
+      "lat": 12.93190811399922,
+      "lng": 77.67392714347334
+    },
+    "address": "Kasavanahalli, Sarjapur Road, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Nitin Mishra",
+    "email": "nitin.mishra.sarjapur29@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/10.jpg",
+    "location": {
+      "lat": 12.916389844153136,
+      "lng": 77.67793480984443
+    },
+    "address": "Sarjapur Road, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Anil Singh",
+    "email": "anil.singh.sarjapur30@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/46.jpg",
+    "location": {
+      "lat": 12.922446725645482,
+      "lng": 77.6823510403417
+    },
+    "address": "Kasavanahalli, Sarjapur Road, Bengaluru",
+    "price": 700
+  },
+  {
+    "name": "Deepa Joshi",
+    "email": "deepa.joshi.yelahanka31@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/4.jpg",
+    "location": {
+      "lat": 13.092795022643543,
+      "lng": 77.59556806066769
+    },
+    "address": "Yelahanka Old Town, Bengaluru",
+    "price": 1500
+  },
+  {
+    "name": "Divya Menon",
+    "email": "divya.menon.yelahanka32@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/91.jpg",
+    "location": {
+      "lat": 13.098162234221824,
+      "lng": 77.60195039276232
+    },
+    "address": "Yelahanka New Town, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Rashmi Nair",
+    "email": "rashmi.nair.yelahanka33@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/50.jpg",
+    "location": {
+      "lat": 13.103333341368435,
+      "lng": 77.59053800490258
+    },
+    "address": "Vidyaranyapura, Bengaluru",
+    "price": 1300
+  },
+  {
+    "name": "Priyanka Das",
+    "email": "priyanka.das.yelahanka34@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/43.jpg",
+    "location": {
+      "lat": 13.10460760539604,
+      "lng": 77.59501099400404
+    },
+    "address": "Yelahanka Old Town, Bengaluru",
+    "price": 1200
+  },
+  {
+    "name": "Shweta Sharma",
+    "email": "shweta.sharma.yelahanka35@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/8.jpg",
+    "location": {
+      "lat": 13.091833070229104,
+      "lng": 77.59299854469883
+    },
+    "address": "Vidyaranyapura, Bengaluru",
+    "price": 1300
+  },
+  {
+    "name": "Vijay Das",
+    "email": "vijay.das.yelahanka36@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/28.jpg",
+    "location": {
+      "lat": 13.100073051325658,
+      "lng": 77.59890364667824
+    },
+    "address": "Yelahanka Old Town, Bengaluru",
+    "price": 1200
+  },
+  {
+    "name": "Rajesh Shetty",
+    "email": "rajesh.shetty.yelahanka37@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/7.jpg",
+    "location": {
+      "lat": 13.104934465284295,
+      "lng": 77.59259542580632
+    },
+    "address": "Vidyaranyapura, Bengaluru",
+    "price": 900
+  },
+  {
+    "name": "Sanjay Mukherjee",
+    "email": "sanjay.mukherjee.yelahanka38@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/47.jpg",
+    "location": {
+      "lat": 13.10026018602135,
+      "lng": 77.59578749180103
+    },
+    "address": "Yelahanka New Town, Bengaluru",
+    "price": 1200
+  },
+  {
+    "name": "Asha Pillai",
+    "email": "asha.pillai.yelahanka39@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/70.jpg",
+    "location": {
+      "lat": 13.095721725931892,
+      "lng": 77.59641569129819
+    },
+    "address": "Sahakar Nagar, Bengaluru",
+    "price": 1000
+  },
+  {
+    "name": "Amit Choudhary",
+    "email": "amit.choudhary.yelahanka40@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/76.jpg",
+    "location": {
+      "lat": 13.096470235357708,
+      "lng": 77.59736277710334
+    },
+    "address": "Vidyaranyapura, Bengaluru",
+    "price": 900
+  },
+  {
+    "name": "Ashwin Choudhary",
+    "email": "ashwin.choudhary.marathahalli41@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/9.jpg",
+    "location": {
+      "lat": 12.964325874104315,
+      "lng": 77.70802986029112
+    },
+    "address": "Spice Garden Layout, Bengaluru",
+    "price": 1300
+  },
+  {
+    "name": "Anjali Kulkarni",
+    "email": "anjali.kulkarni.marathahalli42@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/79.jpg",
+    "location": {
+      "lat": 12.963443302388333,
+      "lng": 77.70589510938095
+    },
+    "address": "AECS Layout, Marathahalli, Bengaluru",
+    "price": 1500
+  },
+  {
+    "name": "Shilpa Verma",
+    "email": "shilpa.verma.marathahalli43@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/96.jpg",
+    "location": {
+      "lat": 12.953906149701618,
+      "lng": 77.70225114243681
+    },
+    "address": "Spice Garden Layout, Bengaluru",
+    "price": 1500
+  },
+  {
+    "name": "Anjali Reddy",
+    "email": "anjali.reddy.marathahalli44@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/28.jpg",
+    "location": {
+      "lat": 12.958631531029564,
+      "lng": 77.69918489015457
+    },
+    "address": "Munnekollal, Marathahalli, Bengaluru",
+    "price": 900
+  },
+  {
+    "name": "Shilpa Choudhary",
+    "email": "shilpa.choudhary.marathahalli45@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/53.jpg",
+    "location": {
+      "lat": 12.964674588914383,
+      "lng": 77.6955764694243
+    },
+    "address": "Spice Garden Layout, Bengaluru",
+    "price": 1200
+  },
+  {
+    "name": "Asha Sharma",
+    "email": "asha.sharma.marathahalli46@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/33.jpg",
+    "location": {
+      "lat": 12.94810942204683,
+      "lng": 77.70145814248703
+    },
+    "address": "Munnekollal, Marathahalli, Bengaluru",
+    "price": 900
+  },
+  {
+    "name": "Vikram Kumar",
+    "email": "vikram.kumar.marathahalli47@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/25.jpg",
+    "location": {
+      "lat": 12.962986832684644,
+      "lng": 77.69289836178743
+    },
+    "address": "Munnekollal, Marathahalli, Bengaluru",
+    "price": 700
+  },
+  {
+    "name": "Prakash Shetty",
+    "email": "prakash.shetty.marathahalli48@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/40.jpg",
+    "location": {
+      "lat": 12.962850287519897,
+      "lng": 77.69906547844467
+    },
+    "address": "AECS Layout, Marathahalli, Bengaluru",
+    "price": 900
+  },
+  {
+    "name": "Rekha Pillai",
+    "email": "rekha.pillai.marathahalli49@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/women/53.jpg",
+    "location": {
+      "lat": 12.949139284236372,
+      "lng": 77.69420323167456
+    },
+    "address": "Spice Garden Layout, Bengaluru",
+    "price": 1100
+  },
+  {
+    "name": "Rajesh Pillai",
+    "email": "rajesh.pillai.marathahalli50@example.com",
+    "password": "Password123!",
+    "photo": "https://randomuser.me/api/portraits/men/82.jpg",
+    "location": {
+      "lat": 12.957798266267739,
+      "lng": 77.69167344525736
+    },
+    "address": "Doddanekundi, Marathahalli, Bengaluru",
+    "price": 700
+  }
+]

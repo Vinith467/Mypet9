@@ -78,21 +78,35 @@ export const BoardingSearchScreen = () => {
   
   const [likedCaretakers, setLikedCaretakers] = useState<string[]>([]);
 
-  // Get user's current location for distance calculation
+  // Get search location coordinates for distance calculation
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        },
-        () => {
-          setUserCoords({ lat: 12.9716, lng: 77.5946 });
+    const getCoords = async () => {
+      if (searchLocation) {
+        try {
+          const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchLocation)}&limit=1`);
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setUserCoords({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
+            return;
+          }
+        } catch (error) {
+          console.error("Error fetching coordinates for search location", error);
         }
-      );
-    } else {
-      setUserCoords({ lat: 12.9716, lng: 77.5946 });
-    }
-  }, []);
+      }
+      
+      // Fallback to GPS if no search location or if geocoding failed
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+          () => setUserCoords({ lat: 12.9716, lng: 77.5946 })
+        );
+      } else {
+        setUserCoords({ lat: 12.9716, lng: 77.5946 });
+      }
+    };
+    
+    getCoords();
+  }, [searchLocation]);
 
   // Query caretakers from Firestore once we have coords
   useEffect(() => {
@@ -126,12 +140,6 @@ export const BoardingSearchScreen = () => {
           );
 
           const caretakerLocStr = (loc.city ? `${loc.address || loc.landmark || ''}, ${loc.city}`.replace(/^,\s*/, '') : 'Location set').toLowerCase();
-          const searchTerms = searchLocation.toLowerCase().split(/[,\s]+/);
-          
-          if (searchLocation && searchTerms.some(term => term.length > 2 && caretakerLocStr.includes(term))) {
-            // Fake realistic close distance if they searched for this specific location
-            dist = 0.5 + (Math.random() * 2.5);
-          }
 
           const priceData = data.priceSettings;
           let price = data.price || 800;
