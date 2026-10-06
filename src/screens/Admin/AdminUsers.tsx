@@ -197,7 +197,7 @@ export const AdminUsers = () => {
                 </div>
                 {/* Type */}
                 <div className="md:col-span-1">
-                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap inline-block text-center ${
                     user.type === 'caretaker' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
                   }`}>
                     {user.type === 'caretaker' ? 'Caretaker' : 'Pet Parent'}
