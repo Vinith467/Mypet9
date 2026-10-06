@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../config/firebase';
-import { collection, getDocs, doc, updateDoc, query, where } from 'firebase/firestore';
-import { Search, PawPrint, Mail, Phone, Edit2, ShieldAlert, CheckCircle, X, MapPin, IndianRupee, UploadCloud } from 'lucide-react';
+import { collection, getDocs, doc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
+import { Search, PawPrint, Mail, Phone, Edit2, ShieldAlert, CheckCircle, X, MapPin, IndianRupee, UploadCloud, Trash2 } from 'lucide-react';
 import { uploadImageToCloudinary } from '../../utils/cloudinary';
 
 export const AdminCaretakers = () => {
@@ -101,6 +101,19 @@ export const AdminCaretakers = () => {
     } catch (e) {
       console.error("Error changing status:", e);
       alert("Failed to change status.");
+    }
+  };
+
+  const handleDelete = async (caretaker: any) => {
+    const confirmMsg = `WARNING: Are you absolutely sure you want to permanently delete ${caretaker.name || 'this caretaker'}? This will completely remove their data from the database and cannot be undone.`;
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      await deleteDoc(doc(db, 'caretakers', caretaker.id));
+      setCaretakers(caretakers.filter(c => c.id !== caretaker.id));
+    } catch (e) {
+      console.error("Error deleting caretaker:", e);
+      alert("Failed to delete caretaker.");
     }
   };
 
@@ -220,6 +233,13 @@ export const AdminCaretakers = () => {
                       title={caretaker.status === 'suspended' ? "Reactivate" : "Suspend"}
                     >
                       <ShieldAlert size={16} />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(caretaker)}
+                      className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Permanently Delete"
+                    >
+                      <Trash2 size={16} />
                     </button>
                   </div>
 
