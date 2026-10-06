@@ -22,16 +22,18 @@ export const DirectlyReachUsScreen = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 w-full bg-[#FAF9F5] pb-8">
-        <img 
-          src="/mobile ui/9.png" 
-          alt="Directly Reach Us" 
-          className="w-full h-auto mb-6"
-        />
-        
-        {/* Offline Booking Form */}
-        <div className="md:hidden">
-          <OfflineBookingSection />
+      <div className="flex-1 w-full bg-[#FAF9F5] pb-8 md:py-8">
+        <div className="max-w-3xl mx-auto px-0 md:px-6">
+          <img 
+            src="/mobile ui/9.png" 
+            alt="Directly Reach Us" 
+            className="w-full h-auto mb-6 md:hidden"
+          />
+          
+          {/* Offline Booking Form */}
+          <div className="bg-white md:rounded-[24px] md:shadow-xl overflow-hidden border-t md:border border-gray-100">
+            <OfflineBookingSection />
+          </div>
         </div>
       </div>
     </div>
