@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../config/firebase';
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { Search, Users, PawPrint, Mail, Phone, Image as ImageIcon, X } from 'lucide-react';
+import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { Search, Users, PawPrint, Mail, Phone, Image as ImageIcon, X, Trash2 } from 'lucide-react';
 
 export const AdminUsers = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -35,6 +35,24 @@ export const AdminUsers = () => {
     } catch (e) {
       console.error("Error updating image:", e);
       alert("Failed to update image.");
+    }
+  };
+  const handleDeleteUser = async (userId: string, userType: string) => {
+    if (!window.confirm("Are you sure you want to completely delete this user? This cannot be undone.")) return;
+    
+    try {
+      // Delete from users collection
+      await deleteDoc(doc(db, 'users', userId));
+      
+      // If caretaker, also delete from caretakers collection
+      if (userType === 'caretaker') {
+        await deleteDoc(doc(db, 'caretakers', userId));
+      }
+      
+      setUsers(users.filter(u => u.id !== userId));
+    } catch (e) {
+      console.error("Error deleting user:", e);
+      alert("Failed to delete user.");
     }
   };
 
@@ -102,8 +120,9 @@ export const AdminUsers = () => {
           <div className="col-span-4">User</div>
           <div className="col-span-3">Email</div>
           <div className="col-span-2">Phone</div>
-          <div className="col-span-2">Type</div>
+          <div className="col-span-1">Type</div>
           <div className="col-span-1">Joined</div>
+          <div className="col-span-1 text-right">Actions</div>
         </div>
 
         {/* List */}
@@ -153,7 +172,7 @@ export const AdminUsers = () => {
                   <p className="text-sm text-gray-500">{user.phone || '—'}</p>
                 </div>
                 {/* Type */}
-                <div className="md:col-span-2">
+                <div className="md:col-span-1">
                   <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
                     user.type === 'caretaker' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
                   }`}>
@@ -165,6 +184,16 @@ export const AdminUsers = () => {
                   <p className="text-[11px] text-gray-400 font-medium">
                     {user.createdAt ? new Date(user.createdAt.seconds ? user.createdAt.seconds * 1000 : user.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : '—'}
                   </p>
+                </div>
+                {/* Actions */}
+                <div className="md:col-span-1 flex justify-end">
+                  <button 
+                    onClick={() => handleDeleteUser(user.id, user.type)}
+                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Delete User"
+                  >
+                    <Trash2 size={16} />
+                  </button>
                 </div>
               </div>
             ))
