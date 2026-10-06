@@ -110,6 +110,7 @@ export const AdminCaretakers = () => {
 
     try {
       await deleteDoc(doc(db, 'caretakers', caretaker.id));
+      await deleteDoc(doc(db, 'users', caretaker.id)); // Delete from users collection as well
       setCaretakers(caretakers.filter(c => c.id !== caretaker.id));
     } catch (e) {
       console.error("Error deleting caretaker:", e);
