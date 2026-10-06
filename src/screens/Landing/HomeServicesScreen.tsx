@@ -163,7 +163,7 @@ export const HomeServicesScreen = () => {
         <div className="max-w-[95%] xl:max-w-[95%] mx-auto px-4 mt-6 md:mt-8">
           
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-2">
+          <div className="flex flex-col mb-4 gap-2">
             <div>
               <h2 className="text-[20px] md:text-[28px] font-extrabold text-[#1B2B48] tracking-tight mb-1 flex items-center gap-2">
                 Our Pet Services
@@ -171,13 +171,10 @@ export const HomeServicesScreen = () => {
               </h2>
               <p className="text-[#465E87] text-[12px] md:text-[14px] font-medium">Everything your pet needs, all in one place</p>
             </div>
-            <button className="hidden md:flex items-center gap-1.5 px-4 py-1.5 bg-[#E5F5F4] text-[#007672] rounded-full font-bold text-[12px] hover:bg-[#D0EFED] transition-colors">
-              View All <ArrowRight className="w-3.5 h-3.5" />
-            </button>
           </div>
 
-          {/* Services Grid (6 columns on Desktop) */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+          {/* Services Grid (3 columns on Desktop) */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 xl:gap-6">
             {services.map((service) => (
               <div 
                 key={service.id}
