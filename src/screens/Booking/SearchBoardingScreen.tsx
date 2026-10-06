@@ -76,7 +76,22 @@ export const BoardingSearchScreen = () => {
     facilities: []
   });
   
+  const [maxPrice, setMaxPrice] = useState<number>(3000);
+  const [maxDistance, setMaxDistance] = useState<number>(20);
+  
   const [likedCaretakers, setLikedCaretakers] = useState<string[]>([]);
+
+  const handleClearFilters = () => {
+    setActiveFilters({
+      experience: [],
+      homeType: [],
+      petSize: [],
+      rating: [],
+      facilities: []
+    });
+    setMaxPrice(3000);
+    setMaxDistance(20);
+  };
 
   // Get search location coordinates for distance calculation
   useEffect(() => {
@@ -236,36 +251,54 @@ export const BoardingSearchScreen = () => {
   }
 
   // Apply Advanced Filters
-  if (activeFilters.experience.length > 0 && !activeFilters.experience.includes('Any')) {
-    filteredCaretakers = filteredCaretakers.filter(c => {
+  filteredCaretakers = filteredCaretakers.filter(c => {
+    // Distance
+    if (maxDistance < 20 && c.distance > maxDistance) return false;
+    
+    // Price
+    if (maxPrice < 3000 && c.price > maxPrice) return false;
+
+    // Experience
+    if (activeFilters.experience.length > 0 && !activeFilters.experience.includes('Any')) {
       const exp = c.experience || 0;
-      if (activeFilters.experience.includes('5+ years') && exp >= 5) return true;
-      if (activeFilters.experience.includes('3+ years') && exp >= 3) return true;
-      if (activeFilters.experience.includes('1+ years') && exp >= 1) return true;
-      return false;
-    });
-  }
+      let expMatch = false;
+      if (activeFilters.experience.includes('5+ years') && exp >= 5) expMatch = true;
+      if (activeFilters.experience.includes('3+ years') && exp >= 3) expMatch = true;
+      if (activeFilters.experience.includes('1+ years') && exp >= 1) expMatch = true;
+      if (!expMatch) return false;
+    }
 
-  if (activeFilters.rating.length > 0) {
-    filteredCaretakers = filteredCaretakers.filter(c => {
-      if (activeFilters.rating.includes('4.5 & above') && c.rating >= 4.5) return true;
-      if (activeFilters.rating.includes('4.0 & above') && c.rating >= 4.0) return true;
-      if (activeFilters.rating.includes('3.5 & above') && c.rating >= 3.5) return true;
-      if (activeFilters.rating.includes('3.0 & above') && c.rating >= 3.0) return true;
-      return false;
-    });
-  }
+    // Home Type
+    if (activeFilters.homeType.length > 0) {
+      // Look for home type in facilities or default
+      const facs = (c.facilities || []).map(f => f.toLowerCase());
+      const hasMatch = activeFilters.homeType.some(ht => facs.includes(ht.toLowerCase()));
+      // If we don't have this structured perfectly yet, we might bypass it, but let's strictly filter
+      // If no facility matches the homeType string, we exclude it
+      if (!hasMatch) return false;
+    }
 
-  if (activeFilters.facilities.length > 0) {
-    filteredCaretakers = filteredCaretakers.filter(c => {
-      // Map UI labels to backend fields if necessary, or do substring match
-      // For now, doing a simple inclusion check across services and facilities
+    // Rating
+    if (activeFilters.rating.length > 0) {
+      let ratingMatch = false;
+      if (activeFilters.rating.includes('4.5 & above') && c.rating >= 4.5) ratingMatch = true;
+      if (activeFilters.rating.includes('4.0 & above') && c.rating >= 4.0) ratingMatch = true;
+      if (activeFilters.rating.includes('3.5 & above') && c.rating >= 3.5) ratingMatch = true;
+      if (activeFilters.rating.includes('3.0 & above') && c.rating >= 3.0) ratingMatch = true;
+      if (!ratingMatch) return false;
+    }
+
+    // Facilities
+    if (activeFilters.facilities.length > 0) {
       const combined = [...(c.services || []), ...(c.facilities || [])].map(s => s.toLowerCase());
-      return activeFilters.facilities.every(filterFac => {
+      const hasAllFacs = activeFilters.facilities.every(filterFac => {
         return combined.some(item => item.includes(filterFac.toLowerCase().replace(' available', '')));
       });
-    });
-  }
+      if (!hasAllFacs) return false;
+    }
+
+    return true;
+  });
 
   const handleViewProfile = (caretaker: CaretakerResult) => {
     navigate('/caretaker-profile', {
@@ -322,11 +355,23 @@ export const BoardingSearchScreen = () => {
       <div className="flex-1 overflow-y-auto p-5 custom-scrollbar flex flex-col gap-6">
         {/* Price */}
         <div>
-          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-4">Price <span className="font-medium text-[#465E87]">(per pet, per night)</span></h3>
-          <div className="h-1 w-full bg-gray-200 rounded-full relative mb-3">
-            <div className="absolute left-0 top-0 h-full w-[70%] bg-[#007672] rounded-full"></div>
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#007672] rounded-full shadow border-2 border-white"></div>
-            <div className="absolute left-[70%] top-1/2 -translate-y-1/2 w-4 h-4 bg-[#007672] rounded-full shadow border-2 border-white"></div>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-[14px] font-bold text-[#1B2B48]">Price <span className="font-medium text-[#465E87]">(max)</span></h3>
+            <span className="text-[13px] font-bold text-[#007672]">₹{maxPrice}{maxPrice >= 3000 ? '+' : ''}</span>
+          </div>
+          <div className="relative mb-3 flex items-center">
+            <input 
+              type="range" 
+              min="0" 
+              max="3000" 
+              step="100"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(parseInt(e.target.value))}
+              className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#007672]"
+              style={{
+                background: `linear-gradient(to right, #007672 ${(maxPrice / 3000) * 100}%, #E5E7EB ${(maxPrice / 3000) * 100}%)`
+              }}
+            />
           </div>
           <div className="flex justify-between text-[12px] font-bold text-[#465E87]">
             <span>₹0</span>
@@ -336,14 +381,26 @@ export const BoardingSearchScreen = () => {
 
         {/* Distance */}
         <div>
-          <h3 className="text-[14px] font-bold text-[#1B2B48] mb-4">Distance</h3>
-          <div className="h-1 w-full bg-gray-200 rounded-full relative mb-3">
-            <div className="absolute left-0 top-0 h-full w-[100%] bg-[#007672] rounded-full"></div>
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#007672] rounded-full shadow border-2 border-white"></div>
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#007672] rounded-full shadow border-2 border-white"></div>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-[14px] font-bold text-[#1B2B48]">Distance <span className="font-medium text-[#465E87]">(max)</span></h3>
+            <span className="text-[13px] font-bold text-[#007672]">{maxDistance}{maxDistance >= 20 ? '+' : ''} km</span>
+          </div>
+          <div className="relative mb-3 flex items-center">
+            <input 
+              type="range" 
+              min="1" 
+              max="20" 
+              step="1"
+              value={maxDistance}
+              onChange={(e) => setMaxDistance(parseInt(e.target.value))}
+              className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#007672]"
+              style={{
+                background: `linear-gradient(to right, #007672 ${(maxDistance / 20) * 100}%, #E5E7EB ${(maxDistance / 20) * 100}%)`
+              }}
+            />
           </div>
           <div className="flex justify-between text-[12px] font-bold text-[#465E87]">
-            <span>0 km</span>
+            <span>1 km</span>
             <span>20+ km</span>
           </div>
         </div>
@@ -614,7 +671,7 @@ export const BoardingSearchScreen = () => {
                     <h2 className="text-[20px] font-extrabold">Filters</h2>
                   </div>
                   <button 
-                    onClick={() => console.log('Clear All Filters')}
+                    onClick={handleClearFilters}
                     className="text-[#465E87] text-[14px] font-bold hover:text-[#007672]"
                   >
                     Clear All
