@@ -124,35 +124,35 @@ export const HomeServicesScreen = () => {
 
         {/* Trust Badges */}
         <div className="max-w-[95%] xl:max-w-[85%] mx-auto px-4 relative z-20 -mt-10 md:-mt-12">
-          <div className="bg-white rounded-[20px] md:rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50 p-3 md:p-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-0 divide-x-0 md:divide-x divide-gray-100">
+          <div className="bg-white rounded-[16px] md:rounded-[20px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50 py-2.5 md:py-3 px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-0 divide-x-0 md:divide-x divide-gray-100">
               
               <div className="flex flex-row md:flex-col items-center justify-start md:justify-center text-left md:text-center px-2 md:px-4 gap-2 md:gap-0">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#1B2B48] flex items-center justify-center md:mb-2 shrink-0">
-                  <Shield className="w-4 h-4 text-white" strokeWidth={2.5} />
+                <div className="w-8 h-8 rounded-full bg-[#1B2B48] flex items-center justify-center md:mb-1.5 shrink-0">
+                  <Shield className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
                 </div>
-                <h3 className="font-extrabold text-[#1B2B48] text-[11px] md:text-[12px] leading-tight">Verified<br className="hidden md:block"/> Partners</h3>
+                <h3 className="font-extrabold text-[#1B2B48] text-[10px] md:text-[11px] leading-tight">Verified<br className="hidden md:block"/> Partners</h3>
               </div>
 
               <div className="flex flex-row md:flex-col items-center justify-start md:justify-center text-left md:text-center px-2 md:px-4 gap-2 md:gap-0">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#1B2B48] flex items-center justify-center md:mb-2 shrink-0">
-                  <Home className="w-4 h-4 text-white" strokeWidth={2.5} />
+                <div className="w-8 h-8 rounded-full bg-[#1B2B48] flex items-center justify-center md:mb-1.5 shrink-0">
+                  <Home className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
                 </div>
-                <h3 className="font-extrabold text-[#1B2B48] text-[11px] md:text-[12px] leading-tight">Safe &<br className="hidden md:block"/> Home-like Care</h3>
+                <h3 className="font-extrabold text-[#1B2B48] text-[10px] md:text-[11px] leading-tight">Safe &<br className="hidden md:block"/> Home-like Care</h3>
               </div>
 
               <div className="flex flex-row md:flex-col items-center justify-start md:justify-center text-left md:text-center px-2 md:px-4 gap-2 md:gap-0">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-pink-50 flex items-center justify-center md:mb-2 shrink-0">
-                  <Heart className="w-4 h-4 text-pink-500" strokeWidth={2.5} />
+                <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center md:mb-1.5 shrink-0">
+                  <Heart className="w-3.5 h-3.5 text-pink-500" strokeWidth={2.5} />
                 </div>
-                <h3 className="font-extrabold text-[#1B2B48] text-[11px] md:text-[12px] leading-tight">Loving & Experienced<br className="hidden md:block"/> Caretakers</h3>
+                <h3 className="font-extrabold text-[#1B2B48] text-[10px] md:text-[11px] leading-tight">Loving & Experienced<br className="hidden md:block"/> Caretakers</h3>
               </div>
 
               <div className="flex flex-row md:flex-col items-center justify-start md:justify-center text-left md:text-center px-2 md:px-4 gap-2 md:gap-0">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-orange-50 flex items-center justify-center md:mb-2 shrink-0">
-                  <Headset className="w-4 h-4 text-orange-500" strokeWidth={2.5} />
+                <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center md:mb-1.5 shrink-0">
+                  <Headset className="w-3.5 h-3.5 text-orange-500" strokeWidth={2.5} />
                 </div>
-                <h3 className="font-extrabold text-[#1B2B48] text-[11px] md:text-[12px] leading-tight">24/7<br className="hidden md:block"/> Support</h3>
+                <h3 className="font-extrabold text-[#1B2B48] text-[10px] md:text-[11px] leading-tight">24/7<br className="hidden md:block"/> Support</h3>
               </div>
 
             </div>
