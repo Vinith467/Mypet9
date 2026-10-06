@@ -81,7 +81,9 @@ export const AdminUsers = () => {
   };
 
   const filteredUsers = users.filter(user => {
-    const matchesFilter = filter === 'all' || user.type === filter;
+    const isPetParent = user.type !== 'caretaker';
+    const matchesFilter = filter === 'all' || 
+                          (filter === 'pet_parent' ? isPetParent : user.type === 'caretaker');
     const matchesSearch = !searchQuery ||
       (user.name || user.fullName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (user.email || '').toLowerCase().includes(searchQuery.toLowerCase());
@@ -90,7 +92,7 @@ export const AdminUsers = () => {
 
   const tabs = [
     { key: 'all' as const, label: 'All Users', count: users.length },
-    { key: 'pet_parent' as const, label: 'Pet Parents', count: users.filter(u => u.type === 'pet_parent').length },
+    { key: 'pet_parent' as const, label: 'Pet Parents', count: users.filter(u => u.type !== 'caretaker').length },
     { key: 'caretaker' as const, label: 'Caretakers', count: users.filter(u => u.type === 'caretaker').length },
   ];
 
