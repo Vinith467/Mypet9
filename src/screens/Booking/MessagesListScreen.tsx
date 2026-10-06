@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MessageSquare, ArrowLeft, ChevronRight } from 'lucide-react';
+import { MessageSquare, ArrowLeft, ChevronRight, ChevronLeft } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../config/firebase';
