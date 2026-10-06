@@ -800,33 +800,33 @@ export const BoardingSearchScreen = () => {
                     <div className="flex flex-row justify-between items-start sm:items-end mt-auto pt-2 sm:pt-3 border-t border-gray-100">
                       
                       {/* Pick up & drop */}
-                      <div className="flex flex-col items-center flex-1">
+                      <div className="flex flex-col items-center flex-1 px-0.5 text-center">
                         <Car size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
-                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">Pickup & Drop<br className="hidden sm:block"/> Service</span>
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-[1.1]">Pickup & Drop<br />Service</span>
                       </div>
 
                       {/* Vaccination */}
-                      <div className="flex flex-col items-center flex-1">
+                      <div className="flex flex-col items-center flex-1 px-0.5 text-center">
                         <Syringe size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
-                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">Vaccination<br className="hidden sm:block"/> Assistance</span>
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-[1.1]">Vaccination<br />Assistance</span>
                       </div>
 
                       {/* Grooming */}
-                      <div className="flex flex-col items-center flex-1">
+                      <div className="flex flex-col items-center flex-1 px-0.5 text-center">
                         <Scissors size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
-                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">Grooming<br className="hidden sm:block"/> Available</span>
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-[1.1]">Grooming<br />Available</span>
                       </div>
                       
                       {/* 24/7 Supervision */}
-                      <div className="flex flex-col items-center flex-1">
+                      <div className="flex flex-col items-center flex-1 px-0.5 text-center">
                         <Shield size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
-                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">24/7<br className="hidden sm:block"/> Supervision</span>
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-[1.1]">24/7<br />Supervision</span>
                       </div>
 
                       {/* Experience */}
-                      <div className="flex flex-col items-center flex-1">
+                      <div className="flex flex-col items-center flex-1 px-0.5 text-center">
                         <User size={14} strokeWidth={1.5} className="text-[#00B4A9] mb-1 sm:w-[18px] sm:h-[18px] sm:mb-1.5" />
-                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-tight text-center">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br className="hidden sm:block"/> Experience</span>
+                        <span className="text-[8px] sm:text-[10px] font-medium text-[#465E87] leading-[1.1]">{caretaker.experience ? `${caretaker.experience}+ Yrs` : '3+ Yrs'}<br />Experience</span>
                       </div>
                       
                     </div>

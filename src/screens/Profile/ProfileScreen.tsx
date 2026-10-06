@@ -36,11 +36,11 @@ export const ProfileScreen = () => {
         
         {/* Full-width Hero Banner */}
         <div className="w-full bg-gradient-to-r from-[#FEFEFE] to-[#E9F5FB] relative overflow-hidden border-b border-[#E8F3F3] h-[140px] md:h-[160px]">
-          {/* Banner Image - Placed here so it hits the absolute right edge of the window */}
           <img 
             src="/booking page hero section.png" 
             alt="Pets" 
             className="absolute -right-10 md:right-0 bottom-0 h-full object-contain object-right pointer-events-none z-0"
+            style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, black 30%)', maskImage: 'linear-gradient(to right, transparent, black 30%)' }}
           />
 
           <div className="max-w-5xl mx-auto relative h-full flex items-center px-5 lg:px-0 z-10">
