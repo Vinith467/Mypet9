@@ -101,29 +101,23 @@ export const HomeServicesScreen = () => {
           <img 
             src="/mobile - Trusted Pet Care, Happy Companions.png" 
             alt="Banner Background" 
-            className="md:hidden w-full h-[240px] object-cover object-center"
+            className="md:hidden w-full h-auto"
           />
           
-          {/* Hero Overlay Text */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-center pb-4 md:pb-8 px-6 md:px-16 lg:px-24">
-            <div className="max-w-[60%] md:max-w-[50%] lg:max-w-[45%]">
-              <div className="flex items-center gap-2 mb-1.5 md:mb-2">
-                <span className="text-[#007672] text-[10px] md:text-[11px] font-extrabold uppercase tracking-widest">
+          {/* Hero Overlay Text (Desktop Only) */}
+          <div className="absolute inset-0 z-10 hidden md:flex flex-col justify-center pb-8 px-16 lg:px-24">
+            <div className="max-w-[50%] lg:max-w-[45%]">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[#007672] text-[11px] font-extrabold uppercase tracking-widest">
                   A PET COMMUNITY
                 </span>
               </div>
-              <h1 className="text-[22px] md:text-[32px] lg:text-[40px] font-extrabold text-[#1B2B48] leading-[1.1] mb-2 md:mb-3 tracking-tight">
+              <h1 className="text-[32px] lg:text-[40px] font-extrabold text-[#1B2B48] leading-[1.1] mb-3 tracking-tight">
                 Trusted Pet Care<br/>When You're Away
               </h1>
-              <p className="text-[#465E87] text-[11px] md:text-[13px] font-medium leading-relaxed mb-4 md:mb-5 max-w-[400px] hidden sm:block">
+              <p className="text-[#465E87] text-[13px] font-medium leading-relaxed mb-5 max-w-[400px]">
                 A loving community of pet parents and verified caretakers providing safe, caring and home-like experiences for your pets.
               </p>
-              <button 
-                onClick={() => window.scrollTo({ top: 600, behavior: 'smooth' })}
-                className="bg-[#007672] hover:bg-[#00605c] text-white px-5 md:px-6 py-2 md:py-2.5 rounded-full font-extrabold text-[12px] md:text-[14px] inline-flex items-center gap-2 transition-all shadow-lg shadow-[#007672]/30 active:scale-95 w-max"
-              >
-                Explore Services <ArrowRight className="w-4 h-4" />
-              </button>
             </div>
           </div>
         </div>
@@ -220,10 +214,6 @@ export const HomeServicesScreen = () => {
             ))}
           </div>
 
-          {/* Mobile View All Button */}
-          <button className="md:hidden mt-5 w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#E5F5F4] text-[#007672] rounded-xl font-bold text-[14px] active:scale-[0.98] transition-transform">
-            View All Services <ArrowRight className="w-4 h-4" />
-          </button>
 
         </div>
       </main>
