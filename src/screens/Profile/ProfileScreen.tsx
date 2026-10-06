@@ -81,11 +81,11 @@ export const ProfileScreen = () => {
                 e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.name || "User")}&background=E5E7EB&color=1B2B48`;
               }}
             />
-            <div className="flex flex-col flex-1">
-              <span className="text-[22px] font-extrabold text-[#1B2B48]">{userData?.name || user?.displayName || 'User'}</span>
-              <span className="text-[14px] font-medium text-[#465E87]">{user?.email || 'No email set'}</span>
+            <div className="flex flex-col flex-1 min-w-0 mr-3">
+              <span className="text-[20px] md:text-[22px] font-extrabold text-[#1B2B48] truncate block">{userData?.name || user?.displayName || 'User'}</span>
+              <span className="text-[13px] md:text-[14px] font-medium text-[#465E87] truncate block">{user?.email || 'No email set'}</span>
             </div>
-            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
               <span className="text-[#1B2B48] font-bold text-[12px]">Edit</span>
             </div>
           </button>
