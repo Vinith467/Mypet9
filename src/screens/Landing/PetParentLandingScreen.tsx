@@ -387,8 +387,14 @@ export const PetParentLandingScreen = () => {
         </div>
       </main>
 
+      {/* Scroll Down Indicator */}
+      <div className="w-full flex flex-col items-center justify-center py-6 md:py-10 bg-white">
+        <p className="text-[#007672] text-[12px] font-bold uppercase tracking-widest mb-2 animate-pulse">Scroll to explore</p>
+        <ChevronDown className="text-[#007672] w-6 h-6 animate-bounce" strokeWidth={2.5} />
+      </div>
+
       {/* How It Works Section */}
-      <section className="w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
+      <section className="w-full px-4 md:px-12 pb-8 bg-white" style={{ perspective: '1200px' }}>
         <div 
           className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-default"
           style={{
