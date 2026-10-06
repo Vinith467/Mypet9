@@ -11,6 +11,7 @@ const navItems = [
   { to: '/admin', icon: LayoutDashboard, label: 'Overview', end: true },
   { to: '/admin/applications', icon: ClipboardList, label: 'Applications' },
   { to: '/admin/users', icon: Users, label: 'Users' },
+  { to: '/admin/caretakers', icon: PawPrint, label: 'Caretakers' },
   { to: '/admin/bookings', icon: CalendarCheck, label: 'Bookings' },
   { to: '/admin/support', icon: MessageSquare, label: 'Support Chats' },
   { to: '/admin/waitlist', icon: Bell, label: 'Waitlist' },

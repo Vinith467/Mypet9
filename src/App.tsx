@@ -36,6 +36,7 @@ import { AdminOverview } from './screens/Admin/AdminOverview';
 import { AdminWaitlist } from './screens/Admin/AdminWaitlist';
 import { AdminApplications } from './screens/Admin/AdminApplications';
 import { AdminUsers } from './screens/Admin/AdminUsers';
+import { AdminCaretakers } from './screens/Admin/AdminCaretakers';
 import { AdminBookings } from './screens/Admin/AdminBookings';
 import { AdminSettings } from './screens/Admin/AdminSettings';
 import { AdminSupport } from './screens/Admin/AdminSupport';
@@ -87,6 +88,7 @@ function App() {
               <Route index element={<AdminOverview />} />
               <Route path="applications" element={<AdminApplications />} />
               <Route path="users" element={<AdminUsers />} />
+              <Route path="caretakers" element={<AdminCaretakers />} />
               <Route path="bookings" element={<AdminBookings />} />
               <Route path="support" element={<AdminSupport />} />
               <Route path="waitlist" element={<AdminWaitlist />} />
