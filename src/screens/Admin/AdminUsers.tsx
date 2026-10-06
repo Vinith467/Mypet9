@@ -18,8 +18,27 @@ export const AdminUsers = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const snap = await getDocs(collection(db, 'users'));
-      setUsers(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      const [usersSnap, caretakersSnap] = await Promise.all([
+        getDocs(collection(db, 'users')),
+        getDocs(collection(db, 'caretakers'))
+      ]);
+      
+      const caretakersMap = new Map();
+      caretakersSnap.docs.forEach(d => {
+        caretakersMap.set(d.id, d.data());
+      });
+
+      setUsers(usersSnap.docs.map(d => {
+        const data = d.data();
+        let photoURL = data.photoURL;
+        if (!photoURL && data.type === 'caretaker') {
+          const caretakerData = caretakersMap.get(d.id);
+          if (caretakerData?.images?.length > 0) {
+            photoURL = caretakerData.images[0];
+          }
+        }
+        return { id: d.id, ...data, photoURL };
+      }));
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
   };
