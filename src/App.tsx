@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { PetParentLandingScreen } from './screens/Landing/PetParentLandingScreen';
+import { HomeServicesScreen } from './screens/Landing/HomeServicesScreen';
 import { DirectlyReachUsScreen } from './screens/Landing/DirectlyReachUsScreen';
 import { BookFreePlaytimeScreen } from './screens/Landing/BookFreePlaytimeScreen';
 import { ComingSoonScreen } from './screens/Landing/ComingSoonScreen';
@@ -53,7 +54,8 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<PetParentLandingScreen />} />
+            <Route path="/" element={<HomeServicesScreen />} />
+            <Route path="/boarding" element={<PetParentLandingScreen />} />
             <Route path="/directly-reach-us" element={<DirectlyReachUsScreen />} />
             <Route path="/book-free-playtime" element={<BookFreePlaytimeScreen />} />
             <Route path="/coming-soon" element={<ComingSoonScreen />} />

@@ -12,8 +12,9 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
   const { user } = useAuth();
 
   const isActive = (path: string) => {
+    if (path === '/') return location.pathname === '/';
     if (path === '/pets' && location.pathname.startsWith('/add-pet')) return true;
-    return location.pathname.startsWith(path) || (location.pathname === '/' && path === '/home');
+    return location.pathname.startsWith(path);
   };
 
   return (
@@ -42,8 +43,8 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
         {/* Navigation Links */}
         <div className="flex items-center gap-6 text-[15px] font-bold text-gray-500">
           <span 
-            onClick={() => navigate('/home')} 
-            className={`cursor-pointer transition-colors ${isActive('/home') ? 'text-[#007672] border-b-2 border-[#007672] pb-1' : 'hover:text-gray-900 pb-1 border-b-2 border-transparent'}`}
+            onClick={() => navigate('/')} 
+            className={`cursor-pointer transition-colors ${isActive('/') ? 'text-[#007672] border-b-2 border-[#007672] pb-1' : 'hover:text-gray-900 pb-1 border-b-2 border-transparent'}`}
           >
             Home
           </span>
