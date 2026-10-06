@@ -784,7 +784,7 @@ export const BoardingSearchScreen = () => {
                 >
                   {/* Image Grid (Left side) */}
                   <div className="w-[100px] sm:w-[200px] md:w-[220px] shrink-0 flex flex-col gap-1 sm:gap-1.5">
-                    <div className={`w-full relative rounded-tl-[12px] rounded-tr-[12px] overflow-hidden ${caretaker.images.length <= 1 ? 'h-[119px] sm:h-[186px] rounded-bl-[12px] rounded-br-[12px]' : 'h-[80px] sm:h-[120px]'}`}>
+                    <div className={`w-full relative rounded-tl-[12px] rounded-tr-[12px] overflow-hidden ${caretaker.images.length <= 2 ? 'h-[119px] sm:h-[186px] rounded-bl-[12px] rounded-br-[12px]' : 'h-[80px] sm:h-[120px]'}`}>
                       <img 
                         src={caretaker.images[0]}
                         alt={caretaker.name}
@@ -800,22 +800,20 @@ export const BoardingSearchScreen = () => {
                         />
                       </button>
                     </div>
-                    {caretaker.images.length > 1 && (
+                    {caretaker.images.length > 2 && (
                       <div className="flex flex-row gap-1 sm:gap-1.5 h-[35px] sm:h-[60px]">
-                        <div className={`flex-1 relative overflow-hidden rounded-bl-[12px] ${caretaker.images.length === 2 ? 'rounded-br-[12px]' : ''}`}>
+                        <div className={`flex-1 relative overflow-hidden rounded-bl-[12px] ${caretaker.images.length === 3 ? 'rounded-br-[12px]' : ''}`}>
                           <img src={caretaker.images[1]} className="absolute inset-0 w-full h-full object-cover object-top" />
                         </div>
-                        {caretaker.images.length > 2 && (
-                          <div className={`flex-1 relative overflow-hidden ${caretaker.images.length === 3 ? 'rounded-br-[12px]' : ''}`}>
-                            <img src={caretaker.images[2]} className="absolute inset-0 w-full h-full object-cover object-top" />
-                          </div>
-                        )}
+                        <div className={`flex-1 relative overflow-hidden ${caretaker.images.length === 3 ? 'rounded-br-[12px]' : ''}`}>
+                          <img src={caretaker.images[2]} className="absolute inset-0 w-full h-full object-cover object-top" />
+                        </div>
                         {caretaker.images.length > 3 && (
                           <div className="flex-1 relative overflow-hidden rounded-br-[12px]">
                             <img src={caretaker.images[3]} className="absolute inset-0 w-full h-full object-cover object-top" />
                             {caretaker.images.length > 4 && (
                               <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center">
-                                <span className="text-white text-[12px] sm:text-[14px] font-bold">+{caretaker.images.length - 3}</span>
+                                <span className="text-white text-[12px] sm:text-[14px] font-bold">+{caretaker.images.length - 4}</span>
                                 <span className="text-white text-[7px] sm:text-[9px] font-medium uppercase tracking-wider">Photos</span>
                               </div>
                             )}
