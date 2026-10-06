@@ -90,7 +90,7 @@ export const HomeServicesScreen = () => {
           <img 
             src="/A Husky and Kitten Pastel Banner.png" 
             alt="Banner Background" 
-            className="hidden md:block w-full h-[220px] lg:h-[280px] object-cover object-[center_30%]"
+            className="hidden md:block w-full h-[220px] lg:h-[280px] object-cover object-[center_15%]"
           />
           <img 
             src="/mobile - Trusted Pet Care, Happy Companions.png" 
@@ -123,7 +123,7 @@ export const HomeServicesScreen = () => {
         </div>
 
         {/* Trust Badges */}
-        <div className="max-w-[95%] xl:max-w-[85%] mx-auto px-4 relative z-20 -mt-4 md:-mt-5">
+        <div className="max-w-[95%] xl:max-w-[85%] mx-auto px-4 relative z-20 -mt-1 md:-mt-2">
           <div className="bg-white rounded-[12px] md:rounded-[16px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50 py-1.5 md:py-2 px-3 md:px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-0 divide-x-0 md:divide-x divide-gray-100">
               
