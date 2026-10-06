@@ -126,7 +126,7 @@ export const CaretakerProfileScreen = () => {
               <div className="relative z-20 mt-2 lg:mt-0 pt-1">
                 {/* THUMBNAILS ROW */}
                 <div className="flex items-center gap-2 lg:gap-3 px-5 lg:px-0 lg:pb-0 pb-3">
-                  <div className="flex flex-1 gap-2 lg:gap-3 overflow-x-auto scrollbar-hide justify-between w-full">
+                  <div className="flex gap-2 lg:gap-3 overflow-x-auto scrollbar-hide justify-start w-full">
                     {allImages.slice(thumbnailStartIndex, thumbnailStartIndex + 4).map((img: string, i: number) => {
                       const actualIdx = thumbnailStartIndex + i;
                       const isLastVisible = i === 3;
@@ -147,7 +147,7 @@ export const CaretakerProfileScreen = () => {
                               setIsVideoPlaying(false);
                             }
                           }}
-                          className={`relative flex-1 h-[65px] lg:h-[75px] rounded-[10px] lg:rounded-[12px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${actualIdx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[2.5px] border-[#007672] shadow-sm' : 'opacity-90 hover:opacity-100 border border-transparent'}`}
+                          className={`relative w-[65px] h-[65px] lg:w-[75px] lg:h-[75px] rounded-[10px] lg:rounded-[12px] overflow-hidden shrink-0 cursor-pointer transition-all duration-200 ${actualIdx === activeMediaIndex && !isVideoPlaying ? 'border-[2px] lg:border-[2.5px] border-[#007672] shadow-sm' : 'opacity-90 hover:opacity-100 border border-transparent'}`}
                         >
                           <img src={img} alt="" className="w-full h-full object-cover" />
                           {isLastVisible && remainingCount > 0 && (
