@@ -43,11 +43,11 @@ export const AdminCaretakers = () => {
       name: caretaker.name || caretaker.fullName || '',
       email: caretaker.email || '',
       phone: caretaker.phone || '',
-      about: caretaker.about || '',
+      bio: caretaker.bio || caretaker.about || '',
       price: caretaker.price || 0,
-      city: caretaker.city || '',
+      address: caretaker.address || caretaker.city || '',
       status: caretaker.status || 'active',
-      photoURL: caretaker.photoURL || ''
+      images: caretaker.images || (caretaker.photoURL ? [caretaker.photoURL] : [])
     });
   };
 
@@ -136,13 +136,13 @@ export const AdminCaretakers = () => {
                   {/* Name & Avatar */}
                   <div className="md:col-span-4 flex items-center space-x-3">
                     <img 
-                      src={caretaker.photoURL || `https://ui-avatars.com/api/?name=${caretaker.name || 'C'}&background=E5E7EB&color=1B2B48`} 
+                      src={caretaker.images?.[0] || caretaker.photoURL || `https://ui-avatars.com/api/?name=${caretaker.name || 'C'}&background=E5E7EB&color=1B2B48`} 
                       alt="" 
                       className="w-10 h-10 rounded-full object-cover shrink-0 border border-gray-200"
                     />
                     <div>
                       <p className="text-sm font-bold text-[#1B2B48] truncate">{caretaker.name || caretaker.fullName || 'Unnamed'}</p>
-                      <p className="text-xs text-gray-400 font-medium line-clamp-1">{caretaker.about || 'No bio provided'}</p>
+                      <p className="text-xs text-gray-400 font-medium line-clamp-1">{caretaker.bio || caretaker.about || 'No bio provided'}</p>
                     </div>
                   </div>
 
@@ -162,7 +162,7 @@ export const AdminCaretakers = () => {
                   <div className="md:col-span-2 space-y-1">
                     <div className="flex items-center space-x-1.5 text-xs text-gray-500">
                       <MapPin size={12} className="shrink-0" />
-                      <span className="truncate">{caretaker.city || '—'}</span>
+                      <span className="truncate">{caretaker.address || caretaker.city || '—'}</span>
                     </div>
                     <div className="flex items-center space-x-1.5 text-xs text-[#007672] font-bold">
                       <IndianRupee size={12} className="shrink-0" />
@@ -267,11 +267,11 @@ export const AdminCaretakers = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Location (City)</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Location (Address)</label>
                 <input 
                   type="text" 
-                  value={editForm.city} 
-                  onChange={e => setEditForm({...editForm, city: e.target.value})}
+                  value={editForm.address || ''} 
+                  onChange={e => setEditForm({...editForm, address: e.target.value})}
                   className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#007672]/20 outline-none text-sm font-medium"
                 />
               </div>
@@ -279,21 +279,61 @@ export const AdminCaretakers = () => {
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">About / Bio</label>
                 <textarea 
-                  value={editForm.about} 
-                  onChange={e => setEditForm({...editForm, about: e.target.value})}
+                  value={editForm.bio || ''} 
+                  onChange={e => setEditForm({...editForm, bio: e.target.value})}
                   rows={4}
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#007672]/20 outline-none text-sm font-medium resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Profile Image URL</label>
-                <input 
-                  type="text" 
-                  value={editForm.photoURL} 
-                  onChange={e => setEditForm({...editForm, photoURL: e.target.value})}
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#007672]/20 outline-none text-sm font-medium"
-                />
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider">Profile & Gallery Images</label>
+                  <button 
+                    onClick={() => setEditForm({...editForm, images: [...(editForm.images || []), '']})}
+                    className="text-xs font-bold text-[#007672] hover:text-[#00605c]"
+                  >
+                    + Add Image URL
+                  </button>
+                </div>
+                
+                <div className="space-y-3">
+                  {(editForm.images || []).map((url: string, index: number) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <input 
+                        type="text" 
+                        value={url} 
+                        onChange={e => {
+                          const newImages = [...editForm.images];
+                          newImages[index] = e.target.value;
+                          setEditForm({...editForm, images: newImages});
+                        }}
+                        placeholder="https://example.com/image.jpg"
+                        className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#007672]/20 outline-none text-sm font-medium"
+                      />
+                      <button 
+                        onClick={() => {
+                          const newImages = editForm.images.filter((_: any, i: number) => i !== index);
+                          setEditForm({...editForm, images: newImages});
+                        }}
+                        className="p-2.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors shrink-0"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                  ))}
+                  {(!editForm.images || editForm.images.length === 0) && (
+                    <p className="text-sm text-gray-400 italic">No images added. Click "+ Add Image URL" to add photos.</p>
+                  )}
+                </div>
+
+                {editForm.images?.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {editForm.images.map((url: string, index: number) => url ? (
+                      <img key={index} src={url} alt="" className="w-16 h-16 rounded-lg object-cover border border-gray-200" />
+                    ) : null)}
+                  </div>
+                )}
               </div>
 
             </div>
