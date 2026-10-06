@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../config/firebase';
 import { collection, getDocs, doc, updateDoc, query, where } from 'firebase/firestore';
-import { Search, PawPrint, Mail, Phone, Edit2, ShieldAlert, CheckCircle, X, MapPin, IndianRupee } from 'lucide-react';
+import { Search, PawPrint, Mail, Phone, Edit2, ShieldAlert, CheckCircle, X, MapPin, IndianRupee, UploadCloud } from 'lucide-react';
+import { uploadImageToCloudinary } from '../../utils/cloudinary';
 
 export const AdminCaretakers = () => {
   const [caretakers, setCaretakers] = useState<any[]>([]);
@@ -12,10 +13,30 @@ export const AdminCaretakers = () => {
   const [editingCaretaker, setEditingCaretaker] = useState<any>(null);
   const [editForm, setEditForm] = useState<any>({});
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     fetchCaretakers();
   }, []);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    setIsUploading(true);
+    try {
+      const files = Array.from(e.target.files);
+      const newUrls = await Promise.all(files.map(f => uploadImageToCloudinary(f)));
+      setEditForm({
+        ...editForm,
+        images: [...(editForm.images || []), ...newUrls].filter(url => url) // Filter out empty URLs just in case
+      });
+    } catch (error) {
+      console.error("Upload failed", error);
+      alert("Failed to upload image(s).");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const fetchCaretakers = async () => {
     setLoading(true);
@@ -287,50 +308,55 @@ export const AdminCaretakers = () => {
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider">Profile & Gallery Images</label>
-                  <button 
-                    onClick={() => setEditForm({...editForm, images: [...(editForm.images || []), '']})}
-                    className="text-xs font-bold text-[#007672] hover:text-[#00605c]"
-                  >
-                    + Add Image URL
-                  </button>
-                </div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Profile & Gallery Images</label>
                 
-                <div className="space-y-3">
-                  {(editForm.images || []).map((url: string, index: number) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <input 
-                        type="text" 
-                        value={url} 
-                        onChange={e => {
-                          const newImages = [...editForm.images];
-                          newImages[index] = e.target.value;
-                          setEditForm({...editForm, images: newImages});
-                        }}
-                        placeholder="https://example.com/image.jpg"
-                        className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#007672]/20 outline-none text-sm font-medium"
-                      />
-                      <button 
-                        onClick={() => {
-                          const newImages = editForm.images.filter((_: any, i: number) => i !== index);
-                          setEditForm({...editForm, images: newImages});
-                        }}
-                        className="p-2.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors shrink-0"
-                      >
-                        <X size={16} />
-                      </button>
+                <div className="relative group rounded-xl border-2 border-dashed border-gray-300 hover:border-[#007672] bg-gray-50 transition-all p-6 text-center cursor-pointer mb-4">
+                  <input 
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                    disabled={isUploading}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                  />
+                  <div className="flex flex-col items-center justify-center space-y-2 pointer-events-none">
+                    {isUploading ? (
+                      <div className="w-8 h-8 rounded-full border-2 border-[#007672] border-t-transparent animate-spin mx-auto" />
+                    ) : (
+                      <UploadCloud size={32} className="text-gray-400 group-hover:text-[#007672] transition-colors" />
+                    )}
+                    <div>
+                      <p className="text-sm font-bold text-[#1B2B48]">
+                        {isUploading ? 'Uploading...' : 'Click or drag images here'}
+                      </p>
+                      <p className="text-xs text-gray-500 font-medium">Supports multiple images (JPG, PNG)</p>
                     </div>
-                  ))}
-                  {(!editForm.images || editForm.images.length === 0) && (
-                    <p className="text-sm text-gray-400 italic">No images added. Click "+ Add Image URL" to add photos.</p>
-                  )}
+                  </div>
                 </div>
 
                 {editForm.images?.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {editForm.images.map((url: string, index: number) => url ? (
-                      <img key={index} src={url} alt="" className="w-16 h-16 rounded-lg object-cover border border-gray-200" />
+                      <div key={index} className="relative group aspect-square rounded-xl overflow-hidden border border-gray-200">
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const newImages = editForm.images.filter((_: any, i: number) => i !== index);
+                              setEditForm({...editForm, images: newImages});
+                            }}
+                            className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+                        {index === 0 && (
+                          <div className="absolute top-2 left-2 px-2 py-1 bg-[#007672] text-white text-[10px] font-bold rounded shadow-sm">
+                            Primary
+                          </div>
+                        )}
+                      </div>
                     ) : null)}
                   </div>
                 )}
