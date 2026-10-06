@@ -385,6 +385,8 @@ export const PetParentLandingScreen = () => {
           </div>
 
         </div>
+      </main>
+
       {/* Scroll Down Indicator */}
       <div 
         className="w-full flex flex-col items-center justify-center py-8 md:py-12 bg-white cursor-pointer group"
