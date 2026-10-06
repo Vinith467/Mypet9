@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Home, Heart, Headset, ArrowRight, Home as HomeIcon, Scissors, Car, Stethoscope, GraduationCap, Users as UsersIcon } from 'lucide-react';
+import { Shield, Home, Heart, Headset, ArrowRight, Home as HomeIcon, Scissors, Car, Stethoscope, GraduationCap, Users as UsersIcon, PawPrint } from 'lucide-react';
 import { TopNavbar } from '../../components/layout/TopNavbar';
 
 export const HomeServicesScreen = () => {
