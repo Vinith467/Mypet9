@@ -93,6 +93,7 @@ export const AdminForms = () => {
     { id: 'parent_leads', label: 'Pet Parent Leads', icon: Users },
     { id: 'partner_leads', label: 'Partner Leads', icon: PawPrint },
     { id: 'inquiries', label: 'Inquiries', icon: MessageSquare },
+    { id: 'service_inquiries', label: 'Service Inquiries', icon: Calendar },
   ];
 
   return (
@@ -147,6 +148,13 @@ export const AdminForms = () => {
               collectionName="inquiries" 
               title="Inquiries" 
               emptyMessage="No inquiries found." 
+            />
+          )}
+          {activeTab === 'service_inquiries' && (
+            <GenericFormViewer 
+              collectionName="service_inquiries" 
+              title="Service Inquiries" 
+              emptyMessage="No service inquiries found." 
             />
           )}
         </div>

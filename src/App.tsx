@@ -4,6 +4,7 @@ import { HomeServicesScreen } from './screens/Landing/HomeServicesScreen';
 import { DirectlyReachUsScreen } from './screens/Landing/DirectlyReachUsScreen';
 import { BookFreePlaytimeScreen } from './screens/Landing/BookFreePlaytimeScreen';
 import { ComingSoonScreen } from './screens/Landing/ComingSoonScreen';
+import { ServiceInquiryScreen } from './screens/Landing/ServiceInquiryScreen';
 import AuthScreen from './screens/Auth/AuthScreen';
 import { SelectPetScreen } from './screens/Pets/SelectPetScreen';
 import { ChooseServiceScreen } from './screens/Booking/ChooseServiceScreen';
@@ -58,7 +59,7 @@ function App() {
             <Route path="/boarding" element={<PetParentLandingScreen />} />
             <Route path="/directly-reach-us" element={<DirectlyReachUsScreen />} />
             <Route path="/book-free-playtime" element={<BookFreePlaytimeScreen />} />
-            <Route path="/coming-soon" element={<ComingSoonScreen />} />
+            <Route path="/coming-soon" element={<ServiceInquiryScreen />} />
             <Route path="/auth" element={<AuthScreen />} />
             <Route path="/select-pet" element={<SelectPetScreen />} />
             <Route path="/choose-service" element={<ChooseServiceScreen />} />

@@ -33,7 +33,7 @@ export const HomeServicesScreen = () => {
       iconBg: 'bg-pink-100',
       iconColor: 'text-pink-500',
       buttonBg: 'bg-pink-500',
-      route: '/coming-soon'
+      route: '/coming-soon?service=grooming'
     },
     {
       id: 'transport',
@@ -45,7 +45,7 @@ export const HomeServicesScreen = () => {
       iconBg: 'bg-cyan-100',
       iconColor: 'text-cyan-500',
       buttonBg: 'bg-cyan-500',
-      route: '/coming-soon'
+      route: '/coming-soon?service=transport'
     },
     {
       id: 'vet',
@@ -57,7 +57,7 @@ export const HomeServicesScreen = () => {
       iconBg: 'bg-emerald-100',
       iconColor: 'text-emerald-500',
       buttonBg: 'bg-emerald-500',
-      route: '/coming-soon'
+      route: '/coming-soon?service=vet'
     },
     {
       id: 'training',
@@ -69,7 +69,7 @@ export const HomeServicesScreen = () => {
       iconBg: 'bg-purple-100',
       iconColor: 'text-purple-500',
       buttonBg: 'bg-purple-500',
-      route: '/coming-soon'
+      route: '/coming-soon?service=training'
     },
     {
       id: 'breeding',
@@ -81,7 +81,7 @@ export const HomeServicesScreen = () => {
       iconBg: 'bg-rose-100',
       iconColor: 'text-rose-500',
       buttonBg: 'bg-rose-500',
-      route: '/coming-soon'
+      route: '/coming-soon?service=breeding'
     }
   ];
 
