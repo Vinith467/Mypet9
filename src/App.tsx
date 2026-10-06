@@ -34,6 +34,7 @@ import { SupportChatWidget } from './components/ui/SupportChatWidget';
 import { AdminLayout } from './screens/Admin/AdminLayout';
 import { AdminOverview } from './screens/Admin/AdminOverview';
 import { AdminWaitlist } from './screens/Admin/AdminWaitlist';
+import { AdminForms } from './screens/Admin/AdminForms';
 import { AdminApplications } from './screens/Admin/AdminApplications';
 import { AdminUsers } from './screens/Admin/AdminUsers';
 import { AdminCaretakers } from './screens/Admin/AdminCaretakers';
@@ -86,7 +87,7 @@ function App() {
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminOverview />} />
-              <Route path="applications" element={<AdminApplications />} />
+              <Route path="forms" element={<AdminForms />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="caretakers" element={<AdminCaretakers />} />
               <Route path="bookings" element={<AdminBookings />} />

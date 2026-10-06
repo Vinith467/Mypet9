@@ -80,13 +80,7 @@ export const AdminApplications = () => {
   ];
 
   return (
-    <div className="p-6 md:p-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-extrabold text-[#1B2B48] tracking-tight">Applications</h1>
-        <p className="text-gray-500 text-sm font-medium mt-1">Review and manage caretaker applications.</p>
-      </div>
-
+    <div className="w-full">
       {/* Tabs + Search */}
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         {/* Tabs */}

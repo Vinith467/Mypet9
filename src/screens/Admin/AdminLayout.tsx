@@ -9,7 +9,7 @@ import { signOut } from 'firebase/auth';
 
 const navItems = [
   { to: '/admin', icon: LayoutDashboard, label: 'Overview', end: true },
-  { to: '/admin/applications', icon: ClipboardList, label: 'Applications' },
+  { to: '/admin/forms', icon: ClipboardList, label: 'Forms' },
   { to: '/admin/users', icon: Users, label: 'Users' },
   { to: '/admin/caretakers', icon: PawPrint, label: 'Caretakers' },
   { to: '/admin/bookings', icon: CalendarCheck, label: 'Bookings' },
