@@ -385,12 +385,17 @@ export const PetParentLandingScreen = () => {
           </div>
 
         </div>
-      </main>
-
       {/* Scroll Down Indicator */}
-      <div className="w-full flex flex-col items-center justify-center py-6 md:py-10 bg-white">
-        <p className="text-[#007672] text-[12px] font-bold uppercase tracking-widest mb-2 animate-pulse">Scroll to explore</p>
-        <ChevronDown className="text-[#007672] w-6 h-6 animate-bounce" strokeWidth={2.5} />
+      <div 
+        className="w-full flex flex-col items-center justify-center py-8 md:py-12 bg-white cursor-pointer group"
+        onClick={() => window.scrollBy({top: 500, behavior: 'smooth'})}
+      >
+        <p className="text-[#007672] text-[13px] md:text-[15px] font-extrabold uppercase tracking-[0.2em] mb-4 opacity-80 group-hover:opacity-100 transition-opacity">
+          Scroll to explore
+        </p>
+        <div className="bg-[#E0F4F2] p-3 md:p-4 rounded-full animate-bounce shadow-md shadow-[#007672]/10 border border-[#007672]/20 group-hover:bg-[#007672] transition-colors duration-300">
+          <ChevronDown className="text-[#007672] group-hover:text-white w-7 h-7 md:w-8 md:h-8 transition-colors duration-300" strokeWidth={3} />
+        </div>
       </div>
 
       {/* How It Works Section */}
