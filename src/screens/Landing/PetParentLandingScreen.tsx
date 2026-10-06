@@ -32,6 +32,10 @@ const InlinePetCounter = ({ label, count, onIncrement, onDecrement, iconUrl }: {
 );
 
 export const PetParentLandingScreen = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const navigate = useNavigate();
   const { user, signInWithGoogle } = useAuth();
   
