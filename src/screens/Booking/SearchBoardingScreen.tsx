@@ -731,7 +731,7 @@ export const BoardingSearchScreen = () => {
                       <img 
                         src={caretaker.images[0]}
                         alt={caretaker.name}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                       />
                       <button 
                         onClick={(e) => toggleLike(caretaker.id, e)}
@@ -745,13 +745,13 @@ export const BoardingSearchScreen = () => {
                     </div>
                     <div className="flex flex-row gap-1 sm:gap-1.5 h-[35px] sm:h-[60px]">
                       <div className="flex-1 relative overflow-hidden rounded-bl-[12px]">
-                        <img src={caretaker.images[1] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover" />
+                        <img src={caretaker.images[1] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover object-top" />
                       </div>
                       <div className="flex-1 relative overflow-hidden">
-                        <img src={caretaker.images[2] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover" />
+                        <img src={caretaker.images[2] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover object-top" />
                       </div>
                       <div className="flex-1 relative overflow-hidden rounded-br-[12px]">
-                        <img src={caretaker.images[3] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover" />
+                        <img src={caretaker.images[3] || caretaker.images[0]} className="absolute inset-0 w-full h-full object-cover object-top" />
                         <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center">
                           <span className="text-white text-[12px] sm:text-[14px] font-bold">+{caretaker.images.length > 3 ? caretaker.images.length - 3 : 2}</span>
                           <span className="text-white text-[7px] sm:text-[9px] font-medium uppercase tracking-wider">Photos</span>
