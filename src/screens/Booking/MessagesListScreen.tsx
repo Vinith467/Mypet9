@@ -142,16 +142,15 @@ export const MessagesListScreen = () => {
           {/* Left Pane: Chat List */}
           <div className="w-full lg:w-[380px] lg:border-r border-gray-100 flex flex-col h-full bg-[#F8F9FA] lg:bg-white shrink-0">
             {/* Header */}
-            <div className="px-5 pt-8 lg:pt-6 lg:px-6 shrink-0 bg-white lg:bg-transparent pb-4 lg:pb-0 z-10 lg:border-none shadow-sm lg:shadow-none">
-              <div className="flex items-center mb-0">
-                <button 
-                  onClick={() => navigate(-1)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors mr-3 lg:hidden"
-                >
-                  <ArrowLeft className="text-[#1B2B48]" size={24} />
-                </button>
-                <h1 className="text-[22px] font-extrabold text-[#1B2B48]">Messages</h1>
-              </div>
+            <div className="px-5 pt-16 lg:pt-6 lg:px-6 shrink-0 bg-transparent pb-2 lg:pb-0 z-10 lg:border-none relative">
+              <button 
+                onClick={() => navigate(-1)}
+                className="w-10 h-10 bg-white flex items-center justify-center rounded-full shadow-md absolute top-4 left-4 lg:hidden z-20"
+              >
+                <ChevronLeft size={24} className="text-[#1B2B48] -ml-1" />
+              </button>
+              {/* Desktop Title Only */}
+              <h1 className="text-[22px] font-extrabold text-[#1B2B48] hidden lg:block mb-4">Messages</h1>
             </div>
 
             {/* List */}
