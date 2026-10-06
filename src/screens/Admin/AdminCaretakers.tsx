@@ -12,6 +12,7 @@ export const AdminCaretakers = () => {
   // Edit State
   const [editingCaretaker, setEditingCaretaker] = useState<any>(null);
   const [editForm, setEditForm] = useState<any>({});
+  const [deletingCaretaker, setDeletingCaretaker] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -104,17 +105,18 @@ export const AdminCaretakers = () => {
     }
   };
 
-  const handleDelete = async (caretaker: any) => {
-    const confirmMsg = `WARNING: Are you absolutely sure you want to permanently delete ${caretaker.name || 'this caretaker'}? This will completely remove their data from the database and cannot be undone.`;
-    if (!window.confirm(confirmMsg)) return;
+  const confirmDelete = async () => {
+    if (!deletingCaretaker) return;
 
     try {
-      await deleteDoc(doc(db, 'caretakers', caretaker.id));
-      await deleteDoc(doc(db, 'users', caretaker.id)); // Delete from users collection as well
-      setCaretakers(caretakers.filter(c => c.id !== caretaker.id));
+      await deleteDoc(doc(db, 'caretakers', deletingCaretaker.id));
+      await deleteDoc(doc(db, 'users', deletingCaretaker.id)); // Delete from users collection as well
+      setCaretakers(caretakers.filter(c => c.id !== deletingCaretaker.id));
     } catch (e) {
       console.error("Error deleting caretaker:", e);
       alert("Failed to delete caretaker.");
+    } finally {
+      setDeletingCaretaker(null);
     }
   };
 
@@ -236,7 +238,7 @@ export const AdminCaretakers = () => {
                       <ShieldAlert size={16} />
                     </button>
                     <button 
-                      onClick={() => handleDelete(caretaker)}
+                      onClick={() => setDeletingCaretaker(caretaker)}
                       className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       title="Permanently Delete"
                     >
@@ -405,6 +407,36 @@ export const AdminCaretakers = () => {
         </div>
       )}
 
+      {/* Delete Confirmation Modal */}
+      {deletingCaretaker && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div className="p-6 text-center">
+              <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trash2 size={28} className="text-red-500" />
+              </div>
+              <h3 className="text-xl font-bold text-[#1B2B48] mb-2">Delete Caretaker?</h3>
+              <p className="text-sm text-gray-500 mb-6">
+                Are you sure you want to completely delete <strong className="text-[#1B2B48]">{deletingCaretaker.name}</strong>? This action cannot be undone and will erase all their data.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setDeletingCaretaker(null)}
+                  className="flex-1 py-3 text-sm font-bold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 py-3 text-sm font-bold text-white bg-red-500 rounded-xl hover:bg-red-600 transition-colors shadow-lg shadow-red-500/30"
+                >
+                  Yes, Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

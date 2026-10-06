@@ -10,6 +10,7 @@ export const AdminUsers = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [editingUser, setEditingUser] = useState<any>(null);
   const [newImageUrl, setNewImageUrl] = useState('');
+  const [deletingUser, setDeletingUser] = useState<{id: string, type: string} | null>(null);
 
   useEffect(() => {
     fetchUsers();
@@ -56,8 +57,10 @@ export const AdminUsers = () => {
       alert("Failed to update image.");
     }
   };
-  const handleDeleteUser = async (userId: string, userType: string) => {
-    if (!window.confirm("Are you sure you want to completely delete this user? This cannot be undone.")) return;
+
+  const confirmDeleteUser = async () => {
+    if (!deletingUser) return;
+    const { id: userId, type: userType } = deletingUser;
     
     try {
       // Delete from users collection
@@ -72,6 +75,8 @@ export const AdminUsers = () => {
     } catch (e) {
       console.error("Error deleting user:", e);
       alert("Failed to delete user.");
+    } finally {
+      setDeletingUser(null);
     }
   };
 
@@ -207,7 +212,7 @@ export const AdminUsers = () => {
                 {/* Actions */}
                 <div className="md:col-span-1 flex justify-end">
                   <button 
-                    onClick={() => handleDeleteUser(user.id, user.type)}
+                    onClick={() => setDeletingUser({id: user.id, type: user.type})}
                     className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                     title="Delete User"
                   >
@@ -249,6 +254,36 @@ export const AdminUsers = () => {
             >
               Save Image
             </button>
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {deletingUser && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div className="p-6 text-center">
+              <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trash2 size={28} className="text-red-500" />
+              </div>
+              <h3 className="text-xl font-bold text-[#1B2B48] mb-2">Delete User?</h3>
+              <p className="text-sm text-gray-500 mb-6">
+                Are you sure you want to completely delete this user? This action cannot be undone and will erase all their data.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setDeletingUser(null)}
+                  className="flex-1 py-3 text-sm font-bold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDeleteUser}
+                  className="flex-1 py-3 text-sm font-bold text-white bg-red-500 rounded-xl hover:bg-red-600 transition-colors shadow-lg shadow-red-500/30"
+                >
+                  Yes, Delete
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
