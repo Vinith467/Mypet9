@@ -90,7 +90,7 @@ export const HomeServicesScreen = () => {
           <img 
             src="/A Husky and Kitten Pastel Banner.png" 
             alt="Banner Background" 
-            className="hidden md:block w-full h-[220px] lg:h-[280px] object-cover object-bottom"
+            className="hidden md:block w-full h-[240px] lg:h-[340px] object-cover object-[center_65%]"
           />
           <img 
             src="/mobile - Trusted Pet Care, Happy Companions.png" 
