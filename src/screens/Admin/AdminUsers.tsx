@@ -143,11 +143,11 @@ export const AdminUsers = () => {
 
         {/* Table Header (desktop) */}
         <div className="hidden md:grid grid-cols-12 gap-4 px-5 py-3 bg-gray-50/80 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest border-b border-gray-100">
-          <div className="col-span-4">User</div>
+          <div className="col-span-3">User</div>
           <div className="col-span-3">Email</div>
           <div className="col-span-2">Phone</div>
-          <div className="col-span-1">Type</div>
-          <div className="col-span-1">Joined</div>
+          <div className="col-span-2 text-center">Type</div>
+          <div className="col-span-1 text-center">Joined</div>
           <div className="col-span-1 text-right">Actions</div>
         </div>
 
@@ -164,7 +164,7 @@ export const AdminUsers = () => {
             filteredUsers.map(user => (
               <div key={user.id} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-5 py-4 hover:bg-gray-50/50 transition-colors items-center">
                 {/* Name */}
-                <div className="md:col-span-4 flex items-center space-x-3">
+                <div className="md:col-span-3 flex items-center space-x-3">
                   <div 
                     className="relative group cursor-pointer shrink-0" 
                     onClick={() => { setEditingUser(user); setNewImageUrl(user.photoURL || ''); }}
@@ -198,7 +198,7 @@ export const AdminUsers = () => {
                   <p className="text-sm text-gray-500">{user.phone || '—'}</p>
                 </div>
                 {/* Type */}
-                <div className="md:col-span-1">
+                <div className="md:col-span-2 flex justify-center">
                   <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider whitespace-nowrap inline-block text-center ${
                     user.type === 'caretaker' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
                   }`}>
@@ -206,7 +206,7 @@ export const AdminUsers = () => {
                   </span>
                 </div>
                 {/* Joined */}
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 flex justify-center">
                   <p className="text-[11px] text-gray-400 font-medium">
                     {user.createdAt ? new Date(user.createdAt.seconds ? user.createdAt.seconds * 1000 : user.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : '—'}
                   </p>
