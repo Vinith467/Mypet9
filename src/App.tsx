@@ -48,12 +48,14 @@ import { PetHomestayPartnerFormScreen } from './screens/Onboarding/PetHomestayPa
 import { OnboardingHistoryScreen } from './screens/Onboarding/OnboardingHistoryScreen';
 import { OnboardingAnalyticsScreen } from './screens/Onboarding/OnboardingAnalyticsScreen';
 import { InquiryFormScreen } from './screens/InquiryFormScreen';
+import { BackButtonHandler } from './components/utils/BackButtonHandler';
 
 function App() {
   return (
     <div className="app-container">
       <AuthProvider>
         <BrowserRouter>
+          <BackButtonHandler />
           <Routes>
             <Route path="/" element={<HomeServicesScreen />} />
             <Route path="/boarding" element={<PetParentLandingScreen />} />
