@@ -45,6 +45,12 @@ export const ServiceInquiryScreen = () => {
       iconColor: 'text-rose-500',
       bg: 'bg-rose-50'
     },
+    homestay: {
+      title: 'Home Stay & Boarding',
+      sub: 'A home away from home for your pets',
+      iconColor: 'text-orange-500',
+      bg: 'bg-orange-50'
+    },
     other: {
       title: 'Service',
       sub: 'Coming soon',
