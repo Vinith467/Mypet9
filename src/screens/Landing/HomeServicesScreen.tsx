@@ -187,33 +187,33 @@ export const HomeServicesScreen = () => {
                 onClick={() => navigate(service.route)}
                 className={`${service.color} rounded-[16px] md:rounded-[20px] overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-full border border-white/50`}
               >
-                {/* Image taking 4:3 aspect ratio */}
-                <div className="aspect-[4/3] w-full relative overflow-hidden shrink-0">
+                {/* Image taking 3:2 aspect ratio */}
+                <div className="aspect-[3/2] w-full relative overflow-hidden shrink-0">
                   <img 
                     src={service.image} 
                     alt={service.title} 
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                   />
                   {/* Icon badge over image */}
-                  <div className={`absolute top-2 left-2 md:top-3 md:left-3 w-7 h-7 ${service.iconBg} rounded-lg flex items-center justify-center shadow-sm z-10`}>
-                    <service.icon className={`w-3.5 h-3.5 ${service.iconColor}`} strokeWidth={2.5} />
+                  <div className={`absolute top-3 left-3 md:top-4 md:left-4 w-8 h-8 md:w-10 md:h-10 ${service.iconBg} rounded-xl flex items-center justify-center shadow-sm z-10`}>
+                    <service.icon className={`w-4 h-4 md:w-5 md:h-5 ${service.iconColor}`} strokeWidth={2.5} />
                   </div>
                 </div>
 
-                {/* Content taking bottom 50% */}
-                <div className="p-3 flex-1 flex flex-col justify-between relative bg-gradient-to-b from-transparent to-white/60">
+                {/* Content */}
+                <div className="p-4 md:p-5 flex-1 flex flex-col justify-between relative bg-gradient-to-b from-transparent to-white/60">
                   <div>
-                    <h3 className="text-[12px] md:text-[13px] font-extrabold text-[#1B2B48] leading-[1.2] whitespace-pre-line mb-1">
+                    <h3 className="text-[16px] md:text-[18px] font-extrabold text-[#1B2B48] leading-[1.2] whitespace-pre-line mb-1.5">
                       {service.title}
                     </h3>
-                    <p className="text-[9px] md:text-[10px] text-[#465E87] font-medium leading-[1.3] whitespace-pre-line line-clamp-2">
+                    <p className="text-[12px] md:text-[13px] text-[#465E87] font-medium leading-[1.4] whitespace-pre-line line-clamp-2 pr-8">
                       {service.subtitle}
                     </p>
                   </div>
                   
                   {/* Arrow Button */}
-                  <div className={`absolute bottom-3 right-3 w-5 h-5 md:w-6 md:h-6 rounded-full ${service.buttonBg} text-white flex items-center justify-center shadow-md transform group-hover:translate-x-1 transition-transform`}>
-                    <ArrowRight className="w-2.5 h-2.5 md:w-3 md:h-3" strokeWidth={3} />
+                  <div className={`absolute bottom-4 right-4 md:bottom-5 md:right-5 w-7 h-7 md:w-8 md:h-8 rounded-full ${service.buttonBg} text-white flex items-center justify-center shadow-md transform group-hover:translate-x-1 transition-transform`}>
+                    <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={3} />
                   </div>
                 </div>
               </div>
