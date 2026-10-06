@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../config/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import { Search, Users, PawPrint, Mail, Phone } from 'lucide-react';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { Search, Users, PawPrint, Mail, Phone, Image as ImageIcon, X } from 'lucide-react';
 
 export const AdminUsers = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pet_parent' | 'caretaker'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [editingUser, setEditingUser] = useState<any>(null);
+  const [newImageUrl, setNewImageUrl] = useState('');
 
   useEffect(() => {
     fetchUsers();
@@ -20,6 +22,20 @@ export const AdminUsers = () => {
       setUsers(snap.docs.map(d => ({ id: d.id, ...d.data() })));
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
+  };
+
+  const handleUpdateImage = async () => {
+    if (!editingUser) return;
+    try {
+      await updateDoc(doc(db, 'users', editingUser.id), {
+        photoURL: newImageUrl
+      });
+      setUsers(users.map(u => u.id === editingUser.id ? { ...u, photoURL: newImageUrl } : u));
+      setEditingUser(null);
+    } catch (e) {
+      console.error("Error updating image:", e);
+      alert("Failed to update image.");
+    }
   };
 
   const filteredUsers = users.filter(user => {
@@ -104,10 +120,23 @@ export const AdminUsers = () => {
               <div key={user.id} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-5 py-4 hover:bg-gray-50/50 transition-colors items-center">
                 {/* Name */}
                 <div className="md:col-span-4 flex items-center space-x-3">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center font-extrabold text-sm shrink-0 ${
-                    user.type === 'caretaker' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
-                  }`}>
-                    {(user.name || user.firstName || user.fullName || user.email || '?').charAt(0).toUpperCase()}
+                  <div 
+                    className="relative group cursor-pointer shrink-0" 
+                    onClick={() => { setEditingUser(user); setNewImageUrl(user.photoURL || ''); }}
+                    title="Click to edit profile image"
+                  >
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt="" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                    ) : (
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm ${
+                        user.type === 'caretaker' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
+                      }`}>
+                        {(user.name || user.firstName || user.fullName || user.email || '?').charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                      <ImageIcon size={16} className="text-white" />
+                    </div>
                   </div>
                   <p className="text-sm font-bold text-[#1B2B48] truncate">
                     {user.name || user.firstName || user.fullName || 'User (Applying)'}
@@ -142,6 +171,39 @@ export const AdminUsers = () => {
           )}
         </div>
       </div>
+
+      {/* Edit Image Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50">
+          <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-xl relative">
+            <button onClick={() => setEditingUser(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+              <X size={20} />
+            </button>
+            <h2 className="text-xl font-bold text-[#1B2B48] mb-4">Edit Profile Image</h2>
+            <div className="mb-4">
+              <label className="block text-sm font-bold text-gray-700 mb-2">Image URL</label>
+              <input 
+                type="text" 
+                value={newImageUrl} 
+                onChange={(e) => setNewImageUrl(e.target.value)}
+                placeholder="https://example.com/image.jpg"
+                className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#007672] outline-none"
+              />
+            </div>
+            {newImageUrl && (
+              <div className="mb-6 flex justify-center">
+                <img src={newImageUrl} alt="Preview" className="w-24 h-24 rounded-full object-cover border-4 border-gray-50 shadow-sm" />
+              </div>
+            )}
+            <button 
+              onClick={handleUpdateImage}
+              className="w-full bg-[#007672] hover:bg-[#00605c] text-white font-bold py-3 rounded-xl transition-colors"
+            >
+              Save Image
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
