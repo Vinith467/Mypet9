@@ -91,15 +91,11 @@ export const PetParentLandingScreen = () => {
       return;
     }
 
-    // Temporary: Redirect to coming soon page for homestays while under construction
-    navigate('/coming-soon?service=homestay');
-    
-    // FUTURE IMPLEMENTATION:
-    /*
     if (!user) {
       navigate('/auth', { 
         state: { 
-          returnTo: '/search-boarding'
+          returnTo: '/search-boarding',
+          bookingData: { location, dropoffDate, pickupDate, pets }
         } 
       });
       return;
@@ -109,7 +105,6 @@ export const PetParentLandingScreen = () => {
     navigate('/search-boarding', {
       state: { location, dropoffDate, pickupDate, pets }
     });
-    */
   };
 
   const updatePetCount = (type: keyof typeof pets, increment: boolean) => {
