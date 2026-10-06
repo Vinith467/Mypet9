@@ -179,10 +179,10 @@ export const HomeServicesScreen = () => {
               <div 
                 key={service.id}
                 onClick={() => navigate(service.route)}
-                className={`${service.color} rounded-[16px] md:rounded-[20px] overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-[180px] md:h-[200px] border border-white/50`}
+                className={`${service.color} rounded-[16px] md:rounded-[20px] overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-full border border-white/50`}
               >
-                {/* Image taking top 50% */}
-                <div className="h-[50%] relative overflow-hidden">
+                {/* Image taking 4:3 aspect ratio */}
+                <div className="aspect-[4/3] w-full relative overflow-hidden shrink-0">
                   <img 
                     src={service.image} 
                     alt={service.title} 
