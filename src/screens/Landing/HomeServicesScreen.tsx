@@ -90,26 +90,26 @@ export const HomeServicesScreen = () => {
           <img 
             src="/A Husky and Kitten Pastel Banner.png" 
             alt="Banner Background" 
-            className="hidden md:block w-full h-[320px] lg:h-[380px] object-cover object-[center_30%]"
+            className="hidden md:block w-full h-[220px] lg:h-[280px] object-cover object-[center_30%]"
           />
           <img 
             src="/mobile - Trusted Pet Care, Happy Companions.png" 
             alt="Banner Background" 
-            className="md:hidden w-full h-auto object-cover"
+            className="md:hidden w-full h-[240px] object-cover object-center"
           />
           
           {/* Hero Overlay Text */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-start pt-8 md:pt-12 px-6 md:px-16 lg:px-24">
+          <div className="absolute inset-0 z-10 flex flex-col justify-center pb-4 md:pb-8 px-6 md:px-16 lg:px-24">
             <div className="max-w-[60%] md:max-w-[50%] lg:max-w-[45%]">
               <div className="flex items-center gap-2 mb-1.5 md:mb-2">
                 <span className="text-[#007672] text-[10px] md:text-[11px] font-extrabold uppercase tracking-widest">
                   A PET COMMUNITY
                 </span>
               </div>
-              <h1 className="text-[26px] md:text-[36px] lg:text-[44px] font-extrabold text-[#1B2B48] leading-[1.1] mb-2 md:mb-3 tracking-tight">
+              <h1 className="text-[22px] md:text-[32px] lg:text-[40px] font-extrabold text-[#1B2B48] leading-[1.1] mb-2 md:mb-3 tracking-tight">
                 Trusted Pet Care<br/>When You're Away
               </h1>
-              <p className="text-[#465E87] text-[12px] md:text-[13px] font-medium leading-relaxed mb-4 md:mb-5 max-w-[400px] hidden sm:block">
+              <p className="text-[#465E87] text-[11px] md:text-[13px] font-medium leading-relaxed mb-4 md:mb-5 max-w-[400px] hidden sm:block">
                 A loving community of pet parents and verified caretakers providing safe, caring and home-like experiences for your pets.
               </p>
               <button 
