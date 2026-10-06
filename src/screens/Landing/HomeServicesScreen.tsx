@@ -123,7 +123,7 @@ export const HomeServicesScreen = () => {
         </div>
 
         {/* Trust Badges */}
-        <div className="max-w-[95%] xl:max-w-[85%] mx-auto px-4 relative z-20 -mt-8 md:-mt-10">
+        <div className="max-w-[95%] xl:max-w-[85%] mx-auto px-4 relative z-20 -mt-4 md:-mt-5">
           <div className="bg-white rounded-[12px] md:rounded-[16px] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50 py-1.5 md:py-2 px-3 md:px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-0 divide-x-0 md:divide-x divide-gray-100">
               
