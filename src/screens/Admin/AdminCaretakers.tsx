@@ -20,8 +20,7 @@ export const AdminCaretakers = () => {
   const fetchCaretakers = async () => {
     setLoading(true);
     try {
-      const q = query(collection(db, 'users'), where('type', '==', 'caretaker'));
-      const snap = await getDocs(q);
+      const snap = await getDocs(collection(db, 'caretakers'));
       setCaretakers(snap.docs.map(d => ({ id: d.id, ...d.data() })));
     } catch (e) {
       console.error(e);
@@ -56,7 +55,7 @@ export const AdminCaretakers = () => {
     if (!editingCaretaker) return;
     setIsSaving(true);
     try {
-      await updateDoc(doc(db, 'users', editingCaretaker.id), editForm);
+      await updateDoc(doc(db, 'caretakers', editingCaretaker.id), editForm);
       setCaretakers(caretakers.map(c => c.id === editingCaretaker.id ? { ...c, ...editForm } : c));
       setEditingCaretaker(null);
     } catch (e) {
@@ -76,7 +75,7 @@ export const AdminCaretakers = () => {
     if (!window.confirm(confirmMsg)) return;
 
     try {
-      await updateDoc(doc(db, 'users', caretaker.id), { status: newStatus });
+      await updateDoc(doc(db, 'caretakers', caretaker.id), { status: newStatus });
       setCaretakers(caretakers.map(c => c.id === caretaker.id ? { ...c, status: newStatus } : c));
     } catch (e) {
       console.error("Error changing status:", e);
