@@ -20,6 +20,7 @@ export const HomeServicesScreen = () => {
       color: 'bg-orange-50/80',
       iconBg: 'bg-orange-100',
       iconColor: 'text-orange-500',
+      buttonBg: 'bg-orange-500',
       route: '/boarding'
     },
     {
@@ -31,6 +32,7 @@ export const HomeServicesScreen = () => {
       color: 'bg-pink-50/80',
       iconBg: 'bg-pink-100',
       iconColor: 'text-pink-500',
+      buttonBg: 'bg-pink-500',
       route: '/coming-soon'
     },
     {
@@ -42,6 +44,7 @@ export const HomeServicesScreen = () => {
       color: 'bg-cyan-50/80',
       iconBg: 'bg-cyan-100',
       iconColor: 'text-cyan-500',
+      buttonBg: 'bg-cyan-500',
       route: '/coming-soon'
     },
     {
@@ -53,6 +56,7 @@ export const HomeServicesScreen = () => {
       color: 'bg-emerald-50/80',
       iconBg: 'bg-emerald-100',
       iconColor: 'text-emerald-500',
+      buttonBg: 'bg-emerald-500',
       route: '/coming-soon'
     },
     {
@@ -64,6 +68,7 @@ export const HomeServicesScreen = () => {
       color: 'bg-purple-50/80',
       iconBg: 'bg-purple-100',
       iconColor: 'text-purple-500',
+      buttonBg: 'bg-purple-500',
       route: '/coming-soon'
     },
     {
@@ -75,6 +80,7 @@ export const HomeServicesScreen = () => {
       color: 'bg-rose-50/80',
       iconBg: 'bg-rose-100',
       iconColor: 'text-rose-500',
+      buttonBg: 'bg-rose-500',
       route: '/coming-soon'
     }
   ];
@@ -206,7 +212,7 @@ export const HomeServicesScreen = () => {
                   </div>
                   
                   {/* Arrow Button */}
-                  <div className={`absolute bottom-3 right-3 w-5 h-5 md:w-6 md:h-6 rounded-full ${service.iconColor.replace('text-', 'bg-')} text-white flex items-center justify-center shadow-md transform group-hover:translate-x-1 transition-transform`}>
+                  <div className={`absolute bottom-3 right-3 w-5 h-5 md:w-6 md:h-6 rounded-full ${service.buttonBg} text-white flex items-center justify-center shadow-md transform group-hover:translate-x-1 transition-transform`}>
                     <ArrowRight className="w-2.5 h-2.5 md:w-3 md:h-3" strokeWidth={3} />
                   </div>
                 </div>
