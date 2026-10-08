@@ -4,8 +4,10 @@ import {
   LayoutDashboard, ClipboardList, Users, CalendarCheck, 
   Settings, PawPrint, LogOut, ChevronLeft, MessageSquare, Bell
 } from 'lucide-react';
-import { auth } from '../../config/firebase';
+import { auth, db } from '../../config/firebase';
 import { signOut } from 'firebase/auth';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 const navItems = [
   { to: '/admin', icon: LayoutDashboard, label: 'Overview', end: true },
@@ -25,6 +27,45 @@ export const AdminLayout = () => {
     await signOut(auth);
     navigate('/auth');
   };
+
+  React.useEffect(() => {
+    // Request permission for notifications on mount
+    LocalNotifications.requestPermissions();
+
+    const startTime = new Date();
+    
+    // Listen for new offline bookings created AFTER the component mounts
+    const q = query(
+      collection(db, 'offline_bookings'),
+      where('createdAt', '>', startTime)
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === 'added') {
+          const data = change.doc.data();
+          const name = data.ownerDetails?.fullName || 'Someone';
+          
+          LocalNotifications.schedule({
+            notifications: [
+              {
+                title: 'New Offline Booking!',
+                body: `${name} just submitted a "Directly Reach Us" form. Check the admin panel!`,
+                id: new Date().getTime(),
+                schedule: { at: new Date(Date.now() + 1000) },
+                sound: null,
+                attachments: null,
+                actionTypeId: '',
+                extra: null
+              }
+            ]
+          });
+        }
+      });
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="flex h-screen bg-[#F8F9FB] overflow-hidden">

@@ -90,6 +90,7 @@ export const AdminForms = () => {
 
   const tabs = [
     { id: 'kyc', label: 'Caretaker KYC', icon: ClipboardList },
+    { id: 'offline_bookings', label: 'Offline Bookings', icon: Calendar },
     { id: 'parent_leads', label: 'Pet Parent Leads', icon: Users },
     { id: 'partner_leads', label: 'Partner Leads', icon: PawPrint },
     { id: 'inquiries', label: 'Inquiries', icon: MessageSquare },
@@ -128,6 +129,13 @@ export const AdminForms = () => {
             <div className="p-0">
               <AdminApplications />
             </div>
+          )}
+          {activeTab === 'offline_bookings' && (
+            <GenericFormViewer 
+              collectionName="offline_bookings" 
+              title="Offline Bookings (Directly Reach Us)" 
+              emptyMessage="No offline bookings found." 
+            />
           )}
           {activeTab === 'parent_leads' && (
             <GenericFormViewer 
