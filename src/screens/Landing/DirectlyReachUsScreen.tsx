@@ -8,7 +8,7 @@ export const DirectlyReachUsScreen = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans overflow-x-hidden relative">
-      <TopNavbar currentLocationStr="" />
+      <TopNavbar currentLocationStr="" showBackButton={true} />
       
       <main className="w-full relative">
         <OfflineBookingSection />

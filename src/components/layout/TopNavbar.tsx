@@ -1,12 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { PawPrint, MapPin, ChevronDown } from 'lucide-react';
+import { PawPrint, MapPin, ChevronDown, ChevronLeft } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface TopNavbarProps {
   currentLocationStr?: string;
+  showBackButton?: boolean;
 }
 
-export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
+export const TopNavbar = ({ currentLocationStr, showBackButton = false }: TopNavbarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
@@ -21,8 +22,13 @@ export const TopNavbar = ({ currentLocationStr }: TopNavbarProps) => {
     <>
       {/* Mobile Top Bar */}
       <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-100 fixed top-0 left-0 w-full z-50">
-         <div className="flex items-center">
-           <PawPrint className="text-[#007672] w-6 h-6 mr-2" strokeWidth={2.5} />
+         <div className="flex items-center gap-2">
+           {showBackButton && (
+             <button onClick={() => navigate(-1)} className="mr-1 text-gray-700 p-1 hover:bg-gray-100 rounded-full transition-colors">
+               <ChevronLeft size={24} />
+             </button>
+           )}
+           {!showBackButton && <PawPrint className="text-[#007672] w-6 h-6 mr-1" strokeWidth={2.5} />}
            <span className="font-extrabold text-[22px] tracking-tight text-[#1B2B48]">mypet9</span>
          </div>
          {user?.email === 'vinuvinith0007@gmail.com' && (
