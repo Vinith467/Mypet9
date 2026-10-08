@@ -53,10 +53,7 @@ export const AdminLayout = () => {
                 body: `${name} just submitted a "Directly Reach Us" form. Check the admin panel!`,
                 id: new Date().getTime(),
                 schedule: { at: new Date(Date.now() + 1000) },
-                sound: null,
-                attachments: null,
-                actionTypeId: '',
-                extra: null
+                actionTypeId: ''
               }
             ]
           });
