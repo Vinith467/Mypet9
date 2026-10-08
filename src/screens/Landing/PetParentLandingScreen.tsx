@@ -186,59 +186,8 @@ export const PetParentLandingScreen = () => {
       <TopNavbar currentLocationStr={location} />
 
       {/* Main Hero & Search Section */}
-      <main className="w-full relative pt-2 md:pt-2">
-        
-        {/* Background Decorative Blob for Mobile */}
-        <div className="md:hidden absolute bottom-0 left-0 right-0 h-[60vh] bg-[#E0F4F2]/80 rounded-t-[120px] -z-10 skew-y-3 translate-y-20" />
-
-        <div className="w-full px-2 md:px-12 flex flex-col md:flex-row items-stretch justify-between relative z-10 gap-0 md:gap-6 lg:gap-8">
-          
-          {/* Desktop Text (Hidden on mobile) */}
-          <div className="hidden md:flex flex-col justify-center w-full md:w-[22%] lg:w-[22%] xl:w-[20%] z-10 shrink-0">
-             <h1 className="text-[42px] lg:text-[54px] leading-[1.0] font-extrabold text-[#1c1c1c] mb-4">
-               A second<br/>home for<br/>your pet.
-             </h1>
-             <p className="text-gray-700 font-medium text-[17px] leading-snug max-w-[200px]">
-               Trusted homestays.<br/>Comfortable homes.<br/>Happier pets.
-             </p>
-          </div>
-          
-          {/* Search Card Container */}
-          <div className="w-full md:w-[50%] lg:w-[50%] xl:w-[48%] z-20 order-first md:order-none relative shrink-0 flex items-center">
-            <div className="bg-white rounded-[24px] p-4 md:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-[#007672]/10 w-full">
-            <div className="bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-[#007672]/10 w-full overflow-hidden max-h-[85vh] overflow-y-auto custom-scrollbar">
-              <OfflineBookingSection />
-            </div>
-
-            </div>
-          </div>
-          
-
-          
-          {/* Hero Image Area */}
-          <div className="w-[calc(100%+16px)] -mx-2 md:mx-0 md:w-[28%] lg:w-[28%] xl:w-[32%] z-0 order-last relative shrink-0 flex items-center justify-end overflow-hidden">
-             {/* Desktop Image */}
-             <img 
-               src="/desktop-hero-pets.png" 
-               alt="Happy pets" 
-               className="hidden md:block w-full h-full object-contain object-right drop-shadow-xl" 
-               onError={(e) => {
-                 (e.target as HTMLImageElement).src = 'https://placehold.co/600x800/e0f4f2/007672?text=Pets+Image';
-               }}
-             />
-             
-             {/* Mobile Image */}
-             <img 
-               src="/mobile-hero-pets.png" 
-               alt="Happy pets" 
-               className="md:hidden w-full h-auto object-cover object-top relative z-10 drop-shadow-xl" 
-               onError={(e) => {
-                 (e.target as HTMLImageElement).src = 'https://placehold.co/600x800/e0f4f2/007672?text=Pets+Image';
-               }}
-             />
-          </div>
-
-        </div>
+      <main className="w-full relative">
+        <OfflineBookingSection />
       </main>
 
       {/* Scroll Down Indicator */}
@@ -286,10 +235,7 @@ export const PetParentLandingScreen = () => {
       ))}
 
 
-      {/* Offline Booking Section */}
-      <div className="hidden md:block">
-        <OfflineBookingSection />
-      </div>
+
       {/* Why Homestay vs Boarding Section */}
       <section className="hidden md:block w-full px-4 md:px-12 py-3 bg-white" style={{ perspective: '1200px' }}>
         <div 
